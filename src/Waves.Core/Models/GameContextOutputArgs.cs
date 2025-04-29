@@ -5,6 +5,8 @@ namespace Waves.Core.Models;
 public class GameContextOutputArgs
 {
     public GameContextActionType Type { get; set; }
+
+    public string ErrorString { get; set; }
     #region 文件进度
     public int FileTotal { get; set; }
 

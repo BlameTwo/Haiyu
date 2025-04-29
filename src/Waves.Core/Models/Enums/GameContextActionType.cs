@@ -21,4 +21,5 @@ public enum GameContextActionType
     /// 删除文件
     /// </summary>
     DeleteFile,
+    Error,
 }

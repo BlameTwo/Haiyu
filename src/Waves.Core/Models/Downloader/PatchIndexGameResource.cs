@@ -23,7 +23,7 @@ public class PatchInfo
     public string Dest { get; set; }
 
     [JsonPropertyName("entries")]
-    public List<Entry> Entries { get; set; }
+    public List<IndexResource> Entries { get; set; }
 }
 
 public class PatchResource
@@ -35,7 +35,7 @@ public class PatchResource
     public string Md5 { get; set; }
 
     [JsonPropertyName("size")]
-    public object Size { get; set; }
+    public long Size { get; set; }
 
     [JsonPropertyName("fromFolder")]
     public string FromFolder { get; set; }
@@ -44,11 +44,8 @@ public class PatchResource
     public List<IndexChunkInfo> ChunkInfos { get; set; }
 }
 
-public class PatchIndexGameResource
+public class PatchIndexGameResource : IndexGameResource
 {
-    [JsonPropertyName("resource")]
-    public List<PatchResource> Resource { get; set; }
-
     [JsonPropertyName("deleteFiles")]
     public List<string> DeleteFiles { get; set; }
 

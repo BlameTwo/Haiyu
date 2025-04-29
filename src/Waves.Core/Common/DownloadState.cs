@@ -21,6 +21,13 @@ public sealed class DownloadState
         _isPaused = false;
     }
 
+    public DownloadState(PatchIndexGameResource resources)
+    {
+        Resources = resources;
+        SpeedLimiter = new SpeedLimiter();
+        _isPaused = false;
+    }
+
     public bool IsPaused => _isPaused;
 
     public async Task SetSpeedLimitAsync(long bytesPerSecond)

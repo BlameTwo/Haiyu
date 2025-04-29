@@ -73,7 +73,8 @@ public partial class GameContextBase
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
-        await GetGameResourceAsync(folder, launcher);
+
+        await UpdateGameResourceAsync(folder, launcher);
     }
 
     #region 核心下载逻辑
@@ -209,11 +210,15 @@ public partial class GameContextBase
                 {
                     if (resource.Resource[j].ChunkInfos == null)
                     {
-                        var checkResult = await VaildateFullFile(resource.Resource[j], filePath);
+                        var checkResult = await VaildateFullFile(
+                            resource.Resource[j].Md5,
+                            filePath
+                        );
                         if (checkResult)
                         {
                             await DownloadFileByFull(
-                                resource.Resource[j],
+                                resource.Resource[j].Dest,
+                                resource.Resource[j].Size,
                                 filePath,
                                 new()
                                 {
@@ -240,9 +245,10 @@ public partial class GameContextBase
                                 {
                                     HttpClientService.BuildClient();
                                     await DownloadFileByChunks(
-                                        resource.Resource[j],
+                                        resource.Resource[j].Dest,
                                         filePath,
-                                        resource.Resource[j].ChunkInfos[i],
+                                        resource.Resource[j].ChunkInfos[i].Start,
+                                        resource.Resource[j].ChunkInfos[i].End,
                                         true,
                                         resource.Resource[j].Size
                                     );
@@ -251,9 +257,10 @@ public partial class GameContextBase
                                 {
                                     HttpClientService.BuildClient();
                                     await DownloadFileByChunks(
-                                        resource.Resource[j],
+                                        resource.Resource[j].Dest,
                                         filePath,
-                                        resource.Resource[j].ChunkInfos[i],
+                                        resource.Resource[j].ChunkInfos[i].Start,
+                                        resource.Resource[j].ChunkInfos[i].End,
                                         false
                                     );
                                 }
@@ -265,7 +272,8 @@ public partial class GameContextBase
                 else
                 {
                     await DownloadFileByFull(
-                        resource.Resource[j],
+                        resource.Resource[j].Dest,
+                        resource.Resource[j].Size,
                         filePath,
                         new IndexChunkInfo()
                         {
@@ -349,6 +357,202 @@ public partial class GameContextBase
         }
     }
     #endregion
+
+    async Task UpdateGameResourceAsync(string folder, GameLauncherSource launcher)
+    {
+        var currentVersion = await GameLocalConfig.GetConfigAsync(
+            GameLocalSettingName.LocalGameVersion
+        );
+        var previous = launcher
+            .ResourceDefault.Config.PatchConfig.Where(x => x.Version == currentVersion)
+            .FirstOrDefault();
+        PatchIndexGameResource? patch = null;
+        if (previous != null)
+        {
+            var cdnUrl =
+                launcher
+                    .ResourceDefault.CdnList.Where(x => x.P != 0)
+                    .OrderBy(x => x.P)
+                    .FirstOrDefault() ?? null;
+            if (cdnUrl == null)
+            {
+                await CancelDownloadAsync();
+                return;
+            }
+            patch = await GetPatchGameResourceAsync(cdnUrl.Url + previous.IndexFile);
+        }
+        else
+        {
+            await CancelDownloadAsync();
+            return;
+        }
+
+        _totalfileSize = patch.PatchInfos.Sum(x => x.Entries.Sum(x => x.Size));
+        _totalFileTotal = patch.Resource.Count - 1;
+        _totalProgressTotal = 0;
+        this._downloadState = new DownloadState(patch);
+        await gameContextOutputDelegate?.Invoke(
+            this,
+            new GameContextOutputArgs
+            {
+                CurrentSize = 0,
+                TotalSize = patch.Resource.Sum(x => x.Size),
+                Type = GameContextActionType.Download,
+            }
+        );
+        Task.Run(() => StartPathDownloadAsync(folder, patch, () => DownloadComplate(launcher)));
+    }
+
+    private async Task StartPathDownloadAsync(
+        string folder,
+        PatchIndexGameResource resource,
+        Func<Task> downloadComplate
+    )
+    {
+        _downloadState.IsActive = true;
+        await UpdateFileProgress(GameContextActionType.Verify, 0);
+        #region 下载逻辑
+        try
+        {
+            for (int j = 0; j < resource.PatchInfos.Count; j++)
+            {
+                for (int i = 0; i < resource.PatchInfos[j].Entries.Count; i++)
+                {
+                    Debug.WriteLine($"开始处理更新文件{resource.PatchInfos[j].Entries[i].Dest}");
+                    if (_downloadCTS?.IsCancellationRequested ?? true)
+                    {
+                        this._downloadState.IsActive = false;
+                        await SetNoneStatusAsync().ConfigureAwait(false);
+                        return;
+                    }
+                    var filePath = BuildFilePath(folder, resource.PatchInfos[j].Entries[i]);
+                    if (File.Exists(filePath))
+                    {
+                        if (resource.PatchInfos[j].Entries[i].ChunkInfos == null)
+                        {
+                            var checkResult = await VaildateFullFile(
+                                resource.PatchInfos[j].Entries[i].Md5,
+                                filePath
+                            );
+                            if (checkResult)
+                            {
+                                await DownloadFileByFull(
+                                    resource.PatchInfos[j].Entries[i].Dest,
+                                    resource.PatchInfos[j].Entries[i].Size,
+                                    filePath,
+                                    new()
+                                    {
+                                        Start = 0,
+                                        End = resource.PatchInfos[j].Entries[i].Size - 1,
+                                        Md5 = resource.PatchInfos[j].Entries[i].Md5,
+                                    }
+                                );
+                            }
+                        }
+                        else
+                        {
+                            for (
+                                int c = 0;
+                                c < resource.PatchInfos[j].Entries[i].ChunkInfos.Count;
+                                c++
+                            )
+                            {
+                                var fileName = System.IO.Path.GetFileName(filePath);
+                                var needDownload = await ValidateFileChunks(
+                                    resource.PatchInfos[j].Entries[i].ChunkInfos[c],
+                                    filePath
+                                );
+                                if (needDownload)
+                                {
+                                    if (i == resource.PatchInfos[j].Entries[i].ChunkInfos.Count - 1)
+                                    {
+                                        HttpClientService.BuildClient();
+                                        await DownloadFileByChunks(
+                                            resource.Resource[j].Dest,
+                                            filePath,
+                                            resource.Resource[j].ChunkInfos[i].Start,
+                                            resource.Resource[j].ChunkInfos[i].End,
+                                            true,
+                                            resource.Resource[j].Size
+                                        );
+                                    }
+                                    else
+                                    {
+                                        HttpClientService.BuildClient();
+                                        await DownloadFileByChunks(
+                                            resource.Resource[j].Dest,
+                                            filePath,
+                                            resource.Resource[j].ChunkInfos[i].Start,
+                                            resource.Resource[j].ChunkInfos[i].End,
+                                            false
+                                        );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        await DownloadFileByFull(
+                            resource.Resource[j].Dest,
+                            resource.Resource[j].Size,
+                            filePath,
+                            new IndexChunkInfo()
+                            {
+                                Start = 0,
+                                End = resource.Resource[j].Size - 1,
+                                Md5 = resource.Resource[j].Md5,
+                            }
+                        );
+                    }
+                }
+            }
+        }
+        catch (IOException ex)
+        {
+            Debug.WriteLine(ex.Message);
+            await this.SetNoneStatusAsync().ConfigureAwait(false);
+            return;
+        }
+        catch (OperationCanceledException)
+        {
+            _downloadState.IsActive = false;
+            await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");
+            await SetNoneStatusAsync().ConfigureAwait(false);
+            return;
+        }
+        finally
+        {
+            _downloadCTS.Dispose();
+            _downloadCTS = null;
+            _isDownload = false;
+        }
+        #endregion
+        await downloadComplate().ConfigureAwait(false);
+        _downloadState.IsActive = false;
+    }
+
+    async Task CancelDownloadAsync()
+    {
+        if (this.gameContextOutputDelegate != null)
+        {
+            await this
+                .gameContextOutputDelegate.Invoke(
+                    this,
+                    new GameContextOutputArgs()
+                    {
+                        Type = GameContextActionType.None,
+                        ErrorString = "未找到版本更新信息！",
+                    }
+                )
+                .ConfigureAwait(false);
+        }
+        this._isDownload = false;
+        await _downloadCTS?.CancelAsync();
+        _downloadCTS.Dispose();
+        _downloadCTS = null;
+        return;
+    }
 
     #region 校验逻辑
     /// <summary>
@@ -448,7 +652,7 @@ public partial class GameContextBase
         }
     }
 
-    private async Task<bool> VaildateFullFile(IndexResource file, string filePath)
+    private async Task<bool> VaildateFullFile(string md5Value, string filePath)
     {
         const int bufferSize = 262144; // 80KB缓冲区
         using var md5 = MD5.Create();
@@ -513,7 +717,7 @@ public partial class GameContextBase
 
             md5.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
             string hash = BitConverter.ToString(md5.Hash!).Replace("-", "").ToLower();
-            return !(hash == file.Md5);
+            return !(hash == md5Value);
         }
         catch (OperationCanceledException)
         {
@@ -533,9 +737,10 @@ public partial class GameContextBase
 
     #region 下载逻辑
     private async Task DownloadFileByChunks(
-        IndexResource file,
+        string dest,
         string filePath,
-        IndexChunkInfo chunk,
+        long start,
+        long end,
         bool isLast = false,
         long allSize = 0L
     )
@@ -552,26 +757,23 @@ public partial class GameContextBase
         )
         {
             long accumulatedBytes = 0;
-            using var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                _downloadBaseUrl + file.Dest
-            );
-            request.Headers.Range = new RangeHeaderValue(chunk.Start, chunk.End);
+            using var request = new HttpRequestMessage(HttpMethod.Get, _downloadBaseUrl + dest);
+            request.Headers.Range = new RangeHeaderValue(start, end);
             using var response = await HttpClientService.GameDownloadClient.SendAsync(
                 request,
                 HttpCompletionOption.ResponseHeadersRead,
                 _downloadCTS.Token
             );
             var stream = await response.Content.ReadAsStreamAsync(_downloadCTS.Token);
-            if (chunk.Start < 0 || chunk.End < chunk.Start)
+            if (start < 0 || end < start)
             {
-                throw new ArgumentException($"分片范围无效: {chunk.Start}-{chunk.End}");
+                throw new ArgumentException($"分片范围无效: {start}-{end}");
             }
 
             long totalWritten = 0;
-            long chunkTotalSize = chunk.End - chunk.Start + 1;
+            long chunkTotalSize = end - start + 1;
             var memoryPool = ArrayPool<byte>.Shared;
-            fileStream.Seek(chunk.Start, SeekOrigin.Begin);
+            fileStream.Seek(start, SeekOrigin.Begin);
             bool isBreak = false;
             while (totalWritten < chunkTotalSize)
             {
@@ -645,7 +847,12 @@ public partial class GameContextBase
         await _downloadState.SetSpeedLimitAsync(bytesPerSecond);
     }
 
-    private async Task DownloadFileByFull(IndexResource file, string filePath, IndexChunkInfo chunk)
+    private async Task DownloadFileByFull(
+        string dest,
+        long size,
+        string filePath,
+        IndexChunkInfo chunk
+    )
     {
         long accumulatedBytes = 0;
 
@@ -661,10 +868,7 @@ public partial class GameContextBase
         ) // 明确启用异步IO
         {
             long currentBytes = 0;
-            using var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                _downloadBaseUrl + file.Dest
-            );
+            using var request = new HttpRequestMessage(HttpMethod.Get, _downloadBaseUrl + dest);
             request.Headers.Range = new RangeHeaderValue(chunk.Start, chunk.End);
 
             using var response = await HttpClientService
@@ -729,7 +933,7 @@ public partial class GameContextBase
             {
                 throw new IOException($"分片写入不完整: {totalWritten}/{chunkTotalSize}");
             }
-            fileStream.SetLength(file.Size);
+            fileStream.SetLength(size);
             await fileStream.FlushAsync();
         }
     }
