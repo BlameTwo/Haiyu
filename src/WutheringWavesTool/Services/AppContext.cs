@@ -14,11 +14,14 @@ public class AppContext<T> : IAppContext<T>
         WavesClient = wavesClient;
         WallpaperService = wallpaperService;
         WallpaperService.WallpaperPletteChanged += WallpaperService_WallpaperPletteChanged;
+        ThemeService = new ThemeService();
     }
 
     private ContentDialog _dialog;
 
     public T App { get; private set; }
+
+    public IThemeService ThemeService { get; }
 
     public IWavesClient WavesClient { get; }
     public IWallpaperService WallpaperService { get; }
@@ -36,6 +39,7 @@ public class AppContext<T> : IAppContext<T>
             .InitAsync();
         this.App = app;
         var win = new MainWindow();
+        ThemeService.Initialize(win);
         var page = Instance.Service!.GetRequiredService<ShellPage>();
         page.titlebar.Window = win;
         win.Content = page;
@@ -137,11 +141,7 @@ public class AppContext<T> : IAppContext<T>
 
     public void SetElementTheme(ElementTheme theme)
     {
-        if (this.App.MainWindow.Content is FrameworkElement fe)
-        {
-            fe.RequestedTheme = theme;
-            this.CurrentElement = theme;
-        }
+        ThemeService.SetElementTheme(theme);
     }
 
     public void SetTitleControl(Controls.TitleBar titleBar)
