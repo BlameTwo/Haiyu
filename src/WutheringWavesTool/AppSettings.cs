@@ -4,83 +4,105 @@ namespace WutheringWavesTool;
 
 public class AppSettings
 {
-    public static ApplicationDataContainer LocalSetting =>
-        Windows.Storage.ApplicationData.Current.LocalSettings;
+    private static readonly string SettingsFilePath = Path.Combine(App.BassFolder, "System.json");
 
-    public static ISqlSugarClient SettingDB =>
-        new SqlSugarScope(
-            new ConnectionConfig()
-            {
-                ConnectionString = $"DataSource={App.BassFolder}\\System.db",
-                DbType = DbType.Sqlite,
-            }
+    // 存储所有设置的内存缓存
+    private static List<LocalSettings> _settingsCache;
+
+    static AppSettings()
+    {
+        LoadSettings();
+    }
+
+    private static void LoadSettings()
+    {
+        if (File.Exists(SettingsFilePath))
+        {
+            var json = File.ReadAllText(SettingsFilePath);
+            _settingsCache =
+                JsonSerializer.Deserialize<List<LocalSettings>>(
+                    json,
+                    LocalSettingsJsonContext.Default.ListLocalSettings
+                ) ?? new();
+            SaveSettings();
+        }
+        else
+        {
+            _settingsCache = new List<LocalSettings>();
+        }
+    }
+
+    private static void SaveSettings()
+    {
+        var json = JsonSerializer.Serialize(
+            _settingsCache,
+            LocalSettingsJsonContext.Default.ListLocalSettings
         );
+        File.WriteAllText(SettingsFilePath, json);
+    }
 
     public static string? Token
     {
-        get => ReadDb();
-        set => WriteDb(value);
+        get => Read();
+        set => Write(value);
     }
 
     public static string? TokenId
     {
-        get => ReadDb();
-        set => WriteDb(value);
+        get => Read();
+        set => Write(value);
     }
 
     public static string? WallpaperPath
     {
-        get => ReadDb();
-        set => WriteDb(value);
+        get => Read();
+        set => Write(value);
     }
 
     public static string? AppTheme
     {
-        get => ReadDb();
-        set => WriteDb(value);
+        get => Read();
+        set => Write(value);
     }
 
-    internal static string? Read([CallerMemberName] string Path = null)
+    internal static string? Read([CallerMemberName] string key = null)
     {
-        if (LocalSetting.Values.TryGetValue(Path, out object value))
+        if (string.IsNullOrWhiteSpace(key))
         {
-            return value.ToString();
+            return null;
         }
-        return null;
+
+        var item = _settingsCache.FirstOrDefault(x => x.Key == key);
+        return item?.Value;
     }
 
-    internal static string? ReadDb([CallerMemberName] string key = null)
+    internal static void Write(string? value, [CallerMemberName] string key = null)
     {
-        SettingDB.CodeFirst.InitTables<LocalSettings>();
-        var result = SettingDB.Queryable<LocalSettings>().Where(x => x.Key == key);
-        if (result.Count() == 1)
+        if (string.IsNullOrWhiteSpace(key))
         {
-            return result.First().Value;
+            Debug.WriteLine("Attempted to write setting with a null or empty key.");
+            return;
         }
-        return null;
-    }
 
-    internal static void WriteDb(string? value, [CallerMemberName] string key = null)
-    {
-        SettingDB.CodeFirst.InitTables<LocalSettings>();
-        var result = SettingDB.Queryable<LocalSettings>().Where(x => x.Key == key).First();
-
-        if (result != null)
+        if (value == null)
         {
-            result.Value = value;
-            SettingDB.Updateable(result).ExecuteCommand();
+            // 移除指定 key 的项
+            _settingsCache.RemoveAll(x => x.Key == key);
         }
         else
         {
-            var newSetting = new LocalSettings { Key = key, Value = value };
-            SettingDB.Insertable(newSetting).ExecuteCommand();
+            // 查找是否存在该 key
+            var existing = _settingsCache.FirstOrDefault(x => x.Key == key);
+            if (existing != null)
+            {
+                existing.Value = value;
+            }
+            else
+            {
+                _settingsCache.Add(new LocalSettings { Key = key, Value = value });
+            }
         }
-    }
 
-    internal static void Write(string? value, [CallerMemberName] string path = null)
-    {
-        if (value == null)
-            return;
-        LocalSetting.Values[path] = value;
+        SaveSettings();
     }
 }

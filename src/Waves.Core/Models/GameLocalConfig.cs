@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System.Text.Json.Serialization;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using SqlSugar;
 
@@ -119,19 +120,15 @@ public class GameLocalConfig
 [SugarTable("settings")]
 public class LocalSettings
 {
+    [JsonPropertyName("key")]
     [SugarColumn(ColumnName = "Key", IsPrimaryKey = true)]
     public string Key { get; set; }
 
+    [JsonPropertyName("value")]
     [SugarColumn(ColumnName = "Value")]
     public string Value { get; set; }
 }
 
-[SugarTable("playerTimes")]
-public class PlayerTime
-{
-    [SugarColumn(ColumnName = "DateTime", IsPrimaryKey = true)]
-    public DateTime Now { get; set; }
-
-    [SugarColumn(ColumnName = "Tick")]
-    public long Tick { get; set; }
-}
+[JsonSerializable(typeof(LocalSettings))]
+[JsonSerializable(typeof(List<LocalSettings>))]
+public partial class LocalSettingsJsonContext : JsonSerializerContext { }
