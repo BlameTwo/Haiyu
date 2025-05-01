@@ -46,6 +46,9 @@ public sealed partial class ShellViewModel : ViewModelBase
     public partial object SelectItem { get; set; }
 
     [ObservableProperty]
+    public partial bool IsTitleAcrylic { get; set; }
+
+    [ObservableProperty]
     public partial Visibility LoginBthVisibility { get; set; } = Visibility.Collapsed;
 
     [ObservableProperty]
@@ -109,6 +112,12 @@ public sealed partial class ShellViewModel : ViewModelBase
             "Setting",
             new DrillInNavigationTransitionInfo()
         );
+    }
+
+    [RelayCommand]
+    void InvokeMinWindow()
+    {
+        this.AppContext.InvokeMin();
     }
 
     [RelayCommand]

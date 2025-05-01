@@ -29,6 +29,5 @@ partial class SettingViewModel
                 this.AppContext.SetElementTheme(ElementTheme.Dark);
                 break;
         }
-        AppSettings.AppTheme = SelectTheme;
     }
 }

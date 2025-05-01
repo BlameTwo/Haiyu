@@ -1,4 +1,4 @@
-namespace WutheringWavesTool.Pages.Dialogs;
+﻿namespace WutheringWavesTool.Pages.Dialogs;
 
 public sealed partial class GameResourceDialog : ContentDialog
 {
@@ -6,11 +6,7 @@ public sealed partial class GameResourceDialog : ContentDialog
     {
         this.InitializeComponent();
         ViewModel = viewModel;
-        this.RequestedTheme =
-            AppSettings.AppTheme == null ? ElementTheme.Default
-            : AppSettings.AppTheme == "Dark" ? ElementTheme.Dark
-            : AppSettings.AppTheme == "Light" ? ElementTheme.Light
-            : ElementTheme.Default;
+        this.RequestedTheme = ElementTheme.Dark;
     }
 
     public GameResourceViewModel ViewModel { get; }

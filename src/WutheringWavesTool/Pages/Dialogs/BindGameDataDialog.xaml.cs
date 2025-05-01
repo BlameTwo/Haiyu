@@ -6,11 +6,7 @@ public sealed partial class BindGameDataDialog : ContentDialog, IDialog
     {
         this.InitializeComponent();
         this.ViewModel = Instance.Service.GetRequiredService<BindGameDataViewModel>();
-        this.RequestedTheme =
-            AppSettings.AppTheme == null ? ElementTheme.Default
-            : AppSettings.AppTheme == "Dark" ? ElementTheme.Dark
-            : AppSettings.AppTheme == "Light" ? ElementTheme.Light
-            : ElementTheme.Default;
+        this.RequestedTheme = ElementTheme.Dark;
     }
 
     public BindGameDataViewModel ViewModel { get; private set; }

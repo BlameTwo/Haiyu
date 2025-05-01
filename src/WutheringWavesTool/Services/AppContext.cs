@@ -48,17 +48,7 @@ public class AppContext<T> : IAppContext<T>
         win.IsResizable = false;
         win.IsMaximizable = false;
         this.App.MainWindow = win;
-
         win.Activate();
-
-        if (win.Content is FrameworkElement fe)
-        {
-            fe.RequestedTheme =
-                AppSettings.AppTheme == null ? ElementTheme.Default
-                : AppSettings.AppTheme == "Dark" ? ElementTheme.Dark
-                : AppSettings.AppTheme == "Light" ? ElementTheme.Light
-                : ElementTheme.Default;
-        }
         if (await WavesClient.IsLoginAsync())
         {
             var gamers = await WavesClient.GetWavesGamerAsync();
@@ -152,5 +142,13 @@ public class AppContext<T> : IAppContext<T>
     public void TryInvoke(Action action)
     {
         this.App.MainWindow.DispatcherQueue.TryEnqueue(() => action.Invoke());
+    }
+
+    public void InvokeMin()
+    {
+        if (this.App.MainWindow != null)
+        {
+            App.MainWindow.Minimize();
+        }
     }
 }

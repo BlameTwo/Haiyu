@@ -260,7 +260,7 @@
         <Setter Property="OpenPaneLength" Value="{ThemeResource RailNavigationViewOpenPaneLength}" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="CompactPaneLength" Value="{ThemeResource RailNavigationViewCompactPaneLength}" />
-        <Setter Property="CornerRadius" Value="{ThemeResource OverlayCornerRadius}" />
+        <Setter Property="CornerRadius" Value="0" />
         <Setter Property="MenuItemContainerStyle" Value="{StaticResource MainNavigationViewItemStyle}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -468,7 +468,7 @@
                                     Margin="{ThemeResource NavigationViewContentMargin}"
                                     BorderBrush="{ThemeResource NavigationViewContentGridBorderBrush}"
                                     BorderThickness="0"
-                                    CornerRadius="{ThemeResource NavigationViewContentGridCornerRadius}">
+                                    CornerRadius="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
