@@ -1,0 +1,152 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="clr-namespace:FluentWPF.Controls">
+    <Style x:Key="DefaultContextMenuStyle" TargetType="ContextMenu">
+        <Setter Property="Foreground" Value="{DynamicResource AppTextFillBrush}" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="ItemContainerStyle" Value="{DynamicResource DefaultMeunItemStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContextMenu}">
+                    <Border
+                        x:Name="Border"
+                        Margin="12"
+                        Padding="3"
+                        Background="{DynamicResource ContextMenuBackgroundBrush}"
+                        BorderBrush="{DynamicResource ControlBorderBrushColor}"
+                        BorderThickness="1"
+                        CornerRadius="5">
+                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        <Border.Effect>
+                            <DropShadowEffect
+                                BlurRadius="10"
+                                Opacity="0.2"
+                                Color="{DynamicResource DefaultDropColor}" />
+                        </Border.Effect>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Geometry x:Key="Checkmark">F1 M 10.0,1.2 L 4.7,9.1 L 4.5,9.1 L 0,5.2 L 1.3,3.5 L 4.3,6.1L 8.3,0 L 10.0,1.2 Z</Geometry>
+    <Style x:Key="DefaultMeunItemStyle" TargetType="MenuItem">
+        <Setter Property="Padding" Value="7" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIconColumnGroup" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="MenuItemIGTColumnGroup" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            x:Name="templateRoot"
+                            Grid.ColumnSpan="10"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="3" />
+                        <ContentPresenter
+                            x:Name="Icon"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            ContentSource="Icon"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <Border
+                            x:Name="GlyphPanel"
+                            Width="22"
+                            Height="22"
+                            Margin="-1,0,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            BorderThickness="1"
+                            ClipToBounds="False"
+                            Visibility="Hidden">
+                            <Path
+                                x:Name="Glyph"
+                                Width="10"
+                                Height="11"
+                                Data="{StaticResource Checkmark}"
+                                Fill="{DynamicResource AppTextFillBrush}"
+                                FlowDirection="LeftToRight" />
+                        </Border>
+                        <ContentPresenter
+                            x:Name="menuHeaderContainer"
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            ContentSource="Header"
+                            RecognizesAccessKey="True"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        <TextBlock
+                            x:Name="menuGestureText"
+                            Grid.Column="4"
+                            Margin="{TemplateBinding Padding}"
+                            VerticalAlignment="Center"
+                            Opacity="0.7"
+                            Text="{TemplateBinding InputGestureText}" />
+                        <ui:FontIcon
+                            x:Name="hasicon"
+                            Grid.Column="5"
+                            Margin="0,0,10,0"
+                            VerticalAlignment="Center"
+                            Glyph="ChevronRight" />
+                        <Popup
+                            x:Name="SubMenuPopup"
+                            AllowsTransparency="True"
+                            Focusable="False"
+                            IsOpen="{TemplateBinding IsSubmenuOpen}"
+                            Placement="Right">
+                            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                <Border
+                                    Name="SubmenuBorder"
+                                    Margin="5"
+                                    Background="{DynamicResource ContextMenuBackgroundBrush}"
+                                    BorderBrush="{DynamicResource ControlBorderBrushColor}"
+                                    BorderThickness="0.7"
+                                    CornerRadius="3"
+                                    SnapsToDevicePixels="True">
+                                    <Border.Effect>
+                                        <DropShadowEffect
+                                            BlurRadius="10"
+                                            Opacity="0.1"
+                                            Color="{DynamicResource DefaultDropColor}" />
+                                    </Border.Effect>
+                                    <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                                </Border>
+                            </ScrollViewer>
+                        </Popup>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Icon" Value="{x:Null}">
+                            <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="GlyphPanel" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="Icon" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="templateRoot" Property="Background" Value="{DynamicResource ItemMouseOverBrush}" />
+                            <Setter Property="Foreground" Value="{DynamicResource DataGridSelectItemForegroundBrush}" />
+                        </Trigger>
+                        <Trigger Property="HasItems" Value="True">
+                            <Setter TargetName="hasicon" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <Trigger Property="HasItems" Value="False">
+                            <Setter TargetName="hasicon" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

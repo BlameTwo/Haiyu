@@ -1,0 +1,90 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="clr-namespace:FluentWPF.Controls">
+    <Style x:Key="DefaultSettingTipCardStyle" TargetType="ui:SettingTipCard">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Background" Value="{DynamicResource ControlFillColor}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource ControlBorderBrushColor}" />
+        <Setter Property="BorderThickness" Value="0.3" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ui:SettingTipCard">
+                    <Grid Margin="{TemplateBinding Margin}">
+                        <Border
+                            x:Name="BackBorderTwo"
+                            Background="{DynamicResource SettingTipBackTwoBackground}"
+                            CornerRadius="{TemplateBinding CornerRadius}" />
+                        <Border
+                            x:Name="BackBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}" />
+                        <Grid
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ui:FontIcon x:Name="Icon" VerticalAlignment="Center" />
+                            <Grid
+                                Grid.Column="1"
+                                Margin="8,0,0,0"
+                                VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <ContentControl Content="{TemplateBinding Header}" FontSize="12" />
+                                <ContentControl
+                                    Grid.Row="1"
+                                    Margin="0,2,0,0"
+                                    Content="{TemplateBinding Description}"
+                                    FontSize="9"
+                                    Foreground="Gray" />
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TipType" Value="Default">
+                            <Setter TargetName="BackBorder" Property="Background" Value="{DynamicResource DefaultSettingTipBackgroundBrush}" />
+                            <Setter TargetName="BackBorder" Property="Opacity" Value="0.4" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter TargetName="BackBorderTwo" Property="Opacity" Value="1" />
+                            <Setter TargetName="Icon" Property="Glyph" Value="Message" />
+                        </Trigger>
+                        <Trigger Property="TipType" Value="Error">
+                            <Setter TargetName="BackBorder" Property="Background" Value="{DynamicResource ErrorSettingTipBackgroundBrush}" />
+                            <Setter TargetName="BackBorder" Property="Opacity" Value="0.4" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter TargetName="BackBorderTwo" Property="Opacity" Value="1" />
+                            <Setter TargetName="Icon" Property="Glyph" Value="Clear" />
+                        </Trigger>
+                        <Trigger Property="TipType" Value="Success">
+                            <Setter TargetName="BackBorder" Property="Background" Value="{DynamicResource SuccessSettingTipBackgroundBrush}" />
+                            <Setter TargetName="BackBorder" Property="Opacity" Value="0.4" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter TargetName="BackBorderTwo" Property="Opacity" Value="0.3" />
+                            <Setter TargetName="Icon" Property="Glyph" Value="ChevronRight" />
+                        </Trigger>
+                        <Trigger Property="TipType" Value="Warn">
+                            <Setter TargetName="BackBorder" Property="Background" Value="{DynamicResource WarnSettingTipBackgroundBrush}" />
+                            <Setter TargetName="BackBorder" Property="Opacity" Value="0.4" />
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter TargetName="BackBorderTwo" Property="Opacity" Value="0.3" />
+                            <Setter TargetName="Icon" Property="Glyph" Value="Warning" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,45 @@
+﻿<ui:FluentWindow
+    x:Class="Project.WPFSetup.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:Project.WPFSetup"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selector="clr-namespace:Project.WPFSetup.Selectors"
+    xmlns:sysback="clr-namespace:FluentWPF.Controls.SystemBackdrops;assembly=FluentWPF"
+    xmlns:ui="https://blame/fluentwpf/2023/"
+    xmlns:view="clr-namespace:Project.WPFSetup.Views"
+    xmlns:vm="clr-namespace:Project.WPFSetup.ViewModels"
+    Title="鸣潮启动器安装程序"
+    MinWidth="650"
+    MinHeight="400"
+    MaxWidth="650"
+    MaxHeight="400"
+    d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
+    Background="Transparent"
+    ResizeMode="CanMinimize"
+    Style="{DynamicResource DefaultWindowStyle}"
+    mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <ui:FluentWindow.Resources>
+        <DataTemplate x:Key="InstallView">
+            <view:InstallView DataContext="{Binding}" />
+        </DataTemplate>
+        <DataTemplate x:Key="UninstallView">
+            <view:UninstallView DataContext="{Binding}" />
+        </DataTemplate>
+        <selector:MainViewSelector
+            x:Key="MainViewSelector"
+            InstallTemplate="{StaticResource InstallView}"
+            UninstallTemplate="{StaticResource UninstallView}" />
+    </ui:FluentWindow.Resources>
+    <ui:FluentWindow.SystemBackdrop>
+        <sysback:MicaBackdrop />
+    </ui:FluentWindow.SystemBackdrop>
+    <ContentControl Content="{Binding CurrentViewModel, Mode=OneWay}" ContentTemplateSelector="{StaticResource MainViewSelector}" />
+</ui:FluentWindow>

@@ -1,0 +1,55 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ui="clr-namespace:FluentWPF.Controls">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/FluentWindow.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/ToggleButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/FontIcon.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/RepeatButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/FluentHyperlinkButton.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/ComboBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/SettingsCard.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/TextBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/FluentProgressRing.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/DataGrid.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/FluentTipCard.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/ContextMenus.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/SettingTipCardStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/FluentAdaptiveCard.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/FluentFlyout.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/ListBox.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/FluentPassword.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/ProgressBar.xaml" />
+
+        <!--  NavigationView  -->
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/Navigations/NavigationViewItem.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/FluentWPF;component/Styles/Navigations/NavigationView.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style BasedOn="{StaticResource DefaultNavigationViewStyle}" TargetType="ui:NavigationView" />
+    <Style BasedOn="{StaticResource DefaultWindowStyle}" TargetType="ui:FluentWindow" />
+    <Style BasedOn="{StaticResource DefaultFluentButtonStyle}" TargetType="ui:FluentButton" />
+    <Style BasedOn="{StaticResource DefaultFluentToggleButtonStyle}" TargetType="ui:FluentToggleButton" />
+    <Style BasedOn="{StaticResource DefaultFontIconStyle}" TargetType="ui:FontIcon" />
+    <Style BasedOn="{StaticResource DefaultRepeatButton}" TargetType="ui:FluentRepeatButton" />
+    <Style BasedOn="{StaticResource DefaultHyperlinkButtonStyle}" TargetType="ui:HyperlinkButton" />
+    <Style BasedOn="{StaticResource DefaultNavigationViewItemStyle}" TargetType="ui:NavigationViewItem" />
+    <Style BasedOn="{StaticResource DefaultNavigationViewHeaderStyle}" TargetType="ui:NavigationViewHeaderItem" />
+    <Style BasedOn="{StaticResource DefaultNavigationViewLineStyle}" TargetType="ui:NavigationViewLineItem" />
+    <Style BasedOn="{StaticResource DefaultFluentComboBoxStyle}" TargetType="ui:FluentComboBox" />
+    <Style BasedOn="{StaticResource DefaultSettingsCardStyle}" TargetType="ui:SettingsCard" />
+    <Style BasedOn="{StaticResource DefaultFluentProgressRingStyle}" TargetType="ui:FluentProgressRing" />
+    <Style BasedOn="{StaticResource DefaultFluentTextBoxStyle}" TargetType="ui:FluentTextBox" />
+    <Style BasedOn="{StaticResource DefaultDataGridStyle}" TargetType="DataGrid" />
+    <Style BasedOn="{StaticResource DefaultFluentTipCard}" TargetType="ui:FluentTipCard" />
+    <Style BasedOn="{StaticResource DefaultContextMenuStyle}" TargetType="ContextMenu" />
+    <Style BasedOn="{StaticResource DefaultMeunItemStyle}" TargetType="MenuItem" />
+    <Style BasedOn="{StaticResource DefaultSettingTipCardStyle}" TargetType="ui:SettingTipCard" />
+    <Style BasedOn="{StaticResource DefaultAdaptiveCardStyle}" TargetType="ui:AdaptiveCard" />
+    <Style BasedOn="{StaticResource DefaultFlyoutStyle}" TargetType="ui:Flyout" />
+    <Style BasedOn="{StaticResource DefaultListBoxStyle}" TargetType="ListBox" />
+    <Style BasedOn="{StaticResource DefaultPasswordBoxStyle}" TargetType="PasswordBox" />
+    <Style BasedOn="{StaticResource DefaultProgressBarStyle}" TargetType="ProgressBar" />
+</ResourceDictionary>

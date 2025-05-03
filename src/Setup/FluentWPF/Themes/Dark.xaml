@@ -1,0 +1,95 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib">
+    <SolidColorBrush
+        x:Key="DefaultPageBackgroundBrush"
+        Opacity="0.5"
+        Color="{DynamicResource DefaultPageBackgroundColor}" />
+    <Color x:Key="DefaultPageBackgroundColor">#202020</Color>
+
+    <!--  用户颜色  -->
+    <SolidColorBrush x:Key="AcceptColor" Color="{DynamicResource AcceptBrushColor}" />
+
+    <Color x:Key="AcceptBrushColor">#47b1e8</Color>
+
+    <!--  字体文本颜色  -->
+    <SolidColorBrush x:Key="AppTextFillBrush" Color="{DynamicResource AppTextFillColor}" />
+
+    <Color x:Key="AppTextFillColor">White</Color>
+
+    <!--  ToggleButton Foreground  -->
+    <SolidColorBrush x:Key="ToggleButtonForgroundBrush" Color="{DynamicResource ToggleButtonForgroundColor}" />
+    <Color x:Key="ToggleButtonForgroundColor">Black</Color>
+    <!--  默认控件背景颜色  -->
+    <SolidColorBrush x:Key="ControlFillColor" Color="#14FFFFFF" />
+    <SolidColorBrush x:Key="ControlBorderBrushColor" Color="#19FFFFFF" />
+    <!--  这里好像两个重合了，无所谓就这样  -->
+    <SolidColorBrush x:Key="ControlSecondFillColor" Color="#21FFFFFF" />
+    <SolidColorBrush x:Key="ControlParssedFillColor" Color="#0CFFFFFF" />
+    <SolidColorBrush x:Key="ControlDisableFillColor" Color="#4CD3D3D3" />
+
+    <Color x:Key="NavigationPanelEffectBrush">#19E0E0E0</Color>
+    <SolidColorBrush x:Key="NavigationHeaderItemForegroundBrush">#C6C6C6</SolidColorBrush>
+
+
+    <SolidColorBrush
+        x:Key="NavigationLineItemForegroundBrush"
+        Opacity="0.5"
+        Color="#EEECEB" />
+
+    <SolidColorBrush x:Key="NavigationContentBorderBrush" Color="#201C1C" />
+
+    <!--  超链接按钮颜色-start  -->
+    <SolidColorBrush x:Key="HyperLinkBackground" Color="#14FFFFFF" />
+    <SolidColorBrush x:Key="HyperLinkForeground" Color="#8ED8EA" />
+    <SolidColorBrush x:Key="HyperLinkParsedForeground" Color="#4CC2FF" />
+    <!--  超链接按钮颜色-end  -->
+
+
+
+    <!--  NavigationView Color  -->
+    <SolidColorBrush x:Key="PanelBackgroundBrush" Color="#FF212121" />
+
+    <SolidColorBrush x:Key="NavigationSelectItemMove" Color="#19FFFFFF" />
+    <SolidColorBrush x:Key="NavigationSelectItemPressed" Color="#0CFFFFFF" />
+
+    <!--  ComboBox  -->
+    <SolidColorBrush x:Key="ComboBoxSelectItemMouseOverBrush" Color="{DynamicResource ComboBoxSelectItemMouseOverColor}" />
+    <Color x:Key="ComboBoxSelectItemMouseOverColor">#26FFFFFF</Color>
+
+    <SolidColorBrush x:Key="TextBoxFocuedBrush" Color="{DynamicResource TextBoxFocuedColor}" />
+    <Color x:Key="TextBoxFocuedColor">#1F1F1F</Color>
+
+
+    <SolidColorBrush x:Key="ProgressRingBorderBrush" Color="#D3D3D3" />
+
+    <SolidColorBrush x:Key="DataGridBorderBrush" Color="#FF6F6F6F" />
+
+    <SolidColorBrush x:Key="TipCardDefaultBackgroundBrush" Color="{DynamicResource TipCardDefaultBackgroundColor}" />
+    <Color x:Key="TipCardDefaultBackgroundColor">#282828</Color>
+
+
+    <SolidColorBrush x:Key="TipCardDefaultBorderBrush" Color="{DynamicResource TipCardDefaultBorderBrushColor}" />
+    <Color x:Key="TipCardDefaultBorderBrushColor">#3D3D3D</Color>
+
+    <SolidColorBrush x:Key="DataGridSelectItemForegroundBrush">White</SolidColorBrush>
+
+
+    <Color x:Key="ContextMenuBackgroundColor">#303030</Color>
+    <SolidColorBrush x:Key="ContextMenuBackgroundBrush" Color="{DynamicResource ContextMenuBackgroundColor}" />
+
+    <Color x:Key="DefaultDropColor">#CC000000</Color>
+
+    <Color x:Key="ItemMouseOverColor">#26FFFFFF</Color>
+    <SolidColorBrush x:Key="ItemMouseOverBrush" Color="{StaticResource ItemMouseOverColor}" />
+
+    <SolidColorBrush x:Key="DefaultSettingTipBackgroundBrush" Color="#4CC2FF" />
+    <SolidColorBrush x:Key="ErrorSettingTipBackgroundBrush" Color="#C42B1C" />
+    <SolidColorBrush x:Key="SuccessSettingTipBackgroundBrush" Color="#0F7B0F" />
+    <SolidColorBrush x:Key="WarnSettingTipBackgroundBrush" Color="#9D5D00" />
+    <SolidColorBrush x:Key="SettingTipBackTwoBackground" Color="DarkBlue" />
+
+    <SolidColorBrush x:Key="ListBoxBakcgroundBrush" Color="{DynamicResource ListBoxBackgroundColor}" />
+    <Color x:Key="ListBoxBackgroundColor">#2B2B2B</Color>
+</ResourceDictionary>
