@@ -89,7 +89,7 @@ namespace Project.WPFSetup.Resources {
         }
         
         /// <summary>
-        ///   查找类似 2.3.1 的本地化字符串。
+        ///   查找类似 2.3.2 的本地化字符串。
         /// </summary>
         internal static string Version {
             get {

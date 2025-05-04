@@ -1,12 +1,114 @@
-﻿<UserControl x:Class="Project.WPFSetup.Views.UninstallView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Project.WPFSetup.Views"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+﻿<UserControl
+    x:Class="Project.WPFSetup.Views.UninstallView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Project.WPFSetup.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="https://blame/fluentwpf/2023/"
+    xmlns:vm="clr-namespace:Project.WPFSetup.ViewModels.UserViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:UninstallViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Margin="25">
+        <Grid Visibility="{Binding UninsatllVisibility, Mode=OneWay}">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="25"
+                Text="是否卸载程序" />
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ui:FluentButton Command="{Binding HelpCommand}" Content="反馈问题" />
+                <ui:FluentButton
+                    Grid.Column="1"
+                    Margin="5,0,0,0"
+                    Command="{Binding UninstallCommand}"
+                    Content="卸载" />
+            </Grid>
+        </Grid>
+
+        <Grid
+            Margin="25,10"
+            VerticalAlignment="Stretch"
+            Visibility="{Binding UninstallingVisibility, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <TextBlock FontSize="25" Text="正在卸载" />
+                <TextBlock
+                    Margin="0,15,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="16"
+                    Text="{Binding InstallProgressArgs.SetupName, Mode=OneWay}" />
+            </StackPanel>
+            <Grid Grid.Row="1" VerticalAlignment="Bottom">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock FontSize="15" Text="{Binding SetupString, Mode=OneWay}" />
+
+                <ProgressBar
+                    x:Name="allCount"
+                    Grid.Row="1"
+                    Height="15"
+                    MinHeight="0"
+                    Maximum="{Binding InstallProgressArgs.MaxSetup, Mode=OneWay}"
+                    Value="{Binding InstallProgressArgs.CurrentSetup, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="2"
+                    FontSize="15"
+                    Text="{Binding InstallProgressArgs.SetupName, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    FontSize="15">
+                    <Run Text="{Binding ElementName=singleCount, Path=Value, Mode=TwoWay}" />
+                    <Run Text="%" />
+                </TextBlock>
+                <ProgressBar
+                    x:Name="singleCount"
+                    Grid.Row="3"
+                    Height="15"
+                    Maximum="{Binding InstallProgressArgs.MaxCurrentSetupProgress, Mode=OneWay}"
+                    Value="{Binding InstallProgressArgs.CurrentSetupProgress, Mode=OneWay}" />
+            </Grid>
+        </Grid>
+
+        <Grid Margin="25" Visibility="{Binding UninstadVisibility, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="25"
+                Text="卸载完成" />
+            <Grid Grid.Row="1">
+                <ui:FluentButton
+                    Grid.Column="1"
+                    Margin="5,0,0,0"
+                    Command="{Binding CloseCommand}"
+                    Content="退出" />
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>

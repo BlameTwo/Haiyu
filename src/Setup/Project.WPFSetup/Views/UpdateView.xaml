@@ -5,10 +5,95 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Project.WPFSetup.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="https://blame/fluentwpf/2023/"
+    xmlns:vm="clr-namespace:Project.WPFSetup.ViewModels.UserViewModels"
+    d:DataContext="{d:DesignInstance Type=vm:UpdateViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    <Grid>
-        <TextBlock Text="更新" />
+    <Grid Margin="25">
+        <Grid Visibility="{Binding UpdateVisibility, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="18"
+                Text="{Binding UpdateTipString, Mode=OneWay}" />
+            <Grid Grid.Row="1">
+                <ui:FluentButton Command="{Binding UpdateCommand}" Content="{Binding UpdateBthString, Mode=OneWay}" />
+            </Grid>
+        </Grid>
+        <Grid
+            Margin="25,10"
+            VerticalAlignment="Stretch"
+            Visibility="{Binding InstallingVisibility, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <TextBlock FontSize="25" Text="正在安装" />
+                <TextBlock
+                    Margin="0,15,0,0"
+                    HorizontalAlignment="Center"
+                    FontSize="16"
+                    Text="{Binding InstallProgressArgs.SetupName, Mode=OneWay}" />
+            </StackPanel>
+            <Grid Grid.Row="1" VerticalAlignment="Bottom">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock FontSize="15" Text="{Binding SetupString, Mode=OneWay}" />
+
+                <ProgressBar
+                    x:Name="allCount"
+                    Grid.Row="1"
+                    Height="15"
+                    MinHeight="0"
+                    Maximum="{Binding InstallProgressArgs.MaxSetup, Mode=OneWay}"
+                    Value="{Binding InstallProgressArgs.CurrentSetup, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="2"
+                    FontSize="15"
+                    Text="{Binding InstallProgressArgs.SetupName, Mode=OneWay}" />
+                <TextBlock
+                    Grid.Row="2"
+                    HorizontalAlignment="Right"
+                    FontSize="15">
+                    <Run Text="{Binding ElementName=singleCount, Path=Value, Mode=TwoWay}" />
+                    <Run Text="%" />
+                </TextBlock>
+                <ProgressBar
+                    x:Name="singleCount"
+                    Grid.Row="3"
+                    Height="15"
+                    Maximum="{Binding InstallProgressArgs.MaxCurrentSetupProgress, Mode=OneWay}"
+                    Value="{Binding InstallProgressArgs.CurrentSetupProgress, Mode=OneWay}" />
+            </Grid>
+        </Grid>
+        <Grid Visibility="{Binding UpdatedVisibility, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="25"
+                Text="完成" />
+            <ui:FluentButton
+                Grid.Row="1"
+                Command="{Binding CloseCommand}"
+                Content="退出" />
+        </Grid>
     </Grid>
 </UserControl>

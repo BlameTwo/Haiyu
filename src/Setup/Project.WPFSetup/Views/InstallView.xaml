@@ -132,6 +132,30 @@
             </Grid>
         </Grid>
         <!--  End InstallIng  -->
+
+        <Grid Margin="25" Visibility="{Binding InstalledVisibility, Mode=OneWay}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="25"
+                Text="安装完成" />
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <ui:FluentButton Command="{Binding StartProcessAndCloseCommand}" Content="运行并退出安装" />
+                <ui:FluentButton
+                    Grid.Column="1"
+                    Margin="5,0,0,0"
+                    Command="{Binding CloseCommand}"
+                    Content="退出" />
+            </Grid>
+        </Grid>
     </Grid>
 
 </UserControl>

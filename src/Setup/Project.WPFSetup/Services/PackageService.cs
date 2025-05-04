@@ -8,7 +8,7 @@ namespace Project.WPFSetup.Services;
 
 public sealed class PackageService
 {
-    public static async Task<(bool, string)> InstallStartAsync(
+    public async Task<(bool, string)> InvokeSetup(
         SetupProperty property,
         IProgress<InstallProgressArgs> progress,
         CancellationToken token = default
@@ -77,6 +77,30 @@ public sealed class PackageService
                 return (false, null);
             }
             var version = productKey.GetValue("DisplayVersion");
+            if (version == null)
+            {
+                return (false, null);
+            }
+            return (true, version.ToString());
+        }
+        catch (Exception ex)
+        {
+            return (false, ex.Message);
+        }
+    }
+
+    public (bool, string?) GetInstallLocation(SetupProperty property)
+    {
+        try
+        {
+            var productKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(
+                $"SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\{property.ProductId}"
+            );
+            if (productKey == null)
+            {
+                return (false, null);
+            }
+            var version = productKey.GetValue("InstallLocation");
             if (version == null)
             {
                 return (false, null);

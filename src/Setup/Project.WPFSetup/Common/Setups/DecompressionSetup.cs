@@ -31,7 +31,7 @@ public class DecompressionSetup : ISetup
         try
         {
             using (var memoryStream = new MemoryStream(fileBuffer))
-            using (var archive = SevenZipArchive.Open(memoryStream))
+            using (var archive = SharpCompress.Archives.Zip.ZipArchive.Open(memoryStream))
             {
                 long totalBytes = archive.Entries.Sum(x => x.Size);
                 long processedBytes = 0;

@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="InstallFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>program.7z;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>program.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="InstallName" xml:space="preserve">
     <value>鸣潮启动器</value>
@@ -128,6 +128,6 @@
     <value>WutheringWavesTool.exe</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>2.3.1</value>
+    <value>2.3.2</value>
   </data>
 </root>

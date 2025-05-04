@@ -1,5 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using FluentWPF.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,8 +33,29 @@ namespace Project.WPFSetup
             var win = App.GetService<MainWindow>();
             if (e.Args.Count() != 0 && e.Args[0] == "uninstall")
             {
-                (win.DataContext as MainWindowViewModel)!.CurrentViewModel =
-                    App.GetService<UninstallViewModel>();
+                if (e.Args.Length == 2 && e.Args[1] == "run")
+                {
+                    (win.DataContext as MainWindowViewModel)!.CurrentViewModel =
+                        App.GetService<UninstallViewModel>();
+                    win.Show();
+                }
+                else
+                {
+                    var property = SetupPropertyFactory.CreateInstall();
+                    string sourcePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                    var uninstallTemp = Path.GetTempFileName();
+                    File.Copy(sourcePath, uninstallTemp + ".exe", true);
+                    var param = $"uninstall run";
+                    Process.Start(
+                        new ProcessStartInfo()
+                        {
+                            Arguments = param,
+                            Verb = "runas",
+                            FileName = uninstallTemp + ".exe",
+                        }
+                    );
+                    Environment.Exit(0);
+                }
             }
             else
             {
@@ -42,12 +65,12 @@ namespace Project.WPFSetup
                 if (current.Item1 && current.Item2 == property.Version)
                 {
                     (win.DataContext as MainWindowViewModel)!.CurrentViewModel =
-                        App.GetService<UpdateViewModel>();
+                        App.GetService<RepairViewModel>();
                 }
-                else if (current.Item1)
+                else if (current.Item1 && current.Item2 != property.Version)
                 {
                     (win.DataContext as MainWindowViewModel)!.CurrentViewModel =
-                        App.GetService<RepairViewModel>();
+                        App.GetService<UpdateViewModel>();
                 }
                 else
                 {
@@ -65,9 +88,11 @@ namespace Project.WPFSetup
             Service = new ServiceCollection()
                 .AddSingleton<MainWindow>()
                 .AddSingleton<MainWindowViewModel>()
-                .AddSingleton<InstallViewModel>()
                 .AddSingleton<PackageService>()
+                .AddSingleton<InstallViewModel>()
                 .AddSingleton<UninstallViewModel>()
+                .AddSingleton<UpdateViewModel>()
+                .AddSingleton<RepairViewModel>()
                 .BuildServiceProvider();
         }
 

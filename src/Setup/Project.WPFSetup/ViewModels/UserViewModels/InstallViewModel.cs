@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -19,6 +20,7 @@ public sealed partial class InstallViewModel : ObservableRecipient
         this.SetupProperty = SetupPropertyFactory.CreateInstall();
         this.SelectInstallVisibility = Visibility.Visible;
         InstallingVisibility = Visibility.Collapsed;
+        InstalledVisibility = Visibility.Collapsed;
     }
 
     [ObservableProperty]
@@ -29,6 +31,9 @@ public sealed partial class InstallViewModel : ObservableRecipient
 
     [ObservableProperty]
     public partial Visibility InstallingVisibility { get; set; } = Visibility.Collapsed;
+
+    [ObservableProperty]
+    public partial Visibility InstalledVisibility { get; set; } = Visibility.Collapsed;
 
     #region InstallProperty
     [ObservableProperty]
@@ -69,7 +74,9 @@ public sealed partial class InstallViewModel : ObservableRecipient
     async Task InstallAsync()
     {
         this.SelectInstallVisibility = Visibility.Collapsed;
+        InstalledVisibility = Visibility.Collapsed;
         InstallingVisibility = Visibility.Visible;
+
         if (CreateStartMenuCheck)
         {
             SetupProperty.Setups.Add(new StartMenLinkSetup());
@@ -86,14 +93,31 @@ public sealed partial class InstallViewModel : ObservableRecipient
             this.InstallProgressArgs = e;
             this.SetupString = e.GetCurrentSetupString();
         };
-        var result = await PackageService.InstallStartAsync(this.SetupProperty, installProgress);
+        var result = await PackageService.InvokeSetup(this.SetupProperty, installProgress);
         if (result.Item1)
         {
-            MessageBox.Show("安装成功！");
+            this.SelectInstallVisibility = Visibility.Collapsed;
+            InstalledVisibility = Visibility.Visible;
+            InstallingVisibility = Visibility.Collapsed;
         }
         else
         {
-            MessageBox.Show($"安装失败！{result.Item2}，请退出安装程序进行反馈");
+            MessageBox.Show($"安装失败！{result.Item2}");
+            Environment.Exit(0);
         }
+    }
+
+    [RelayCommand]
+    void Close()
+    {
+        Environment.Exit(0);
+    }
+
+    [RelayCommand]
+    void StartProcessAndClose()
+    {
+        var path = $"{this.SetupProperty.InstallPath}\\{Resource1.ProgramExe}";
+        Process.Start(path);
+        Environment.Exit(0);
     }
 }
