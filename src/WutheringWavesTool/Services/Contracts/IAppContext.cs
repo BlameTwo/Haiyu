@@ -16,9 +16,7 @@ public interface IAppContext<T>
     public SolidColorBrush StessForground { get; }
     public void TryInvoke(Action action);
 
-    public ElementTheme CurrentElement { get; set; }
 
     void SetTitleControl(Controls.TitleBar titleBar);
 
-    public void SetElementTheme(ElementTheme theme);
 }
