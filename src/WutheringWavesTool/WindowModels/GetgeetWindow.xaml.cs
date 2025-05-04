@@ -10,7 +10,7 @@ public sealed partial class GetGeetWindow : WindowModelBase
         this.webView2.Source = new(AppDomain.CurrentDomain.BaseDirectory + "Assets\\geet.html");
         if (this.Content is FrameworkElement fe)
         {
-            fe.RequestedTheme = ElementTheme.Light;
+            fe.RequestedTheme = ElementTheme.Dark;
         }
     }
 

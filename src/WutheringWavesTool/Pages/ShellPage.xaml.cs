@@ -31,20 +31,19 @@ public sealed partial class ShellPage : Page
             || e.SourcePageType == typeof(GlobalGamePage)
         )
         {
+            To0.Start();
             this.titlebar.UpDate();
-            To0.Start(image);
         }
         else if (e.SourcePageType == typeof(CommunityPage))
         {
+            To8.Start();
             this.ViewModel.LoginBthVisibility = Visibility.Collapsed;
-
             this.titlebar.UpDate();
-            To8.Start(image);
         }
         else
         {
+            To8.Start();
             this.titlebar.UpDate();
-            To8.Start(image);
         }
         ViewModel.SetSelectItem(e.SourcePageType);
         this.ViewModel.HomeNavigationService.ClearHistory();

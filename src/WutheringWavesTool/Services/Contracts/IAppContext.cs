@@ -19,4 +19,7 @@ public interface IAppContext<T>
 
     void SetTitleControl(Controls.TitleBar titleBar);
 
+    public void Minimise();
+
+    public Task Close();
 }

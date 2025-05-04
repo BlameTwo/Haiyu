@@ -5,11 +5,7 @@ public sealed partial class InputRecordCardDialog : ContentDialog, IDialog
     public InputRecordCardDialog()
     {
         this.InitializeComponent();
-        this.RequestedTheme =
-            AppSettings.AppTheme == null ? ElementTheme.Default
-            : AppSettings.AppTheme == "Dark" ? ElementTheme.Dark
-            : AppSettings.AppTheme == "Light" ? ElementTheme.Light
-            : ElementTheme.Default;
+        
     }
 
     public InputRecordCardViewModel ViewModel { get; internal set; }

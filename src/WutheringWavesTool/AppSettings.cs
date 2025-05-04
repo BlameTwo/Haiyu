@@ -58,8 +58,7 @@ public class AppSettings
         get => Read();
         set => Write(value);
     }
-
-    public static string? AppTheme
+    public static string? CloseWindow
     {
         get => Read();
         set => Write(value);

@@ -21,13 +21,16 @@
   <ItemGroup>
     <None Remove="Assets\clickSound2.wav" />
     <None Remove="Assets\RolePage\weapon.svg" />
+    <None Remove="Controls\Styles\ComboBoxStyle.xaml" />
     <None Remove="Controls\Styles\DraggableCardControl.xaml" />
     <None Remove="Controls\Styles\NavigationView.xaml" />
     <None Remove="Controls\Styles\StarPipsPager.xaml" />
+    <None Remove="Controls\Styles\ToolTipStyle.xaml" />
     <None Remove="Controls\Styles\UI.xaml" />
     <None Remove="MainWindow.xaml" />
     <None Remove="NavigationView.xaml" />
     <None Remove="Pages\Communitys\Windows\GamerRoilsDetilyPage.xaml" />
+    <None Remove="Pages\Dialogs\CloseDialog.xaml" />
     <None Remove="Pages\Dialogs\GameResourceDialog.xaml" />
     <None Remove="Pages\Dialogs\SelectDownloadGameDialog.xaml" />
     <None Remove="Pages\Dialogs\SelectGameFolderDialog.xaml" />
@@ -178,6 +181,21 @@
     <Content Update="Assets\RolePage\weapon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\Dialogs\CloseDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Styles\ComboBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Controls\Styles\ToolTipStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\GamePages\BiliBiliGamePage.xaml">

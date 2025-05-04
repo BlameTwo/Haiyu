@@ -13,14 +13,13 @@
     xmlns:ui="using:DevWinUI"
     xmlns:wuc="using:DevWinUI"
     xmlns:wui="using:WutheringWavesTool.Controls"
-    Margin="25"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
         </i:EventTriggerBehavior>
     </i:Interaction.Behaviors>
-    <Grid>
+    <Grid Padding="25">
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <RepositionThemeTransition />

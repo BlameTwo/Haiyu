@@ -1,18 +1,21 @@
 ﻿using CommunityToolkit.WinUI;
+using H.NotifyIcon;
 using Microsoft.UI.Dispatching;
 using Waves.Core.Services;
 using WavesLauncher.Core.Contracts;
 using Windows.ApplicationModel.Contacts.DataProvider;
+using WutheringWavesTool.Services.DialogServices;
 
 namespace WutheringWavesTool.Services;
 
 public class AppContext<T> : IAppContext<T>
     where T : ClientApplication
 {
-    public AppContext(IWavesClient wavesClient, IWallpaperService wallpaperService)
+    public AppContext(IWavesClient wavesClient, IWallpaperService wallpaperService, [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager)
     {
         WavesClient = wavesClient;
         WallpaperService = wallpaperService;
+        DialogManager = dialogManager;
         WallpaperService.WallpaperPletteChanged += WallpaperService_WallpaperPletteChanged;
     }
 
@@ -23,6 +26,7 @@ public class AppContext<T> : IAppContext<T>
 
     public IWavesClient WavesClient { get; }
     public IWallpaperService WallpaperService { get; }
+    public IDialogManager DialogManager { get; }
 
     public async Task LauncherAsync(T app)
     {
@@ -45,17 +49,8 @@ public class AppContext<T> : IAppContext<T>
         win.IsResizable = false;
         win.IsMaximizable = false;
         this.App.MainWindow = win;
-
+        (win.AppWindow.Presenter as OverlappedPresenter)!.SetBorderAndTitleBar(true, false);
         win.Activate();
-
-        if (win.Content is FrameworkElement fe)
-        {
-            fe.RequestedTheme =
-                AppSettings.AppTheme == null ? ElementTheme.Default
-                : AppSettings.AppTheme == "Dark" ? ElementTheme.Dark
-                : AppSettings.AppTheme == "Light" ? ElementTheme.Light
-                : ElementTheme.Default;
-        }
         if (await WavesClient.IsLoginAsync())
         {
             var gamers = await WavesClient.GetWavesGamerAsync();
@@ -144,5 +139,38 @@ public class AppContext<T> : IAppContext<T>
     public void TryInvoke(Action action)
     {
         this.App.MainWindow.DispatcherQueue.TryEnqueue(() => action.Invoke());
+    }
+    
+    public void Minimise()
+    {
+        this.App.MainWindow.Minimize();
+    }
+
+    public async Task Close()
+    {
+        var close = AppSettings.CloseWindow;
+        if(close == "True")
+        {
+            Environment.Exit(0);
+            
+        }
+        else if(close == "False")
+        {
+            this.App.MainWindow.Hide(true);
+        }
+        else
+        {
+            var result = await DialogManager.ShowCloseWindowResult();
+            if (result.IsExit)
+            {
+                Environment.Exit(0);
+            }
+            else
+            {
+                this.App.MainWindow.Hide(true);
+            }
+        }
+        
+        
     }
 }

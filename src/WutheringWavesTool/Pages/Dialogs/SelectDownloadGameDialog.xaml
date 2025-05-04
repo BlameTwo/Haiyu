@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:WutheringWavesTool.Controls"
     CornerRadius="5"
+    RequestedTheme="Dark"
     mc:Ignorable="d">
 
     <Grid Width="470" Height="300">

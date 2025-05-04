@@ -9,6 +9,7 @@
     xmlns:ui="using:WutheringWavesTool.Controls"
     Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
     CornerRadius="5"
+    RequestedTheme="Dark"
     mc:Ignorable="d">
 
     <Grid Width="470" Height="270">

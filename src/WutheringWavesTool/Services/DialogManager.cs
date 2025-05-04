@@ -92,4 +92,7 @@ public abstract class DialogManager : IDialogManager
 
     public async Task<SelectDownloadFolderResult> ShowSelectGameFolderAsync(Type type) =>
         await GetDialogResultAsync<SelectGameFolderDialog, SelectDownloadFolderResult>(type);
+
+    public async Task<CloseWindowResult> ShowCloseWindowResult()=>
+        await GetDialogResultAsync<CloseDialog, CloseWindowResult>(null);
 }

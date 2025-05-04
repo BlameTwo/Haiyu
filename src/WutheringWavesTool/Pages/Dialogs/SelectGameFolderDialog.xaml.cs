@@ -10,10 +10,7 @@ namespace WutheringWavesTool.Pages.Dialogs
         {
             this.InitializeComponent();
             this.RequestedTheme =
-                AppSettings.AppTheme == null ? ElementTheme.Default
-                : AppSettings.AppTheme == "Dark" ? ElementTheme.Dark
-                : AppSettings.AppTheme == "Light" ? ElementTheme.Light
-                : ElementTheme.Default;
+                 ElementTheme.Dark;
             this.ViewModel = Instance.Service.GetRequiredService<SelectGameFolderViewModel>();
         }
 

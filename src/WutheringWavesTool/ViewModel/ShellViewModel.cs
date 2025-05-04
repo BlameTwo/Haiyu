@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using CommunityToolkit.WinUI.Animations;
+using H.NotifyIcon;
 using Waves.Core.Common;
 using WutheringWavesTool.Pages.GamePages;
 using WutheringWavesTool.Services.DialogServices;
@@ -53,6 +54,8 @@ public sealed partial class ShellViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial Visibility CommunitySelectItemVisiblity { get; set; } = Visibility.Collapsed;
+
+    
     public Controls.ImageEx Image { get; set; }
     public Border BackControl { get; internal set; }
 
@@ -89,6 +92,23 @@ public sealed partial class ShellViewModel : ViewModelBase
     {
         if (HomeNavigationService.CanGoBack)
             HomeNavigationService.GoBack();
+    }
+
+    [RelayCommand]
+    void Min()
+    {
+        this.AppContext.Minimise();
+    }
+    [RelayCommand]
+    void CloseWindow()
+    {
+        this.AppContext.Close();
+    }
+
+    [RelayCommand]
+    void ShowWindow()
+    {
+        this.AppContext.App.MainWindow.Show(false);
     }
 
     [RelayCommand]

@@ -32,10 +32,7 @@ public class ViewFactorys : IViewFactorys
         if (win.Content is FrameworkElement fs)
         {
             fs.RequestedTheme =
-                AppSettings.AppTheme == null ? ElementTheme.Default
-                : AppSettings.AppTheme == "Dark" ? ElementTheme.Dark
-                : AppSettings.AppTheme == "Light" ? ElementTheme.Light
-                : ElementTheme.Default;
+                ElementTheme.Dark;
         }
         return win;
     }
