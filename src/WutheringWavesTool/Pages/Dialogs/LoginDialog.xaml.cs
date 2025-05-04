@@ -6,7 +6,11 @@ public sealed partial class LoginDialog : ContentDialog, IDialog
     {
         this.InitializeComponent();
         this.ViewModel = Instance.Service.GetRequiredService<LoginViewModel>();
-        this.RequestedTheme = this.RequestedTheme = ElementTheme.Dark;
+        this.RequestedTheme =
+            AppSettings.AppTheme == null ? ElementTheme.Default
+            : AppSettings.AppTheme == "Dark" ? ElementTheme.Dark
+            : AppSettings.AppTheme == "Light" ? ElementTheme.Light
+            : ElementTheme.Default;
     }
 
     public LoginViewModel ViewModel { get; }

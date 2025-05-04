@@ -13,16 +13,14 @@
     xmlns:ui="using:DevWinUI"
     xmlns:wuc="using:DevWinUI"
     xmlns:wui="using:WutheringWavesTool.Controls"
-    Padding="25"
-    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-    CornerRadius="0"
+    Margin="25"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
         </i:EventTriggerBehavior>
     </i:Interaction.Behaviors>
-    <Grid Margin="25">
+    <Grid>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <RepositionThemeTransition />
@@ -37,8 +35,7 @@
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
-                Header="主题"
-                Visibility="Collapsed">
+                Header="主题">
                 <ui:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE790;" />
                 </ui:SettingsCard.HeaderIcon>

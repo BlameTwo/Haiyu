@@ -31,24 +31,21 @@ public sealed partial class ShellPage : Page
             || e.SourcePageType == typeof(GlobalGamePage)
         )
         {
-            this.ViewModel.IsTitleAcrylic = false;
+            this.titlebar.UpDate();
             To0.Start(image);
         }
         else if (e.SourcePageType == typeof(CommunityPage))
         {
             this.ViewModel.LoginBthVisibility = Visibility.Collapsed;
-            this.ViewModel.IsTitleAcrylic = false;
+
+            this.titlebar.UpDate();
             To8.Start(image);
-        }
-        else if (e.SourcePageType == typeof(SettingPage))
-        {
-            this.ViewModel.IsTitleAcrylic = true;
         }
         else
         {
+            this.titlebar.UpDate();
             To8.Start(image);
         }
-        this.titlebar.UpDate();
         ViewModel.SetSelectItem(e.SourcePageType);
         this.ViewModel.HomeNavigationService.ClearHistory();
         GC.Collect();

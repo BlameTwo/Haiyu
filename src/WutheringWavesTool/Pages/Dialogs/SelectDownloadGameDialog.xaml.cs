@@ -10,7 +10,11 @@ public sealed partial class SelectDownloadGameDialog
     public SelectDownloadGameDialog()
     {
         this.InitializeComponent();
-        this.RequestedTheme = ElementTheme.Dark;
+        this.RequestedTheme =
+            AppSettings.AppTheme == null ? ElementTheme.Default
+            : AppSettings.AppTheme == "Dark" ? ElementTheme.Dark
+            : AppSettings.AppTheme == "Light" ? ElementTheme.Light
+            : ElementTheme.Default;
         this.ViewModel = Instance.Service.GetRequiredService<SelectDownloadGameViewModel>();
     }
 

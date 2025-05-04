@@ -44,10 +44,15 @@ namespace Project.WPFSetup
                     (win.DataContext as MainWindowViewModel)!.CurrentViewModel =
                         App.GetService<UpdateViewModel>();
                 }
-                else
+                else if (current.Item1)
                 {
                     (win.DataContext as MainWindowViewModel)!.CurrentViewModel =
                         App.GetService<RepairViewModel>();
+                }
+                else
+                {
+                    (win.DataContext as MainWindowViewModel)!.CurrentViewModel =
+                        App.GetService<InstallViewModel>();
                 }
             }
             win.Show();

@@ -13,7 +13,6 @@
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper.WindowRoils"
     xmlns:wuc="using:DevWinUI"
     xmlns:wui="using:CommunityToolkit.WinUI"
-    RequestedTheme="Dark"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="RoleItemTempalte" x:DataType="wrapper:NavigationRoilsDetilyItem">

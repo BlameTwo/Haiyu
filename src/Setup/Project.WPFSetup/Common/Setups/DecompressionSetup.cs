@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.IO.Compression;
+using SharpCompress.Archives.SevenZip;
 
 namespace Project.WPFSetup.Common.Setups;
 
@@ -30,37 +31,28 @@ public class DecompressionSetup : ISetup
         try
         {
             using (var memoryStream = new MemoryStream(fileBuffer))
-            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
+            using (var archive = SevenZipArchive.Open(memoryStream))
             {
-                long totalBytes = 0;
-                foreach (var entry in archive.Entries)
-                {
-                    if (!string.IsNullOrEmpty(entry.Name))
-                    {
-                        totalBytes += entry.Length;
-                    }
-                }
-
+                long totalBytes = archive.Entries.Sum(x => x.Size);
                 long processedBytes = 0;
                 byte[] buffer = new byte[81920];
 
                 foreach (var entry in archive.Entries)
                 {
-                    if (string.IsNullOrEmpty(entry.Name))
+                    if (entry.IsDirectory)
                     {
-                        string path = Path.Combine(rootDir, entry.FullName);
-                        Directory.CreateDirectory(path);
+                        string path = Path.Combine(rootDir, entry.Key);
                     }
                     else
                     {
-                        string path = Path.Combine(rootDir, entry.FullName);
+                        string path = Path.Combine(rootDir, entry.Key);
                         if (File.Exists(path))
                             File.Delete(path);
                         string dir = Path.GetDirectoryName(path);
                         if (!Directory.Exists(dir))
                             Directory.CreateDirectory(dir);
 
-                        using (var entryStream = entry.Open())
+                        using (var entryStream = entry.OpenEntryStream())
                         using (
                             var fileStream = new FileStream(
                                 path,
@@ -74,17 +66,15 @@ public class DecompressionSetup : ISetup
                         {
                             while (true)
                             {
-                                await Task.Delay(20);
-                                int bytesRead = await entryStream.ReadAsync(
-                                    buffer,
-                                    0,
-                                    buffer.Length
-                                );
+                                int bytesRead = await entryStream
+                                    .ReadAsync(buffer, 0, buffer.Length)
+                                    .ConfigureAwait(false);
                                 if (bytesRead == 0)
                                     break;
-                                await fileStream.WriteAsync(buffer, 0, bytesRead);
+                                await fileStream
+                                    .WriteAsync(buffer, 0, bytesRead)
+                                    .ConfigureAwait(false);
                                 processedBytes += bytesRead;
-
                                 double percentComplete =
                                     (double)processedBytes / totalBytes * 100.0;
                                 progress?.Report((percentComplete, SetupName));
@@ -108,9 +98,10 @@ public class DecompressionSetup : ISetup
     )
     {
         return await ExtractFileAsync(
-            Resources.Resource1.InstallFile,
-            property.InstallPath,
-            progress
-        );
+                Resources.Resource1.InstallFile,
+                property.InstallPath,
+                progress
+            )
+            .ConfigureAwait(false);
     }
 }

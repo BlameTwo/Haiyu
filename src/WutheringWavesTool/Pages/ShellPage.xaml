@@ -18,7 +18,6 @@
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
     xmlns:wuc="using:DevWinUI"
-    RequestedTheme="Dark"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
@@ -30,6 +29,8 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+
+        <!--  登录  -->
         <tb:TaskbarIcon
             ContextMenuMode="SecondWindow"
             IconSource="/Assets/logo.ico"
@@ -44,26 +45,7 @@
                 </MenuFlyout>
             </tb:TaskbarIcon.ContextFlyout>
         </tb:TaskbarIcon>
-        <Border x:Name="titleColor" Grid.RowSpan="1">
-            <Border.BackgroundTransition>
-                <BrushTransition />
-            </Border.BackgroundTransition>
-
-            <i:Interaction.Behaviors>
-                <i:DataTriggerBehavior Binding="{x:Bind ViewModel.IsTitleAcrylic, Mode=OneWay}" Value="True">
-                    <i:ChangePropertyAction
-                        PropertyName="Background"
-                        TargetObject="{x:Bind titleColor, Mode=OneWay}"
-                        Value="{ThemeResource AcrylicInAppFillColorDefaultBrush}" />
-                </i:DataTriggerBehavior>
-                <i:DataTriggerBehavior Binding="{x:Bind ViewModel.IsTitleAcrylic, Mode=OneWay}" Value="False">
-                    <i:ChangePropertyAction
-                        PropertyName="Background"
-                        TargetObject="{x:Bind titleColor, Mode=OneWay}"
-                        Value="Transparent" />
-                </i:DataTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </Border>
+        <Border Grid.RowSpan="1" />
         <ui:TitleBar
             x:Name="titlebar"
             x:FieldModifier="public"
@@ -130,7 +112,6 @@
                         ItemsSource="{x:Bind ViewModel.Roles, Mode=OneWay}"
                         SelectedItem="{x:Bind ViewModel.SelectRoles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SizeChanged="ComboBox_SizeChanged"
-                        Style="{ThemeResource AcrylicComboBoxStyle}"
                         Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
                         <i:Interaction.Behaviors>
                             <sound:ControlSoundBehavior />
@@ -210,7 +191,7 @@
                 </StackPanel>
             </ui:TitleBar.Header>
             <ui:TitleBar.Footer>
-                <StackPanel Margin="0,0,10,0" Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
                     <Button CornerRadius="5" Style="{ThemeResource DefaultAcrylicButtonStyle}">
                         <i:Interaction.Behaviors>
                             <sound:ButtonSoundBehavior />
@@ -228,31 +209,6 @@
                                 </MenuFlyoutItem>
                             </MenuFlyout>
                         </Button.Flyout>
-                    </Button>
-                    <Button
-                        Margin="10,0,0,0"
-                        Command="{x:Bind ViewModel.InvokeMinWindowCommand}"
-                        CornerRadius="5"
-                        Style="{ThemeResource DefaultAcrylicButtonStyle}">
-                        <i:Interaction.Behaviors>
-                            <sound:ButtonSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="12"
-                            Glyph="&#xE654;" />
-                    </Button>
-                    <Button
-                        Margin="10,0,0,0"
-                        CornerRadius="5"
-                        Style="{ThemeResource DefaultAcrylicButtonStyle}">
-                        <i:Interaction.Behaviors>
-                            <sound:ButtonSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="12"
-                            Glyph="&#xE653;" />
                     </Button>
                 </StackPanel>
             </ui:TitleBar.Footer>

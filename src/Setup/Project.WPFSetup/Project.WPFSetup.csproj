@@ -34,6 +34,7 @@
 		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.4" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+		<PackageReference Include="SharpCompress" Version="0.39.0" />
 		<PackageReference Include="System.IO.Compression" Version="4.3.0" />
 		<PackageReference Include="WindowsAPICodePack-Core" Version="1.1.2" />
 		<PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />

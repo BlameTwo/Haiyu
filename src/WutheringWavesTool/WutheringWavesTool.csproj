@@ -21,7 +21,6 @@
   <ItemGroup>
     <None Remove="Assets\clickSound2.wav" />
     <None Remove="Assets\RolePage\weapon.svg" />
-    <None Remove="Controls\Styles\ComboBox.xaml" />
     <None Remove="Controls\Styles\DraggableCardControl.xaml" />
     <None Remove="Controls\Styles\NavigationView.xaml" />
     <None Remove="Controls\Styles\StarPipsPager.xaml" />
@@ -179,11 +178,6 @@
     <Content Update="Assets\RolePage\weapon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Controls\Styles\ComboBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\GamePages\BiliBiliGamePage.xaml">

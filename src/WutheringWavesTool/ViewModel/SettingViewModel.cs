@@ -45,6 +45,7 @@ public sealed partial class SettingViewModel : ViewModelBase
             if (gamers != null)
                 this.GamerData = gamers.Data.ToObservableCollection();
         }
+        this.SelectTheme = AppSettings.AppTheme ?? "Default";
     }
 
     [RelayCommand]

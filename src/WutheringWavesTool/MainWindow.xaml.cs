@@ -9,7 +9,6 @@ namespace WutheringWavesTool
         public MainWindow()
         {
             this.InitializeComponent();
-            (this.AppWindow.Presenter as OverlappedPresenter).SetBorderAndTitleBar(true, false);
         }
     }
 }

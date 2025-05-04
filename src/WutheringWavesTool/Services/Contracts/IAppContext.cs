@@ -18,8 +18,6 @@ public interface IAppContext<T>
 
     public ElementTheme CurrentElement { get; set; }
 
-    public void InvokeMin();
-
     void SetTitleControl(Controls.TitleBar titleBar);
 
     public void SetElementTheme(ElementTheme theme);
