@@ -333,6 +333,174 @@
             </StackPanel>
         </Grid>
         <!--  下载结束  -->
+        <Grid
+            x:Name="leftControl"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Width="350"
+            Height="300"
+            Margin="10"
+            Padding="5"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            CornerRadius="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Grid
+                Padding="5"
+                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="2"
+                CornerRadius="5">
+                <Grid.Transitions>
+                    <TransitionCollection>
+                        <EntranceThemeTransition FromVerticalOffset="-50" />
+                    </TransitionCollection>
+                </Grid.Transitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*" />
+                    <RowDefinition Height="4*" />
+                </Grid.RowDefinitions>
+                <FlipView
+                    x:Name="fileView"
+                    Grid.Row="0"
+                    Background="Transparent"
+                    ItemsSource="{x:Bind ViewModel.SlideShows, Mode=OneWay}"
+                    Style="{ThemeResource DefaultFlipViewStyle}">
 
+                    <i:Interaction.Behaviors>
+                        <bs:FilpViewAutoPlayBehavior IsPlay="True" Duration="0:0:8" />
+                    </i:Interaction.Behaviors>
+                    <FlipView.ItemTemplate>
+                        <DataTemplate x:DataType="launcheModel:Slideshow">
+                            <Grid>
+                                <control:ImageEx Source="{x:Bind Url}" Stretch="UniformToFill" />
+                                <Border
+                                    MaxWidth="120"
+                                    Padding="5"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                                    CornerRadius="0 5 0 0">
+                                    <TextBlock
+                                        FontSize="10"
+                                        Text="{x:Bind CarouselNotes}"
+                                        TextTrimming="CharacterEllipsis" />
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
+                <Border
+                    Padding="10,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                    CornerRadius="5 0 0 0">
+                    <PipsPager
+                        x:Name="FlipViewPipsPager"
+                        FontFamily="Segoe Fluent Icons"
+                        NumberOfPages="{x:Bind ViewModel.SlideShows.Count, Mode=OneWay}"
+                        SelectedPageIndex="{x:Bind Path=fileView.SelectedIndex, Mode=TwoWay}">
+                        <PipsPager.SelectedPipStyle>
+                            <Style BasedOn="{StaticResource PipsPagerButtonBaseStyle}" TargetType="Button">
+                                <Setter Property="Content" Value="&#xE735;" />
+                                <Setter Property="FontSize" Value="9" />
+                                <Setter Property="Margin" Value="0,0" />
+                            </Style>
+                        </PipsPager.SelectedPipStyle>
+                        <PipsPager.NormalPipStyle>
+                            <Style BasedOn="{StaticResource PipsPagerButtonBaseStyle}" TargetType="Button">
+                                <!--<Setter Property="FontFamily" Value="Segoe Fluent Icons" />-->
+                                <Setter Property="Content" Value="&#xE734;" />
+                                <Setter Property="FontSize" Value="9" />
+                                <Setter Property="Margin" Value="0,0" />
+                            </Style>
+                        </PipsPager.NormalPipStyle>
+                    </PipsPager>
+                </Border>
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <SelectorBar
+                        x:Name="tabNews"
+                        x:Load="{x:Bind ViewModel.TabLoad, Mode=OneWay}"
+                        SelectionChanged="SelectorBar_SelectionChanged">
+                        <SelectorBarItem
+                            Padding="5,0,5,2"
+                            FontSize="13"
+                            Text="活动" />
+                        <SelectorBarItem
+                            Padding="5,0,5,2"
+                            FontSize="13"
+                            IsSelected="True"
+                            Text="公告" />
+                        <SelectorBarItem
+                            Padding="5,0,5,2"
+                            FontSize="13"
+                            Text="新闻" />
+                    </SelectorBar>
+                    <NavigationViewItemSeparator Grid.Row="1" HorizontalAlignment="Stretch" />
+                    <ScrollView Grid.Row="2">
+                        <ItemsRepeater ItemsSource="{x:Bind ViewModel.Contents, Mode=OneWay}">
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate x:DataType="launcheModel:Content">
+                                    <HyperlinkButton
+                                        HorizontalAlignment="Stretch"
+                                        HorizontalContentAlignment="Left"
+                                        FontSize="12"
+                                        NavigateUri="{x:Bind JumpUrl}">
+                                        <TextBlock Text="{x:Bind TContent}" TextTrimming="CharacterEllipsis" />
+                                        <i:Interaction.Behaviors>
+                                            <sound:ButtonSoundBehavior />
+                                        </i:Interaction.Behaviors>
+                                    </HyperlinkButton>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                    </ScrollView>
+                </Grid>
+
+            </Grid>
+            <Button
+                Grid.Column="1"
+                Width="35"
+                Margin="-5,0,0,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                CornerRadius="0 10 10 0"
+                Style="{ThemeResource DefaultAcrylicButtonStyle}">
+
+                <i:Interaction.Behaviors>
+                    <sound:ControlSoundBehavior />
+                    <i:EventTriggerBehavior EventName="Loaded">
+                        <i:InvokeCommandAction Command="{x:Bind ViewModel.CardLoadedCommand}" />
+                    </i:EventTriggerBehavior>
+                    <bs:ControlOffsetButtonAnimationBehaviors
+                        IsOpen="{x:Bind ViewModel.IsOpen, Mode=OneWay}"
+                        Orientation="Horizontal"
+                        Owner="{x:Bind leftControl, Mode=OneWay}"
+                        Offset="10">
+                        <bs:ControlOffsetButtonAnimationBehaviors.OpenIcon>
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="14"
+                                Glyph="&#xE761;" />
+                        </bs:ControlOffsetButtonAnimationBehaviors.OpenIcon>
+                        <bs:ControlOffsetButtonAnimationBehaviors.CloseIcon>
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="14"
+                                Glyph="&#xE760;" />
+                        </bs:ControlOffsetButtonAnimationBehaviors.CloseIcon>
+                    </bs:ControlOffsetButtonAnimationBehaviors>
+                </i:Interaction.Behaviors>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

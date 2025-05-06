@@ -78,7 +78,6 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}">
-
                         <ui:ImageEx
                             Width="25"
                             Height="25"
@@ -87,8 +86,6 @@
                             Source="ms-appx:///Assets/appLogo.ico"
                             Stretch="UniformToFill" />
                     </Grid>
-
-
                     <TextBlock
                         Margin="5,0,0,0"
                         VerticalAlignment="Center"
@@ -131,7 +128,6 @@
                         <i:Interaction.Behaviors>
                             <sound:ControlSoundBehavior />
                         </i:Interaction.Behaviors>
-
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="wrapper:GameRoilDataWrapper">
                                 <Grid>
@@ -217,7 +213,7 @@
                         </i:Interaction.Behaviors>
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"
-                            FontSize="14"
+                            FontSize="12"
                             Glyph="&#xEC7A;" />
                         <Button.Flyout>
                             <MenuFlyout Placement="Bottom">
@@ -237,7 +233,7 @@
                         ToolTipService.ToolTip="最小化">
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"
-                            FontSize="14"
+                            FontSize="12"
                             Glyph="&#xE654;" />
                         <wui:Effects.Shadow>
                             <media:AttachedCardShadow
@@ -282,9 +278,11 @@
                         <ani:Explicit.Animations>
                             <ani:AnimationSet x:Name="ShadowEnterAnimation">
                                 <ani:BlurRadiusDropShadowAnimation To="10" />
+                                <ani:OpacityDropShadowAnimation To="0.8" />
                             </ani:AnimationSet>
                             <ani:AnimationSet x:Name="ShadowExitAnimation">
                                 <ani:BlurRadiusDropShadowAnimation To="0" />
+                                <ani:OpacityDropShadowAnimation To="0" />
                             </ani:AnimationSet>
                         </ani:Explicit.Animations>
                         <i:Interaction.Behaviors>
@@ -298,7 +296,7 @@
 
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"
-                            FontSize="14"
+                            FontSize="12"
                             Glyph="&#xE653;" />
                     </Button>
                 </StackPanel>
@@ -308,8 +306,7 @@
             x:Name="image"
             Grid.RowSpan="2"
             Canvas.ZIndex="-1"
-            Stretch="UniformToFill"
-            Visibility="Visible">
+            Stretch="UniformToFill">
             <ani:Explicit.Animations>
                 <ani:AnimationSet x:Name="To8" IsSequential="True">
                     <ani:OpacityAnimation

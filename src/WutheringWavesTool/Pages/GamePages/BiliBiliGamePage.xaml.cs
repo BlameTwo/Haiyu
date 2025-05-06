@@ -13,4 +13,10 @@ public sealed partial class BiliBiliGamePage : Page, IPage
     public Type PageType => typeof(BiliBiliGamePage);
 
     public BiliBiliGameViewModel ViewModel { get; }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        this.ViewModel.Dispose();
+        this.Bindings.StopTracking();
+    }
 }

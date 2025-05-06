@@ -23,6 +23,7 @@
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <RepositionThemeTransition />
+                <EntranceThemeTransition FromVerticalOffset="-5" />
             </TransitionCollection>
         </Grid.ChildrenTransitions>
         <StackPanel HorizontalAlignment="Stretch">
@@ -40,8 +41,24 @@
                 <ui:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B9;" />
                 </ui:SettingsCard.HeaderIcon>
-            </ui:SettingsCard>
 
+            </ui:SettingsCard>
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Header="关闭按钮"
+                IsClickEnabled="False">
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB51;" />
+                </ui:SettingsCard.HeaderIcon>
+                <ui:SettingsCard.Content>
+                    <ComboBox SelectedIndex="{x:Bind ViewModel.SelectCloseIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBoxItem Content="托盘" />
+                        <ComboBoxItem Content="退出" />
+                    </ComboBox>
+                </ui:SettingsCard.Content>
+            </ui:SettingsCard>
             <TextBlock
                 Margin="0,5,0,0"
                 FontFamily="{StaticResource DefaultFont}"

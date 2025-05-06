@@ -14,12 +14,6 @@ public sealed partial class MainGamePage : Page, IPage
 
     public MainGameViewModel ViewModel { get; }
 
-    protected override void OnNavigatedFrom(NavigationEventArgs e)
-    {
-        this.ViewModel.Dispose();
-        this.Bindings.StopTracking();
-    }
-
     public Type PageType => typeof(MainGamePage);
 
     private void SelectorBar_SelectionChanged(
@@ -28,5 +22,11 @@ public sealed partial class MainGamePage : Page, IPage
     )
     {
         this.ViewModel.SelectTab(sender.SelectedItem.Text);
+    }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        this.ViewModel.Dispose();
+        this.Bindings.StopTracking();
     }
 }

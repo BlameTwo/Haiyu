@@ -77,8 +77,17 @@ partial class GameContextBase
     {
         try
         {
-            var url =
-                $"{GameAPIConfig.BaseAddress[0]}/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/information/{this.Config.Language}.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+            string url = "";
+            if (this.ContextName == nameof(GlobalGameContext))
+            {
+                url =
+                    $"{GameAPIConfig.BaseAddress[1]}/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/information/{this.Config.Language}.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+            }
+            else
+            {
+                url =
+                    $"{GameAPIConfig.BaseAddress[0]}/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/information/{this.Config.Language}.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+            }
             var result = await HttpClientService.HttpClient.GetAsync(url, token);
             result.EnsureSuccessStatusCode();
             var jsonStr = await result.Content.ReadAsStringAsync();

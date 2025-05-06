@@ -56,7 +56,7 @@
                     "https://prod-alicdn-gamestarter.kurogame.com/launcher/game/G153/50004_obOHXFrFanqsaIEOmuKroCcbZkQRBC7c/index.json",
                 LauncherConfigUrl =
                     "https://prod-alicdn-gamestarter.kurogame.com/launcher/launcher/50004_obOHXFrFanqsaIEOmuKroCcbZkQRBC7c/G153/index.json",
-                Language = "en",
+                Language = "zh-Hant",
             };
 
         public static GameAPIConfig BilibiliConfig =>

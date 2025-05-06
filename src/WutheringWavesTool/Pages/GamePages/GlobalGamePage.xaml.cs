@@ -13,4 +13,18 @@ public sealed partial class GlobalGamePage : Page, IPage
     public Type PageType => typeof(GlobalGamePage);
 
     public GlobalGameViewModel ViewModel { get; }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        this.ViewModel.Dispose();
+        this.Bindings.StopTracking();
+    }
+
+    private void SelectorBar_SelectionChanged(
+        SelectorBar sender,
+        SelectorBarSelectionChangedEventArgs args
+    )
+    {
+        this.ViewModel.SelectTab(sender.SelectedItem.Text);
+    }
 }

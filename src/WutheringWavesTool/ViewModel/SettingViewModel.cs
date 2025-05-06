@@ -36,6 +36,9 @@ public sealed partial class SettingViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataItem> GamerData { get; set; }
 
+    [ObservableProperty]
+    public partial int SelectCloseIndex { get; set; }
+
     [RelayCommand]
     async Task Loaded()
     {
@@ -44,6 +47,16 @@ public sealed partial class SettingViewModel : ViewModelBase
             var gamers = await WavesClient.GetWavesGamerAsync(this.CTS.Token);
             if (gamers != null)
                 this.GamerData = gamers.Data.ToObservableCollection();
+        }
+        var closeWindow = AppSettings.CloseWindow;
+        switch (closeWindow)
+        {
+            case "True":
+                this.SelectCloseIndex = 1;
+                break;
+            case "False":
+                this.SelectCloseIndex = 0;
+                break;
         }
     }
 
@@ -55,6 +68,19 @@ public sealed partial class SettingViewModel : ViewModelBase
             DataPackage package = new();
             package.SetText(WavesClient.Token);
             Clipboard.SetContent(package);
+        }
+    }
+
+    partial void OnSelectCloseIndexChanged(int value)
+    {
+        switch (value)
+        {
+            case 0:
+                AppSettings.CloseWindow = "False";
+                break;
+            case 1:
+                AppSettings.CloseWindow = "True";
+                break;
         }
     }
 }
