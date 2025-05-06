@@ -55,7 +55,6 @@ public sealed partial class ShellViewModel : ViewModelBase
     [ObservableProperty]
     public partial Visibility CommunitySelectItemVisiblity { get; set; } = Visibility.Collapsed;
 
-    
     public Controls.ImageEx Image { get; set; }
     public Border BackControl { get; internal set; }
 
@@ -99,6 +98,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     {
         this.AppContext.Minimise();
     }
+
     [RelayCommand]
     void CloseWindow()
     {
@@ -109,6 +109,12 @@ public sealed partial class ShellViewModel : ViewModelBase
     void ShowWindow()
     {
         this.AppContext.App.MainWindow.Show(false);
+    }
+
+    [RelayCommand]
+    void ExitWindow()
+    {
+        Environment.Exit(0);
     }
 
     [RelayCommand]
