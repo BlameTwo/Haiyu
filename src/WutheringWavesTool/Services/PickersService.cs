@@ -1,8 +1,6 @@
-﻿using Windows.Win32;
-using Windows.Win32.Foundation;
-using Windows.Win32.System.Com;
-using Windows.Win32.UI.Shell;
-using Windows.Win32.UI.Shell.Common;
+﻿using DevWinUI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using FolderPicker = Windows.Storage.Pickers.FolderPicker;
 
 namespace WutheringWavesTool.Services;
@@ -28,16 +26,26 @@ public class PickersService : IPickersService
         return await openPicker.PickSingleFileAsync();
     }
 
-    public FileSavePicker GetFileSavePicker()
+    public async Task<StorageFile> GetFileSavePicker()
     {
-        throw new NotImplementedException();
+        FileSavePicker picker = new FileSavePicker();
+        picker.FileTypeChoices.Add("主程序", new List<string>() { ".exe" });
+        picker.SuggestedFileName = "Wuthering Waves";
+
+        var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(ApplicationSetup.App.MainWindow);
+
+        // Initialize the file picker with the window handle (HWND).
+        WinRT.Interop.InitializeWithWindow.Initialize(picker, hWnd);
+
+        StorageFile file = await picker.PickSaveFileAsync();
+        return file;
     }
 
     public async Task<StorageFolder> GetFolderPicker()
     {
         FolderPicker openPicker = new FolderPicker();
         var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(ApplicationSetup.App.MainWindow);
-        DevWinUI.FolderPicker folderPicker = new DevWinUI.FolderPicker(hWnd);
-        return await folderPicker.PickSingleFolderAsync();
+        WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
+        return await openPicker.PickSingleFolderAsync();
     }
 }

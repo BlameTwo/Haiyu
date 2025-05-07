@@ -59,17 +59,11 @@ public partial class SelectDownloadGameViewModel : DialogViewModelBase
     async Task SelectFolder()
     {
         this.IsLoading = true;
-        var folder = await PickersService.GetFolderPicker();
+        var folder = await PickersService.GetFileSavePicker();
         if (folder == null)
             return;
-        if (!Directory.Exists(folder.Path))
-        {
-            IsLoading = false;
-            IsDownload = false;
-            MessageBox.Show("文件夹不存在");
-            return;
-        }
-        this.FolderPath = folder.Path;
+        this.FolderPath = System.IO.Path.GetDirectoryName(folder.Path)!;
+        await folder.DeleteAsync();
         string? rootPath = Path.GetPathRoot(this.FolderPath);
         DriveInfo? selectedDrive = DriveInfo
             .GetDrives()
