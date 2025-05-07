@@ -362,3 +362,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /src/.idea
 *.7z
+/src/Setup/Project.WPFSetup/Resources/program.zip
