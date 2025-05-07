@@ -57,6 +57,8 @@ partial class GameContextViewModelBase
             }
             if (args.Type == Waves.Core.Models.Enums.GameContextActionType.None)
             {
+                this.CurrentProgressValue = 0;
+                this.MaxProgressValue = 100;
                 var status = await this.GameContext.GetGameContextStatusAsync(this.CTS.Token);
                 if (!status.IsGameExists && !status.IsGameInstalled)
                 {

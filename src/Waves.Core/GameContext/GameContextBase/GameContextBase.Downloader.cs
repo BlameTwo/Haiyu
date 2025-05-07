@@ -347,7 +347,18 @@ public partial class GameContextBase
             Interlocked.Exchange(ref _totalfileSize, 0L);
             Interlocked.Exchange(ref _totalVerifiedBytes, 0L);
             Interlocked.Exchange(ref _totalDownloadedBytes, 0L);
-
+            await this.GameLocalConfig.SaveConfigAsync(
+                GameLocalSettingName.GameLauncherBassFolder,
+                ""
+            );
+            await this.GameLocalConfig.SaveConfigAsync(
+                GameLocalSettingName.GameLauncherBassProgram,
+                ""
+            );
+            await this.GameLocalConfig.SaveConfigAsync(
+                GameLocalSettingName.LocalGameUpdateing,
+                "False"
+            );
             return true;
         }
         catch (Exception ex)
