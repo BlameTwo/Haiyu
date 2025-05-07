@@ -87,12 +87,12 @@ public abstract class DialogManager : IDialogManager
         return result;
     }
 
-    public async Task<SelectDownloadFolderResult> ShowSelectInstallFolderAsync(Type type) =>
-        await GetDialogResultAsync<SelectDownloadGameDialog, SelectDownloadFolderResult>(type);
-
     public async Task<SelectDownloadFolderResult> ShowSelectGameFolderAsync(Type type) =>
         await GetDialogResultAsync<SelectGameFolderDialog, SelectDownloadFolderResult>(type);
 
-    public async Task<CloseWindowResult> ShowCloseWindowResult()=>
+    public async Task<SelectDownloadFolderResult> ShowSelectDownloadFolderAsync(Type type) =>
+        await GetDialogResultAsync<SelectDownoadGameDialog, SelectDownloadFolderResult>(type);
+
+    public async Task<CloseWindowResult> ShowCloseWindowResult() =>
         await GetDialogResultAsync<CloseDialog, CloseWindowResult>(null);
 }

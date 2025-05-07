@@ -14,10 +14,8 @@ public interface IDialogManager
         where T : ContentDialog, IResultDialog<Result>, new()
         where Result : new();
 
-    public Task<SelectDownloadFolderResult> ShowSelectInstallFolderAsync(Type type);
-
     public Task<SelectDownloadFolderResult> ShowSelectGameFolderAsync(Type type);
-
+    public Task<SelectDownloadFolderResult> ShowSelectDownloadFolderAsync(Type type);
     public Task<CloseWindowResult> ShowCloseWindowResult();
     public void CloseDialog();
     Task ShowWallpaperDialogAsync();

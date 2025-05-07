@@ -164,7 +164,7 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
         {
             if (_bthType == 1)
             {
-                var result = await DialogManager.ShowSelectInstallFolderAsync(
+                var result = await DialogManager.ShowSelectDownloadFolderAsync(
                     this.GameContext.ContextType
                 );
                 if (result.Result == ContentDialogResult.None)

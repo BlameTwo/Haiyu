@@ -12,7 +12,7 @@
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
 	<JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
     <UseWinUI>true</UseWinUI>
-	<PublishAot>false</PublishAot>
+	<PublishAot>true</PublishAot>
 	<WindowsPackageType>None</WindowsPackageType>
     <EnableMsixTooling>true</EnableMsixTooling>
 	<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
@@ -38,7 +38,7 @@
     <None Remove="Pages\Communitys\Windows\GamerRoilsDetilyPage.xaml" />
     <None Remove="Pages\Dialogs\CloseDialog.xaml" />
     <None Remove="Pages\Dialogs\GameResourceDialog.xaml" />
-    <None Remove="Pages\Dialogs\SelectDownloadGameDialog.xaml" />
+    <None Remove="Pages\Dialogs\SelectDownoadGameDialog.xaml" />
     <None Remove="Pages\Dialogs\SelectGameFolderDialog.xaml" />
     <None Remove="Pages\Dialogs\SelectWallpaperDialog.xaml" />
     <None Remove="Pages\GamePages\BiliBiliGamePage.xaml" />
@@ -191,6 +191,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Pages\Dialogs\SelectDownoadGameDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Pages\Dialogs\CloseDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -252,11 +257,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Controls\Styles\LayeredProgressBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\Dialogs\SelectDownloadGameDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
