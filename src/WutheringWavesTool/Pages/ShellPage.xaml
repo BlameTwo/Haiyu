@@ -34,7 +34,7 @@
         </Grid.RowDefinitions>
         <tb:TaskbarIcon
             ContextMenuMode="SecondWindow"
-            IconSource="/Assets/logo.ico"
+            IconSource="/Assets/appLogo.ico"
             ToolTipText="鸣潮1.0">
             <tb:TaskbarIcon.ContextFlyout>
                 <MenuFlyout>
@@ -396,7 +396,6 @@
                     <Frame x:Name="frame" />
                 </Grid>
             </NavigationView>
-
         </Grid>
 
     </Grid>
