@@ -55,6 +55,7 @@ public static class Instance
             .AddTransient<SelectGameFolderViewModel>()
             .AddTransient<CloseDialog>()
             .AddTransient<SelectDownoadGameDialog>()
+            .AddTransient<SelectDownloadGameViewModel>()
             #endregion
             #endregion
             #region Navigation
