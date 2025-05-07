@@ -18,8 +18,6 @@ public partial class SelectDownloadGameViewModel : DialogViewModelBase
         PickersService = pickersService;
     }
 
-    [ObservableProperty]
-    public partial bool IsLoading { get; set; }
     public GameLauncherSource? Launcher { get; private set; }
 
     [ObservableProperty]
@@ -58,7 +56,6 @@ public partial class SelectDownloadGameViewModel : DialogViewModelBase
     [RelayCommand]
     async Task SelectFolder()
     {
-        this.IsLoading = true;
         var result = await PickersService.GetFolderPicker();
     }
 

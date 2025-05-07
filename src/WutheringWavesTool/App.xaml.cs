@@ -35,6 +35,7 @@ public partial class App : ClientApplication
     )
     {
         e.Handled = true;
+        File.WriteAllText("D:\\output.log", e.Message);
     }
 
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)

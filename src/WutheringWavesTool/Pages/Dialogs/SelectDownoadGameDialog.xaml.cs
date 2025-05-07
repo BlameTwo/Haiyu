@@ -10,10 +10,10 @@ namespace WutheringWavesTool.Pages.Dialogs
         public SelectDownoadGameDialog()
         {
             InitializeComponent();
-            this.ViewModel = Instance.Service.GetRequiredService<SelectDownloadGameViewModel>();
+            this.Pickers = Instance.GetService<IPickersService>();
         }
 
-        internal SelectDownloadGameViewModel ViewModel { get; }
+        public IPickersService Pickers { get; }
 
         public SelectDownloadFolderResult GetResult()
         {
@@ -21,5 +21,11 @@ namespace WutheringWavesTool.Pages.Dialogs
         }
 
         public void SetData(object data) { }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            var result = await Pickers.GetFolderPicker();
+        }
     }
 }

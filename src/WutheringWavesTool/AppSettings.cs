@@ -19,11 +19,18 @@ public class AppSettings
         if (File.Exists(SettingsFilePath))
         {
             var json = File.ReadAllText(SettingsFilePath);
-            _settingsCache =
+            try
+            {
+                _settingsCache =
                 JsonSerializer.Deserialize<List<LocalSettings>>(
                     json,
-                    LocalSettingsJsonContext.Default.ListLocalSettings
-                ) ?? new();
+                    LocalSettingsJsonContext.Default.ListLocalSettings);
+            }
+            catch (Exception)
+            {
+                _settingsCache= new();
+            }
+           
             SaveSettings();
         }
         else
@@ -66,13 +73,20 @@ public class AppSettings
 
     internal static string? Read([CallerMemberName] string key = null)
     {
-        if (string.IsNullOrWhiteSpace(key))
+        try
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return null;
+            }
+
+            var item = _settingsCache.FirstOrDefault(x => x.Key == key);
+            return item?.Value;
+        }
+        catch (Exception)
         {
             return null;
         }
-
-        var item = _settingsCache.FirstOrDefault(x => x.Key == key);
-        return item?.Value;
     }
 
     internal static void Write(string? value, [CallerMemberName] string key = null)
