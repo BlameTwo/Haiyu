@@ -1,4 +1,9 @@
-﻿using FolderPicker = Windows.Storage.Pickers.FolderPicker;
+﻿using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.System.Com;
+using Windows.Win32.UI.Shell;
+using Windows.Win32.UI.Shell.Common;
+using FolderPicker = Windows.Storage.Pickers.FolderPicker;
 
 namespace WutheringWavesTool.Services;
 
@@ -32,7 +37,7 @@ public class PickersService : IPickersService
     {
         FolderPicker openPicker = new FolderPicker();
         var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(ApplicationSetup.App.MainWindow);
-        WinRT.Interop.InitializeWithWindow.Initialize(openPicker, hWnd);
-        return await openPicker.PickSingleFolderAsync();
+        DevWinUI.FolderPicker folderPicker = new DevWinUI.FolderPicker(hWnd);
+        return await folderPicker.PickSingleFolderAsync();
     }
 }
