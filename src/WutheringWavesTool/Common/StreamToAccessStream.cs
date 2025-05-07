@@ -6,6 +6,7 @@ public static class StreamToAccessStream
         this Stream inputStream
     )
     {
+        inputStream.Seek(0, SeekOrigin.Begin);
         InMemoryRandomAccessStream randomAccessStream = new InMemoryRandomAccessStream();
         Stream outputStream = randomAccessStream.AsStreamForRead();
         await inputStream.CopyToAsync(outputStream);

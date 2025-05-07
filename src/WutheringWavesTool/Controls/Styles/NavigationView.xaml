@@ -178,7 +178,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Grid
-                        
                         x:Name="LayoutRoot"
                         Width="{TemplateBinding MinWidth}"
                         Height="{TemplateBinding MinHeight}"
@@ -261,7 +260,7 @@
         <Setter Property="OpenPaneLength" Value="{ThemeResource RailNavigationViewOpenPaneLength}" />
         <Setter Property="IsTabStop" Value="False" />
         <Setter Property="CompactPaneLength" Value="{ThemeResource RailNavigationViewCompactPaneLength}" />
-        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="MenuItemContainerStyle" Value="{StaticResource MainNavigationViewItemStyle}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -616,7 +615,7 @@
         <Setter Property="UseSystemFocusVisuals" Value="True" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="TabNavigation" Value="Once" />
-        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="CornerRadius" Value="5" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="NavigationViewItem">
@@ -643,7 +642,7 @@
                             ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                             ContentTransitions="{TemplateBinding ContentTransitions}"
                             Control.IsTemplateFocusTarget="True"
-                            CornerRadius="0"
+                            CornerRadius="5"
                             Foreground="{TemplateBinding Foreground}"
                             Icon="{TemplateBinding Icon}"
                             IsTabStop="false"
@@ -706,7 +705,7 @@
         <Setter Property="BorderBrush" Value="{ThemeResource RailNavigationViewItemBorderBrush}" />
         <Setter Property="BorderThickness" Value="{StaticResource NavigationViewItemBorderThickness}" />
         <Setter Property="UseSystemFocusVisuals" Value="True" />
-        <Setter Property="CornerRadius" Value="0" />
+        <Setter Property="CornerRadius" Value="4" />
         <Setter Property="FontSize" Value="10" />
         <Setter Property="Template">
             <Setter.Value>

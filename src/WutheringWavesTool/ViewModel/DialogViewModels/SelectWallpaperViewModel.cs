@@ -39,6 +39,17 @@ public sealed partial class SelectWallpaperViewModel : DialogViewModelBase
         await InitWallpaperAsync();
     }
 
+    public override void AfterClose()
+    {
+        foreach (var item in Images)
+        {
+            item.Image = null;
+        }
+        this.Images.Clear();
+        this.Images = null;
+        base.AfterClose();
+    }
+
     [RelayCommand]
     async Task SelectWallpaper()
     {

@@ -180,7 +180,7 @@
 
             <StackPanel
                 Grid.Column="2"
-                Margin="0,0,0,0"
+                Margin="0,0,5,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
@@ -192,6 +192,7 @@
                     VerticalAlignment="Center"
                     Command="{x:Bind ViewModel.PauseDownloadTaskCommand}"
                     Style="{ThemeResource TransparentButtonStyle}"
+                    ToolTipService.ToolTip="暂停"
                     Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
                     <i:Interaction.Behaviors>
                         <sound:ControlSoundBehavior />
@@ -209,6 +210,7 @@
                     VerticalAlignment="Center"
                     Command="{x:Bind ViewModel.CancelDownloadTaskCommand}"
                     Style="{ThemeResource TransparentButtonStyle}"
+                    ToolTipService.ToolTip="终止"
                     Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
                     <i:Interaction.Behaviors>
                         <sound:ControlSoundBehavior />

@@ -14,7 +14,7 @@ namespace WutheringWavesTool.Helpers
         public const int MAX_DEPTH = 8; // 八叉树最大深度（对应8位RGB精度）
 
         public async Task<Tuple<Color?, List<Color>>?> GetThemeColorAsync(
-            IRandomAccessStream imageFile
+            IRandomAccessStream? imageFile
         )
         {
             if (imageFile == null)

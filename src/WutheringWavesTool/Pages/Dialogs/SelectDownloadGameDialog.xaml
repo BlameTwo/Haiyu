@@ -7,6 +7,7 @@
     xmlns:local="using:WutheringWavesTool.Pages.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:WutheringWavesTool.Controls"
+    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
     CornerRadius="5"
     RequestedTheme="Dark"
     mc:Ignorable="d">

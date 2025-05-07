@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using CommunityToolkit.Mvvm.Input;
@@ -78,7 +79,6 @@ public abstract partial class GameContextBase : IGameContext
         var localVersion = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.LocalGameVersion
         );
-        var indexSource = await this.GetGameLauncherSourceAsync();
         var gameBaseFolder = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.GameLauncherBassFolder
         );
@@ -106,18 +106,29 @@ public abstract partial class GameContextBase : IGameContext
             status.IsGameExists = true;
             status.IsGameInstalled = false;
         }
-        if (localVersion != indexSource.ResourceDefault.Version)
+        var ping = (await NetworkCheck.PingAsync(GameAPIConfig.BaseAddress[0]));
+        if (ping != null && ping.Status == IPStatus.Success)
         {
-            status.IsUpdate = true;
-            status.DisplayVersion = indexSource.ResourceDefault.Version;
-        }
-        else
-        {
-            status.DisplayVersion = localVersion;
-        }
-        if (!string.IsNullOrWhiteSpace(updateing) && bool.TryParse(updateing, out var updateResult))
-        {
-            status.IsUpdateing = updateResult;
+            var indexSource = await this.GetGameLauncherSourceAsync();
+            if (indexSource != null)
+            {
+                if (localVersion != indexSource.ResourceDefault.Version)
+                {
+                    status.IsUpdate = true;
+                    status.DisplayVersion = indexSource.ResourceDefault.Version;
+                }
+                else
+                {
+                    status.DisplayVersion = localVersion;
+                }
+                if (
+                    !string.IsNullOrWhiteSpace(updateing)
+                    && bool.TryParse(updateing, out var updateResult)
+                )
+                {
+                    status.IsUpdateing = updateResult;
+                }
+            }
         }
         if (_downloadState != null)
         {

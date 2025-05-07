@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentDialog
     x:Class="WutheringWavesTool.Pages.Dialogs.SelectWallpaperDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -9,6 +9,7 @@
     xmlns:item="using:WutheringWavesTool.Models"
     xmlns:local="using:WutheringWavesTool.Pages.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
     CornerRadius="5"
     RequestedTheme="Dark"
     mc:Ignorable="d">

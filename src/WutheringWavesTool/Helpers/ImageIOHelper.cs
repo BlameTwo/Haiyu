@@ -1,5 +1,7 @@
 ﻿using System.Buffers;
+using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Graphics.Imaging;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WutheringWavesTool.Helpers;
@@ -70,7 +72,7 @@ public static class ImageIOHelper
             var file = $"{sourceFolder}\\{guid}.png";
             File.Move(filePath, file);
             md5.Dispose();
-            return new(new(new(file)), "加载成功", fileMd5);
+            return new(new(new(file)), file, fileMd5);
         }
         using (
             var stream = new FileStream(
@@ -159,5 +161,17 @@ public static class ImageIOHelper
                 ArrayPool<byte>.Shared.Return(buffer);
             }
         }
+    }
+
+    public static async Task<ImageSource> ConvertBitmapImageAsync(
+        this IRandomAccessStream imageStream,
+        int? desiredWidth = null
+    )
+    {
+        var bitmapImage = new BitmapImage { DecodePixelType = DecodePixelType.Logical };
+        if (desiredWidth is { } width)
+            bitmapImage.DecodePixelWidth = width;
+        await bitmapImage.SetSourceAsync(imageStream);
+        return bitmapImage;
     }
 }

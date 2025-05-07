@@ -5,7 +5,7 @@ public class WallpaperModel
     /// <summary>
     /// 低清晰度图像
     /// </summary>
-    public BitmapImage Image { get; set; }
+    public ImageSource Image { get; set; }
 
     /// <summary>
     /// 文件Md5

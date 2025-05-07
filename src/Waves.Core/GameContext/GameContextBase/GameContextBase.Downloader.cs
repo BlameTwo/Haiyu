@@ -288,24 +288,29 @@ public partial class GameContextBase
         }
         catch (IOException ex)
         {
-            Debug.WriteLine(ex.Message);
-            await this.SetNoneStatusAsync().ConfigureAwait(false);
+            _downloadState.IsActive = false;
+            _downloadCTS.Dispose();
+            _downloadCTS = null;
+            _isDownload = false;
+            await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");
+            await SetNoneStatusAsync().ConfigureAwait(false);
             return;
         }
         catch (OperationCanceledException)
         {
             _downloadState.IsActive = false;
+            _downloadCTS.Dispose();
+            _downloadCTS = null;
+            _isDownload = false;
             await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");
             await SetNoneStatusAsync().ConfigureAwait(false);
             return;
         }
-        finally
-        {
-            _downloadCTS.Dispose();
-            _downloadCTS = null;
-            _isDownload = false;
-        }
         #endregion
+
+        _downloadCTS.Dispose();
+        _downloadCTS = null;
+        _isDownload = false;
         await downloadComplate().ConfigureAwait(false);
         _downloadState.IsActive = false;
     }

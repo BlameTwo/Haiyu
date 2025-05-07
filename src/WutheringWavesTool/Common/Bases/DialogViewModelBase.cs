@@ -22,6 +22,7 @@ public abstract partial class DialogViewModelBase : ViewModelBase
         BeforeClose();
         DialogManager.CloseDialog();
         AfterClose();
+        GC.SuppressFinalize(this);
     }
 
     public virtual void BeforeClose() { }

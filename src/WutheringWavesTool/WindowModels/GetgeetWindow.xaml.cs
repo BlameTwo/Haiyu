@@ -8,10 +8,6 @@ public sealed partial class GetGeetWindow : WindowModelBase
         this.titleBar.Window = this;
         this.webView2.NavigationCompleted += WebView2_NavigationCompleted;
         this.webView2.Source = new(AppDomain.CurrentDomain.BaseDirectory + "Assets\\geet.html");
-        if (this.Content is FrameworkElement fe)
-        {
-            fe.RequestedTheme = ElementTheme.Dark;
-        }
     }
 
     private void WebView2_NavigationCompleted(
