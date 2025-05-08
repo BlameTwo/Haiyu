@@ -20,6 +20,7 @@ namespace WutheringWavesTool.Pages.Dialogs
         }
 
         SelectDownloadFolderResult downloadResult = null;
+        ContentDialogResult clickBth = ContentDialogResult.None;
         public IGameContext GameContext { get; private set; }
         public IDialogManager DialogManager { get; }
         public IPickersService Pickers { get; }
@@ -41,6 +42,11 @@ namespace WutheringWavesTool.Pages.Dialogs
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+            downloadResult = new SelectDownloadFolderResult()
+            {
+                InstallFolder = this.folderPath.Text,
+                Result = clickBth
+            };
             this.DialogManager.CloseDialog();
         }
 
@@ -51,10 +57,11 @@ namespace WutheringWavesTool.Pages.Dialogs
             {
                 return;
             }
+            this.clickBth = ContentDialogResult.Primary;
             downloadResult = new SelectDownloadFolderResult()
             {
                 InstallFolder = this.folderPath.Text,
-                Result = ContentDialogResult.Primary,
+                Result = clickBth,
                 Launcher = launcher,
             };
             this.DialogManager.CloseDialog();
@@ -63,6 +70,8 @@ namespace WutheringWavesTool.Pages.Dialogs
         private async void SelectFolder_Click(object sender, RoutedEventArgs e)
         {
             var folderPath = await Pickers.GetFolderPicker();
+            if (folderPath == null)
+                return;
             if (!Directory.Exists(folderPath.Path))
             {
                 MessageBox.Show("文件夹不存在");

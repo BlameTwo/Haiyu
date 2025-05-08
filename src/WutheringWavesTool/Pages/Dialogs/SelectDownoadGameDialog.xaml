@@ -78,14 +78,6 @@
                 Grid.Row="1"
                 Margin="0,30,0,0"
                 Orientation="Vertical">
-                <TextBlock FontFamily="{ThemeResource DefaultFont}">
-                    <Run Text="游戏更新前：" />
-                    <Run x:Name="UpdateBefore" />
-                </TextBlock>
-                <TextBlock Margin="0,5,0,0" FontFamily="{ThemeResource DefaultFont}">
-                    <Run Text="游戏更新后：" />
-                    <Run x:Name="UpdateAfter" />
-                </TextBlock>
                 <TextBlock
                     x:Name="TipMessage"
                     Margin="0,5,0,0"
