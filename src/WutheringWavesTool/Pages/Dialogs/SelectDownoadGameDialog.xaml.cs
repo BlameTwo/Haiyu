@@ -45,7 +45,7 @@ namespace WutheringWavesTool.Pages.Dialogs
             downloadResult = new SelectDownloadFolderResult()
             {
                 InstallFolder = this.folderPath.Text,
-                Result = clickBth
+                Result = clickBth,
             };
             this.DialogManager.CloseDialog();
         }
@@ -121,8 +121,6 @@ namespace WutheringWavesTool.Pages.Dialogs
                     Value = updateSize,
                 },
             };
-            UpdateBefore.Text = $"{Math.Round(usedSpaceMB, 2)}GB";
-            UpdateAfter.Text = $"{Math.Round(updateSize, 2)}GB";
             if (updateSize > totalSizeMB)
             {
                 TipMessage.Text = "空间不足，请清理一些文件进行下载";

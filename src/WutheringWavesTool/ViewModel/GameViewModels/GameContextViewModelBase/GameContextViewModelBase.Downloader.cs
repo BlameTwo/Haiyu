@@ -118,6 +118,29 @@ partial class GameContextViewModelBase
     async Task CancelDownloadTask()
     {
         await GameContext.StopDownloadAsync();
+        var status = await GameContext.GetGameContextStatusAsync();
+        if (!status.IsLauncher)
+        {
+            await this.GameContext.GameLocalConfig.SaveConfigAsync(
+                GameLocalSettingName.GameLauncherBassFolder,
+                ""
+            );
+            await this.GameContext.GameLocalConfig.SaveConfigAsync(
+                GameLocalSettingName.GameLauncherBassProgram,
+                ""
+            );
+            await this.GameContext.GameLocalConfig.SaveConfigAsync(
+                GameLocalSettingName.LocalGameUpdateing,
+                "False"
+            );
+        }
+        await this.GameContext_GameContextOutput(
+            this.GameContext,
+            new GameContextOutputArgs()
+            {
+                Type = Waves.Core.Models.Enums.GameContextActionType.None,
+            }
+        );
     }
 
     [RelayCommand]

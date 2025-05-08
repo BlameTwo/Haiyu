@@ -230,6 +230,18 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
             BottomBarContent = "游戏文件不存在，请找到窗口右下角选择游戏下载路径或定位游戏";
         }
 
+        [RelayCommand]
+        async Task RepirGame()
+        {
+            await GameContext.RepirGameAsync();
+        }
+
+        [RelayCommand]
+        async Task ShowGameResource()
+        {
+            await DialogManager.ShowGameResourceDialogAsync(this.GameContext.ContextName);
+        }
+
         private void ShowGameDownloadingBth()
         {
             _bthType = 2;

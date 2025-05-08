@@ -6,6 +6,7 @@
     <RootNamespace>WutheringWavesTool</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <Platforms>x86;x64</Platforms>
+	  <Version>2.3.4</Version>
     <LangVersion>preview</LangVersion>
     <RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x64</RuntimeIdentifier>
     <RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x64</RuntimeIdentifier>
@@ -433,5 +434,8 @@
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DefaultLanguage>zh-CN</DefaultLanguage>
+    <ApplicationIcon>Assets\appLogo.ico</ApplicationIcon>
+    <SignAssembly>False</SignAssembly>
+    <NeutralLanguage>zh-CN</NeutralLanguage>
   </PropertyGroup>
 </Project>

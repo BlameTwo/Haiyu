@@ -23,6 +23,8 @@ public interface IGameContext
 
     public TimeSpan GetGameTime();
 
+    public Task RepirGameAsync();
+
     #region Launcher
     Task<GameLauncherSource?> GetGameLauncherSourceAsync(CancellationToken token = default);
 

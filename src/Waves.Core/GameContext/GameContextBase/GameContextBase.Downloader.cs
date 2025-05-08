@@ -347,18 +347,6 @@ public partial class GameContextBase
             Interlocked.Exchange(ref _totalfileSize, 0L);
             Interlocked.Exchange(ref _totalVerifiedBytes, 0L);
             Interlocked.Exchange(ref _totalDownloadedBytes, 0L);
-            await this.GameLocalConfig.SaveConfigAsync(
-                GameLocalSettingName.GameLauncherBassFolder,
-                ""
-            );
-            await this.GameLocalConfig.SaveConfigAsync(
-                GameLocalSettingName.GameLauncherBassProgram,
-                ""
-            );
-            await this.GameLocalConfig.SaveConfigAsync(
-                GameLocalSettingName.LocalGameUpdateing,
-                "False"
-            );
             return true;
         }
         catch (Exception ex)
@@ -1076,4 +1064,13 @@ public partial class GameContextBase
         );
     }
     #endregion
+
+    public async Task RepirGameAsync()
+    {
+        var installFolder = await GameLocalConfig.GetConfigAsync(
+            GameLocalSettingName.GameLauncherBassFolder
+        );
+        var launcher = await this.GetGameLauncherSourceAsync();
+        Task.Run(async () => await StartDownloadTaskAsync(installFolder, launcher));
+    }
 }

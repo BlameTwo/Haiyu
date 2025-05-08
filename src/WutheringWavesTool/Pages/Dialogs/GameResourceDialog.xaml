@@ -8,6 +8,7 @@
     xmlns:local="using:WutheringWavesTool.Pages.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:DevWinUI"
+    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
     CornerRadius="5"
     RequestedTheme="Dark"
     mc:Ignorable="d">
@@ -55,19 +56,6 @@
                     Command="{x:Bind ViewModel.SendDeleteGameResourceCommand}"
                     Content="卸载"
                     IsEnabled="{x:Bind ViewModel.DeleteGameResourceEnable, Mode=OneWay}" />
-            </ui:SettingsCard>
-            <ui:SettingsCard
-                Grid.Row="2"
-                Width="480"
-                Margin="0,5,0,0"
-                HorizontalAlignment="Stretch"
-                Description="{x:Bind ViewModel.GameProdSize, Mode=OneWay}"
-                Header="预下载大小"
-                IsClickEnabled="True">
-                <Button
-                    Command="{x:Bind ViewModel.SendDeleteProdGameResourceCommand}"
-                    Content="卸载"
-                    IsEnabled="{x:Bind ViewModel.DeleteProdGameResourceEnable, Mode=OneWay}" />
             </ui:SettingsCard>
             <ui:SettingsExpander
                 Grid.Row="3"

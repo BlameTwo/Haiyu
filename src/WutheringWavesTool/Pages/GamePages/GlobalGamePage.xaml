@@ -192,7 +192,7 @@
                     VerticalAlignment="Center"
                     Command="{x:Bind ViewModel.PauseDownloadTaskCommand}"
                     Style="{ThemeResource TransparentButtonStyle}"
-                    ToolTipService.ToolTip="暂停"
+                    ToolTipService.ToolTip="暂停当前操作"
                     Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
                     <i:Interaction.Behaviors>
                         <sound:ControlSoundBehavior />
@@ -210,7 +210,7 @@
                     VerticalAlignment="Center"
                     Command="{x:Bind ViewModel.CancelDownloadTaskCommand}"
                     Style="{ThemeResource TransparentButtonStyle}"
-                    ToolTipService.ToolTip="终止"
+                    ToolTipService.ToolTip="暂停当前操作"
                     Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
                     <i:Interaction.Behaviors>
                         <sound:ControlSoundBehavior />
@@ -264,74 +264,127 @@
                     </Button>
 
                 </StackPanel>
-                <Button
+                <StackPanel
                     Margin="3"
                     HorizontalAlignment="Right"
-                    Background="{ThemeResource SystemFillColorSuccessBrush}"
-                    BorderThickness="0"
-                    Command="{x:Bind ViewModel.UpdateGameCommand}"
-                    CornerRadius="4"
-                    Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                    Orientation="Horizontal"
                     Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
-                    <Button.BorderBrush>
-                        <SolidColorBrush Color="{x:Bind ViewModel.StressShadowColor, Mode=OneWay}" />
-                    </Button.BorderBrush>
-                    <ani:Explicit.Animations>
-                        <ani:AnimationSet x:Name="ShadowEnterAnimation">
-                            <ani:BlurRadiusDropShadowAnimation To="12" />
-                        </ani:AnimationSet>
-                        <ani:AnimationSet x:Name="ShadowExitAnimation">
-                            <ani:BlurRadiusDropShadowAnimation To="0" />
-                        </ani:AnimationSet>
-                    </ani:Explicit.Animations>
+                    <Button
+                        Background="{ThemeResource SystemFillColorSuccessBrush}"
+                        BorderThickness="0"
+                        Command="{x:Bind ViewModel.UpdateGameCommand}"
+                        CornerRadius="4"
+                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}">
+                        <Button.BorderBrush>
+                            <SolidColorBrush Color="{x:Bind ViewModel.StressShadowColor, Mode=OneWay}" />
+                        </Button.BorderBrush>
+                        <ani:Explicit.Animations>
+                            <ani:AnimationSet x:Name="ShadowEnterAnimation">
+                                <ani:BlurRadiusDropShadowAnimation To="12" />
+                            </ani:AnimationSet>
+                            <ani:AnimationSet x:Name="ShadowExitAnimation">
+                                <ani:BlurRadiusDropShadowAnimation To="0" />
+                            </ani:AnimationSet>
+                        </ani:Explicit.Animations>
 
-                    <ui:Effects.Shadow>
-                        <media:AttachedCardShadow
-                            BlurRadius="0"
-                            Opacity="1"
-                            Offset="0"
-                            Color="{x:Bind ViewModel.StressShadowColor, Mode=OneWay}" />
-                    </ui:Effects.Shadow>
-                    <i:Interaction.Behaviors>
-                        <sound:ButtonSoundBehavior />
-                        <i:EventTriggerBehavior EventName="PointerEntered">
-                            <b:StartAnimationAction Animation="{x:Bind ShadowEnterAnimation}" />
-                        </i:EventTriggerBehavior>
-                        <i:EventTriggerBehavior EventName="PointerExited">
-                            <b:StartAnimationAction Animation="{x:Bind ShadowExitAnimation}" />
-                        </i:EventTriggerBehavior>
-                    </i:Interaction.Behaviors>
+                        <ui:Effects.Shadow>
+                            <media:AttachedCardShadow
+                                BlurRadius="0"
+                                Opacity="1"
+                                Offset="0"
+                                Color="{x:Bind ViewModel.StressShadowColor, Mode=OneWay}" />
+                        </ui:Effects.Shadow>
+                        <i:Interaction.Behaviors>
+                            <sound:ButtonSoundBehavior />
+                            <i:EventTriggerBehavior EventName="PointerEntered">
+                                <b:StartAnimationAction Animation="{x:Bind ShadowEnterAnimation}" />
+                            </i:EventTriggerBehavior>
+                            <i:EventTriggerBehavior EventName="PointerExited">
+                                <b:StartAnimationAction Animation="{x:Bind ShadowExitAnimation}" />
+                            </i:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <FontIcon
-                            Grid.RowSpan="2"
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="15"
-                            Glyph="{x:Bind ViewModel.LauncherIcon, Mode=OneWay}" />
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="15,0,0,0"
-                            VerticalAlignment="Center"
-                            FontSize="14"
-                            Text="{x:Bind ViewModel.LauncheContent, Mode=OneWay}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="15,0,0,0"
-                            VerticalAlignment="Center"
-                            FontSize="10"
-                            Text="{x:Bind ViewModel.DisplayVersion, Mode=OneWay}" />
-                    </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <FontIcon
+                                Grid.RowSpan="2"
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="15"
+                                Glyph="{x:Bind ViewModel.LauncherIcon, Mode=OneWay}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="15,0,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="14"
+                                Text="{x:Bind ViewModel.LauncheContent, Mode=OneWay}" />
+                            <TextBlock
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="15,0,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="10"
+                                Text="{x:Bind ViewModel.DisplayVersion, Mode=OneWay}" />
+                        </Grid>
 
-                </Button>
+                    </Button>
+                    <Button
+                        Margin="3,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                        BorderThickness="0">
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
+                        <ani:Explicit.Animations>
+                            <ani:AnimationSet x:Name="MoreShadowEnterAnimation">
+                                <ani:BlurRadiusDropShadowAnimation To="12" />
+                            </ani:AnimationSet>
+                            <ani:AnimationSet x:Name="MoreShadowExitAnimation">
+                                <ani:BlurRadiusDropShadowAnimation To="0" />
+                            </ani:AnimationSet>
+                        </ani:Explicit.Animations>
+                        <ui:Effects.Shadow>
+                            <media:AttachedCardShadow
+                                BlurRadius="0"
+                                Opacity="1"
+                                Offset="0"
+                                Color="{ThemeResource SystemAccentColor}" />
+                        </ui:Effects.Shadow>
+                        <i:Interaction.Behaviors>
+                            <sound:ButtonSoundBehavior />
+                            <i:EventTriggerBehavior EventName="PointerEntered">
+                                <b:StartAnimationAction Animation="{x:Bind MoreShadowEnterAnimation}" />
+                            </i:EventTriggerBehavior>
+                            <i:EventTriggerBehavior EventName="PointerExited">
+                                <b:StartAnimationAction Animation="{x:Bind MoreShadowExitAnimation}" />
+                            </i:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        <Button.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem
+                                    Command="{x:Bind ViewModel.RepirGameCommand}"
+                                    Text="修复游戏"
+                                    ToolTipService.ToolTip="此选项等同于下载，启动器会下载服务器资源进行自动覆盖（包含Mod资源）">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Command="{x:Bind ViewModel.ShowGameResourceCommand}" Text="游戏资源管理">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEF19;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                            </MenuFlyout>
+                        </Button.Flyout>
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Grid>
         <!--  下载结束  -->
