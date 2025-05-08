@@ -1,4 +1,5 @@
-﻿using WutheringWavesTool.Models.Dialogs;
+﻿using Windows.Gaming.Input;
+using WutheringWavesTool.Models.Dialogs;
 using WutheringWavesTool.Services.DialogServices;
 using WutheringWavesTool.Services.Navigations.NavigationViewServices;
 using WutheringWavesTool.ViewModel.GameViewModels;
@@ -111,6 +112,7 @@ public static class Instance
         if (Service.GetRequiredService<T>() is not T v)
         {
             throw new ArgumentException("服务未注入");
+            ;
         }
         return v;
     }
