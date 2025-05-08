@@ -10,14 +10,14 @@
   <Identity
     Name="84C1F4B7-E2B8-49F7-A82A-CE5026C92B44"
     Publisher="CN=30140"
-    Version="1.2.3.0" />
+    Version="1.2.4.0" />
 
   <mp:PhoneIdentity PhoneProductId="3210a31c-e9bd-4e49-9c1a-ae6e28290f1d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>鸣潮启动器</DisplayName>
     <PublisherDisplayName>Blame</PublisherDisplayName>
-    <Logo>Assets\StoreLogo.png</Logo>
+    <Logo>Assets\Package\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
@@ -37,10 +37,10 @@
         DisplayName="鸣潮启动器-Dev"
         Description="鸣潮增强型启动器"
         BackgroundColor="transparent"
-        Square150x150Logo="Assets\Square150x150Logo.png"
-        Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"  Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        Square150x150Logo="Assets\Package\Square150x150Logo.png"
+        Square44x44Logo="Assets\Package\Square44x44Logo.png">
+        <uap:DefaultTile Wide310x150Logo="Assets\Package\Wide310x150Logo.png"  Square71x71Logo="Assets\Package\SmallTile.png" Square310x310Logo="Assets\Package\LargeTile.png"/>
+        <uap:SplashScreen Image="Assets\Package\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
   </Applications>
