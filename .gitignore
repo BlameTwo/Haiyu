@@ -363,3 +363,5 @@ FodyWeavers.xsd
 /src/.idea
 *.7z
 /src/Setup/Project.WPFSetup/Resources/program.zip
+/src/Setup/Msix.WPFSetup/Resources/WutheringWavesTool_1.2.4.0_x64.cer
+/src/Setup/Msix.WPFSetup/Resources/WutheringWavesTool_1.2.4.0_x64.msix
