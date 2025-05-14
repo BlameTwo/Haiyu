@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Waves.Api.Models.Communitys.DataCenter
 {
@@ -127,17 +128,38 @@ namespace Waves.Api.Models.Communitys.DataCenter
         [JsonPropertyName("roleNum")]
         public int RoleNum { get; set; }
 
+        [JsonPropertyName("rougeIconUrl")]
+        public string RougeIconUrl { get; set; }
+
+        [JsonPropertyName("rougeScore")]
+        public int RougeScore { get; set; }
+
+        [JsonPropertyName("rougeScoreLimit")]
+        public int RougeScoreLimit { get; set; }
+
+        [JsonPropertyName("rougeTitle")]
+        public string RougeTitle { get; set; }
+
         [JsonPropertyName("showToGuest")]
         public bool ShowToGuest { get; set; }
 
         [JsonPropertyName("smallCount")]
         public int SmallCount { get; set; }
 
+        [JsonPropertyName("storeEnergy")]
+        public int StoreEnergy { get; set; }
+
+        [JsonPropertyName("storeEnergyIconUrl")]
+        public string StoreEnergyIconUrl { get; set; }
+
+        [JsonPropertyName("storeEnergyLimit")]
+        public int StoreEnergyLimit { get; set; }
+
+        [JsonPropertyName("storeEnergyTitle")]
+        public string StoreEnergyTitle { get; set; }
+
         [JsonPropertyName("treasureBoxList")]
         public List<TreasureBoxList> TreasureBoxList { get; set; }
-
-        [JsonPropertyName("worldLevel")]
-        public int WorldLevel { get; set; }
 
         [JsonPropertyName("weeklyInstCount")]
         public int WeeklyInstCount { get; set; }
@@ -150,6 +172,9 @@ namespace Waves.Api.Models.Communitys.DataCenter
 
         [JsonPropertyName("weeklyInstTitle")]
         public string WeeklyInstTitle { get; set; }
+
+        [JsonPropertyName("worldLevel")]
+        public int WorldLevel { get; set; }
     }
 
     public class TreasureBoxList

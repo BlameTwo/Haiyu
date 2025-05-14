@@ -16,6 +16,8 @@ public static class Instance
             #region View and ViewModel
             .AddSingleton<ShellPage>()
             .AddSingleton<ShellViewModel>()
+            .AddTransient<ToolPage>()
+            .AddTransient<ToolViewModel>()
             .AddTransient<PlayerRecordPage>()
             .AddTransient<PlayerRecordViewModel>()
             .AddTransient<SettingViewModel>()

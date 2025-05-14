@@ -46,6 +46,8 @@
     <None Remove="Pages\GamePages\BiliBiliGamePage.xaml" />
     <None Remove="Pages\GamePages\GlobalGamePage.xaml" />
     <None Remove="Pages\GamePages\MainGamePage.xaml" />
+    <None Remove="Pages\ToolPage.xaml" />
+    <None Remove="ToolWindow.xaml" />
   </ItemGroup>
 	<ItemGroup>
 		<RdXmlFile Include="rd.xml" />
@@ -195,6 +197,16 @@
     <Content Update="Assets\RolePage\weapon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\ToolPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="ToolWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\Dialogs\SelectDownoadGameDialog.xaml">

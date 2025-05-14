@@ -31,8 +31,7 @@ public class ViewFactorys : IViewFactorys
         win.Content = page;
         if (win.Content is FrameworkElement fs)
         {
-            fs.RequestedTheme =
-                ElementTheme.Dark;
+            fs.RequestedTheme = ElementTheme.Dark;
         }
         return win;
     }
@@ -53,5 +52,21 @@ public class ViewFactorys : IViewFactorys
         window.MaxWidth = 500;
         window.MinWidth = 500;
         return window;
+    }
+
+    public bool ShowToolWindow()
+    {
+        try
+        {
+            ToolWindow window = new ToolWindow();
+            var content = Instance.GetService<ToolPage>();
+            window.content.Content = content;
+            window.Show();
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 }

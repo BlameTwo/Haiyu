@@ -1,4 +1,5 @@
-﻿using Windows.ApplicationModel.DataTransfer;
+﻿using H.NotifyIcon;
+using Windows.ApplicationModel.DataTransfer;
 using WutheringWavesTool.Services.DialogServices;
 
 namespace WutheringWavesTool.ViewModel;
@@ -8,12 +9,14 @@ public sealed partial class SettingViewModel : ViewModelBase
     public SettingViewModel(
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
         IWavesClient wavesClient,
-        IAppContext<App> appContext
+        IAppContext<App> appContext,
+        IViewFactorys viewFactorys
     )
     {
         DialogManager = dialogManager;
         WavesClient = wavesClient;
         AppContext = appContext;
+        ViewFactorys = viewFactorys;
         RegisterMessanger();
     }
 
@@ -32,6 +35,7 @@ public sealed partial class SettingViewModel : ViewModelBase
     public IDialogManager DialogManager { get; }
     public IWavesClient WavesClient { get; }
     public IAppContext<App> AppContext { get; }
+    public IViewFactorys ViewFactorys { get; }
 
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataItem> GamerData { get; set; }
@@ -69,6 +73,12 @@ public sealed partial class SettingViewModel : ViewModelBase
             package.SetText(WavesClient.Token);
             Clipboard.SetContent(package);
         }
+    }
+
+    [RelayCommand]
+    void OpenDesktopTool()
+    {
+        ViewFactorys.ShowToolWindow();
     }
 
     partial void OnSelectCloseIndexChanged(int value)

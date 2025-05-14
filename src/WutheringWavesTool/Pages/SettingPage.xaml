@@ -120,6 +120,11 @@
                     </DataTemplate>
                 </ui:SettingsExpander.ItemTemplate>
             </ui:SettingsExpander>
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                Command="{x:Bind ViewModel.OpenDesktopToolCommand}"
+                Header="打开扩展卡片"
+                IsClickEnabled="True" />
         </StackPanel>
 
     </Grid>

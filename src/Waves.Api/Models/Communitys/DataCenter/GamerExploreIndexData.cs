@@ -19,14 +19,32 @@ public class AreaInfoList
 
 public class Country
 {
+    [JsonPropertyName("bgColor")]
+    public string BgColor { get; set; }
+
     [JsonPropertyName("countryId")]
     public int CountryId { get; set; }
 
     [JsonPropertyName("countryName")]
     public string CountryName { get; set; }
 
+    [JsonPropertyName("detailPageAreaMaskColor")]
+    public string DetailPageAreaMaskColor { get; set; }
+
+    [JsonPropertyName("detailPageAreaPic")]
+    public string DetailPageAreaPic { get; set; }
+
+    [JsonPropertyName("detailPageDarkColor")]
+    public string DetailPageDarkColor { get; set; }
+
     [JsonPropertyName("detailPageFontColor")]
     public string DetailPageFontColor { get; set; }
+
+    [JsonPropertyName("detailPageImage")]
+    public string DetailPageImage { get; set; }
+
+    [JsonPropertyName("detailPageLightColor")]
+    public string DetailPageLightColor { get; set; }
 
     [JsonPropertyName("detailPagePic")]
     public string DetailPagePic { get; set; }
@@ -36,6 +54,9 @@ public class Country
 
     [JsonPropertyName("homePageIcon")]
     public string HomePageIcon { get; set; }
+
+    [JsonPropertyName("homePageImage")]
+    public string HomePageImage { get; set; }
 }
 
 public class DetectionInfoList
@@ -73,6 +94,9 @@ public class ExploreList
 
 public class ItemList
 {
+    [JsonPropertyName("icon")]
+    public string Icon { get; set; }
+
     [JsonPropertyName("name")]
     public string Name { get; set; }
 

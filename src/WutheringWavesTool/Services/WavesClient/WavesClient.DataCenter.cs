@@ -33,6 +33,7 @@ partial class WavesClient
         {
             return null;
         }
+
         var bassData = JsonSerializer.Deserialize(
             resultCode.Data,
             CommunityContext.Default.GamerBassData
@@ -70,6 +71,7 @@ partial class WavesClient
         {
             return null;
         }
+
         var jsonData = resultCode.Data;
         return JsonSerializer.Deserialize(jsonData, CommunityContext.Default.GamerRoleData);
     }
@@ -104,6 +106,7 @@ partial class WavesClient
         {
             return null;
         }
+
         var jsonData = resultCode.Data;
 
         return JsonSerializer.Deserialize(jsonData, CommunityContext.Default.GamerCalabashData);
@@ -137,6 +140,7 @@ partial class WavesClient
         {
             return null;
         }
+
         var jsonData = resultCode.Data;
         return JsonSerializer.Deserialize(jsonData, CommunityContext.Default.GamerTowerModel);
     }
@@ -169,6 +173,7 @@ partial class WavesClient
         {
             return null;
         }
+
         var jsonData = resultCode.Data;
 
         return JsonSerializer.Deserialize(jsonData, CommunityContext.Default.GamerExploreIndexData);
@@ -202,6 +207,7 @@ partial class WavesClient
         {
             return null;
         }
+
         var jsonData = resultCode.Data;
         return JsonSerializer.Deserialize(
             jsonData,
@@ -265,6 +271,7 @@ partial class WavesClient
             CommunityContext.Default.GamerBassString
         );
         if (resultCode == null || resultCode.Code != 200) { }
+
         var jsonData = resultCode.Data;
 
         return JsonSerializer.Deserialize(jsonData, CommunityContext.Default.GamerRoilDetily);
@@ -302,6 +309,7 @@ partial class WavesClient
         {
             return null;
         }
+
         var jsonData = resultCode.Data;
         var result2 = JsonSerializer.Deserialize(
             jsonData,
@@ -339,7 +347,41 @@ partial class WavesClient
         {
             return null;
         }
+
         var jsonData = resultCode.Data;
         return JsonSerializer.Deserialize(jsonData, CommunityContext.Default.GamerSkin);
+    }
+
+    public async Task<string?> GetGamerSlashDetailAsync(
+        GameRoilDataItem roil,
+        CancellationToken token = default
+    )
+    {
+        var header = GetHeader(true);
+        var content = new Dictionary<string, string>()
+        {
+            { "gameId", roil.GameId.ToString() },
+            { "roleId", roil.RoleId.ToString() },
+            { "serverId", roil.ServerId.ToString() },
+        };
+        var request = await BuildRequest(
+            "https://api.kurobbs.com/aki/roleBox/akiBox/slashDetail",
+            HttpMethod.Post,
+            header,
+            new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+            content
+        );
+        var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
+        var jsonStr = await result.Content.ReadAsStringAsync(token);
+        var resultCode = JsonSerializer.Deserialize(
+            jsonStr,
+            CommunityContext.Default.GamerBassString
+        );
+        if (resultCode == null || resultCode.Code != 200)
+        {
+            return null;
+        }
+        var jsonData = resultCode.Data;
+        return jsonData;
     }
 }

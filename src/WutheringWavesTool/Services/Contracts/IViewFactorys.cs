@@ -10,4 +10,6 @@ public interface IViewFactorys
     public WindowModelBase ShowRolesDataWindow(ShowRoleData detily);
 
     public WindowModelBase ShowPlayerRecordWindow();
+
+    public bool ShowToolWindow();
 }
