@@ -11,6 +11,8 @@ public partial class App : ClientApplication
 
     public static string WrallpaperFolder => BassFolder + "\\WallpaperImages";
 
+    public string ToolsPosionFilePath => App.BassFolder + "\\ToolsPostion.json";
+
     public App()
     {
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;

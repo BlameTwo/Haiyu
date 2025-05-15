@@ -102,7 +102,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     void CloseWindow()
     {
-        this.AppContext.Close();
+        this.AppContext.CloseAsync();
     }
 
     [RelayCommand]

@@ -11,7 +11,11 @@ namespace WutheringWavesTool.Services;
 public class AppContext<T> : IAppContext<T>
     where T : ClientApplication
 {
-    public AppContext(IWavesClient wavesClient, IWallpaperService wallpaperService, [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager)
+    public AppContext(
+        IWavesClient wavesClient,
+        IWallpaperService wallpaperService,
+        [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager
+    )
     {
         WavesClient = wavesClient;
         WallpaperService = wallpaperService;
@@ -22,7 +26,6 @@ public class AppContext<T> : IAppContext<T>
     private ContentDialog _dialog;
 
     public T App { get; private set; }
-
 
     public IWavesClient WavesClient { get; }
     public IWallpaperService WallpaperService { get; }
@@ -130,7 +133,6 @@ public class AppContext<T> : IAppContext<T>
     public Color StressShadowColor { get; private set; } = Colors.AliceBlue;
     public SolidColorBrush StessForground { get; private set; } = new(Colors.Black);
 
-
     public void SetTitleControl(Controls.TitleBar titleBar)
     {
         this.MainTitle = titleBar;
@@ -140,21 +142,20 @@ public class AppContext<T> : IAppContext<T>
     {
         this.App.MainWindow.DispatcherQueue.TryEnqueue(() => action.Invoke());
     }
-    
+
     public void Minimise()
     {
         this.App.MainWindow.Minimize();
     }
 
-    public async Task Close()
+    public async Task CloseAsync()
     {
         var close = AppSettings.CloseWindow;
-        if(close == "True")
+        if (close == "True")
         {
             Environment.Exit(0);
-            
         }
-        else if(close == "False")
+        else if (close == "False")
         {
             this.App.MainWindow.Hide(true);
         }
@@ -170,7 +171,5 @@ public class AppContext<T> : IAppContext<T>
                 this.App.MainWindow.Hide(true);
             }
         }
-        
-        
     }
 }
