@@ -20,7 +20,7 @@
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
     xmlns:wuc="using:DevWinUI"
     xmlns:wui="using:CommunityToolkit.WinUI"
-    RequestedTheme="Dark"
+    RequestedTheme="Light"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
@@ -360,14 +360,13 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.CommunityViewModel"
-                        Content="库街区"
+                        Content="数据"
                         Visibility="{x:Bind ViewModel.CommunitySelectItemVisiblity, Mode=OneWay}">
-
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
                         </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
-                            <ImageIcon Source="ms-appx:///Assets/kLogo.png" />
+                            <FontIcon FontFamily="/Assets/Fonts/seguiemj.ttf#Segoe UI Emoji" Glyph="&#x1F4E6;" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
 

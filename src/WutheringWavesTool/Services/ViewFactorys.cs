@@ -31,7 +31,7 @@ public class ViewFactorys : IViewFactorys
         win.Content = page;
         if (win.Content is FrameworkElement fs)
         {
-            fs.RequestedTheme = ElementTheme.Dark;
+            fs.RequestedTheme = ElementTheme.Light;
         }
         return win;
     }

@@ -10,7 +10,7 @@
     xmlns:ui="using:DevWinUI"
     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
     CornerRadius="5"
-    RequestedTheme="Dark"
+    RequestedTheme="Light"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">

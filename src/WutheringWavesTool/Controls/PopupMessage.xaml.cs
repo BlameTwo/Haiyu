@@ -14,7 +14,7 @@ public sealed partial class PopupMessage : UserControl
         _popup.Child = this;
         this.Loaded += PopupNoticeLoaded;
         this.grid.RequestedTheme =
-             ElementTheme.Dark;
+             ElementTheme.Light;
     }
 
     public PopupMessage(string popupContentString, Panel uIElement, Symbol symbol)

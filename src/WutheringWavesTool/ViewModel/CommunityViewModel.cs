@@ -90,6 +90,12 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
+            case "Boss2":
+                NavigationService.NavigationTo<GamerSlashDetailViewModel>(
+                    WavesClient.CurrentRoil.Item,
+                    new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
+                );
+                break;
         }
     }
 

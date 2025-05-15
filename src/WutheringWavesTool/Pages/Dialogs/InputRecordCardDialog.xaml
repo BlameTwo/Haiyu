@@ -9,7 +9,7 @@
     xmlns:model="using:Waves.Api.Models.Record"
     Padding="0"
     CornerRadius="5"
-    RequestedTheme="Dark"
+    RequestedTheme="Light"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">

@@ -1,4 +1,5 @@
 ﻿using System;
+using WutheringWavesTool.Models.Wrapper.CommunityWorld;
 
 namespace WutheringWavesTool.ViewModel.Communitys;
 
@@ -10,11 +11,19 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
     public IWavesClient WavesClient { get; }
     public ITipShow TipShow { get; }
 
-    [ObservableProperty]
-    public partial double TotalProgress { get; set; }
+    //[ObservableProperty]
+    //public partial ObservableCollection<DataCenterExploreItem> Explores { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<DataCenterExploreItem> Explores { get; set; }
+    public partial ObservableCollection<ExploreIndexCountry> Countrys { get; set; } = new();
+
+    [ObservableProperty]
+    public partial ObservableCollection<DataCenterExploreCountryItem> CountrysItems { get; set; } =
+        new();
+
+    [ObservableProperty]
+    public partial ExploreIndexCountry SelectCountry { get; set; }
+    public GamerExploreIndexData? BassData { get; private set; }
 
     public GamerExploreIndexViewModel(IWavesClient wavesClient, ITipShow tipShow)
     {
@@ -34,6 +43,58 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
         this._roilData = item;
     }
 
+    partial void OnSelectCountryChanged(ExploreIndexCountry value)
+    {
+        if (value == null || BassData == null)
+        {
+            TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
+            return;
+        }
+        var country = this
+            .BassData.ExploreList.Where(x => x.Country.CountryId == value.CountryId)
+            .FirstOrDefault();
+        if (country == null)
+        {
+            TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
+            return;
+        }
+        this.CountrysItems.Clear();
+        foreach (var item in country.AreaInfoList)
+        {
+            this.CountrysItems.Add(new(item));
+        }
+    }
+
+    [RelayCommand]
+    async Task LoadedAsync()
+    {
+        await RefreshDataAsync();
+    }
+
+    private async Task RefreshDataAsync()
+    {
+        Countrys.Clear();
+        if (this._roilData == null)
+        {
+            TipShow.ShowMessage("玩家数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
+            return;
+        }
+        this.BassData = await WavesClient.GetGamerExploreIndexDataAsync(
+            this._roilData,
+            this.CTS.Token
+        );
+        if (BassData == null)
+        {
+            TipShow.ShowMessage("探索数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
+            return;
+        }
+        foreach (var item in BassData.ExploreList)
+        {
+            Countrys.Add(new(item));
+        }
+        this.SelectCountry = Countrys[0];
+    }
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)
@@ -41,19 +102,6 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
             if (disposing)
             {
                 WeakReferenceMessenger.Default.UnregisterAll(this);
-                if (Explores != null)
-                {
-                    foreach (var item in this.Explores)
-                    {
-                        foreach (var item2 in item.Country)
-                        {
-                            item2.Items.RemoveAll();
-                            item2.Items = null;
-                        }
-                    }
-                    this.Explores.RemoveAll();
-                }
-                this.Explores = null;
                 this.Messenger.UnregisterAll(this);
             }
 
@@ -65,40 +113,5 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
     {
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
-    }
-
-    [RelayCommand]
-    async Task LoadedAsync()
-    {
-        await RefreshDataAsync();
-    }
-
-    private async Task RefreshDataAsync()
-    {
-        if (Explores != null)
-            Explores.RemoveAll();
-        if (Explores == null)
-            Explores = new();
-        if (this._roilData == null)
-        {
-            TipShow.ShowMessage("玩家数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
-            return;
-        }
-        var data = await WavesClient.GetGamerExploreIndexDataAsync(this._roilData, this.CTS.Token);
-        if (data == null)
-        {
-            TipShow.ShowMessage("探索数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
-            return;
-        }
-        foreach (var item in data.ExploreList)
-        {
-            this.Explores.Add(new(item));
-        }
-        double total = 0;
-        foreach (var progress in Explores)
-        {
-            total += progress.CountryProgress;
-        }
-        TotalProgress = Math.Round(total / Explores.Count);
     }
 }

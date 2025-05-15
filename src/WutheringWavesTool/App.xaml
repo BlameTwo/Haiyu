@@ -5,8 +5,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="using:WutheringWavesTool.Converter"
     xmlns:local="using:WutheringWavesTool"
-    RequestedTheme="Dark"
-    xmlns:tool="using:WutheringWavesTool.Common">
+    xmlns:tool="using:WutheringWavesTool.Common"
+    RequestedTheme="Light">
     <tool:ClientApplication.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

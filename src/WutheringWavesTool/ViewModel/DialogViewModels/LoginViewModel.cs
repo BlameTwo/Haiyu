@@ -70,7 +70,7 @@ public sealed partial class LoginViewModel : DialogViewModelBase
         }
         if (sendSMS.Data.GeeTest == false)
         {
-            TipMessage = ("验证码发送成功！");
+            TipMessage = "验证码发送成功！";
         }
         else
         {

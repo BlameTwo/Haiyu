@@ -10,6 +10,9 @@ public class AreaInfoList
     [JsonPropertyName("areaName")]
     public string AreaName { get; set; }
 
+    [JsonPropertyName("areaPic")]
+    public string AreaPic { get; set; }
+
     [JsonPropertyName("areaProgress")]
     public int AreaProgress { get; set; }
 

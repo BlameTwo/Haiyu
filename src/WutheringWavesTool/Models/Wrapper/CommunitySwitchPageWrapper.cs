@@ -50,5 +50,11 @@ public sealed partial class CommunitySwitchPageWrapper : ObservableObject
                 Tag = "Skin",
                 Icon = "\uE62D",
             },
+            new CommunitySwitchPageWrapper()
+            {
+                DisplayName = "冥歌海域",
+                Tag = "Boss2",
+                Icon = "\uE6CA",
+            },
         };
 }

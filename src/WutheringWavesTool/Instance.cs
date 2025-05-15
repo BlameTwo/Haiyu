@@ -39,6 +39,7 @@ public static class Instance
             .AddTransient<GamerExploreIndexViewModel>()
             .AddTransient<GamerTowerViewModel>()
             .AddTransient<GamerSkinViewModel>()
+            .AddTransient<GamerSlashDetailViewModel>()
             #endregion
             #region Record
             .AddTransient<RecordItemViewModel>()

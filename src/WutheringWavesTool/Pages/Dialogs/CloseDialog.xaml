@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentDialog
     x:Class="WutheringWavesTool.Pages.Dialogs.CloseDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" 
     CornerRadius="5"
-    RequestedTheme="Dark">
+    RequestedTheme="Light">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>

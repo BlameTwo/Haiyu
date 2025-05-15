@@ -352,7 +352,7 @@ partial class WavesClient
         return JsonSerializer.Deserialize(jsonData, CommunityContext.Default.GamerSkin);
     }
 
-    public async Task<string?> GetGamerSlashDetailAsync(
+    public async Task<GamerSlashDetailData?> GetGamerSlashDetailAsync(
         GameRoilDataItem roil,
         CancellationToken token = default
     )
@@ -382,6 +382,6 @@ partial class WavesClient
             return null;
         }
         var jsonData = resultCode.Data;
-        return jsonData;
+        return JsonSerializer.Deserialize(jsonData, CommunityContext.Default.GamerSlashDetailData);
     }
 }

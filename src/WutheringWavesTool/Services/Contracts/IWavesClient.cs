@@ -87,7 +87,10 @@ public interface IWavesClient
 
     Task<GamerSkin?> GetGamerSkinAsync(GameRoilDataItem roil, CancellationToken token = default);
 
-    public  Task<string?> GetGamerSlashDetailAsync(GameRoilDataItem roil, CancellationToken token = default);
+    public Task<GamerSlashDetailData?> GetGamerSlashDetailAsync(
+        GameRoilDataItem roil,
+        CancellationToken token = default
+    );
 
     #endregion
 }

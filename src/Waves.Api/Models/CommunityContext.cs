@@ -75,4 +75,9 @@ namespace Waves.Api.Models;
 [JsonSerializable(typeof(RoleSkinList))]
 [JsonSerializable(typeof(GamerSkin))]
 [JsonSerializable(typeof(WeaponSkinList))]
+[JsonSerializable(typeof(GamerSlashDetailData))]
+[JsonSerializable(typeof(HalfList))]
+[JsonSerializable(typeof(SlashRoleList))]
+[JsonSerializable(typeof(SlashDifficultyList))]
+[JsonSerializable(typeof(SlashChallengeList))]
 public partial class CommunityContext : JsonSerializerContext { }

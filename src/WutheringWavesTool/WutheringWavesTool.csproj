@@ -26,6 +26,7 @@
   <ItemGroup>
     <None Remove="Assets\applogo.png" />
     <None Remove="Assets\clickSound2.wav" />
+    <None Remove="Assets\Fonts\gameIcon.ttf" />
     <None Remove="Assets\Js\gt4.js" />
     <None Remove="Assets\Js\jquery.min.js" />
     <None Remove="Assets\RolePage\weapon.svg" />
@@ -37,6 +38,7 @@
     <None Remove="Controls\Styles\UI.xaml" />
     <None Remove="MainWindow.xaml" />
     <None Remove="NavigationView.xaml" />
+    <None Remove="Pages\Communitys\GamerSlashDetailPage.xaml" />
     <None Remove="Pages\Communitys\Windows\GamerRoilsDetilyPage.xaml" />
     <None Remove="Pages\Dialogs\CloseDialog.xaml" />
     <None Remove="Pages\Dialogs\GameResourceDialog.xaml" />
@@ -125,7 +127,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\Fonts\gameIcon.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\geet.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -197,6 +199,11 @@
     <Content Update="Assets\RolePage\weapon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\Communitys\GamerSlashDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\ToolPage.xaml">

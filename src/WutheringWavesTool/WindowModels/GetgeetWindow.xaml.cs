@@ -16,7 +16,7 @@ public sealed partial class GetGeetWindow : WindowModelBase
     )
     {
         sender.CoreWebView2.WebMessageReceived += CoreWebView2_WebMessageReceived;
-        sender.CoreWebView2.Profile.PreferredColorScheme = CoreWebView2PreferredColorScheme.Dark;
+        sender.CoreWebView2.Profile.PreferredColorScheme = CoreWebView2PreferredColorScheme.Light;
     }
 
     private void CoreWebView2_WebMessageReceived(

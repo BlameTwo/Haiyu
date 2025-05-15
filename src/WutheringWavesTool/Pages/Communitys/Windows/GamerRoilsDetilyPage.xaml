@@ -12,7 +12,7 @@
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper.WindowRoils"
     xmlns:wuc="using:DevWinUI"
-    RequestedTheme="Dark"
+    RequestedTheme="Light"
     xmlns:wui="using:CommunityToolkit.WinUI"
     mc:Ignorable="d">
     <Page.Resources>
