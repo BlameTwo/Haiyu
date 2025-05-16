@@ -39,7 +39,7 @@ partial class TitleBar
     {
         Window.AppWindow.TitleBar.ButtonBackgroundColor = Colors.Transparent;
         Window.AppWindow.TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-        if (rootElement.ActualTheme == ElementTheme.Light)
+        if (rootElement.ActualTheme == ElementTheme.Dark)
         {
             Window.AppWindow.TitleBar.ButtonForegroundColor = Colors.White;
             Window.AppWindow.TitleBar.ButtonInactiveForegroundColor = Colors.DarkGray;

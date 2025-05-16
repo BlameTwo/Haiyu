@@ -20,7 +20,7 @@
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
     xmlns:wuc="using:DevWinUI"
     xmlns:wui="using:CommunityToolkit.WinUI"
-    RequestedTheme="Light"
+    RequestedTheme="Dark"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">

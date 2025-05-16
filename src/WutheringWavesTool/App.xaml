@@ -6,7 +6,7 @@
     xmlns:converter="using:WutheringWavesTool.Converter"
     xmlns:local="using:WutheringWavesTool"
     xmlns:tool="using:WutheringWavesTool.Common"
-    RequestedTheme="Light">
+    RequestedTheme="Dark">
     <tool:ClientApplication.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

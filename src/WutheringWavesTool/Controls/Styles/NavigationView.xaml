@@ -33,7 +33,7 @@
             <StaticResource x:Key="RailNavigationViewItemBackgroundSelectedPressed" ResourceKey="ControlSolidFillColorDefaultBrush" />
         </ResourceDictionary>
 
-        <ResourceDictionary x:Key="Light">
+        <ResourceDictionary x:Key="Dark">
             <StaticResource x:Key="RailNavigationIconForegroundBrush" ResourceKey="ControlAAFillColorDefaultBrush" />
             <!--  rest  -->
             <SolidColorBrush x:Key="RailNavigationViewDefaultPaneBackground" Color="Transparent" />
