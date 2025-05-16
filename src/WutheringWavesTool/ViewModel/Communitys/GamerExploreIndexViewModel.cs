@@ -11,9 +11,6 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
     public IWavesClient WavesClient { get; }
     public ITipShow TipShow { get; }
 
-    //[ObservableProperty]
-    //public partial ObservableCollection<DataCenterExploreItem> Explores { get; set; }
-
     [ObservableProperty]
     public partial ObservableCollection<ExploreIndexCountry> Countrys { get; set; } = new();
 

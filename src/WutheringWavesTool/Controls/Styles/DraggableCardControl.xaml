@@ -103,7 +103,6 @@
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                     <VisualState.Setters>
-                                        <!--  DisabledVisual Should be handled by the control, not the animated icon.  -->
                                         <Setter Target="ContentPresenter.(AnimatedIcon.State)" Value="Normal" />
                                     </VisualState.Setters>
                                 </VisualState>

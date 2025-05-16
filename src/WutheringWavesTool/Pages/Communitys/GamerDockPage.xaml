@@ -167,7 +167,7 @@
                                         CornerRadius="5">
                                         <Image Source="{x:Bind Cover}" Stretch="Uniform" />
                                     </Border>
-                                    <Border Grid.Row="1" Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
+                                    <Border Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                                         <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                             <TextBlock
                                                 Grid.Row="1 "

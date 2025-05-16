@@ -60,11 +60,12 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <controls:Segmented
+                <ComboBox
                     Margin="4,0,0,0"
+                    HorizontalAlignment="Left"
                     ItemsSource="{x:Bind ViewModel.Pages, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectPageItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <controls:Segmented.ItemTemplate>
+                    <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="wrapper:CommunitySwitchPageWrapper">
                             <StackPanel Orientation="Horizontal">
                                 <FontIcon
@@ -74,8 +75,8 @@
                                 <TextBlock Margin="10,0,0,0" Text="{x:Bind DisplayName}" />
                             </StackPanel>
                         </DataTemplate>
-                    </controls:Segmented.ItemTemplate>
-                </controls:Segmented>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <Frame
                     x:Name="frame"
                     Grid.Row="1"

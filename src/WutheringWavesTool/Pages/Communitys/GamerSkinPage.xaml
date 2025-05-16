@@ -25,23 +25,23 @@
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="wModel:RoleSkinList">
                             <Grid
-                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
                                 BorderThickness="1"
-                                CornerRadius="5">
+                                CornerRadius="5"
+                                Style="{ThemeResource GridPanel}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
                                 <Image
                                     Grid.RowSpan="2"
+                                    Margin="10"
                                     Source="{x:Bind SkinIcon}"
                                     Stretch="Uniform" />
                                 <Border
                                     Padding="3"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                                     CornerRadius="3">
                                     <TextBlock FontSize="12" Text="{x:Bind SkinName}" />
                                 </Border>
@@ -51,7 +51,7 @@
                                     Padding="5"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Bottom"
-                                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
+                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                                     <TextBlock
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
@@ -65,8 +65,8 @@
                             ItemsJustification="Start"
                             ItemsStretch="Uniform"
                             MinColumnSpacing="5"
-                            MinItemHeight="110"
-                            MinItemWidth="90"
+                            MinItemHeight="120"
+                            MinItemWidth="100"
                             MinRowSpacing="5" />
                     </ItemsRepeater.Layout>
                 </ItemsRepeater>
@@ -80,10 +80,9 @@
                         <DataTemplate x:DataType="wModel:WeaponSkinList">
                             <Grid
                                 Margin="4"
-                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
                                 BorderThickness="1"
-                                CornerRadius="5">
+                                CornerRadius="5"
+                                Style="{ThemeResource GridPanel}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="auto" />
@@ -106,8 +105,7 @@
                                     Padding="5"
                                     HorizontalAlignment="Stretch"
                                     VerticalAlignment="Bottom"
-                                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
-                                    CornerRadius="5">
+                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                                     <TextBlock
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
@@ -121,8 +119,8 @@
                             ItemsJustification="Start"
                             ItemsStretch="Uniform"
                             MinColumnSpacing="5"
-                            MinItemHeight="110"
-                            MinItemWidth="90"
+                            MinItemHeight="120"
+                            MinItemWidth="100"
                             MinRowSpacing="5" />
                     </ItemsRepeater.Layout>
                 </ItemsRepeater>
