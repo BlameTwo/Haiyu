@@ -45,7 +45,10 @@
             </StackPanel>
         </Grid>
         <!--  未登录结束  -->
-        <Grid x:Name="loginyes" Visibility="{x:Bind ViewModel.IsLogin, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid
+            x:Name="loginyes"
+            Margin="25"
+            Visibility="{x:Bind ViewModel.IsLogin, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
@@ -55,7 +58,7 @@
                     <RepositionThemeTransition />
                 </TransitionCollection>
             </Grid.ChildrenTransitions>
-            <Grid Grid.Row="1" Margin="25">
+            <Grid Grid.Row="1" Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition />

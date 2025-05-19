@@ -146,7 +146,7 @@
                                     Padding="10,10,10,10"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Bottom"
-                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                                     CornerRadius="0 5 0 0"
                                     Orientation="Vertical">
                                     <TextBlock FontFamily="{ThemeResource DefaultFont}">

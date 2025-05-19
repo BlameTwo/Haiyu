@@ -28,7 +28,9 @@
                                     <Rectangle
                                         x:Name="ProgressBarTrack"
                                         Width="{TemplateBinding Width}"
-                                        Fill="{ThemeResource ControlAltFillColorTransparent}">
+                                        Fill="{ThemeResource ControlAltFillColorTransparent}"
+                                        RadiusX="3"
+                                        RadiusY="3">
                                         <Rectangle.RenderTransform>
                                             <CompositeTransform />
                                         </Rectangle.RenderTransform>
@@ -36,12 +38,16 @@
                                     <Rectangle
                                         x:Name="DeterminateProgressBarIndicator"
                                         HorizontalAlignment="Left"
-                                        Fill="{TemplateBinding Foreground}" />
+                                        Fill="{TemplateBinding Foreground}"
+                                        RadiusX="3"
+                                        RadiusY="3" />
                                     <Rectangle
                                         x:Name="IndeterminateProgressBarIndicator"
                                         HorizontalAlignment="Left"
                                         Fill="{TemplateBinding Foreground}"
-                                        Opacity="0">
+                                        Opacity="0"
+                                        RadiusX="3"
+                                        RadiusY="3">
                                         <Rectangle.RenderTransform>
                                             <CompositeTransform />
                                         </Rectangle.RenderTransform>
