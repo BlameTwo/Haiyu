@@ -9,8 +9,8 @@
     xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
     xmlns:vm="clr-namespace:Msix.WPFSetup.ViewModels"
     Title="MainWindow"
-    Width="800"
-    Height="450"
+    Width="500"
+    Height="300"
     MaxWidth="500"
     MaxHeight="300"
     d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
@@ -40,6 +40,10 @@
                     <TextBlock FontSize="18" Text="{Binding PackageName, Mode=OneWay}" />
                     <TextBlock Foreground="Gray" Text="权限" />
                     <TextBlock Foreground="Gray" Text="获取系统全部资源" />
+                    <TextBlock Foreground="Gray">
+                        <Run Text="Version:" />
+                        <Run Text="{Binding PackageVersion}" />
+                    </TextBlock>
                 </StackPanel>
                 <Viewbox
                     Width="150"
@@ -60,7 +64,7 @@
                 Margin="30,0,0,15"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom">
-                <Run Text="{Binding PackageVersion, Mode=OneWay}" />
+                <Run Text="{Binding TipProgress, Mode=OneWay}" />
             </TextBlock>
             <ProgressBar
                 VerticalAlignment="Bottom"

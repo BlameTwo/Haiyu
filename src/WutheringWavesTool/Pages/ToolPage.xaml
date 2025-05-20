@@ -152,6 +152,17 @@
                     </DataTemplate>
                 </FlipView.ItemTemplate>
             </FlipView>
+            <Button
+                Margin="0,5,5,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Command="{x:Bind ViewModel.RefreshCommand}"
+                Style="{ThemeResource TransparentButtonStyle}">
+                <FontIcon
+                    FontFamily="Segoe Fluent Icons"
+                    FontSize="14"
+                    Glyph="&#xE72C;" />
+            </Button>
         </Grid>
 
     </ScrollView>

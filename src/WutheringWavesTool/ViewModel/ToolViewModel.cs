@@ -18,6 +18,12 @@ public sealed partial class ToolViewModel : ViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
+        await RefreshAsync();
+    }
+
+    [RelayCommand]
+    async Task RefreshAsync()
+    {
         this.IsLogin = await WavesClient.IsLoginAsync(this.CTS.Token);
         if (!IsLogin)
         {

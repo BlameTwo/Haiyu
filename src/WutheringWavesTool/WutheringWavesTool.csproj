@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>WutheringWavesTool</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -97,7 +97,7 @@
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
 	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
-	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250401001" />
+	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250513003" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
 	  <PackageReference Include="WinUIEx" Version="2.5.1" />
   </ItemGroup>

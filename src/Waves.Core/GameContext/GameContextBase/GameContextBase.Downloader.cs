@@ -395,6 +395,9 @@ public partial class GameContextBase
         _totalFileTotal = patch.Resource.Count - 1;
         _totalProgressTotal = 0;
         this._downloadState = new DownloadState(patch);
+        _downloadBaseUrl =
+            launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
+            + launcher.ResourceDefault.Config.BaseUrl;
         await gameContextOutputDelegate?.Invoke(
             this,
             new GameContextOutputArgs
@@ -474,8 +477,8 @@ public partial class GameContextBase
                                         await DownloadFileByChunks(
                                             resource.Resource[j].Dest,
                                             filePath,
-                                            resource.Resource[j].ChunkInfos[i].Start,
-                                            resource.Resource[j].ChunkInfos[i].End,
+                                            resource.Resource[j].ChunkInfos[c].Start,
+                                            resource.Resource[j].ChunkInfos[c].End,
                                             true,
                                             resource.Resource[j].Size
                                         );
@@ -486,8 +489,8 @@ public partial class GameContextBase
                                         await DownloadFileByChunks(
                                             resource.Resource[j].Dest,
                                             filePath,
-                                            resource.Resource[j].ChunkInfos[i].Start,
-                                            resource.Resource[j].ChunkInfos[i].End,
+                                            resource.PatchInfos[j].Entries[i].ChunkInfos[c].Start,
+                                            resource.PatchInfos[j].Entries[i].ChunkInfos[c].End,
                                             false
                                         );
                                     }
@@ -519,6 +522,13 @@ public partial class GameContextBase
             return;
         }
         catch (OperationCanceledException)
+        {
+            _downloadState.IsActive = false;
+            await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");
+            await SetNoneStatusAsync().ConfigureAwait(false);
+            return;
+        }
+        catch (Exception ex)
         {
             _downloadState.IsActive = false;
             await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");

@@ -1,9 +1,13 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Security.Cryptography.X509Certificates;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Msix.WPFSetup.Resources;
+using Windows.ApplicationModel.Activation;
 using Windows.Management.Deployment;
+using Windows.System;
 
 namespace Msix.WPFSetup.ViewModels;
 
@@ -15,10 +19,14 @@ public partial class MainWindowViewModel : ObservableRecipient
     [ObservableProperty]
     public partial string PackageVersion { get; set; }
 
-    [ObservableProperty] public partial string PackageName { get; set; } = Package.PackageName;
+    [ObservableProperty]
+    public partial string PackageName { get; set; } = Package.PackageName;
 
     [ObservableProperty]
     public partial double Progress { get; set; }
+
+    [ObservableProperty]
+    public partial string TipProgress { get; set; }
 
     public string CertFile { get; private set; }
     public string MsixFile { get; private set; }
@@ -26,7 +34,7 @@ public partial class MainWindowViewModel : ObservableRecipient
     [RelayCommand]
     async Task Loaded()
     {
-        PackageVersion = "解压资源";
+        PackageVersion = Package.PackageVersion;
         IProgress<double> progress = new Progress<Double>();
         await Task.Run(async () =>
         {
@@ -70,45 +78,55 @@ public partial class MainWindowViewModel : ObservableRecipient
     {
         await Task.Run(async () =>
         {
-            #region 安装证书
-            X509Certificate2 x509Certificate2 = new X509Certificate2(
-                X509Certificate.CreateFromCertFile(CertFile)
-            );
-            X509Store store = new(StoreName.TrustedPeople, StoreLocation.LocalMachine);
-            store.Open(OpenFlags.ReadOnly);
-            X509Certificate2Collection existingCerts = store.Certificates.Find(
-                X509FindType.FindByThumbprint,
-                x509Certificate2.Thumbprint,
-                validOnly: false
-            );
-            if (existingCerts.Count > 0)
+            try
             {
-                Console.WriteLine("证书已存在！");
-            }
-            else
-            {
-                Console.WriteLine("证书不存在，可以添加。");
-                store.Open(OpenFlags.ReadWrite);
-                store.Add(x509Certificate2);
-            }
+                #region 安装证书
+                X509Certificate2 x509Certificate2 = new X509Certificate2(
+                    X509Certificate.CreateFromCertFile(CertFile)
+                );
+                X509Store store = new(StoreName.TrustedPeople, StoreLocation.LocalMachine);
+                store.Open(OpenFlags.ReadOnly);
+                X509Certificate2Collection existingCerts = store.Certificates.Find(
+                    X509FindType.FindByThumbprint,
+                    x509Certificate2.Thumbprint,
+                    validOnly: false
+                );
+                if (existingCerts.Count > 0)
+                {
+                    Console.WriteLine("证书已存在！");
+                }
+                else
+                {
+                    Console.WriteLine("证书不存在，可以添加。");
+                    store.Open(OpenFlags.ReadWrite);
+                    store.Add(x509Certificate2);
+                }
 
-            #endregion
+                #endregion
 
-            #region 安装
-            PackageManager manager = new PackageManager();
-            PackageManager packageManager = new();
-            AddPackageOptions addPackageOptions =
-                new() { ForceAppShutdown = true, RetainFilesOnFailure = true };
-            IProgress<DeploymentProgress> progress = new Progress<DeploymentProgress>(p =>
+                #region 安装
+                PackageManager packageManager = new();
+                AddPackageOptions addPackageOptions =
+                    new() { ForceAppShutdown = true, RetainFilesOnFailure = true };
+                IProgress<DeploymentProgress> progress = new Progress<DeploymentProgress>(p =>
+                {
+                    TipProgress = $"{p.percentage}";
+                    Progress = p.percentage;
+                });
+                var result = await packageManager
+                    .AddPackageByUriAsync(new Uri(MsixFile), addPackageOptions)
+                    .AsTask(progress)
+                    .ConfigureAwait(false);
+            }
+            catch (Exception ex)
             {
-                PackageVersion = $"{p.percentage}";
-                Progress = p.percentage;
-            });
-            var result = await packageManager
-                .AddPackageByUriAsync(new Uri(MsixFile), addPackageOptions)
-                .AsTask(progress)
-                .ConfigureAwait(false);
-            #endregion
+                MessageBox.Show(ex.Message);
+            }
+                #endregion
+
+            TipProgress = $"100%";
+            Progress = 100;
+            Environment.Exit(0);
         });
     }
 }
