@@ -93,7 +93,10 @@ public partial class GameContextBase
 
             HttpClientService.BuildClient();
             await InitializeProgress(resource);
-            Task.Run(() => StartDownloadAsync(folder, resource, () => DownloadComplate(source)));
+            await Task.Run(() => StartDownloadAsync(folder, resource));
+            await DownloadComplate(source);
+
+            await SetNoneStatusAsync().ConfigureAwait(false);
         }
         catch (IOException ex)
         {
@@ -120,17 +123,19 @@ public partial class GameContextBase
         }
         else
         {
-            var previous = source
-                .ResourceDefault.Config.PatchConfig.Where(x => x.Version == currentVersion)
-                .First();
-            if (previous != null)
+            var previous = source.ResourceDefault.Config.PatchConfig.Where(x =>
+                x.Version == currentVersion
+            );
+
+            if (previous != null && previous.Count() > 0)
             {
+                var previou = previous.First();
                 var cdnUrl = source
                     .ResourceDefault.CdnList.Where(x => x.P != 0)
                     .OrderBy(x => x.P)
                     .First()
                     .Url;
-                var patch = await GetPatchGameResourceAsync(cdnUrl + previous.IndexFile);
+                var patch = await GetPatchGameResourceAsync(cdnUrl + previou.IndexFile);
                 if (patch == null)
                 {
                     //无网络
@@ -184,11 +189,7 @@ public partial class GameContextBase
             .ConfigureAwait(false);
     }
 
-    private async Task StartDownloadAsync(
-        string folder,
-        IndexGameResource resource,
-        Func<Task> downloadComplate
-    )
+    private async Task StartDownloadAsync(string folder, IndexGameResource resource)
     {
         _downloadState.IsActive = true;
         await UpdateFileProgress(GameContextActionType.Verify, 0);
@@ -307,11 +308,9 @@ public partial class GameContextBase
             return;
         }
         #endregion
-
         _downloadCTS.Dispose();
         _downloadCTS = null;
         _isDownload = false;
-        await downloadComplate().ConfigureAwait(false);
         _downloadState.IsActive = false;
     }
 
@@ -407,14 +406,12 @@ public partial class GameContextBase
                 Type = GameContextActionType.Download,
             }
         );
-        Task.Run(() => StartPathDownloadAsync(folder, patch, () => DownloadComplate(launcher)));
+        await Task.Run(() => StartPathDownloadAsync(folder, patch));
+        await DownloadComplate(launcher);
+        await SetNoneStatusAsync().ConfigureAwait(false);
     }
 
-    private async Task StartPathDownloadAsync(
-        string folder,
-        PatchIndexGameResource resource,
-        Func<Task> downloadComplate
-    )
+    private async Task StartPathDownloadAsync(string folder, PatchIndexGameResource resource)
     {
         _downloadState.IsActive = true;
         await UpdateFileProgress(GameContextActionType.Verify, 0);
@@ -542,7 +539,6 @@ public partial class GameContextBase
             _isDownload = false;
         }
         #endregion
-        await downloadComplate().ConfigureAwait(false);
         _downloadState.IsActive = false;
     }
 
@@ -1081,6 +1077,6 @@ public partial class GameContextBase
             GameLocalSettingName.GameLauncherBassFolder
         );
         var launcher = await this.GetGameLauncherSourceAsync();
-        Task.Run(async () => await StartDownloadTaskAsync(installFolder, launcher));
+        await Task.Run(async () => await StartDownloadTaskAsync(installFolder, launcher));
     }
 }
