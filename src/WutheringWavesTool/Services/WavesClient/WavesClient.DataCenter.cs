@@ -191,11 +191,13 @@ partial class WavesClient
             { "roleId", roil.RoleId },
             { "serverId", roil.ServerId },
         };
-        var request = await BuildLoginRequest(
+        var request = await BuildRequest(
             "https://api.kurobbs.com/aki/roleBox/akiBox/challengeIndex",
+            HttpMethod.Post,
             header,
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
-            content
+            content,
+            true
         );
         var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
         var jsonStr = await result.Content.ReadAsStringAsync(token);

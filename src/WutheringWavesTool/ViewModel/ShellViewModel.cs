@@ -176,7 +176,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         var gamers = await WavesClient.GetWavesGamerAsync(this.CTS.Token);
         if (gamers == null || gamers.Code != 200)
             return;
-        this.Roles = await FormatRoilAsync(gamers.Data);
+        this.Roles = FormatRoil(gamers.Data);
         this.SelectRoles = Roles[0];
         this.GamerRoleListsVisibility = Visibility.Visible;
         this.AppContext.MainTitle.UpDate();
@@ -208,16 +208,12 @@ public sealed partial class ShellViewModel : ViewModelBase
         OpenMain();
     }
 
-    async Task<ObservableCollection<GameRoilDataWrapper>> FormatRoilAsync(
-        List<GameRoilDataItem> roilDataItems
-    )
+    ObservableCollection<GameRoilDataWrapper> FormatRoil(List<GameRoilDataItem> roilDataItems)
     {
         ObservableCollection<GameRoilDataWrapper> values = new();
         foreach (var item in roilDataItems)
         {
             GameRoilDataWrapper value = new GameRoilDataWrapper(item);
-            var level = await WavesClient.GetGamerBassDataAsync(item, this.CTS.Token);
-            value.GameLevel = level!.Level;
             values.Add(value);
         }
         return values;

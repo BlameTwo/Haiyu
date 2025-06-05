@@ -19,18 +19,20 @@ public sealed partial class WavesClient : IWavesClient
     {
         var dict = new Dictionary<string, string>()
         {
-            { "osVersion", "Android" },
-            { "devCode", "073A9EFAC18FC50616DD15808DAE719DBCB904B7" },
-            { "distinct_id", "96b1567b-b5e6-422f-a1dd-7cb1e58c5db7" },
-            { "countryCode", "CN" },
-            { "model", "android" },
+            { "Accept", "application/json, text/plain, */*" },
+            { "Accept-Encoding", "gzip, deflate" },
+            { "Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7" },
+            {
+                "User-Agent",
+                "Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
+            },
+            {
+                "devCode",
+                "123.168.91.121, Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
+            },
+            { "b-at", "5a77a6642a1f4f78b54ca028b6fca836" },
             { "source", "android" },
-            { "lang", "zh-Hans" },
-            { "version", "2.2.0" },
-            { "versionCode", "2200" },
-            { "channelId", "2" },
-            { "Accept-Encoding", "gzip" },
-            { "User-Agent", "okhttp/3.11.0" },
+            { "did", "1F48CAEBD509B31B7D63AACFE543FCA356AB50D8" },
         };
         if (isNeedToken)
         {
@@ -61,6 +63,7 @@ public sealed partial class WavesClient : IWavesClient
             request.Headers.Add(item.Key, item.Value);
         }
         request.RequestUri = new Uri(url);
+
         var endcod = new FormUrlEncodedContent(queryValues);
         var query = await endcod.ReadAsStringAsync(token);
         request.Content = new StringContent(query, mediatype);

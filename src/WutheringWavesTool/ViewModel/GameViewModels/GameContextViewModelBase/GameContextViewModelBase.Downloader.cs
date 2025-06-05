@@ -31,7 +31,7 @@ partial class GameContextViewModelBase
                     else
                     {
                         this.BottomBarContent =
-                            $"校验速度:{Math.Round(args.VerifySpeed / 1024 / 1024, 2)}MB";
+                            $"校验速度:{Math.Round(args.VerifySpeed / 1024 / 1024, 2)}MB,剩余：{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
                     }
                 }
                 else if (args.Type == Waves.Core.Models.Enums.GameContextActionType.Download)
@@ -43,7 +43,7 @@ partial class GameContextViewModelBase
                     else
                     {
                         this.BottomBarContent =
-                            $"下载速度:{Math.Round(args.DownloadSpeed / 1024 / 1024, 2)}MB";
+                            $"下载速度:{Math.Round(args.DownloadSpeed / 1024 / 1024, 2)}MB，剩余：{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
                     }
                 }
                 ShowGameDownloadingBth();
