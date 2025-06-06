@@ -54,8 +54,7 @@
                 HorizontalAlignment="Center"
                 Command="{x:Bind ViewModel.SignCommand}"
                 CornerRadius="50"
-                IsChecked="{x:Bind ViewModel.SignBthCheck, Mode=OneWay}"
-                IsEnabled="{x:Bind ViewModel.SignBthEnable, Mode=OneWay}">
+                IsChecked="{x:Bind ViewModel.SignBthCheck, Mode=OneWay}">
                 <StackPanel Orientation="Vertical">
                     <Image
                         Width="40"

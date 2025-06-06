@@ -32,6 +32,10 @@ public sealed partial class WavesClient : IWavesClient
             },
             { "source", "android" },
             { "did", "1F48CAEBD509B31B7D63AACFE543FCA356AB50D8" },
+            {
+                "devCode",
+                "123.168.91.121, Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
+            },
         };
         if (isNeedBAT)
         {
@@ -147,7 +151,7 @@ public sealed partial class WavesClient : IWavesClient
 
     public async Task<SignInResult?> SignInAsync(string userId, string roleId)
     {
-        var header = GetHeader(true);
+        var header = GetHeader(true, false);
         var queryData = new Dictionary<string, string>()
         {
             { "gameId", "3" },
@@ -242,7 +246,24 @@ public sealed partial class WavesClient : IWavesClient
     )
     {
         var url = "https://api.kurobbs.com/aki/roleBox/requestToken";
-        var header = GetHeader(true, false);
+        var header = new Dictionary<string, string>()
+        {
+            { "Accept", "application/json, text/plain, */*" },
+            { "Accept-Encoding", "gzip, deflate" },
+            { "Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7" },
+            {
+                "User-Agent",
+                "Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
+            },
+            {
+                "devCode",
+                "null, Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
+            },
+            { "did", "1F48CAEBD509B31B7D63AACFE543FCA356AB50D8" },
+            { "source", "android" },
+            { "token", this.Token },
+            { "Connection", "keep-alive" },
+        };
         var request = await BuildRequestAsync(
             url,
             HttpMethod.Post,
@@ -250,7 +271,7 @@ public sealed partial class WavesClient : IWavesClient
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
             new Dictionary<string, string>()
             {
-                { "roleId", this.Id.ToString() },
+                { "roleId", item.RoleId.ToString() },
                 { "serverId", item.ServerId },
                 { "userId", item.UserId.ToString() },
             },
