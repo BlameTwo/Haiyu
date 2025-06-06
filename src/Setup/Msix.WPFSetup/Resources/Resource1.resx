@@ -119,9 +119,9 @@
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Cert" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Installer\WutheringWavesTool_1.2.5.0_x64.cer;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Installer\WutheringWavesTool_1.2.6.0_x64.cer;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="MsixFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Installer\WutheringWavesTool_1.2.5.0_x64.msix;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>Installer\WutheringWavesTool_1.2.6.0_x64.msix;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
