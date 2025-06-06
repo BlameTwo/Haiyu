@@ -93,4 +93,8 @@ public interface IWavesClient
     );
 
     #endregion
+    public Task<RefreshToken?> UpdateRefreshToken(
+        GameRoilDataItem item,
+        CancellationToken token = default
+    );
 }

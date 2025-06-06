@@ -1,4 +1,7 @@
-﻿namespace WutheringWavesTool.Services;
+﻿using Azure.Core;
+using NetTaste;
+
+namespace WutheringWavesTool.Services;
 
 public sealed partial class WavesClient : IWavesClient
 {
@@ -8,6 +11,7 @@ public sealed partial class WavesClient : IWavesClient
 
     public IHttpClientService HttpClientService { get; }
     public GameRoilDataWrapper CurrentRoil { get; set; }
+    public string? BAT { get; private set; }
 
     public WavesClient(IHttpClientService httpClientService)
     {
@@ -15,7 +19,7 @@ public sealed partial class WavesClient : IWavesClient
         HttpClientService.BuildClient();
     }
 
-    private Dictionary<string, string> GetHeader(bool isNeedToken)
+    private Dictionary<string, string> GetHeader(bool isNeedToken, bool isNeedBAT = true)
     {
         var dict = new Dictionary<string, string>()
         {
@@ -26,14 +30,14 @@ public sealed partial class WavesClient : IWavesClient
                 "User-Agent",
                 "Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
             },
-            {
-                "devCode",
-                "123.168.91.121, Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
-            },
-            { "b-at", "5a77a6642a1f4f78b54ca028b6fca836" },
             { "source", "android" },
             { "did", "1F48CAEBD509B31B7D63AACFE543FCA356AB50D8" },
         };
+        if (isNeedBAT)
+        {
+            if (!string.IsNullOrWhiteSpace(this.BAT))
+                dict.Add("b-at", this.BAT ?? "");
+        }
         if (isNeedToken)
         {
             if (this.Token == null || string.IsNullOrWhiteSpace(Token))
@@ -70,7 +74,7 @@ public sealed partial class WavesClient : IWavesClient
         return request;
     }
 
-    private async Task<HttpRequestMessage> BuildRequest(
+    private async Task<HttpRequestMessage> BuildRequestAsync(
         string url,
         HttpMethod method,
         Dictionary<string, string> headers,
@@ -103,7 +107,7 @@ public sealed partial class WavesClient : IWavesClient
             { "userId", userId.ToString() },
         };
         var header = GetHeader(true);
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/encourage/signIn/initSignInV2",
             HttpMethod.Post,
             header,
@@ -128,7 +132,7 @@ public sealed partial class WavesClient : IWavesClient
             { "roleId", roldId },
             { "reqMonth", DateTime.Now.Month.ToString("D2") },
         };
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/encourage/signIn/queryRecordV2",
             HttpMethod.Post,
             header,
@@ -152,7 +156,7 @@ public sealed partial class WavesClient : IWavesClient
             { "roleId", roleId },
             { "reqMonth", DateTime.Now.Month.ToString("D2") },
         };
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/encourage/signIn/v2",
             HttpMethod.Post,
             header,
@@ -172,7 +176,7 @@ public sealed partial class WavesClient : IWavesClient
     {
         var header = GetHeader(true);
         var content = new Dictionary<string, string>() { { "otherUserId", id.ToString() } };
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/user/mineV2",
             HttpMethod.Post,
             header,
@@ -230,5 +234,49 @@ public sealed partial class WavesClient : IWavesClient
                 return true;
         }
         return false;
+    }
+
+    public async Task<RefreshToken?> UpdateRefreshToken(
+        GameRoilDataItem item,
+        CancellationToken token = default
+    )
+    {
+        var url = "https://api.kurobbs.com/aki/roleBox/requestToken";
+        var header = GetHeader(true, false);
+        var request = await BuildRequestAsync(
+            url,
+            HttpMethod.Post,
+            header,
+            new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+            new Dictionary<string, string>()
+            {
+                { "roleId", this.Id.ToString() },
+                { "serverId", item.ServerId },
+                { "userId", item.UserId.ToString() },
+            },
+            true,
+            token
+        );
+        var result = await HttpClientService.HttpClient.SendAsync(request, token);
+        var jsonStr = await result.Content.ReadAsStringAsync(token);
+
+        var resultCode = JsonSerializer.Deserialize(
+            jsonStr,
+            CommunityContext.Default.GamerBassString
+        );
+        if (resultCode == null)
+        {
+            return null;
+        }
+
+        var bassData = JsonSerializer.Deserialize(
+            resultCode.Data,
+            AccessTokenContext.Default.RefreshToken
+        );
+        if (bassData != null)
+        {
+            this.BAT = bassData.AccessToken;
+        }
+        return bassData;
     }
 }

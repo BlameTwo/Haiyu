@@ -17,7 +17,7 @@ partial class WavesClient
             { "type", "1" },
             { "sizeType", "2" },
         };
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/gamer/widget/game3/getData",
             HttpMethod.Post,
             header,
@@ -34,7 +34,7 @@ partial class WavesClient
     {
         var header = GetHeader(true);
         var content = new Dictionary<string, string>() { { "gameId", "3" } };
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/gamer/role/list",
             HttpMethod.Post,
             header,

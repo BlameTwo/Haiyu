@@ -30,7 +30,7 @@ public sealed partial class GameRoilsViewModel : ViewModelBase, ICommunityViewMo
     {
         this.User = item;
         var data = await WavesClient.RefreshGamerDataAsync(item, this.CTS.Token);
-        if (data == null || (data != null && !data.Success))
+        if (data == null || (data != null && !data.Data))
         {
             TipShow.ShowMessage("数据请求错误", Symbol.Clear);
             return;

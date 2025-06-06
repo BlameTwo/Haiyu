@@ -7,6 +7,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -46,6 +47,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -81,6 +83,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -117,6 +120,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -150,6 +154,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -184,6 +189,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -191,7 +197,7 @@ partial class WavesClient
             { "roleId", roil.RoleId },
             { "serverId", roil.ServerId },
         };
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/aki/roleBox/akiBox/challengeIndex",
             HttpMethod.Post,
             header,
@@ -222,7 +228,8 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
-        var header = GetHeader(true);
+        await this.UpdateRefreshToken(roil, token);
+        var header = GetHeader(true, true);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -249,7 +256,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
-        //https://api.kurobbs.com/aki/roleBox/akiBox/getRoleDetail
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -285,6 +292,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -294,7 +302,7 @@ partial class WavesClient
             { "channelId", "19" },
             { "countryCode", countryCode.ToString() },
         };
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/aki/roleBox/akiBox/challengeDetails",
             HttpMethod.Post,
             header,
@@ -325,6 +333,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -332,7 +341,7 @@ partial class WavesClient
             { "roleId", roil.RoleId.ToString() },
             { "serverId", roil.ServerId.ToString() },
         };
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/aki/roleBox/akiBox/skinData",
             HttpMethod.Post,
             header,
@@ -359,6 +368,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
+        await this.UpdateRefreshToken(roil, token);
         var header = GetHeader(true);
         var content = new Dictionary<string, string>()
         {
@@ -366,7 +376,7 @@ partial class WavesClient
             { "roleId", roil.RoleId.ToString() },
             { "serverId", roil.ServerId.ToString() },
         };
-        var request = await BuildRequest(
+        var request = await BuildRequestAsync(
             "https://api.kurobbs.com/aki/roleBox/akiBox/slashDetail",
             HttpMethod.Post,
             header,
