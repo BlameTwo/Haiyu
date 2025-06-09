@@ -93,5 +93,5 @@ public class GamerSlashDetailData
     public bool IsUnlock { get; set; }
 
     [JsonPropertyName("seasonEndTime")]
-    public int SeasonEndTime { get; set; }
+    public long SeasonEndTime { get; set; }
 }

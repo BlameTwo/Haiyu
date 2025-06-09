@@ -62,12 +62,12 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
         var diff1 = result.DifficultyList.Where(x => x.Difficulty == 1).FirstOrDefault();
         var diff2 = result.DifficultyList.Where(x => x.Difficulty == 2).FirstOrDefault();
         this.Difficulty0Header = SlashHeaderWrapper.Convert(diff0);
-        this.Difficulty1Header = SlashHeaderWrapper.Convert(diff1);
-        this.Difficulty2Header = SlashHeaderWrapper.Convert(diff2);
+        //this.Difficulty1Header = SlashHeaderWrapper.Convert(diff1);
+        //this.Difficulty2Header = SlashHeaderWrapper.Convert(diff2);
         this.SlashHeader0Items = SlashItemWrapper.Convert(diff0.ChallengeList);
-        this.SlashHeader1Items = SlashItemWrapper.Convert(diff1.ChallengeList);
-        var SlashHeader2Items = SlashItemWrapper.Convert(diff2.ChallengeList);
-        SlashHeader1Items.Insert(0, SlashHeader2Items[0]);
+        //this.SlashHeader1Items = SlashItemWrapper.Convert(diff1.ChallengeList);
+        //var SlashHeader2Items = SlashItemWrapper.Convert(diff2.ChallengeList);
+        //SlashHeader1Items.Insert(0, SlashHeader2Items[0]);
     }
 
     private void Dispose(bool disposing)

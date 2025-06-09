@@ -19,6 +19,8 @@ public partial class SlashHeaderWrapper : ObservableObject
 
     public static SlashHeaderWrapper Convert(SlashDifficultyList value)
     {
+        if (value == null)
+            return null;
         return new()
         {
             SlashHeaderName = value.DifficultyName,

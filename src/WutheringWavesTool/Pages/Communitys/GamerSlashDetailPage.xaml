@@ -23,7 +23,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid Margin="0,0,2.5,0" Style="{ThemeResource GridPanel}">
-            <Grid.RowDefinitions>
+            <!--<Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -177,7 +177,13 @@
                         </ItemsRepeater.ItemTemplate>
                     </ItemsRepeater>
                 </ScrollView>
-            </ScrollView>
+            </ScrollView>-->
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontFamily="{ThemeResource DefaultFont}"
+                FontSize="25"
+                Text="未开放" />
         </Grid>
         <Grid
             Grid.Column="1"
