@@ -199,7 +199,9 @@ public partial class GameContextBase
             for (int j = 0; j < resource.Resource.Count; j++)
             {
                 //this._totalProgressTotal = j + 1;
-                Debug.WriteLine($"开始处理文件[{resource.Resource[j]}/{resource.Resource.Count}]");
+                Debug.WriteLine(
+                    $"[{resource.Resource[j].Dest}],当前进度大小[{Math.Round((double)_totalProgressSize, 2)}/{Math.Round((double)_totalfileSize, 2)}]，真剩余资源大小{resource.Resource.Skip(j - 1).Sum(x => x.Size)}"
+                );
                 if (_downloadCTS?.IsCancellationRequested ?? true)
                 {
                     this._downloadState.IsActive = false;
@@ -217,6 +219,7 @@ public partial class GameContextBase
                         );
                         if (checkResult)
                         {
+                            Debug.WriteLine("需要全量下载……");
                             await DownloadFileByFull(
                                 resource.Resource[j].Dest,
                                 resource.Resource[j].Size,
@@ -230,6 +233,15 @@ public partial class GameContextBase
                             );
                             //await FinalValidation(file, filePath);
                         }
+                        else
+                        {
+                            await UpdateFileProgress(
+                                    GameContextActionType.Verify,
+                                    resource.Resource[j].Size,
+                                    true
+                                )
+                                .ConfigureAwait(false);
+                        }
                     }
                     else
                     {
@@ -242,6 +254,7 @@ public partial class GameContextBase
                             );
                             if (needDownload)
                             {
+                                Debug.WriteLine($"分片[{i}]需要全量下载……");
                                 if (i == resource.Resource[j].ChunkInfos.Count - 1)
                                 {
                                     HttpClientService.BuildClient();
@@ -266,12 +279,23 @@ public partial class GameContextBase
                                     );
                                 }
                             }
+                            else
+                            {
+                                await UpdateFileProgress(
+                                        GameContextActionType.Verify,
+                                        resource.Resource[j].ChunkInfos[i].End
+                                            - resource.Resource[j].ChunkInfos[i].Start,
+                                        true
+                                    )
+                                    .ConfigureAwait(false);
+                            }
                         }
                     }
                     //await FinalValidation(file, filePath);
                 }
                 else
                 {
+                    Debug.WriteLine($"文件不存在，全量下载");
                     await DownloadFileByFull(
                         resource.Resource[j].Dest,
                         resource.Resource[j].Size,
@@ -366,9 +390,7 @@ public partial class GameContextBase
         var currentVersion = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.LocalGameVersion
         );
-        var previous = launcher
-            .ResourceDefault.Config.PatchConfig.Where(x => x.Version == currentVersion)
-            .FirstOrDefault();
+        var previous = launcher.ResourceDefault.Config.PatchConfig.Last();
         PatchIndexGameResource? patch = null;
         if (previous != null)
         {
@@ -390,7 +412,7 @@ public partial class GameContextBase
             return;
         }
 
-        _totalfileSize = patch.PatchInfos.Sum(x => x.Entries.Sum(x => x.Size));
+        _totalfileSize = patch.Resource.Sum(x => x.Size);
         _totalFileTotal = patch.Resource.Count - 1;
         _totalProgressTotal = 0;
         this._downloadState = new DownloadState(patch);
@@ -418,97 +440,109 @@ public partial class GameContextBase
         #region 下载逻辑
         try
         {
-            for (int j = 0; j < resource.PatchInfos.Count; j++)
+            for (int i = 0; i < resource.Resource.Count; i++)
             {
-                for (int i = 0; i < resource.PatchInfos[j].Entries.Count; i++)
+                Debug.WriteLine($"开始处理更新文件{resource.Resource[i].Dest}");
+                if (_downloadCTS?.IsCancellationRequested ?? true)
                 {
-                    Debug.WriteLine($"开始处理更新文件{resource.PatchInfos[j].Entries[i].Dest}");
-                    if (_downloadCTS?.IsCancellationRequested ?? true)
+                    this._downloadState.IsActive = false;
+                    await SetNoneStatusAsync().ConfigureAwait(false);
+                    return;
+                }
+                var filePath = BuildFilePath(folder, resource.Resource[i]);
+                if (File.Exists(filePath))
+                {
+                    if (resource.Resource[i].ChunkInfos == null)
                     {
-                        this._downloadState.IsActive = false;
-                        await SetNoneStatusAsync().ConfigureAwait(false);
-                        return;
-                    }
-                    var filePath = BuildFilePath(folder, resource.PatchInfos[j].Entries[i]);
-                    if (File.Exists(filePath))
-                    {
-                        if (resource.PatchInfos[j].Entries[i].ChunkInfos == null)
+                        var checkResult = await VaildateFullFile(
+                            resource.Resource[i].Md5,
+                            filePath
+                        );
+                        if (checkResult)
                         {
-                            var checkResult = await VaildateFullFile(
-                                resource.PatchInfos[j].Entries[i].Md5,
-                                filePath
+                            await DownloadFileByFull(
+                                resource.Resource[i].Dest,
+                                resource.Resource[i].Size,
+                                filePath,
+                                new()
+                                {
+                                    Start = 0,
+                                    End = resource.Resource[i].Size - 1,
+                                    Md5 = resource.Resource[i].Md5,
+                                }
                             );
-                            if (checkResult)
-                            {
-                                await DownloadFileByFull(
-                                    resource.PatchInfos[j].Entries[i].Dest,
-                                    resource.PatchInfos[j].Entries[i].Size,
-                                    filePath,
-                                    new()
-                                    {
-                                        Start = 0,
-                                        End = resource.PatchInfos[j].Entries[i].Size - 1,
-                                        Md5 = resource.PatchInfos[j].Entries[i].Md5,
-                                    }
-                                );
-                            }
                         }
                         else
                         {
-                            for (
-                                int c = 0;
-                                c < resource.PatchInfos[j].Entries[i].ChunkInfos.Count;
-                                c++
-                            )
-                            {
-                                var fileName = System.IO.Path.GetFileName(filePath);
-                                var needDownload = await ValidateFileChunks(
-                                    resource.PatchInfos[j].Entries[i].ChunkInfos[c],
-                                    filePath
-                                );
-                                if (needDownload)
-                                {
-                                    if (i == resource.PatchInfos[j].Entries[i].ChunkInfos.Count - 1)
-                                    {
-                                        HttpClientService.BuildClient();
-                                        await DownloadFileByChunks(
-                                            resource.Resource[j].Dest,
-                                            filePath,
-                                            resource.Resource[j].ChunkInfos[c].Start,
-                                            resource.Resource[j].ChunkInfos[c].End,
-                                            true,
-                                            resource.Resource[j].Size
-                                        );
-                                    }
-                                    else
-                                    {
-                                        HttpClientService.BuildClient();
-                                        await DownloadFileByChunks(
-                                            resource.Resource[j].Dest,
-                                            filePath,
-                                            resource.PatchInfos[j].Entries[i].ChunkInfos[c].Start,
-                                            resource.PatchInfos[j].Entries[i].ChunkInfos[c].End,
-                                            false
-                                        );
-                                    }
-                                }
-                            }
+                            await UpdateFileProgress(
+                                    GameContextActionType.Verify,
+                                    resource.Resource[i].Size,
+                                    true
+                                )
+                                .ConfigureAwait(false);
                         }
                     }
                     else
                     {
-                        await DownloadFileByFull(
-                            resource.Resource[j].Dest,
-                            resource.Resource[j].Size,
-                            filePath,
-                            new IndexChunkInfo()
+                        for (int c = 0; c < resource.Resource[i].ChunkInfos.Count; c++)
+                        {
+                            var fileName = System.IO.Path.GetFileName(filePath);
+                            var needDownload = await ValidateFileChunks(
+                                resource.Resource[i].ChunkInfos[c],
+                                filePath
+                            );
+                            if (needDownload)
                             {
-                                Start = 0,
-                                End = resource.Resource[j].Size - 1,
-                                Md5 = resource.Resource[j].Md5,
+                                if (i == resource.Resource[i].ChunkInfos.Count - 1)
+                                {
+                                    HttpClientService.BuildClient();
+                                    await DownloadFileByChunks(
+                                        resource.Resource[i].Dest,
+                                        filePath,
+                                        resource.Resource[i].ChunkInfos[c].Start,
+                                        resource.Resource[i].ChunkInfos[c].End,
+                                        true,
+                                        resource.Resource[i].Size
+                                    );
+                                }
+                                else
+                                {
+                                    HttpClientService.BuildClient();
+                                    await DownloadFileByChunks(
+                                        resource.Resource[i].Dest,
+                                        filePath,
+                                        resource.Resource[i].ChunkInfos[c].Start,
+                                        resource.Resource[i].ChunkInfos[c].End,
+                                        false
+                                    );
+                                }
                             }
-                        );
+                            else
+                            {
+                                await UpdateFileProgress(
+                                        GameContextActionType.Verify,
+                                        resource.Resource[i].ChunkInfos[c].End
+                                            - resource.Resource[i].ChunkInfos[c].Start,
+                                        true
+                                    )
+                                    .ConfigureAwait(false);
+                            }
+                        }
                     }
+                }
+                else
+                {
+                    await DownloadFileByFull(
+                        resource.Resource[i].Dest,
+                        resource.Resource[i].Size,
+                        filePath,
+                        new IndexChunkInfo()
+                        {
+                            Start = 0,
+                            End = resource.Resource[i].Size - 1,
+                            Md5 = resource.Resource[i].Md5,
+                        }
+                    );
                 }
             }
         }
@@ -586,11 +620,11 @@ public partial class GameContextBase
         {
             try
             {
-                if (fs.Length < file.End + 1) // 检查文件长度是否足够
-                {
-                    Debug.WriteLine($"文件长度不足: {fs.Length} < {file.End + 1}");
-                    return true;
-                }
+                //if (fs.Length < file.End + 1) // 检查文件长度是否足够
+                //{
+                //    Debug.WriteLine($"文件长度不足: {fs.Length} < {file.End + 1}");
+                //    return true;
+                //}
                 var memoryPool = ArrayPool<byte>.Shared;
                 long offset = file.Start;
                 long remaining = file.End - file.Start + 1;
@@ -628,7 +662,8 @@ public partial class GameContextBase
                             {
                                 await UpdateFileProgress(
                                         GameContextActionType.Verify,
-                                        accumulatedBytes
+                                        accumulatedBytes,
+                                        false
                                     )
                                     .ConfigureAwait(false);
                                 accumulatedBytes = 0;
@@ -642,12 +677,17 @@ public partial class GameContextBase
                     }
                     if (accumulatedBytes > 0 && accumulatedBytes < UpdateThreshold && !isBreak)
                     {
-                        await UpdateFileProgress(GameContextActionType.Verify, accumulatedBytes)
+                        await UpdateFileProgress(
+                                GameContextActionType.Verify,
+                                accumulatedBytes,
+                                false
+                            )
                             .ConfigureAwait(false);
                     }
                     md5.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
                     string hash = BitConverter.ToString(md5.Hash!).Replace("-", "").ToLower();
                     isValid = hash == file.Md5.ToLower();
+                    Debug.WriteLine($"分片校验结果{hash}|{file.Md5}");
                     return !isValid;
                 }
             }
@@ -708,7 +748,11 @@ public partial class GameContextBase
                         accumulatedBytes += bytesRead; // 添加此行以累加字节数
                         if (accumulatedBytes >= UpdateThreshold)
                         {
-                            await UpdateFileProgress(GameContextActionType.Verify, accumulatedBytes)
+                            await UpdateFileProgress(
+                                    GameContextActionType.Verify,
+                                    accumulatedBytes,
+                                    false
+                                )
                                 .ConfigureAwait(false);
                             accumulatedBytes = 0;
                         }
@@ -720,7 +764,7 @@ public partial class GameContextBase
                 }
                 if (accumulatedBytes < UpdateThreshold && !isBreak)
                 {
-                    await UpdateFileProgress(GameContextActionType.Verify, accumulatedBytes)
+                    await UpdateFileProgress(GameContextActionType.Verify, accumulatedBytes, false)
                         .ConfigureAwait(false);
                 }
             }
@@ -977,17 +1021,24 @@ public partial class GameContextBase
         catch (Exception ex) { }
     }
 
-    private async Task UpdateFileProgress(GameContextActionType type, long fileSize)
+    private async Task UpdateFileProgress(
+        GameContextActionType type,
+        long fileSize,
+        bool isAdd = true
+    )
     {
         if (type == GameContextActionType.Download)
         {
             Interlocked.Add(ref _totalDownloadedBytes, fileSize);
-            Interlocked.Add(ref _totalProgressSize, fileSize);
+            if (isAdd)
+                Interlocked.Add(ref _totalProgressSize, fileSize);
         }
         else if (type == GameContextActionType.Verify)
         {
-            Interlocked.Add(ref _totalVerifiedBytes, fileSize);
-            Interlocked.Add(ref _totalProgressSize, fileSize);
+            if (!isAdd)
+                Interlocked.Add(ref _totalVerifiedBytes, fileSize);
+            if (isAdd)
+                Interlocked.Add(ref _totalProgressSize, fileSize);
         }
         var elapsed = (DateTime.Now - _lastSpeedUpdateTime).TotalSeconds;
         if (elapsed >= 1)
