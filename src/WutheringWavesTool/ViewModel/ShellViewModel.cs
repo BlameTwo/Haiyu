@@ -206,6 +206,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         }
         this.AppContext.MainTitle.UpDate();
         OpenMain();
+        Instance.GetService<ICounterService>()?.ShowWindow();
     }
 
     ObservableCollection<GameRoilDataWrapper> FormatRoil(List<GameRoilDataItem> roilDataItems)

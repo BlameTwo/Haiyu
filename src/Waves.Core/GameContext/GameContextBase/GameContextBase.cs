@@ -10,6 +10,7 @@ using Waves.Core.Common;
 using Waves.Core.Contracts;
 using Waves.Core.Models;
 using Waves.Core.Models.Enums;
+using Waves.Core.Services;
 
 namespace Waves.Core.GameContext;
 
@@ -24,6 +25,8 @@ public abstract partial class GameContextBase : IGameContext
 
     #region Property
     public IHttpClientService HttpClientService { get; set; }
+
+    public LoggerService Logger { get; set; }
     public GameAPIConfig Config { get; private set; }
     public string ContextName { get; }
     public string GamerConfigPath { get; set; }
@@ -48,6 +51,7 @@ public abstract partial class GameContextBase : IGameContext
 
     internal GameContextBase(GameAPIConfig config, string contextName)
     {
+        Logger = new LoggerService();
         Config = config;
         ContextName = contextName;
     }
@@ -58,6 +62,8 @@ public abstract partial class GameContextBase : IGameContext
         Directory.CreateDirectory(GamerConfigPath);
         this.GameLocalConfig = new GameLocalConfig();
         GameLocalConfig.SettingPath = GamerConfigPath + "\\Settings.db";
+        var logPath = GamerConfigPath + "\\logs\\log.log";
+        Logger.InitLogger(logPath, Serilog.RollingInterval.Day);
         await InitSettingAsync();
     }
 
@@ -155,5 +161,10 @@ public abstract partial class GameContextBase : IGameContext
         );
         await this.GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameVersion, "");
         await SetNoneStatusAsync().ConfigureAwait(false);
+    }
+
+    public void UpdateLogCore(CoreLogOption coreLogOption)
+    {
+        this.Logger.Option = coreLogOption;
     }
 }

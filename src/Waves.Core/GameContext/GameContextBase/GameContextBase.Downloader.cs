@@ -73,7 +73,6 @@ public partial class GameContextBase
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
-
         await UpdateGameResourceAsync(folder, launcher);
     }
 
@@ -100,7 +99,7 @@ public partial class GameContextBase
         }
         catch (IOException ex)
         {
-            Debug.WriteLine(ex.Message);
+            Logger.WriteError(ex.Message);
             await this.SetNoneStatusAsync();
         }
     }
@@ -115,7 +114,6 @@ public partial class GameContextBase
         );
         if (string.IsNullOrWhiteSpace(currentVersion))
         {
-            //检查上次版本，清除缓存文件
             await this.GameLocalConfig.SaveConfigAsync(
                 GameLocalSettingName.LocalGameVersion,
                 source.ResourceDefault.Version
@@ -138,7 +136,7 @@ public partial class GameContextBase
                 var patch = await GetPatchGameResourceAsync(cdnUrl + previou.IndexFile);
                 if (patch == null)
                 {
-                    //无网络
+                    Logger.WriteError("获取游戏资源失败，已经退出下载");
                     return;
                 }
                 for (int i = 0; i < patch.DeleteFiles.Count; i++)
@@ -148,6 +146,7 @@ public partial class GameContextBase
                     {
                         File.Delete(localFile);
                     }
+                    Logger.WriteInfo($"删除旧文件{System.IO.Path.GetFileName(localFile)}");
                     this.gameContextOutputDelegate?.Invoke(
                             this,
                             new GameContextOutputArgs()
@@ -198,8 +197,7 @@ public partial class GameContextBase
         {
             for (int j = 0; j < resource.Resource.Count; j++)
             {
-                //this._totalProgressTotal = j + 1;
-                Debug.WriteLine(
+                Logger.WriteInfo(
                     $"[{resource.Resource[j].Dest}],当前进度大小[{Math.Round((double)_totalProgressSize, 2)}/{Math.Round((double)_totalfileSize, 2)}]，真剩余资源大小{resource.Resource.Skip(j - 1).Sum(x => x.Size)}"
                 );
                 if (_downloadCTS?.IsCancellationRequested ?? true)
@@ -219,7 +217,7 @@ public partial class GameContextBase
                         );
                         if (checkResult)
                         {
-                            Debug.WriteLine("需要全量下载……");
+                            Logger.WriteInfo("需要全量下载……");
                             await DownloadFileByFull(
                                 resource.Resource[j].Dest,
                                 resource.Resource[j].Size,
@@ -254,7 +252,7 @@ public partial class GameContextBase
                             );
                             if (needDownload)
                             {
-                                Debug.WriteLine($"分片[{i}]需要全量下载……");
+                                Logger.WriteInfo($"分片[{i}]需要全量下载……");
                                 if (i == resource.Resource[j].ChunkInfos.Count - 1)
                                 {
                                     HttpClientService.BuildClient();
@@ -295,7 +293,7 @@ public partial class GameContextBase
                 }
                 else
                 {
-                    Debug.WriteLine($"文件不存在，全量下载");
+                    Logger.WriteInfo($"文件不存在，全量下载");
                     await DownloadFileByFull(
                         resource.Resource[j].Dest,
                         resource.Resource[j].Size,
@@ -319,9 +317,10 @@ public partial class GameContextBase
             _isDownload = false;
             await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");
             await SetNoneStatusAsync().ConfigureAwait(false);
+            Logger.WriteError($"退出下载，错误{ex.Message}");
             return;
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException operEx)
         {
             _downloadState.IsActive = false;
             _downloadCTS.Dispose();
@@ -329,6 +328,7 @@ public partial class GameContextBase
             _isDownload = false;
             await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");
             await SetNoneStatusAsync().ConfigureAwait(false);
+            Logger.WriteError($"退出下载，错误{operEx.Message}");
             return;
         }
         #endregion
@@ -342,6 +342,7 @@ public partial class GameContextBase
     {
         if (this._downloadState.IsActive)
         {
+            Logger.WriteInfo($"暂停下载");
             return await this._downloadState.PauseAsync();
         }
 
@@ -352,6 +353,7 @@ public partial class GameContextBase
     {
         if (_downloadState.IsPaused)
         {
+            Logger.WriteInfo($"恢复下载");
             _lastSpeedTime = DateTime.Now;
             return await _downloadState.ResumeAsync();
         }
@@ -370,11 +372,12 @@ public partial class GameContextBase
             Interlocked.Exchange(ref _totalfileSize, 0L);
             Interlocked.Exchange(ref _totalVerifiedBytes, 0L);
             Interlocked.Exchange(ref _totalDownloadedBytes, 0L);
+            Logger.WriteInfo($"取消下载");
             return true;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"取消下载异常: {ex.Message}");
+            Logger.WriteInfo($"取消下载异常: {ex.Message}");
             return false;
         }
         finally
@@ -446,7 +449,7 @@ public partial class GameContextBase
         {
             for (int i = 0; i < resource.Resource.Count; i++)
             {
-                Debug.WriteLine($"开始处理更新文件{resource.Resource[i].Dest}");
+                Logger.WriteInfo($"开始处理更新文件{resource.Resource[i].Dest}");
                 if (_downloadCTS?.IsCancellationRequested ?? true)
                 {
                     this._downloadState.IsActive = false;
@@ -692,7 +695,7 @@ public partial class GameContextBase
                     md5.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
                     string hash = BitConverter.ToString(md5.Hash!).Replace("-", "").ToLower();
                     isValid = hash == file.Md5.ToLower();
-                    Debug.WriteLine($"分片校验结果{hash}|{file.Md5}");
+                    Logger.WriteInfo($"分片校验结果{hash}|{file.Md5}");
                     return !isValid;
                 }
             }
@@ -816,6 +819,10 @@ public partial class GameContextBase
         )
         {
             long accumulatedBytes = 0;
+            if (start == 0 && end == -1)
+            {
+                Logger.WriteError($"文件{filePath}，分片数据错误，start={start},end={end}");
+            }
             using var request = new HttpRequestMessage(HttpMethod.Get, _downloadBaseUrl + dest);
             request.Headers.Range = new RangeHeaderValue(start, end);
             using var response = await HttpClientService.GameDownloadClient.SendAsync(
@@ -826,6 +833,7 @@ public partial class GameContextBase
             var stream = await response.Content.ReadAsStreamAsync(_downloadCTS.Token);
             if (start < 0 || end < start)
             {
+                Logger.WriteError($"分片范围无效: {start}-{end}");
                 throw new ArgumentException($"分片范围无效: {start}-{end}");
             }
 
@@ -928,6 +936,9 @@ public partial class GameContextBase
             {
                 if (chunk.Start == 0 && chunk.End == -1)
                 {
+                    Logger.WriteError(
+                        $"文件{filePath}，分片数据错误，start={chunk.Start},end={chunk.End}"
+                    );
                     return;
                 }
                 long currentBytes = 0;
@@ -947,6 +958,7 @@ public partial class GameContextBase
                     .ConfigureAwait(false);
                 if (chunk.Start < 0 || chunk.End < chunk.Start)
                 {
+                    Logger.WriteError($"分片范围无效，start={chunk.Start},end={chunk.End}");
                     throw new ArgumentException($"分片范围无效: {chunk.Start}-{chunk.End}");
                 }
 
@@ -989,7 +1001,10 @@ public partial class GameContextBase
                 await fileStream.FlushAsync();
             }
         }
-        catch (Exception ex) { }
+        catch (Exception ex)
+        {
+            Logger.WriteError(ex.Message);
+        }
     }
     #endregion
 
@@ -1124,6 +1139,7 @@ public partial class GameContextBase
 
     public async Task RepirGameAsync()
     {
+        Logger.WriteInfo("开始修复游戏");
         var installFolder = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.GameLauncherBassFolder
         );

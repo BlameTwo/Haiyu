@@ -13,23 +13,31 @@ partial class GameContextBase
     )
     {
         var url = "";
-        if (this.ContextName == nameof(GlobalGameContext))
+        try
         {
-            url =
-                $"{GameAPIConfig.BaseAddress[1]}/launcher/game/{Config.GameID}/{Config.AppId}_{Config.AppKey}/index.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+            if (this.ContextName == nameof(GlobalGameContext))
+            {
+                url =
+                    $"{GameAPIConfig.BaseAddress[1]}/launcher/game/{Config.GameID}/{Config.AppId}_{Config.AppKey}/index.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+            }
+            else
+            {
+                url =
+                    $"{GameAPIConfig.BaseAddress[0]}/launcher/game/{Config.GameID}/{Config.AppId}_{Config.AppKey}/index.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+            }
+            var result = await HttpClientService.GameDownloadClient.GetAsync(url);
+            var jsonStr = await result.Content.ReadAsStringAsync();
+            var launcherIndex = JsonSerializer.Deserialize<GameLauncherSource>(
+                jsonStr,
+                GameLauncherSourceContext.Default.GameLauncherSource
+            );
+            return launcherIndex;
         }
-        else
+        catch (Exception ex)
         {
-            url =
-                $"{GameAPIConfig.BaseAddress[0]}/launcher/game/{Config.GameID}/{Config.AppId}_{Config.AppKey}/index.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+            Logger.WriteError($"请求{url}出错：{ex.Message}");
+            return null;
         }
-        var result = await HttpClientService.GameDownloadClient.GetAsync(url);
-        var jsonStr = await result.Content.ReadAsStringAsync();
-        var launcherIndex = JsonSerializer.Deserialize<GameLauncherSource>(
-            jsonStr,
-            GameLauncherSourceContext.Default.GameLauncherSource
-        );
-        return launcherIndex;
     }
 
     public async Task<IndexGameResource> GetGameResourceAsync(
@@ -65,8 +73,9 @@ partial class GameContextBase
             );
             return pathIndexSource;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Logger.WriteError($"请求{url}出错：{ex.Message}");
             return null;
         }
     }
@@ -75,9 +84,9 @@ partial class GameContextBase
         CancellationToken token = default
     )
     {
+        string url = "";
         try
         {
-            string url = "";
             if (this.ContextName == nameof(GlobalGameContext))
             {
                 url =
@@ -99,6 +108,7 @@ partial class GameContextBase
         }
         catch (Exception ex)
         {
+            Logger.WriteError($"请求{url}出错：{ex.Message}");
             return null;
         }
     }

@@ -50,6 +50,7 @@
     <None Remove="Pages\GamePages\GlobalGamePage.xaml" />
     <None Remove="Pages\GamePages\MainGamePage.xaml" />
     <None Remove="Pages\GamePages\MainPGRGamePage.xaml" />
+    <None Remove="Pages\StatisticsPage.xaml" />
     <None Remove="Pages\ToolPage.xaml" />
     <None Remove="ToolWindow.xaml" />
   </ItemGroup>
@@ -101,9 +102,13 @@
 	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
 	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250513003" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
+	  <PackageReference Include="Serilog" Version="4.3.1-dev-02373" />
+	  <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
+	  <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
 	  <PackageReference Include="WinUIEx" Version="2.5.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Performances\FpsCounter\CounterMonitor.csproj" />
     <ProjectReference Include="..\Waves.Api\Waves.Api.csproj" />
     <ProjectReference Include="..\Waves.Core\Waves.Core.csproj" />
   </ItemGroup>
@@ -204,6 +209,11 @@
     <Content Update="Assets\RolePage\weapon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\StatisticsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\GamePages\MainPGRGamePage.xaml">

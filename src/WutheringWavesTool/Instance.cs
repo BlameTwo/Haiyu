@@ -72,6 +72,7 @@ public static class Instance
             .AddSingleton<IAppContext<App>, AppContext<App>>()
             .AddSingleton<IWavesClient, WavesClient>()
             .AddTransient<IViewFactorys, ViewFactorys>()
+            .AddSingleton<ICounterService, CounterService>()
             .AddSingleton<IWallpaperService, WallpaperService>(
                 (s) =>
                 {

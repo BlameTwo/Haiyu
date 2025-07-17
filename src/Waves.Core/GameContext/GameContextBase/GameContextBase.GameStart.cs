@@ -42,10 +42,12 @@ namespace Waves.Core.GameContext
                 _gameProcess.StartInfo = info;
                 _gameProcess.Start();
                 this._isStarting = true;
+                Logger.WriteInfo("正在启动游戏……");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this._isStarting = false;
+                Logger.WriteError($"游戏启动错误{ex.Message}");
             }
             this.gameContextOutputDelegate?.Invoke(
                     this,
@@ -82,14 +84,14 @@ namespace Waves.Core.GameContext
 
         public async Task StopGameAsync()
         {
-            await Task.Run(() =>
+            if (!this._isStarting && _gameProcess == null)
             {
-                if (!this._isStarting && _gameProcess == null)
-                {
-                    return;
-                }
-                _gameProcess?.Kill(true);
-            });
+                return;
+            }
+            _gameProcess?.Kill(true);
+            if (_gameProcess != null)
+                await _gameProcess.WaitForExitAsync();
+            Logger.WriteInfo("退出游戏………………");
         }
     }
 }

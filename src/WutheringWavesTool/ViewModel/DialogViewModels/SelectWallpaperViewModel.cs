@@ -27,6 +27,8 @@ public sealed partial class SelectWallpaperViewModel : DialogViewModelBase
         {
             await foreach (var a in AppContext.WallpaperService.GetFilesAsync(this.CTS.Token))
             {
+                if (this.Images == null)
+                    Images = [];
                 this.Images.Add(a);
             }
         }
