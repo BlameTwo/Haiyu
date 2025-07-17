@@ -81,5 +81,6 @@ public interface IGameContext
     Task StartGameAsync();
     Task UpdateGameAsync();
     Task StopGameAsync();
+    Task DeleteResourceAsync();
     #endregion
 }

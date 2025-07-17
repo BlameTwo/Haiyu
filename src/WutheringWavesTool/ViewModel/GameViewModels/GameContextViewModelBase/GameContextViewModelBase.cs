@@ -242,6 +242,12 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
             await DialogManager.ShowGameResourceDialogAsync(this.GameContext.ContextName);
         }
 
+        [RelayCommand]
+        async Task DeleteGameResource()
+        {
+            await GameContext.DeleteResourceAsync();
+        }
+
         private void ShowGameDownloadingBth()
         {
             _bthType = 2;

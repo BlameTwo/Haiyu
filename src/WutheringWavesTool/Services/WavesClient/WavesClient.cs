@@ -101,7 +101,7 @@ public sealed partial class WavesClient : IWavesClient
         return request;
     }
 
-    public async Task<SignIn?> GetSignInDataAsync(long userId, long roleId)
+    public async Task<SignIn?> GetSignInDataAsync(string userId, long roleId)
     {
         var queryData = new Dictionary<string, string>()
         {

@@ -16,6 +16,13 @@ public static class GameContextFactory
             IsLimitSpeed = false,
         };
 
+    internal static MainPGRGameContext GetMainPGRGameContext() =>
+        new MainPGRGameContext(GameAPIConfig.MainBGRConfig)
+        {
+            GamerConfigPath = GameContextFactory.GameBassPath + "\\MainPGRConfig",
+            IsLimitSpeed = false,
+        };
+
     internal static GlobalGameContext GetGlobalGameContext() =>
         new GlobalGameContext(GameAPIConfig.GlobalConfig)
         {

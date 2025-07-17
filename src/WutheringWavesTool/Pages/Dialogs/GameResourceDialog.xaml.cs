@@ -1,4 +1,4 @@
-namespace WutheringWavesTool.Pages.Dialogs;
+﻿namespace WutheringWavesTool.Pages.Dialogs;
 
 public sealed partial class GameResourceDialog : ContentDialog
 {
@@ -6,7 +6,6 @@ public sealed partial class GameResourceDialog : ContentDialog
     {
         this.InitializeComponent();
         ViewModel = viewModel;
-        
     }
 
     public GameResourceViewModel ViewModel { get; }

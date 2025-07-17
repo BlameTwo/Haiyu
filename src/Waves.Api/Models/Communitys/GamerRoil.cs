@@ -40,13 +40,13 @@ public class GamerRoil
 public class GameRoilDataItem
 {
     [JsonPropertyName("id")]
-    public long Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     ///
     /// </summary>
     [JsonPropertyName("userId")]
-    public long UserId { get; set; }
+    public string UserId { get; set; }
 
     /// <summary>
     ///
@@ -124,7 +124,7 @@ public class GameRoilDataItem
     ///
     /// </summary>
     [JsonPropertyName("achievementCount")]
-    public int AchievementCount { get; set; }
+    public long AchievementCount { get; set; }
 
     /// <summary>
     ///

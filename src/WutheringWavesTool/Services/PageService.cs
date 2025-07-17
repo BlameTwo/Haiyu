@@ -16,6 +16,7 @@ public sealed partial class PageService : IPageService
         this.RegisterView<MainGamePage, MainGameViewModel>();
         this.RegisterView<GlobalGamePage, GlobalGameViewModel>();
         this.RegisterView<BiliBiliGamePage, BiliBiliGameViewModel>();
+        this.RegisterView<MainPGRGamePage, MainPGRViewModel>();
         #endregion
         this.RegisterView<GamerRoilsPage, GameRoilsViewModel>();
         this.RegisterView<GamerDockPage, GamerDockViewModel>();

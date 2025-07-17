@@ -45,6 +45,15 @@ public static class Waves
                     return context;
                 }
             )
+            .AddKeyedSingleton<IGameContext, MainPGRGameContext>(
+                nameof(MainPGRGameContext),
+                (provider, c) =>
+                {
+                    var context = GameContextFactory.GetMainPGRGameContext();
+                    context.HttpClientService = provider.GetRequiredService<IHttpClientService>();
+                    return context;
+                }
+            )
             .AddTransient<IHttpClientService, HttpClientService>();
         services.AddHttpClient();
         return services;

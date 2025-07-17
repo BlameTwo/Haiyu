@@ -27,6 +27,7 @@
     <None Remove="Assets\applogo.png" />
     <None Remove="Assets\clickSound2.wav" />
     <None Remove="Assets\Fonts\gameIcon.ttf" />
+    <None Remove="Assets\GameIcons\pgr.ico" />
     <None Remove="Assets\Js\gt4.js" />
     <None Remove="Assets\Js\jquery.min.js" />
     <None Remove="Assets\RolePage\weapon.svg" />
@@ -48,6 +49,7 @@
     <None Remove="Pages\GamePages\BiliBiliGamePage.xaml" />
     <None Remove="Pages\GamePages\GlobalGamePage.xaml" />
     <None Remove="Pages\GamePages\MainGamePage.xaml" />
+    <None Remove="Pages\GamePages\MainPGRGamePage.xaml" />
     <None Remove="Pages\ToolPage.xaml" />
     <None Remove="ToolWindow.xaml" />
   </ItemGroup>
@@ -129,6 +131,9 @@
     <Content Update="Assets\Fonts\gameIcon.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Update="Assets\GameIcons\pgr.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Update="Assets\geet.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -199,6 +204,11 @@
     <Content Update="Assets\RolePage\weapon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\GamePages\MainPGRGamePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\Communitys\GamerSlashDetailPage.xaml">

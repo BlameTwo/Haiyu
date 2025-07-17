@@ -21,16 +21,16 @@ public class AppSettings
             var json = File.ReadAllText(SettingsFilePath);
             try
             {
-                _settingsCache =
-                JsonSerializer.Deserialize<List<LocalSettings>>(
+                _settingsCache = JsonSerializer.Deserialize<List<LocalSettings>>(
                     json,
-                    LocalSettingsJsonContext.Default.ListLocalSettings);
+                    LocalSettingsJsonContext.Default.ListLocalSettings
+                );
             }
             catch (Exception)
             {
-                _settingsCache= new();
+                _settingsCache = new();
             }
-           
+
             SaveSettings();
         }
         else

@@ -353,6 +353,14 @@
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/bilibili.ico" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
+                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.MainPGRViewModel" Content="战双帕弥什">
+                        <i:Interaction.Behaviors>
+                            <sound:NavigationViewItemSoundBehavior />
+                        </i:Interaction.Behaviors>
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.CommunityViewModel"
                         Content="数据"

@@ -22,7 +22,7 @@ public interface IWavesClient
         CancellationToken token = default
     );
 
-    public Task<SignIn?> GetSignInDataAsync(long userId, long roleId);
+    public Task<SignIn?> GetSignInDataAsync(string userId, long roleId);
 
     public Task<AccountModel?> LoginAsync(
         string mobile,

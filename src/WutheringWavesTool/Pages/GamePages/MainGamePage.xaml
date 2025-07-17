@@ -382,6 +382,15 @@
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEF19;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem
+                                    Command="{x:Bind ViewModel.DeleteGameResourceCommand}"
+                                    Text="卸载游戏"
+                                    ToolTipService.ToolTip="此选项将直接删除游戏文件夹">
+                                    <MenuFlyoutItem.Icon>
+                                        <SymbolIcon Symbol="Clear" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>

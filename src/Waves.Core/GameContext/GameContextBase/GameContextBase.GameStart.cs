@@ -30,7 +30,7 @@ namespace Waves.Core.GameContext
                 Process ps = new();
                 ps.EnableRaisingEvents = true;
                 ProcessStartInfo info =
-                    new(gameFolder + "\\Client\\Binaries\\Win64\\Client-Win64-Shipping.exe")
+                    new(gameFolder + "\\" + this.Config.GameExeName)
                     {
                         Arguments = "Client -dx12",
                         WorkingDirectory = gameFolder,

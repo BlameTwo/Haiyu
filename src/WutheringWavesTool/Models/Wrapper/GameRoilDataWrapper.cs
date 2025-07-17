@@ -1,9 +1,9 @@
 ﻿namespace WutheringWavesTool.Models.Wrapper;
 
-public partial class GameRoilDataWrapper:ObservableObject
+public partial class GameRoilDataWrapper : ObservableObject
 {
     [ObservableProperty]
-    public partial long Id { get; set; }
+    public partial string Id { get; set; }
 
     [ObservableProperty]
     public partial string RoleName { get; set; }

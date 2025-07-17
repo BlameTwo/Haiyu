@@ -51,12 +51,7 @@
                 Margin="0,5,0,0"
                 Description="{x:Bind ViewModel.GameFilesSize, Mode=OneWay}"
                 Header="游戏资源大小"
-                IsClickEnabled="True">
-                <Button
-                    Command="{x:Bind ViewModel.SendDeleteGameResourceCommand}"
-                    Content="卸载"
-                    IsEnabled="{x:Bind ViewModel.DeleteGameResourceEnable, Mode=OneWay}" />
-            </ui:SettingsCard>
+                IsClickEnabled="True" />
             <ui:SettingsExpander
                 Grid.Row="3"
                 Width="480"

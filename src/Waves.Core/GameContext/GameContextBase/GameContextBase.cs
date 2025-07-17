@@ -138,4 +138,22 @@ public abstract partial class GameContextBase : IGameContext
         status.Gameing = this._isStarting;
         return status;
     }
+
+    public async Task DeleteResourceAsync()
+    {
+        var folder = await this.GameLocalConfig.GetConfigAsync(
+            GameLocalSettingName.GameLauncherBassFolder
+        );
+        await Task.Run(() =>
+        {
+            Directory.Delete(folder, true);
+        });
+        await this.GameLocalConfig.SaveConfigAsync(GameLocalSettingName.GameLauncherBassFolder, "");
+        await this.GameLocalConfig.SaveConfigAsync(
+            GameLocalSettingName.GameLauncherBassProgram,
+            ""
+        );
+        await this.GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameVersion, "");
+        await SetNoneStatusAsync().ConfigureAwait(false);
+    }
 }

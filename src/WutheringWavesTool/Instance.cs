@@ -28,6 +28,7 @@ public static class Instance
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()
             .AddTransient<GlobalGameViewModel>()
+            .AddTransient<MainPGRViewModel>()
             #endregion
             #region Community
             .AddTransient<GamerSignPage>()

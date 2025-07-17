@@ -29,6 +29,7 @@ public sealed partial class ShellPage : Page
             e.SourcePageType == typeof(MainGamePage)
             || e.SourcePageType == typeof(BiliBiliGamePage)
             || e.SourcePageType == typeof(GlobalGamePage)
+            || e.SourcePageType == typeof(MainPGRGamePage)
         )
         {
             To0.Start();

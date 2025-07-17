@@ -73,6 +73,24 @@
                     "https://prod-cn-alicdn-gamestarter.kurogame.com/launcher/launcher/10004_j5GWFuUFlb8N31Wi2uS3ZAVHcb7ZGN7y/G152/index.json",
                 Language = "zh-Hans",
             };
+
+        #region 战双
+
+        public static GameAPIConfig MainBGRConfig =>
+            new GameAPIConfig()
+            {
+                AppId = "10012",
+                GameID = "G148",
+                AppKey = "RnIUKs3r59Csliu3N0rl5uRWWBOFDaJL",
+                GameIdentity = "Haru",
+                GameExeName = "PGR.exe",
+                ConfigUrl =
+                    "https://prod-cn-alicdn-gamestarter.kurogame.com/launcher/game/G148/10012_RnIUKs3r59Csliu3N0rl5uRWWBOFDaJL/index.json",
+                LauncherConfigUrl =
+                    "https://prod-volcdn-gamestarter.kurogame.xyz/launcher/launcher/10012_RnIUKs3r59Csliu3N0rl5uRWWBOFDaJL/G148/index.json",
+                Language = "zh-Hans",
+            };
+        #endregion
     }
 
     #region 旧API
