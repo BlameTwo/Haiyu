@@ -119,40 +119,44 @@ public class FPSCounter : ICounter
 
     private void Source_AllEvents(Microsoft.Diagnostics.Tracing.TraceEvent obj)
     {
-        if (
-            ((int)obj.ID == EventID_D3D9PresentStart && obj.ProviderGuid == D3D9_provider)
-            || ((int)obj.ID == EventID_DxgiPresentStart && obj.ProviderGuid == DXGI_provider)
-        )
+        try
         {
-            int pid = obj.ProcessID;
-            double t;
-
-            t = watch.Elapsed.TotalMilliseconds;
-
-            lock (sync)
+            if (
+                ((int)obj.ID == EventID_D3D9PresentStart && obj.ProviderGuid == D3D9_provider)
+                || ((int)obj.ID == EventID_DxgiPresentStart && obj.ProviderGuid == DXGI_provider)
+            )
             {
-                if (!Frames.ContainsKey(pid))
+                int pid = obj.ProcessID;
+                double t;
+
+                t = watch.Elapsed.TotalMilliseconds;
+
+                lock (sync)
                 {
-                    string name = "";
-                    long id = 0;
-                    var proc = Process.GetProcessById(pid);
-                    if (proc != null)
+                    if (!Frames.ContainsKey(pid))
                     {
-                        using (proc)
+                        string name = "";
+                        long id = 0;
+                        var proc = Process.GetProcessById(pid);
+                        if (proc != null)
                         {
-                            name = proc.ProcessName;
-                            id = proc.Id;
+                            using (proc)
+                            {
+                                name = proc.ProcessName;
+                                id = proc.Id;
+                            }
                         }
+                        else
+                        {
+                            name = pid.ToString();
+                        }
+                        Frames[pid] = new TimestampCollection(id, name);
                     }
-                    else
-                    {
-                        name = pid.ToString();
-                    }
-                    Frames[pid] = new TimestampCollection(id, name);
                 }
+                Frames[pid].Add(t);
             }
-            Frames[pid].Add(t);
         }
+        catch (Exception) { }
     }
 
     public void Stop()

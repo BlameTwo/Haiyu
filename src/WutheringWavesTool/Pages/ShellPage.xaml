@@ -217,6 +217,17 @@
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEAD8;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
+                                <MenuFlyoutSeparator />
+                                <ToggleMenuFlyoutItem Text="性能计数器">
+                                    <i:Interaction.Behaviors>
+                                        <i:EventTriggerBehavior EventName="Click">
+                                            <i:InvokeCommandAction Command="{x:Bind ViewModel.OpenCounterCommand}" />
+                                        </i:EventTriggerBehavior>
+                                    </i:Interaction.Behaviors>
+                                    <ToggleMenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC32;" />
+                                    </ToggleMenuFlyoutItem.Icon>
+                                </ToggleMenuFlyoutItem>
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>

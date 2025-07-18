@@ -21,4 +21,10 @@ public class CounterService : ICounterService
     }
 
     public void ShowWindow() { }
+
+    public void Stop()
+    {
+        ComputerCounter.Stop();
+        FpsCounter.Stop();
+    }
 }

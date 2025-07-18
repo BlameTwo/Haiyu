@@ -53,6 +53,7 @@
     <None Remove="Pages\StatisticsPage.xaml" />
     <None Remove="Pages\ToolPage.xaml" />
     <None Remove="ToolWindow.xaml" />
+    <None Remove="WindowsView\ComputerCountWindow.xaml" />
   </ItemGroup>
 	<ItemGroup>
 		<RdXmlFile Include="rd.xml" />
@@ -447,6 +448,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\GamePages\MainGamePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Windows\ComputerCountWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

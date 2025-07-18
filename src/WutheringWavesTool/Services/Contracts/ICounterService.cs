@@ -10,4 +10,5 @@ public interface ICounterService
 
     void ShowWindow();
     void Start();
+    void Stop();
 }

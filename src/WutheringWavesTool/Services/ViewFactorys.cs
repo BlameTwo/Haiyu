@@ -69,4 +69,9 @@ public class ViewFactorys : IViewFactorys
             return false;
         }
     }
+
+    public TransparentWindow CreateTransperentWindow()
+    {
+        return new TransparentWindow();
+    }
 }

@@ -54,6 +54,12 @@ public class AppSettings
         set => Write(value);
     }
 
+    public static string? AreaCounterPostion
+    {
+        get => Read();
+        set => Write(value);
+    }
+
     public static string? TokenId
     {
         get => Read();

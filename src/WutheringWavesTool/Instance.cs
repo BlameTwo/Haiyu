@@ -3,6 +3,7 @@ using WutheringWavesTool.Models.Dialogs;
 using WutheringWavesTool.Services.DialogServices;
 using WutheringWavesTool.Services.Navigations.NavigationViewServices;
 using WutheringWavesTool.ViewModel.GameViewModels;
+using WutheringWavesTool.ViewModel.WinViewModel;
 
 namespace WutheringWavesTool;
 
@@ -24,6 +25,7 @@ public static class Instance
             .AddTransient<CommunityViewModel>()
             .AddTransient<GameResourceDialog>()
             .AddTransient<GameResourceViewModel>()
+            .AddTransient<ComputerCountViewModel>()
             #region GameContext
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()

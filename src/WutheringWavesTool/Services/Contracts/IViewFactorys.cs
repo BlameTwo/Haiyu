@@ -10,6 +10,6 @@ public interface IViewFactorys
     public WindowModelBase ShowRolesDataWindow(ShowRoleData detily);
 
     public WindowModelBase ShowPlayerRecordWindow();
-
+    public TransparentWindow CreateTransperentWindow();
     public bool ShowToolWindow();
 }
