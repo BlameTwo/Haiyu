@@ -7,9 +7,10 @@ public partial class BiliBiliGameViewModel : GameContextViewModelBase
     public BiliBiliGameViewModel(
         [FromKeyedServices(nameof(BiliBiliGameContext))] IGameContext gameContext,
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
-        IAppContext<App> appContext
+        IAppContext<App> appContext,
+        ITipShow tipShow
     )
-        : base(gameContext, dialogManager, appContext) { }
+        : base(gameContext, dialogManager, appContext, tipShow) { }
 
     [ObservableProperty]
     public partial ObservableCollection<Slideshow> SlideShows { get; set; }

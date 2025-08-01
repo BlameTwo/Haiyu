@@ -11,6 +11,10 @@ partial class GameContextViewModelBase
         }
         if (_bthType == 4)
         {
+            var localVersion = await GameContext.GameLocalConfig.GetConfigAsync(
+                GameLocalSettingName.LocalGameVersion
+            );
+            var result = Version.Parse(this.DisplayVersion) > Version.Parse(localVersion);
             await GameContext.UpdateGameAsync();
         }
         if (_bthType == 5)

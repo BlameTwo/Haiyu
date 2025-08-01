@@ -21,6 +21,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Assets\HpatchzResource\hpatchz.exe" />
     <Content Remove="Assets\RolePage\appLogo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -210,6 +211,11 @@
     <Content Update="Assets\RolePage\weapon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\HpatchzResource\hpatchz.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\StatisticsPage.xaml">

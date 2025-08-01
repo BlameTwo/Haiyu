@@ -7,16 +7,19 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
         public IGameContext GameContext { get; }
         public IDialogManager DialogManager { get; }
         public IAppContext<App> AppContext { get; }
+        public ITipShow TipShow { get; }
 
         protected GameContextViewModelBase(
             IGameContext gameContext,
             IDialogManager dialogManager,
-            IAppContext<App> appContext
+            IAppContext<App> appContext,
+            ITipShow tipShow
         )
         {
             GameContext = gameContext;
             DialogManager = dialogManager;
             AppContext = appContext;
+            TipShow = tipShow;
             GameContext.GameContextOutput += GameContext_GameContextOutput;
             this.AppContext.WallpaperService.WallpaperPletteChanged +=
                 WallpaperService_WallpaperPletteChanged;

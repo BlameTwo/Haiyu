@@ -163,13 +163,13 @@ public class PatchConfig
     public string IndexFileMd5 { get; set; }
 
     [JsonPropertyName("unCompressSize")]
-    public object UnCompressSize { get; set; }
+    public long UnCompressSize { get; set; }
 
     [JsonPropertyName("baseUrl")]
     public string BaseUrl { get; set; }
 
     [JsonPropertyName("size")]
-    public object Size { get; set; }
+    public long Size { get; set; }
 
     [JsonPropertyName("indexFile")]
     public string IndexFile { get; set; }

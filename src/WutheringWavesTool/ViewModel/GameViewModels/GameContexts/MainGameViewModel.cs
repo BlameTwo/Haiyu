@@ -8,9 +8,10 @@ public sealed partial class MainGameViewModel : GameContextViewModelBase
     public MainGameViewModel(
         [FromKeyedServices(nameof(MainGameContext))] IGameContext gameContext,
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
-        IAppContext<App> appContext
+        IAppContext<App> appContext,
+        ITipShow tipShow
     )
-        : base(gameContext, dialogManager, appContext) { }
+        : base(gameContext, dialogManager, appContext, tipShow) { }
 
     [ObservableProperty]
     public partial ObservableCollection<Slideshow> SlideShows { get; set; }
