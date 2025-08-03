@@ -5,15 +5,15 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>WutheringWavesTool</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Platforms>x86;x64</Platforms>
+    <Platforms>x64</Platforms>
 	<Version>2.3.4</Version>
     <LangVersion>preview</LangVersion>
     <RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x64</RuntimeIdentifier>
     <RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x64</RuntimeIdentifier>
-    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 	<JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
     <UseWinUI>true</UseWinUI>
-	<PublishAot>false</PublishAot>
+	<PublishAot>true</PublishAot>
 	<!--<WindowsPackageType>None</WindowsPackageType>-->
     <EnableMsixTooling>true</EnableMsixTooling>
 	<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
@@ -89,25 +89,25 @@
 	  <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
 	  <PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.2.250402" />
 	  <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.2.250402" />
-	  <PackageReference Include="DevWinUI" Version="8.1.0" />
-	  <PackageReference Include="DevWinUI.Controls" Version="8.1.0" />
+	  <PackageReference Include="DevWinUI" Version="8.8.0" />
+	  <PackageReference Include="DevWinUI.Controls" Version="8.8.0" />
 	  <PackageReference Include="H.NotifyIcon.WinUI" Version="2.3.0" />
-	  <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+	  <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.7" />
 	  <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.3.2" />
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
-	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2957.106" />
+	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+	  <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3351.48" />
 	  <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.183">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
-	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250513003" />
+	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4654" />
+	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
 	  <PackageReference Include="Serilog" Version="4.3.1-dev-02373" />
 	  <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
 	  <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-	  <PackageReference Include="WinUIEx" Version="2.5.1" />
+	  <PackageReference Include="WinUIEx" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Performances\FpsCounter\CounterMonitor.csproj" />
@@ -477,15 +477,15 @@
     <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
     <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">False</PublishReadyToRun>
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
-    <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">false</PublishTrimmed>
+    <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">true</PublishTrimmed>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <PackageCertificateKeyFile>WutheringWavesTool_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
-    <AppxBundle>Always</AppxBundle>
+    <AppxBundle>Auto</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

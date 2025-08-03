@@ -74,7 +74,7 @@ namespace WutheringWavesTool.Pages.Dialogs
                 return;
             if (!Directory.Exists(folderPath.Path))
             {
-                MessageBox.Show("文件夹不存在");
+                await MessageBox.ShowAsync("文件夹不存在");
                 return;
             }
             this.folderPath.Text = folderPath.Path;
