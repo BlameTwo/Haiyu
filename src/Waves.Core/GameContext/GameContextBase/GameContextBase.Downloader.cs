@@ -526,6 +526,8 @@ public partial class GameContextBase
         {
             for (int i = 0; i < resource.Resource.Count; i++)
             {
+                if (resource.Resource[i].Dest.Contains("krdiff"))
+                    continue;
                 Logger.WriteInfo($"开始处理更新文件{resource.Resource[i].Dest}");
                 if (_downloadCTS?.IsCancellationRequested ?? true)
                 {

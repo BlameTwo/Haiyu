@@ -5,10 +5,10 @@ namespace Waves.Core.Common;
 
 public class DiffDecompressManager
 {
-    private string sharedKey;
-    private SharedMemory _sharedMemory;
-    private Process _process;
-    ManualResetEventSlim _processExited = new ManualResetEventSlim(false);
+    private string? sharedKey;
+    private SharedMemory? _sharedMemory;
+    private Process? _process;
+    ManualResetEventSlim? _processExited;
     public DiffDecompressManager(string oldFolder,string newFolder,string diffFile)
     {
         OldFolder = oldFolder;
@@ -24,6 +24,7 @@ public class DiffDecompressManager
     {
         try
         {
+            _processExited = new ManualResetEventSlim();
             sharedKey = $"launcher_shared_memory_{Process.GetCurrentProcess().Id}_{Guid.NewGuid().ToString("N")}";
             _sharedMemory = new SharedMemory(sharedKey, 4096);
 
@@ -47,10 +48,13 @@ public class DiffDecompressManager
                 {
                     await Task.Delay(500);
                     ulong[] values = GetProgress(TimeSpan.FromSeconds(1));
+                    if (values == null)
+                        continue;
                     progress.Report((values[4], values[5]));
                 }
             }
             await _process.WaitForExitAsync();
+            File.Delete(DiffFile);
         }
         catch (Exception ex)
         {
@@ -58,9 +62,11 @@ public class DiffDecompressManager
         }
         finally
         {
-            _process.Dispose();
-            _processExited.Dispose();
-            _sharedMemory.Dispose();
+            _process?.Dispose();
+            _process = null;
+            _processExited?.Dispose();
+            _sharedMemory?.Dispose();
+            
         }
 
     }
@@ -82,7 +88,7 @@ public class DiffDecompressManager
 
     private void PatchProgressExitedEventHandler(object? sender, EventArgs e)
     {
-        _processExited.Set(); // 触发退出信号
+        _processExited?.Set(); // 触发退出信号
     }
 
 }
