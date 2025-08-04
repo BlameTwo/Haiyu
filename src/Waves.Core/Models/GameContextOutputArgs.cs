@@ -31,6 +31,9 @@ public class GameContextOutputArgs
     public bool IsPause { get; set; }
 
     // 进度百分比
+
+    public string TipMessage { get; set; }
+
     public double ProgressPercentage =>
         TotalSize > 0 ? Math.Round((CurrentSize * 100.0) / TotalSize, 2) : 0;
 }

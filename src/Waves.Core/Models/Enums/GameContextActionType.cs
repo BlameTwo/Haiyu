@@ -1,6 +1,6 @@
 ﻿namespace Waves.Core.Models.Enums;
 
-public enum GameContextActionType
+public enum GameContextActionType:uint
 {
     /// <summary>
     /// 无状态
@@ -22,4 +22,6 @@ public enum GameContextActionType
     /// </summary>
     DeleteFile,
     Error,
+
+    Decompress
 }

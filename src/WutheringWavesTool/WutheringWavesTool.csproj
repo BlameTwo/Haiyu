@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <RootNamespace>WutheringWavesTool</RootNamespace>
@@ -8,17 +8,24 @@
     <Platforms>x64</Platforms>
 	<Version>2.3.4</Version>
     <LangVersion>preview</LangVersion>
-    <RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x64</RuntimeIdentifier>
-    <RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x64</RuntimeIdentifier>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 	<JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
     <UseWinUI>true</UseWinUI>
-	<PublishAot>true</PublishAot>
-	<!--<WindowsPackageType>None</WindowsPackageType>-->
+	<SelfContained>true</SelfContained>
+	<WindowsPackageType>None</WindowsPackageType>
     <EnableMsixTooling>true</EnableMsixTooling>
 	<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
-	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <Nullable>enable</Nullable>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishDir>bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\publish\</PublishDir>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>False</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Assets\HpatchzResource\hpatchz.exe" />
