@@ -426,20 +426,9 @@ public partial class GameContextBase
          3. 最后一个删除DeleteInfo里面的文件，因每次游戏启动会去扫描文件是否删除
          */
 
-        #region Update Resource
-        _downloadCTS = new CancellationTokenSource();
-        _downloadBaseUrl =
-            launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
-            + launcher.ResourceDefault.ResourcesBasePath;
-        _totalfileSize = patch.Resource.Sum(x => x.Size);
-        _totalFileTotal = patch.Resource.Count - 1;
-        _totalProgressTotal = 0;
-        var result = await Task.Run(() => UpdateGameToResources(folder, patch));
-        #endregion
-        #region UpdatePatcher
-     
 
-        #endregion
+        _downloadCTS = new CancellationTokenSource();
+        bool result = false;
         if (patch.PatchInfos != null)
         {
             _downloadBaseUrl =
@@ -447,9 +436,21 @@ public partial class GameContextBase
                    + previous.BaseUrl;
             result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
         }
+
+        #region Update Resource
+        _downloadBaseUrl =
+            launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
+            + launcher.ResourceDefault.ResourcesBasePath;
+        _totalfileSize = patch.Resource.Sum(x => x.Size);
+        _totalFileTotal = patch.Resource.Count - 1;
+        _totalProgressTotal = 0;
+        result = await Task.Run(() => UpdateGameToResources(folder, patch));
+        #endregion
+        #region UpdatePatcher
         if (result)
             await DownloadComplate(launcher);
         await SetNoneStatusAsync().ConfigureAwait(false);
+        #endregion
     }
 
     private async Task<bool> DownloadPatcheToResource(string folder, PatchIndexGameResource patch)
@@ -470,7 +471,7 @@ public partial class GameContextBase
                        item.Dest,
                        filePath
                 );
-                await DecompressKrdiffFile(folder,krdiffPath);
+                await DecompressKrdiffFile(folder, filePath);
             }
         }
         return true;
@@ -481,10 +482,11 @@ public partial class GameContextBase
         if (krdiffPath == null)
             return;
         DiffDecompressManager manager = new DiffDecompressManager(folder, folder, krdiffPath);
-        //DiffDecompressManager manager = new DiffDecompressManager(folder,folder,krdiffPath);
         IProgress<(double, double)> progress = new Progress<(double, double)>();
         (progress as Progress<(double, double)>).ProgressChanged += async (s, e) =>
         {
+            if (gameContextOutputDelegate == null)
+                return;
             await gameContextOutputDelegate
            .Invoke(
                this,
@@ -1298,8 +1300,6 @@ public partial class GameContextBase
                 )
             )
             {
-                long currentBytes = 0;
-                var url = "";
                 using var request = new HttpRequestMessage(
                     HttpMethod.Get,
                     _downloadBaseUrl.TrimEnd('/') + "/" + dest.TrimStart('/')
@@ -1357,6 +1357,7 @@ public partial class GameContextBase
                         accumulatedBytes = 0;
                     }
                 }
+                
                 if (accumulatedBytes > 0 && !isBreak)
                 {
                     await UpdateFileProgress(GameContextActionType.Download, accumulatedBytes, true,"下载差异文件")
@@ -1466,11 +1467,18 @@ public partial class GameContextBase
     {
         get
         {
-            if (DownloadSpeed <= 0 || _totalDownloadedBytes >= _totalfileSize)
-                return TimeSpan.Zero;
+            try
+            {
+                if (DownloadSpeed <= 0 || _totalDownloadedBytes >= _totalfileSize)
+                    return TimeSpan.Zero;
 
-            var remainingBytes = _totalfileSize - _totalProgressSize;
-            return TimeSpan.FromSeconds(remainingBytes / DownloadSpeed);
+                var remainingBytes = _totalfileSize - _totalProgressSize;
+                return TimeSpan.FromSeconds(remainingBytes / DownloadSpeed);
+            }
+            catch (Exception)
+            {
+                return TimeSpan.Zero;
+            }
         }
     }
 

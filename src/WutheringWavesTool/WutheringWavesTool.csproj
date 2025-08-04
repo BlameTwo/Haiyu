@@ -1,41 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <RootNamespace>WutheringWavesTool</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Platforms>x64</Platforms>
+    <Platforms>x86;x64</Platforms>
 	<Version>2.3.4</Version>
     <LangVersion>preview</LangVersion>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x64</RuntimeIdentifier>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
 	<JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
     <UseWinUI>true</UseWinUI>
-	<SelfContained>true</SelfContained>
-	<WindowsPackageType>None</WindowsPackageType>
+	<PublishAot>true</PublishAot>
+	<!--<WindowsPackageType>None</WindowsPackageType>-->
     <EnableMsixTooling>true</EnableMsixTooling>
 	<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
+	<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <Nullable>enable</Nullable>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <PublishDir>bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\publish\</PublishDir>
-    <SelfContained>true</SelfContained>
-    <PublishSingleFile>False</PublishSingleFile>
-    <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>partial</TrimMode>
-    <PublishReadyToRun>false</PublishReadyToRun>
-    <WindowsAppSDKSelfContained>false</WindowsAppSDKSelfContained>
-    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="Assets\HpatchzResource\hpatchz.exe" />
     <Content Remove="Assets\RolePage\appLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\applogo.png" />
     <None Remove="Assets\clickSound2.wav" />
     <None Remove="Assets\Fonts\gameIcon.ttf" />
-    <None Remove="Assets\GameIcons\pgr.ico" />
     <None Remove="Assets\Js\gt4.js" />
     <None Remove="Assets\Js\jquery.min.js" />
     <None Remove="Assets\RolePage\weapon.svg" />
@@ -57,11 +48,8 @@
     <None Remove="Pages\GamePages\BiliBiliGamePage.xaml" />
     <None Remove="Pages\GamePages\GlobalGamePage.xaml" />
     <None Remove="Pages\GamePages\MainGamePage.xaml" />
-    <None Remove="Pages\GamePages\MainPGRGamePage.xaml" />
-    <None Remove="Pages\StatisticsPage.xaml" />
     <None Remove="Pages\ToolPage.xaml" />
     <None Remove="ToolWindow.xaml" />
-    <None Remove="WindowsView\ComputerCountWindow.xaml" />
   </ItemGroup>
 	<ItemGroup>
 		<RdXmlFile Include="rd.xml" />
@@ -96,8 +84,8 @@
 	  <PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
 	  <PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.2.250402" />
 	  <PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.2.250402" />
-	  <PackageReference Include="DevWinUI" Version="8.8.0" />
-	  <PackageReference Include="DevWinUI.Controls" Version="8.8.0" />
+	  <PackageReference Include="DevWinUI" Version="8.9.0" />
+	  <PackageReference Include="DevWinUI.Controls" Version="8.9.0" />
 	  <PackageReference Include="H.NotifyIcon.WinUI" Version="2.3.0" />
 	  <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.7" />
 	  <PackageReference Include="Microsoft.Graphics.Win2D" Version="1.3.2" />
@@ -111,9 +99,6 @@
 	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4654" />
 	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
-	  <PackageReference Include="Serilog" Version="4.3.1-dev-02373" />
-	  <PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
-	  <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
 	  <PackageReference Include="WinUIEx" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup>
@@ -143,9 +128,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\Fonts\gameIcon.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Update="Assets\GameIcons\pgr.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Update="Assets\geet.html">
@@ -218,21 +200,6 @@
     <Content Update="Assets\RolePage\weapon.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="Assets\HpatchzResource\hpatchz.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\StatisticsPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Update="Pages\GamePages\MainPGRGamePage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="Pages\Communitys\GamerSlashDetailPage.xaml">
@@ -464,11 +431,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <Page Update="Windows\ComputerCountWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
 
   <!--
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
@@ -482,17 +444,17 @@
   <!-- Publish Properties -->
   <PropertyGroup>
     <PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
-    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">False</PublishReadyToRun>
+    <PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
     <PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
-    <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">true</PublishTrimmed>
+    <PublishTrimmed Condition="'$(Configuration)' != 'Debug'">True</PublishTrimmed>
     <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <PackageCertificateKeyFile>WutheringWavesTool_TemporaryKey.pfx</PackageCertificateKeyFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-    <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
     <GenerateTestArtifacts>True</GenerateTestArtifacts>
-    <AppxBundle>Auto</AppxBundle>
+    <AppxBundle>Always</AppxBundle>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

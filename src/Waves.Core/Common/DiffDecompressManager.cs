@@ -23,14 +23,10 @@ public class DiffDecompressManager
     {
         sharedKey = $"launcher_shared_memory_{Process.GetCurrentProcess().Id}_{Guid.NewGuid().ToString("N")}";
         _sharedMemory = new SharedMemory(sharedKey, 4096);
-        var oldPath = "E:\\Barkup\\2.4.1";
-        var newPath = "E:\\Barkup\\NewVersion";
-        var diffFile = @"E:\Barkup\NewVersion\2.4.1_2.5.0_1752551264536.krdiff";
-        ;
-        var sharedMemoryValue = new SharedMemory(sharedKey, 4096);
+        
         ProcessStartInfo processStartInfo = new ProcessStartInfo(
-            @"""D:\WorkSpace\WutheringWavesTool\src\WutheringWavesTool\Assets\HpatchzResource\hpatchz.exe""",
-            new string[6] { oldPath, diffFile, newPath, "-f", "-d", "-k-" + sharedKey }
+            AppDomain.CurrentDomain.BaseDirectory+@"Assets\HpatchzResource\hpatchz.exe",
+            new string[6] { OldFolder, DiffFile, NewFolder, "-f", "-d", "-k-" + sharedKey }
         //[$"-f {oldPath}", $"-d {diffFile}", $"-k- {sharedMemoryKey}"]
         )
         {
