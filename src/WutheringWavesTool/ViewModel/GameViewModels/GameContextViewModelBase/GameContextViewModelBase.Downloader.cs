@@ -18,6 +18,7 @@ partial class GameContextViewModelBase
             if (
                 args.Type == Waves.Core.Models.Enums.GameContextActionType.Download
                 || args.Type == Waves.Core.Models.Enums.GameContextActionType.Verify
+                || args.Type == Waves.Core.Models.Enums.GameContextActionType.Decompress
             )
             {
                 this.MaxProgressValue = args.TotalSize;
@@ -45,6 +46,11 @@ partial class GameContextViewModelBase
                         this.BottomBarContent =
                             $"下载速度:{Math.Round(args.DownloadSpeed / 1024 / 1024, 2)}MB，剩余：{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
                     }
+                }
+                else if(args.Type == Waves.Core.Models.Enums.GameContextActionType.Decompress)
+                {
+                    this.BottomBarContent =
+                            $"已解压:{Math.Round((double)args.CurrentSize / 1024 / 1024/1024, 2)}GB,剩余:{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
                 }
                 ShowGameDownloadingBth();
             }

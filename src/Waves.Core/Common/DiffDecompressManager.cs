@@ -48,9 +48,7 @@ public class DiffDecompressManager
             {
                 await Task.Delay(500);
                 ulong[] values = GetProgress(TimeSpan.FromSeconds(1));
-                Debug.WriteLine(
-                    $"六个进度:当前文件{values[0]},总文件{values[1]},{values[2]},{values[3]},压缩字节{values[4]},总字节{values[5]},"
-                );
+                progress.Report((values[4], values[5]));
             }
         }
         await _process.WaitForExitAsync();

@@ -419,34 +419,36 @@ public partial class GameContextBase
             return;
         }
         this._downloadState = new DownloadState(patch);
-        
+
         /*
          1. 第一步如果有patch则下载patch文件，首先去解压patch文件
          2. 第二部Resource资源表示热更新的Resource文件，直接使用chunk字节偏移更新
          3. 最后一个删除DeleteInfo里面的文件，因每次游戏启动会去扫描文件是否删除
          */
+
+        #region Update Resource
+        _downloadCTS = new CancellationTokenSource();
+        _downloadBaseUrl =
+            launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
+            + launcher.ResourceDefault.ResourcesBasePath;
+        _totalfileSize = patch.Resource.Sum(x => x.Size);
+        _totalFileTotal = patch.Resource.Count - 1;
+        _totalProgressTotal = 0;
+        var result = await Task.Run(() => UpdateGameToResources(folder, patch));
+        #endregion
+        #region UpdatePatcher
+     
+
+        #endregion
         if (patch.PatchInfos != null)
         {
             _downloadBaseUrl =
                    launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
                    + previous.BaseUrl;
-            var patchResult = await Task.Run(() => DownloadPatcheToResource(folder, patch));
+            result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
         }
-        #region UpdatePatcher
-        _downloadBaseUrl =
-               launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
-               + launcher.ResourceDefault.ResourcesBasePath;
-
-        #endregion
-        #region Update Resource
-        _totalfileSize = patch.Resource.Sum(x => x.Size);
-        _totalFileTotal = patch.Resource.Count - 1;
-        _totalProgressTotal = 0;
-        var result = await Task.Run(() => UpdateGameToResources(folder, patch));
         if (result)
             await DownloadComplate(launcher);
-        #endregion
-
         await SetNoneStatusAsync().ConfigureAwait(false);
     }
 
@@ -459,16 +461,15 @@ public partial class GameContextBase
             {
                 var downloadUrl = _downloadBaseUrl + item.Dest;
                 var filePath = BuildFilePath(folder,item);
-                //if (File.Exists(filePath))
-                //{
-                //    File.Delete(filePath);    1
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
 
-                //}
-                //var krdiffPath =  await DownloadFileByKrDiff(
-                //       item.Dest,
-                //       filePath
-                //);
-                var krdiffPath = @"E:\Barkup\NewVersion\2.4.1_2.5.0_1752551264536.krdiff";
+                }
+                var krdiffPath = await DownloadFileByKrDiff(
+                       item.Dest,
+                       filePath
+                );
                 await DecompressKrdiffFile(folder,krdiffPath);
             }
         }
@@ -479,7 +480,7 @@ public partial class GameContextBase
     {
         if (krdiffPath == null)
             return;
-        DiffDecompressManager manager = new DiffDecompressManager("E:\\Barkup\\2.4.1", "E:\\Barkup\\NewVersion", krdiffPath);
+        DiffDecompressManager manager = new DiffDecompressManager(folder, folder, krdiffPath);
         //DiffDecompressManager manager = new DiffDecompressManager(folder,folder,krdiffPath);
         IProgress<(double, double)> progress = new Progress<(double, double)>();
         (progress as Progress<(double, double)>).ProgressChanged += async (s, e) =>
@@ -497,7 +498,8 @@ public partial class GameContextBase
                    RemainingTime = TimeSpan.FromMicroseconds(0),
                    IsAction = _downloadState?.IsActive ?? false,
                    IsPause = _downloadState?.IsPaused ?? false,
-                   TipMessage = "正在解压合并资源"
+                   TipMessage = "正在解压合并资源",
+                   
                }
            )
            .ConfigureAwait(false); // 确保不阻塞下载线程
@@ -515,6 +517,7 @@ public partial class GameContextBase
     private async Task<bool> UpdateGameToResources(string folder, PatchIndexGameResource resource)
     {
         _downloadState.IsActive = true;
+        _totalProgressTotal = resource.Resource.Sum(x => x.Size);
         await UpdateFileProgress(GameContextActionType.Verify, 0);
         #region 下载逻辑
         try
