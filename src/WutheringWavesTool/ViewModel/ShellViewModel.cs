@@ -6,7 +6,6 @@ using WutheringWavesTool.Pages.GamePages;
 using WutheringWavesTool.Services.DialogServices;
 using WutheringWavesTool.Services.Navigations.NavigationViewServices;
 using WutheringWavesTool.ViewModel.GameViewModels;
-using WutheringWavesTool.WindowsView;
 
 namespace WutheringWavesTool.ViewModel;
 
@@ -66,7 +65,6 @@ public sealed partial class ShellViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial GameRoilDataWrapper SelectRoles { get; set; }
-    public ComputerCountWindow ComputerWin { get; private set; }
 
     private void RegisterMessanger()
     {
@@ -210,7 +208,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         }
         this.AppContext.MainTitle.UpDate();
         OpenMain();
-        Instance.GetService<ICounterService>()?.ShowWindow();
     }
 
     ObservableCollection<GameRoilDataWrapper> FormatRoil(List<GameRoilDataItem> roilDataItems)
@@ -249,34 +246,11 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     void OpenCounter(RoutedEventArgs args)
     {
-        if (args.OriginalSource is ToggleMenuFlyoutItem item)
-        {
-            if (item.IsChecked)
-            {
-                if (ComputerWin != null)
-                {
-                    this.ComputerWin.Closed -= ComputerWin_Closed;
-                    ComputerWin.Dispose();
-                    ComputerWin = null;
-                }
-                this.ComputerWin = new ComputerCountWindow();
-                this.ComputerWin.Closed += ComputerWin_Closed;
-                ComputerWin.Show();
-                computerShow = true;
-            }
-            else
-            {
-                ComputerWin.Close();
-            }
-        }
+        
     }
 
     private void ComputerWin_Closed(object sender, WindowEventArgs args)
     {
-        this.ComputerWin.Closed -= ComputerWin_Closed;
-        ComputerWin.Dispose();
-        ComputerWin = null;
-        GC.Collect();
     }
 
     internal void SetSelectItem(Type sourcePageType)

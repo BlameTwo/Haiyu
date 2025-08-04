@@ -99,10 +99,10 @@
 	  <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4654" />
 	  <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
+	  <PackageReference Include="System.Private.Uri" Version="4.3.2" />
 	  <PackageReference Include="WinUIEx" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Performances\FpsCounter\CounterMonitor.csproj" />
     <ProjectReference Include="..\Waves.Api\Waves.Api.csproj" />
     <ProjectReference Include="..\Waves.Core\Waves.Core.csproj" />
   </ItemGroup>
@@ -430,6 +430,10 @@
     <Page Update="Pages\GamePages\MainGamePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModel\WinViewModel\" />
+    <Folder Include="WindowsView\" />
   </ItemGroup>
 
   <!--

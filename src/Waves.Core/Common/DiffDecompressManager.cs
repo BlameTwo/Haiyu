@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Waves.Core.Common;
 
@@ -7,7 +8,7 @@ public class DiffDecompressManager
     private string sharedKey;
     private SharedMemory _sharedMemory;
     private Process _process;
-
+    ManualResetEventSlim _processExited = new ManualResetEventSlim(false);
     public DiffDecompressManager(string oldFolder,string newFolder,string diffFile)
     {
         OldFolder = oldFolder;
@@ -21,33 +22,47 @@ public class DiffDecompressManager
 
     public async Task StartAsync(IProgress<(double, double)> progress)
     {
-        sharedKey = $"launcher_shared_memory_{Process.GetCurrentProcess().Id}_{Guid.NewGuid().ToString("N")}";
-        _sharedMemory = new SharedMemory(sharedKey, 4096);
-        
-        ProcessStartInfo processStartInfo = new ProcessStartInfo(
-            AppDomain.CurrentDomain.BaseDirectory+@"Assets\HpatchzResource\hpatchz.exe",
-            new string[6] { OldFolder, DiffFile, NewFolder, "-f", "-d", "-k-" + sharedKey }
-        //[$"-f {oldPath}", $"-d {diffFile}", $"-k- {sharedMemoryKey}"]
-        )
+        try
         {
-            RedirectStandardError = false,
-            RedirectStandardOutput = false,
-            UseShellExecute = false,
-            CreateNoWindow = false,
-        };
-        Process _process = new Process();
-        _process = new Process { StartInfo = processStartInfo, EnableRaisingEvents = true };
-        _process.Exited += PatchProgressExitedEventHandler;
-        if (_process.Start())
-        {
-            while (!_process.HasExited)
+            sharedKey = $"launcher_shared_memory_{Process.GetCurrentProcess().Id}_{Guid.NewGuid().ToString("N")}";
+            _sharedMemory = new SharedMemory(sharedKey, 4096);
+
+            ProcessStartInfo processStartInfo = new ProcessStartInfo(
+                AppDomain.CurrentDomain.BaseDirectory + @"Assets\HpatchzResource\hpatchz.exe",
+                new string[6] { OldFolder, DiffFile, NewFolder, "-f", "-d", "-k-" + sharedKey }
+            //[$"-f {oldPath}", $"-d {diffFile}", $"-k- {sharedMemoryKey}"]
+            )
             {
-                await Task.Delay(500);
-                ulong[] values = GetProgress(TimeSpan.FromSeconds(1));
-                progress.Report((values[4], values[5]));
+                RedirectStandardError = false,
+                RedirectStandardOutput = false,
+                UseShellExecute = false,
+                CreateNoWindow = false,
+            };
+            Process _process = new Process();
+            _process = new Process { StartInfo = processStartInfo, EnableRaisingEvents = true };
+            _process.Exited += PatchProgressExitedEventHandler;
+            if (_process.Start())
+            {
+                while (!_process.HasExited)
+                {
+                    await Task.Delay(500);
+                    ulong[] values = GetProgress(TimeSpan.FromSeconds(1));
+                    progress.Report((values[4], values[5]));
+                }
             }
+            await _process.WaitForExitAsync();
         }
-        await _process.WaitForExitAsync();
+        catch (Exception ex)
+        {
+            Console.WriteLine($"发生异常: {ex.Message}");
+        }
+        finally
+        {
+            _process.Dispose();
+            _processExited.Dispose();
+            _sharedMemory.Dispose();
+        }
+
     }
 
     ulong[]? GetProgress(TimeSpan? timeout = null)
@@ -67,6 +82,7 @@ public class DiffDecompressManager
 
     private void PatchProgressExitedEventHandler(object? sender, EventArgs e)
     {
+        _processExited.Set(); // 触发退出信号
     }
 
 }

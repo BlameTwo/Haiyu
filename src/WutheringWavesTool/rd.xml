@@ -2,8 +2,8 @@
 	<Application>
 		<Assembly Name="WutheringWavesTool"  Dynamic="Required All">
 		</Assembly>
-		<Assembly Name="Waves.Core"  Dynamic="Required All">
-		</Assembly>
+		<!--<Assembly Name="Waves.Core"  Dynamic="Required All">
+		</Assembly>-->
 		<Assembly Name="SqlSugar"  Dynamic="Required All">
 		</Assembly>
 	</Application>
