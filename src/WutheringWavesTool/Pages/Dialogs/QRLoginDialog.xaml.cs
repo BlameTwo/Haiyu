@@ -12,9 +12,9 @@ namespace WutheringWavesTool.Pages.Dialogs
 
         public QrLoginViewModel? ViewModel { get; }
 
-        public QRScanResult GetResult()
+        public QRScanResult? GetResult()
         {
-            return new QRScanResult();
+            return ViewModel?.Result;
         }
 
         public void SetData(object data)

@@ -2,5 +2,5 @@
 
 public interface IResultDialog<T> : IDialog
 {
-    public T GetResult();
+    public T? GetResult();
 }
