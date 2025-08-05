@@ -100,11 +100,16 @@ public partial class QrLoginViewModel : DialogViewModelBase
                 return;
             if(result2.Text != null)
             {
-                _framePool.FrameArrived -= _framePool_FrameArrived;
-                _session.Dispose();
-                _framePool.Dispose();
                 this.QRResult = result2.Text;
-                await WavesClient.PostQrValueAsync(QRResult);
+                var result =  await WavesClient.PostQrValueAsync(QRResult, CTS.Token);
+                if(result ==null) return;
+                if(result.Code == 200 && result.Success == true)
+                {
+                    Debug.WriteLine("获取登陆信息成功");
+                    _framePool.FrameArrived -= _framePool_FrameArrived;
+                    _session.Dispose();
+                    _framePool.Dispose();
+                }
             }
 
         }
@@ -118,7 +123,13 @@ public partial class QrLoginViewModel : DialogViewModelBase
     public QRScanResult? Result { get; set; }
 
     [ObservableProperty]
+    public partial string TipMessage { get; set; }
+
+    [ObservableProperty]
     public partial string QRResult { get; set; } = "选择游戏窗口（需要露出二维码）";
+
+    [ObservableProperty]
+    public partial string VerifyCode { get; set; } = "";
 
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataWrapper> Roles { get; private set; }
@@ -139,20 +150,27 @@ public partial class QrLoginViewModel : DialogViewModelBase
         }
     }
 
+    [RelayCommand]
+    async Task LoginAsync()
+    {
+        var result =await  WavesClient.QRLoginAsync(QRResult, VerifyCode, CTS.Token);
+        if (result == null)
+            return;
+        if(result.Code == 2240)
+        {
+            TipMessage = "该设备不安全，本次扫码需要手动发送验证码验证";
+            var result2 = await WavesClient.GetQrCodeAsync(QRResult);
+        }
+        else if(result.Code == 200)
+        {
+            TipMessage = "登陆成功";
+        }
+    }
+
 
     [RelayCommand]
-    async Task Loaded()
+    void Loaded()
     {
-        if (!(await WavesClient.IsLoginAsync()))
-        {
-            this.Result = null;
-            this.CloseCommand.Execute(null);
-            return;
-        }
-        var gamers = await WavesClient.GetWavesGamerAsync(this.CTS.Token);
-        if (gamers == null || gamers.Code != 200)
-            return;
-        this.Roles = gamers.Data.FormatRoil();
     }
     
 }

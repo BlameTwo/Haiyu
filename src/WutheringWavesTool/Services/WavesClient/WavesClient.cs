@@ -1,5 +1,7 @@
 ﻿using Azure.Core;
 using NetTaste;
+using Waves.Api.Models.QRLogin;
+using Windows.System.Profile;
 using ZXing.Aztec.Internal;
 
 namespace WutheringWavesTool.Services;
@@ -19,6 +21,24 @@ public sealed partial class WavesClient : IWavesClient
         HttpClientService = httpClientService;
         HttpClientService.BuildClient();
     }
+    public string GetPackageSpecificId()
+    {
+        try
+        {
+            var token = HardwareIdentification.GetPackageSpecificToken(null);
+            var hardwareId = token.Id;
+            var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(hardwareId);
+            byte[] bytes = new byte[hardwareId.Length];
+            dataReader.ReadBytes(bytes);
+            return BitConverter.ToString(bytes).Replace("-", "");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+            return string.Empty;
+        }
+    }
+    
 
     private Dictionary<string, string> GetHeader(bool isNeedToken, bool isNeedBAT = true)
     {
@@ -36,6 +56,7 @@ public sealed partial class WavesClient : IWavesClient
             {
                 "devCode",
                 "AAB886CD651C77F028B4E7A883D10A1240E08BBF"
+                //GetPackageSpecificId()
             },
             { "model","SM-A5260"},
             { "version","2.5.3"},
@@ -306,7 +327,7 @@ public sealed partial class WavesClient : IWavesClient
         return bassData;
     }
     
-    public async Task PostQrValueAsync(string qrText,CancellationToken token = default)
+    public async Task<ScanScreenModel?> PostQrValueAsync(string qrText,CancellationToken token = default)
     {
         var url = "https://api.kurobbs.com/user/auth/roleInfos";
         var request = await BuildRequestAsync(url, HttpMethod.Post, GetHeader(true,false), new MediaTypeHeaderValue("application/x-www-form-urlencoded"), new Dictionary<string, string>()
@@ -315,6 +336,38 @@ public sealed partial class WavesClient : IWavesClient
         },true);
         var result = await HttpClientService.HttpClient.SendAsync(request, token);
         var jsonStr = await result.Content.ReadAsStringAsync(token);
-        //确认登陆接口
+        return JsonSerializer.Deserialize<ScanScreenModel>(jsonStr, QRContext.Default.ScanScreenModel);
+    }
+
+    public async Task<QRLoginResult?> QRLoginAsync(string qrText,string verifyCode,CancellationToken token = default)
+    {
+        var url = "https://api.kurobbs.com/user/auth/scanLogin";
+        var request = await BuildRequestAsync(url, HttpMethod.Post, GetHeader(true, false), new MediaTypeHeaderValue("application/x-www-form-urlencoded"), new Dictionary<string, string>()
+        {
+            {"autoLogin","true" },
+            { "qrCode",qrText},
+            { "verifyCode",verifyCode }
+        }, true);
+        var result = await HttpClientService.HttpClient.SendAsync(request, token);
+        var jsonStr = await result.Content.ReadAsStringAsync(token);
+        return JsonSerializer.Deserialize<QRLoginResult>(jsonStr, QRContext.Default.QRLoginResult);
+    }
+
+    public async Task<SMSModel?> GetQrCodeAsync(string qrCode,CancellationToken token = default)
+    {
+        var query = new Dictionary<string, string>()
+        {
+            { "geeTestData", "" },
+        };
+        var request = await BuildLoginRequest(
+            "https://api.kurobbs.com/user/sms/scanSms",
+            GetHeader(true,false),
+            new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+            query
+        );
+        var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
+        var jsonStr = await result.Content.ReadAsStringAsync(token);
+        return (SMSModel?)
+            JsonSerializer.Deserialize(jsonStr,QRContext.Default.SMSModel);
     }
 }

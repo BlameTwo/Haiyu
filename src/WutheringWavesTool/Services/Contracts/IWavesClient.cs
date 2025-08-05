@@ -1,4 +1,6 @@
-﻿namespace WavesLauncher.Core.Contracts;
+﻿using Waves.Api.Models.QRLogin;
+
+namespace WavesLauncher.Core.Contracts;
 
 public interface IWavesClient
 {
@@ -35,7 +37,11 @@ public interface IWavesClient
     public Task<AccountMine?> GetWavesMineAsync(long id, CancellationToken token = default);
 
     public Task<PlayerReponse?> GetPlayerReponseAsync(PlayerCard card);
-    public Task PostQrValueAsync(string qrText, CancellationToken token = default);
+    public Task<ScanScreenModel?> PostQrValueAsync(string qrText, CancellationToken token = default);
+
+    public Task<QRLoginResult?> QRLoginAsync(string qrText, string verifyCode, CancellationToken token = default);
+
+    public Task<SMSModel?> GetQrCodeAsync(string qrCode, CancellationToken token = default);
     public GameRoilDataWrapper CurrentRoil { get; set; }
 
     #region 数据终端

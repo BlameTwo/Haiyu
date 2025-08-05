@@ -36,52 +36,26 @@
             FontFamily="{ThemeResource DefaultFont}"
             FontSize="18"
             Text="选择账户进行登录" />
-        <ComboBox
-            Grid.Row="1"
-            Margin="0,10,0,0"
+        <TextBox PlaceholderText="验证码（选填）" Text="{x:Bind ViewModel.VerifyCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Grid
+            Grid.Row="2"
             HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            ItemsSource="{x:Bind ViewModel.Roles, Mode=OneWay}"
-            Style="{ThemeResource SubtleComboBoxStyle}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate x:DataType="wrapper:GameRoilDataWrapper">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Border CornerRadius="5">
-                            <Image
-                                Width="35"
-                                Height="35"
-                                Source="{x:Bind GameHeadUrl}" />
-                        </Border>
-                        <Grid Grid.Column="1" Margin="10,0,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="18"
-                                Text="{x:Bind RoleName}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                VerticalAlignment="Center"
-                                FontSize="18">
-                                <Run Text="-" />
-                                <Run Text="{x:Bind Id}" />
-                            </TextBlock>
-                        </Grid>
-                    </Grid>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <Button
-            Grid.Row="3"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            Command="{x:Bind ViewModel.InvokeCommand}"
-            Content="{x:Bind ViewModel.QRResult, Mode=OneWay}" />
+            VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Command="{x:Bind ViewModel.InvokeCommand}"
+                Content="{x:Bind ViewModel.QRResult, Mode=OneWay}" />
+            <Button
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Command="{x:Bind ViewModel.LoginCommand}"
+                Content="确认登陆" />
+        </Grid>
     </Grid>
 </ContentDialog>
