@@ -5,11 +5,11 @@ public sealed partial class LoginDialog : ContentDialog, IDialog
     public LoginDialog()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<LoginViewModel>();
+        this.ViewModel = Instance.Service.GetRequiredService<LoginGameViewModel>();
         
     }
 
-    public LoginViewModel ViewModel { get; }
+    public LoginGameViewModel ViewModel { get; }
 
     public void SetData(object data) { }
 

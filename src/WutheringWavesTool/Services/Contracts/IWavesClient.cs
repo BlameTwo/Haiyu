@@ -35,7 +35,7 @@ public interface IWavesClient
     public Task<AccountMine?> GetWavesMineAsync(long id, CancellationToken token = default);
 
     public Task<PlayerReponse?> GetPlayerReponseAsync(PlayerCard card);
-
+    public Task PostQrValueAsync(string qrText, CancellationToken token = default);
     public GameRoilDataWrapper CurrentRoil { get; set; }
 
     #region 数据终端

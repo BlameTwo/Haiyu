@@ -2,11 +2,11 @@
 
 namespace WutheringWavesTool.ViewModel.DialogViewModels;
 
-public sealed partial class LoginViewModel : DialogViewModelBase
+public sealed partial class LoginGameViewModel : DialogViewModelBase
 {
     private string? _loginType;
 
-    public LoginViewModel(
+    public LoginGameViewModel(
         IAppContext<App> appContext,
         IViewFactorys viewFactorys,
         IWavesClient wavesClient,

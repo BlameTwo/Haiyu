@@ -24,3 +24,18 @@ public partial class GameRoilDataWrapper : ObservableObject
         this.GameHeadUrl = new(new(item.GameHeadUrl));
     }
 }
+
+
+public static class GameRoilDataWrapperExtension
+{
+    public static ObservableCollection<GameRoilDataWrapper> FormatRoil(this List<GameRoilDataItem> roilDataItems)
+    {
+        ObservableCollection<GameRoilDataWrapper> values = new();
+        foreach (var item in roilDataItems)
+        {
+            GameRoilDataWrapper value = new GameRoilDataWrapper(item);
+            values.Add(value);
+        }
+        return values;
+    }
+}

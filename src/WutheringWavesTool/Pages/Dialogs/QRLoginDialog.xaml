@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentDialog
+    x:Class="WutheringWavesTool.Pages.Dialogs.QRLoginDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:WutheringWavesTool.Pages.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
+    Padding="0"
+    CornerRadius="5"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <i:EventTriggerBehavior EventName="Loaded">
+            <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </i:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+    <Grid Width="400" Height="300">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Button
+            HorizontalAlignment="Right"
+            Command="{x:Bind ViewModel.CloseCommand}"
+            CornerRadius="50"
+            Style="{ThemeResource TransparentButtonStyle}"
+            ToolTipService.ToolTip="关闭">
+            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE894;" />
+        </Button>
+        <TextBlock
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            FontFamily="{ThemeResource DefaultFont}"
+            FontSize="18"
+            Text="选择账户进行登录" />
+        <ComboBox
+            Grid.Row="1"
+            Margin="0,10,0,0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            ItemsSource="{x:Bind ViewModel.Roles, Mode=OneWay}"
+            Style="{ThemeResource SubtleComboBoxStyle}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="wrapper:GameRoilDataWrapper">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Border CornerRadius="5">
+                            <Image
+                                Width="35"
+                                Height="35"
+                                Source="{x:Bind GameHeadUrl}" />
+                        </Border>
+                        <Grid Grid.Column="1" Margin="10,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                Text="{x:Bind RoleName}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                FontSize="18">
+                                <Run Text="-" />
+                                <Run Text="{x:Bind Id}" />
+                            </TextBlock>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button
+            Grid.Row="3"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Command="{x:Bind ViewModel.InvokeCommand}"
+            Content="{x:Bind ViewModel.QRResult, Mode=OneWay}" />
+    </Grid>
+</ContentDialog>

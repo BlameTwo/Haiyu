@@ -42,6 +42,7 @@
     <None Remove="Pages\Communitys\Windows\GamerRoilsDetilyPage.xaml" />
     <None Remove="Pages\Dialogs\CloseDialog.xaml" />
     <None Remove="Pages\Dialogs\GameResourceDialog.xaml" />
+    <None Remove="Pages\Dialogs\QRLoginDialog.xaml" />
     <None Remove="Pages\Dialogs\SelectDownoadGameDialog.xaml" />
     <None Remove="Pages\Dialogs\SelectGameFolderDialog.xaml" />
     <None Remove="Pages\Dialogs\SelectWallpaperDialog.xaml" />
@@ -101,6 +102,7 @@
 	  <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
 	  <PackageReference Include="System.Private.Uri" Version="4.3.2" />
 	  <PackageReference Include="WinUIEx" Version="2.6.0" />
+	  <PackageReference Include="ZXing.Net" Version="0.16.10" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Waves.Api\Waves.Api.csproj" />
@@ -434,6 +436,11 @@
   <ItemGroup>
     <Folder Include="ViewModel\WinViewModel\" />
     <Folder Include="WindowsView\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Pages\Dialogs\QRLoginDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--

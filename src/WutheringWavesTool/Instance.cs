@@ -51,7 +51,7 @@ public static class Instance
             #endregion
             #region Dialog
             .AddTransient<LoginDialog>()
-            .AddTransient<LoginViewModel>()
+            .AddTransient<LoginGameViewModel>()
             .AddTransient<BindGameDataDialog>()
             .AddTransient<BindGameDataViewModel>()
             .AddTransient<SelectWallpaperDialog>()
@@ -61,6 +61,8 @@ public static class Instance
             .AddTransient<CloseDialog>()
             .AddTransient<SelectDownoadGameDialog>()
             .AddTransient<SelectDownloadGameViewModel>()
+            .AddTransient<QRLoginDialog>()
+            .AddTransient<QrLoginViewModel>()
             #endregion
             #endregion
             #region Navigation

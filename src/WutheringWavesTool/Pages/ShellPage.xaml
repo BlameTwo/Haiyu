@@ -181,6 +181,12 @@
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Command="{x:Bind ViewModel.OpenScreenCaptureCommand}" Text="扫描屏幕登录游戏">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xED14;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutSeparator />
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.UnLoginCommand}"
                                     Foreground="{ThemeResource SystemFillColorCriticalBrush}"

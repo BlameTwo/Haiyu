@@ -1,12 +1,22 @@
-﻿using System.Threading.Tasks;
-using CommunityToolkit.WinUI.Animations;
+﻿using CommunityToolkit.WinUI.Animations;
 using H.NotifyIcon;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.DirectX;
+using System.Drawing;
+using System.Threading.Tasks;
 using Waves.Core.Common;
+using Windows.Graphics;
+using Windows.Graphics.Capture;
+using Windows.Graphics.DirectX.Direct3D11;
+using Windows.Graphics.Imaging;
+using WutheringWavesTool.Common.QR;
 using WutheringWavesTool.Pages.GamePages;
 using WutheringWavesTool.Services.DialogServices;
 using WutheringWavesTool.Services.Navigations.NavigationViewServices;
 using WutheringWavesTool.ViewModel.GameViewModels;
-
+using ZXing;
+using ZXing.Common;
+using WutheringWavesTool.Models.Wrapper;
 namespace WutheringWavesTool.ViewModel;
 
 public sealed partial class ShellViewModel : ViewModelBase
@@ -33,7 +43,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         WavesClient = wavesClient;
         RegisterMessanger();
     }
-
     public INavigationService HomeNavigationService { get; }
     public INavigationViewService HomeNavigationViewService { get; }
     public ITipShow TipShow { get; }
@@ -41,6 +50,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     public IDialogManager DialogManager { get; }
     public IViewFactorys ViewFactorys { get; }
     public IWavesClient WavesClient { get; }
+    private IDirect3DDevice _device;
 
     [ObservableProperty]
     public partial string ServerName { get; set; }
@@ -140,6 +150,14 @@ public sealed partial class ShellViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    async Task OpenScreenCapture()
+    {
+        var result = await DialogManager.GetQRLoginResultAsync();
+
+    }
+    
+
+    [RelayCommand]
     void OpenTest()
     {
         this.HomeNavigationService.NavigationTo<TestViewModel>(
@@ -178,7 +196,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         var gamers = await WavesClient.GetWavesGamerAsync(this.CTS.Token);
         if (gamers == null || gamers.Code != 200)
             return;
-        this.Roles = FormatRoil(gamers.Data);
+        this.Roles = gamers.Data.FormatRoil();
         this.SelectRoles = Roles[0];
         this.GamerRoleListsVisibility = Visibility.Visible;
         this.AppContext.MainTitle.UpDate();

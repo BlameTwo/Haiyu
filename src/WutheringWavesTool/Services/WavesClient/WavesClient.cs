@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using NetTaste;
+using ZXing.Aztec.Internal;
 
 namespace WutheringWavesTool.Services;
 
@@ -34,8 +35,12 @@ public sealed partial class WavesClient : IWavesClient
             { "did", "1F48CAEBD509B31B7D63AACFE543FCA356AB50D8" },
             {
                 "devCode",
-                "123.168.91.121, Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
+                "AAB886CD651C77F028B4E7A883D10A1240E08BBF"
             },
+            { "model","SM-A5260"},
+            { "version","2.5.3"},
+            { "lang","zh-Hans"},
+            { "countryCode","CN"},
         };
         if (isNeedBAT)
         {
@@ -299,5 +304,17 @@ public sealed partial class WavesClient : IWavesClient
             this.BAT = bassData.AccessToken;
         }
         return bassData;
+    }
+    
+    public async Task PostQrValueAsync(string qrText,CancellationToken token = default)
+    {
+        var url = "https://api.kurobbs.com/user/auth/roleInfos";
+        var request = await BuildRequestAsync(url, HttpMethod.Post, GetHeader(true,false), new MediaTypeHeaderValue("application/x-www-form-urlencoded"), new Dictionary<string, string>()
+        {
+            { "qrCode",qrText}
+        },true);
+        var result = await HttpClientService.HttpClient.SendAsync(request, token);
+        var jsonStr = await result.Content.ReadAsStringAsync(token);
+        //确认登陆接口
     }
 }
