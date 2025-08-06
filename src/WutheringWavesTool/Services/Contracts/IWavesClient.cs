@@ -42,6 +42,8 @@ public interface IWavesClient
     public Task<QRLoginResult?> QRLoginAsync(string qrText, string verifyCode, CancellationToken token = default);
 
     public Task<SMSModel?> GetQrCodeAsync(string qrCode, CancellationToken token = default);
+
+    public Task<DeviceInfo?> GetDeviceInfosAsync(CancellationToken token = default);
     public GameRoilDataWrapper CurrentRoil { get; set; }
 
     #region 数据终端

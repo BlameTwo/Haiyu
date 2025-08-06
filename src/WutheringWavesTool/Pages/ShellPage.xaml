@@ -199,6 +199,11 @@
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xED14;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
+                                <MenuFlyoutItem Command="{x:Bind ViewModel.ShowDeviceInfoCommand}" Text="授权管理">
+                                    <MenuFlyoutItem.Icon>
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8CC;" />
+                                    </MenuFlyoutItem.Icon>
+                                </MenuFlyoutItem>
                                 <MenuFlyoutSeparator />
                                 <MenuFlyoutItem
                                     Command="{x:Bind ViewModel.UnLoginCommand}"
@@ -419,6 +424,5 @@
                 </Grid>
             </NavigationView>
         </Grid>
-
     </Grid>
 </Page>

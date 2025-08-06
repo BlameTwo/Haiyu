@@ -11,6 +11,9 @@ namespace Waves.Api.Models.QRLogin
     [JsonSerializable(typeof(QRLoginResult))]
     [JsonSerializable(typeof(SMSModel))]
     [JsonSerializable(typeof(Data))]
+    [JsonSerializable(typeof(DeviceDatum))]
+    [JsonSerializable(typeof(DeviceRole))]
+    [JsonSerializable(typeof(DeviceInfo))]
     public partial class QRContext:JsonSerializerContext
     {
     }

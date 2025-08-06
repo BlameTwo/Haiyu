@@ -370,4 +370,19 @@ public sealed partial class WavesClient : IWavesClient
         return (SMSModel?)
             JsonSerializer.Deserialize(jsonStr,QRContext.Default.SMSModel);
     }
+
+    public async Task<DeviceInfo?> GetDeviceInfosAsync(CancellationToken token = default)
+    {
+        var url = "https://api.kurobbs.com/user/auth/device/list";
+        var request = await BuildLoginRequest(
+            url,
+            GetHeader(true, false),
+            new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+            []
+        );
+        var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
+        var jsonStr = await result.Content.ReadAsStringAsync(token);
+        return (DeviceInfo?)
+            JsonSerializer.Deserialize(jsonStr, QRContext.Default.DeviceInfo);
+    }
 }

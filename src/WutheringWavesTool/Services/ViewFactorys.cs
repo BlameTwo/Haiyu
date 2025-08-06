@@ -36,6 +36,14 @@ public class ViewFactorys : IViewFactorys
         return win;
     }
 
+    public WindowModelBase ShowAdminDevice()
+    {
+        var window = this.ShowWindowBase<DeviceInfoPage>(null); 
+        window.MaxHeight = 530;
+        window.MaxWidth = 750;
+        return window;
+    }
+
     public WindowModelBase ShowRolesDataWindow(ShowRoleData detily)
     {
         var window = this.ShowWindowBase<GamerRoilsDetilyPage>(detily);

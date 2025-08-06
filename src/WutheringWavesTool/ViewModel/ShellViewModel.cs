@@ -233,6 +233,12 @@ public sealed partial class ShellViewModel : ViewModelBase
         OpenMain();
     }
 
+    [RelayCommand]
+    public void ShowDeviceInfo()
+    {
+        var window = ViewFactorys.ShowAdminDevice();
+        window.AppWindow.Show();
+    }
 
     [RelayCommand]
     async Task UnLogin()
