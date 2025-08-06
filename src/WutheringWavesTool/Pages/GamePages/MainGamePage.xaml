@@ -44,6 +44,12 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Grid.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition FromHorizontalOffset="-20" FromVerticalOffset="-20" />
+                    
+                </TransitionCollection>
+            </Grid.Transitions>
             <ProgressBar
                 Grid.ColumnSpan="3"
                 MinHeight="5"
@@ -279,6 +285,7 @@
                         <Button.BorderBrush>
                             <SolidColorBrush Color="{x:Bind ViewModel.StressShadowColor, Mode=OneWay}" />
                         </Button.BorderBrush>
+
                         <ani:Explicit.Animations>
                             <ani:AnimationSet x:Name="ShadowEnterAnimation">
                                 <ani:BlurRadiusDropShadowAnimation To="12" />

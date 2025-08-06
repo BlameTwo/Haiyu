@@ -160,6 +160,19 @@
                     </ComboBox>
                     <Button
                         Margin="5,0,0,0"
+                        Padding="6"
+                        VerticalAlignment="Center"
+                        Command="{x:Bind ViewModel.RefreshRoleListsCommand}"
+                        CornerRadius="5"
+                        Style="{ThemeResource DefaultAcrylicButtonStyle}"
+                        Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
+                        <FontIcon
+                            FontFamily="Segoe Fluent Icons"
+                            FontSize="18"
+                            Glyph="&#xE72C;" />
+                    </Button>
+                    <Button
+                        Margin="5,0,0,0"
                         Padding="5"
                         VerticalAlignment="Center"
                         CornerRadius="3"
@@ -223,17 +236,7 @@
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEAD8;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
-                                <MenuFlyoutSeparator />
-                                <ToggleMenuFlyoutItem Text="性能计数器">
-                                    <i:Interaction.Behaviors>
-                                        <i:EventTriggerBehavior EventName="Click">
-                                            <i:InvokeCommandAction Command="{x:Bind ViewModel.OpenCounterCommand}" />
-                                        </i:EventTriggerBehavior>
-                                    </i:Interaction.Behaviors>
-                                    <ToggleMenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC32;" />
-                                    </ToggleMenuFlyoutItem.Icon>
-                                </ToggleMenuFlyoutItem>
+
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>

@@ -55,7 +55,6 @@ public static class Waves
                 }
             )
             .AddTransient<IHttpClientService, HttpClientService>();
-        services.AddHttpClient();
         return services;
     }
 }

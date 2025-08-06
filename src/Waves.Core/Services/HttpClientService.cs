@@ -5,13 +5,11 @@ namespace Waves.Core.Services;
 
 public class HttpClientService : IHttpClientService
 {
-    public HttpClientService(IHttpClientFactory httpClientFactory)
+    public HttpClientService()
     {
-        HttpClientFactory = httpClientFactory;
     }
 
     public HttpClient HttpClient { get; private set; }
-    public IHttpClientFactory HttpClientFactory { get; }
 
     public HttpClient GameDownloadClient { get; private set; }
 

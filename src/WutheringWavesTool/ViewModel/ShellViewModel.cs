@@ -191,13 +191,18 @@ public sealed partial class ShellViewModel : ViewModelBase
         this.AppContext.MainTitle.UpDate();
     }
 
+    [RelayCommand]
     public async Task RefreshRoleLists()
     {
         var gamers = await WavesClient.GetWavesGamerAsync(this.CTS.Token);
         if (gamers == null || gamers.Code != 200)
             return;
         this.Roles = gamers.Data.FormatRoil();
-        this.SelectRoles = Roles[0];
+        if(Roles != null)
+        {
+            if (Roles.Count > 0)
+                this.SelectRoles = Roles[0];
+        }
         this.GamerRoleListsVisibility = Visibility.Visible;
         this.AppContext.MainTitle.UpDate();
     }
@@ -228,16 +233,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         OpenMain();
     }
 
-    ObservableCollection<GameRoilDataWrapper> FormatRoil(List<GameRoilDataItem> roilDataItems)
-    {
-        ObservableCollection<GameRoilDataWrapper> values = new();
-        foreach (var item in roilDataItems)
-        {
-            GameRoilDataWrapper value = new GameRoilDataWrapper(item);
-            values.Add(value);
-        }
-        return values;
-    }
 
     [RelayCommand]
     async Task UnLogin()

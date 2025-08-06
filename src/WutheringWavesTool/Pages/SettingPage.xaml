@@ -23,123 +23,121 @@
         Padding="25"
         HorizontalScrollBarVisibility="Hidden"
         VerticalScrollBarVisibility="Hidden">
-        <Grid>
-            <Grid.ChildrenTransitions>
-                <TransitionCollection>
-                    <RepositionThemeTransition />
-                    <EntranceThemeTransition FromVerticalOffset="-5" />
-                </TransitionCollection>
-            </Grid.ChildrenTransitions>
-            <StackPanel HorizontalAlignment="Stretch">
-                <TextBlock
-                    FontFamily="{StaticResource DefaultFont}"
-                    FontSize="15"
-                    Text="通用" />
-                <ui:SettingsCard
-                    Margin="0,5,0,0"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    Command="{x:Bind ViewModel.SelectWallpaperCommand}"
-                    Header="壁纸"
-                    IsClickEnabled="True">
-                    <ui:SettingsCard.HeaderIcon>
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B9;" />
-                    </ui:SettingsCard.HeaderIcon>
-                </ui:SettingsCard>
-                <ui:SettingsCard
-                    Margin="0,5,0,0"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    Header="关闭按钮"
-                    IsClickEnabled="False">
-                    <ui:SettingsCard.HeaderIcon>
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB51;" />
-                    </ui:SettingsCard.HeaderIcon>
-                    <ui:SettingsCard.Content>
-                        <ComboBox SelectedIndex="{x:Bind ViewModel.SelectCloseIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <ComboBoxItem Content="托盘" />
-                            <ComboBoxItem Content="退出" />
-                        </ComboBox>
-                    </ui:SettingsCard.Content>
-                </ui:SettingsCard>
-                <TextBlock
-                    Margin="0,5,0,0"
-                    FontFamily="{StaticResource DefaultFont}"
-                    FontSize="15"
-                    Text="库街区" />
-                <ui:SettingsCard
-                    Margin="0,5,0,0"
-                    Command="{x:Bind ViewModel.CopyTokenCommand}"
-                    Header="复制授权码"
-                    IsClickEnabled="True">
-                    <ui:SettingsCard.ActionIcon>
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="15"
-                            Glyph="&#xE8C8;" />
-                    </ui:SettingsCard.ActionIcon>
-                    <ui:SettingsCard.HeaderIcon>
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE631;" />
-                    </ui:SettingsCard.HeaderIcon>
-                </ui:SettingsCard>
-                <ui:SettingsExpander
-                    Margin="0,5,0,0"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    ItemsSource="{x:Bind ViewModel.GamerData, Mode=OneWay}">
-                    <ui:SettingsExpander.HeaderIcon>
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" />
-                    </ui:SettingsExpander.HeaderIcon>
-                    <ui:SettingsExpander.Header>
-                        <TextBlock VerticalAlignment="Center" Text="账号管理" />
-                    </ui:SettingsExpander.Header>
-                    <ui:SettingsExpander.ItemTemplate>
-                        <DataTemplate x:DataType="gamer:GameRoilDataItem">
-                            <ui:SettingsCard>
-                                <ui:SettingsCard.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <wui:ImageEx
-                                            Width="28"
-                                            Height="28"
-                                            CornerRadius="5"
-                                            Source="{x:Bind GameHeadUrl}" />
-                                        <TextBlock Margin="5,0,0,0" VerticalAlignment="Center">
-                                            <Run Text="{x:Bind RoleName}" />
-                                            <Run Text="--" />
-                                            <Run Text="{x:Bind ServerName}" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                </ui:SettingsCard.Header>
-                                <Button
-                                    Command="{x:Bind CopyIdCommand}"
-                                    Style="{ThemeResource TransparentButtonStyle}"
-                                    ToolTipService.ToolTip="复制账号ID">
-                                    <FontIcon
-                                        FontFamily="Segoe Fluent Icons"
-                                        FontSize="15"
-                                        Glyph="&#xE8C8;" />
-                                </Button>
-                            </ui:SettingsCard>
-                        </DataTemplate>
-                    </ui:SettingsExpander.ItemTemplate>
-                </ui:SettingsExpander>
-                <ui:SettingsCard
-                    Margin="0,5,0,0"
-                    Command="{x:Bind ViewModel.OpenDesktopToolCommand}"
-                    Header="打开扩展卡片"
-                    IsClickEnabled="True" />
-                <TextBlock
-                    Margin="0,5,0,0"
-                    FontFamily="{StaticResource DefaultFont}"
-                    FontSize="15"
-                    Text="存储" />
-                <ui:SettingsCard
-                    Margin="0,5,0,0"
-                    Command="{x:Bind ViewModel.OpenConfigFolderCommand}"
-                    Header="配置文件夹"
-                    IsClickEnabled="True" />
-            </StackPanel>
 
-        </Grid>
+        <StackPanel HorizontalAlignment="Stretch">
+            <StackPanel.ChildrenTransitions>
+                <TransitionCollection>
+                    <RepositionThemeTransition IsStaggeringEnabled="False" />
+                    <EntranceThemeTransition FromVerticalOffset="-50" />
+                </TransitionCollection>
+            </StackPanel.ChildrenTransitions>
+            <TextBlock
+                FontFamily="{StaticResource DefaultFont}"
+                FontSize="15"
+                Text="通用" />
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Command="{x:Bind ViewModel.SelectWallpaperCommand}"
+                Header="壁纸"
+                IsClickEnabled="True">
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B9;" />
+                </ui:SettingsCard.HeaderIcon>
+            </ui:SettingsCard>
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Header="关闭按钮"
+                IsClickEnabled="False">
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB51;" />
+                </ui:SettingsCard.HeaderIcon>
+                <ui:SettingsCard.Content>
+                    <ComboBox SelectedIndex="{x:Bind ViewModel.SelectCloseIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBoxItem Content="托盘" />
+                        <ComboBoxItem Content="退出" />
+                    </ComboBox>
+                </ui:SettingsCard.Content>
+            </ui:SettingsCard>
+            <TextBlock
+                Margin="0,5,0,0"
+                FontFamily="{StaticResource DefaultFont}"
+                FontSize="15"
+                Text="库街区" />
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                Command="{x:Bind ViewModel.CopyTokenCommand}"
+                Header="复制授权码"
+                IsClickEnabled="True">
+                <ui:SettingsCard.ActionIcon>
+                    <FontIcon
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="15"
+                        Glyph="&#xE8C8;" />
+                </ui:SettingsCard.ActionIcon>
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE631;" />
+                </ui:SettingsCard.HeaderIcon>
+            </ui:SettingsCard>
+            <ui:SettingsExpander
+                Margin="0,5,0,0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                ItemsSource="{x:Bind ViewModel.GamerData, Mode=OneWay}">
+                <ui:SettingsExpander.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" />
+                </ui:SettingsExpander.HeaderIcon>
+                <ui:SettingsExpander.Header>
+                    <TextBlock VerticalAlignment="Center" Text="账号管理" />
+                </ui:SettingsExpander.Header>
+                <ui:SettingsExpander.ItemTemplate>
+                    <DataTemplate x:DataType="gamer:GameRoilDataItem">
+                        <ui:SettingsCard>
+                            <ui:SettingsCard.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <wui:ImageEx
+                                        Width="28"
+                                        Height="28"
+                                        CornerRadius="5"
+                                        Source="{x:Bind GameHeadUrl}" />
+                                    <TextBlock Margin="5,0,0,0" VerticalAlignment="Center">
+                                        <Run Text="{x:Bind RoleName}" />
+                                        <Run Text="--" />
+                                        <Run Text="{x:Bind ServerName}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </ui:SettingsCard.Header>
+                            <Button
+                                Command="{x:Bind CopyIdCommand}"
+                                Style="{ThemeResource TransparentButtonStyle}"
+                                ToolTipService.ToolTip="复制账号ID">
+                                <FontIcon
+                                    FontFamily="Segoe Fluent Icons"
+                                    FontSize="15"
+                                    Glyph="&#xE8C8;" />
+                            </Button>
+                        </ui:SettingsCard>
+                    </DataTemplate>
+                </ui:SettingsExpander.ItemTemplate>
+            </ui:SettingsExpander>
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                Command="{x:Bind ViewModel.OpenDesktopToolCommand}"
+                Header="打开扩展卡片"
+                IsClickEnabled="True" />
+            <TextBlock
+                Margin="0,5,0,0"
+                FontFamily="{StaticResource DefaultFont}"
+                FontSize="15"
+                Text="存储" />
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                Command="{x:Bind ViewModel.OpenConfigFolderCommand}"
+                Header="配置文件夹"
+                IsClickEnabled="True" />
+        </StackPanel>
     </ScrollView>
 </Page>
