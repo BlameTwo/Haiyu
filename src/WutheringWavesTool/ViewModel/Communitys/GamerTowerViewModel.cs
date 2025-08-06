@@ -4,9 +4,10 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
 {
     private bool disposedValue;
 
-    public GamerTowerViewModel(IWavesClient wavesClient)
+    public GamerTowerViewModel(IWavesClient wavesClient,ITipShow tipShow)
     {
         WavesClient = wavesClient;
+        TipShow = tipShow;
         WeakReferenceMessenger.Default.Register<SwitchRoleMessager>(this, SwitchRoleMethod);
     }
 
@@ -14,6 +15,7 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
     public partial ObservableCollection<DataCenterTowerDifficultyWrapper> Difficulties { get; set; }
 
     public IWavesClient WavesClient { get; }
+    public ITipShow TipShow { get; }
     public GameRoilDataItem RoilData { get; private set; }
 
     internal void SetData(GameRoilDataItem item)
@@ -30,9 +32,11 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
     async Task LoadedAsync()
     {
         var index = await WavesClient.GetGamerTowerIndexDataAsync(this.RoilData, this.CTS.Token);
-        if (index == null)
+        if (index == null || index.DifficultyList == null)
+        {
+            this.TipShow.ShowMessage("拉取数据失败", Symbol.Clear);
             return;
-
+        }
         if (Difficulties != null)
         {
             Difficulties.Clear();
@@ -54,19 +58,22 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
             if (disposing)
             {
                 WeakReferenceMessenger.Default.UnregisterAll(this);
-                foreach (var item in this.Difficulties)
+                if(this.Difficulties!= null)
                 {
-                    foreach (var item2 in item.Areas)
+                    foreach (var item in this.Difficulties)
                     {
-                        foreach (var item3 in item2.Floors)
+                        foreach (var item2 in item.Areas)
                         {
-                            item3.Roles.RemoveAll();
+                            foreach (var item3 in item2.Floors)
+                            {
+                                item3.Roles.RemoveAll();
+                            }
+                            item2.Floors.RemoveAll();
                         }
-                        item2.Floors.RemoveAll();
+                        item.Areas.RemoveAll();
                     }
-                    item.Areas.RemoveAll();
+                    this.Difficulties.RemoveAll();
                 }
-                this.Difficulties.RemoveAll();
             }
             disposedValue = true;
         }

@@ -161,6 +161,18 @@ public partial class QrLoginViewModel : DialogViewModelBase
         }
     }
 
+    public override void AfterClose()
+    {
+        if (_framePool != null)
+        {
+            _framePool?.FrameArrived -= _framePool_FrameArrived;
+            
+            _session?.Dispose();
+            _framePool?.Dispose();
+        }
+        base.AfterClose();
+    }
+
     [RelayCommand]
     async Task LoginAsync()
     {

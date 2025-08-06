@@ -33,6 +33,7 @@ public partial class GamerDockViewModel : ViewModelBase, IDisposable
         if (calabash == null)
         {
             TipShow.ShowMessage("未请求到数据坞信息", Microsoft.UI.Xaml.Controls.Symbol.Clear);
+            TipShow.ShowMessage("拉取数据为空", Symbol.Clear);
         }
         else
         {
@@ -45,6 +46,8 @@ public partial class GamerDockViewModel : ViewModelBase, IDisposable
         GamerCalabashData calabash
     )
     {
+        if (calabash.PhantomList == null)
+            return [];
         ObservableCollection<DataCenterPhantomItemWrapper> items = new();
         foreach (var item in calabash.PhantomList)
         {

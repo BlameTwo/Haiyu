@@ -2,7 +2,7 @@
 
 public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
 {
-    private List<ChallengeList> orginCountrys;
+    private List<ChallengeList>? orginCountrys;
 
     public GamerChallengeViewModel(IWavesClient wavesClient, ITipShow tipShow)
     {
@@ -77,10 +77,12 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
     async Task Loaded()
     {
         var challData = await WavesClient.GetGamerChallengeIndexDataAsync(RoilItem, this.CTS.Token);
-        if (challData == null)
+        if (challData == null || challData.ChallengeList == null)
+        {
+            TipShow.ShowMessage("拉取数据为空", Symbol.Clear);
             return;
-        this.orginCountrys = challData.ChallengeList;
-        foreach (var item in orginCountrys)
+        }
+        foreach (var item in challData.ChallengeList)
         {
             Countrys.Add(new(item));
         }
@@ -94,12 +96,15 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);
         this.Countrys.RemoveAll();
-        this.orginCountrys.Clear();
-        foreach (var item in Items)
+        this.orginCountrys?.Clear();
+        if(Items != null)
         {
-            item.IndexWrapper?.RemoveAll();
-            item.IndexWrapper = null;
-            item.BossCover = null;
+            foreach (var item in Items)
+            {
+                item.IndexWrapper?.RemoveAll();
+                item.IndexWrapper = null;
+                item.BossCover = null;
+            }
         }
         this.Items.RemoveAll();
         this.Countrys = null;
