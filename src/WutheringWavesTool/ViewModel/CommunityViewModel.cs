@@ -101,7 +101,7 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
 
     private void ShowRoleMethod(object recipient, ShowRoleData message)
     {
-        ViewFactorys.ShowRolesDataWindow(message).AppWindow.Show();
+        ViewFactorys.ShowRolesDataWindow(message).Activate();
     }
 
     private async void LoginMessangerMethod(object recipient, LoginMessanger message)

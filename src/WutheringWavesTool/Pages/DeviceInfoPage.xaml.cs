@@ -22,5 +22,11 @@ public sealed partial class DeviceInfoPage : Page, IWindowPage
     public void SetWindow(Window window)
     {
         title.Window = window;
+        title.Window.Closed += Window_Closed;
+    }
+
+    private void Window_Closed(object sender, WindowEventArgs args)
+    {
+        this.ViewModel?.Dispose();
     }
 }

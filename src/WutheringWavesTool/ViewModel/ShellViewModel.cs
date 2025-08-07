@@ -173,7 +173,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         (win.AppWindow.Presenter as OverlappedPresenter)!.IsMaximizable = false;
         (win.AppWindow.Presenter as OverlappedPresenter)!.IsMinimizable = false;
         win.SystemBackdrop = new MicaBackdrop();
-        win.AppWindowApp.Show();
+        win.Activate();
     }
 
     [RelayCommand]
@@ -237,7 +237,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     public void ShowDeviceInfo()
     {
         var window = ViewFactorys.ShowAdminDevice();
-        window.AppWindow.Show();
+        window.Activate();
     }
 
     [RelayCommand]
@@ -255,8 +255,8 @@ public sealed partial class ShellViewModel : ViewModelBase
     void OpenSignWindow()
     {
         var win = ViewFactorys.ShowSignWindow(this.SelectRoles.Item);
-        win.MaxHeight = 350;
-        win.MaxWidth = 350;
+        win.Manager.MaxHeight = 350;
+        win.Manager.MaxWidth = 350;
         (win.AppWindow.Presenter as OverlappedPresenter)!.IsMaximizable = false;
         (win.AppWindow.Presenter as OverlappedPresenter)!.IsMinimizable = false;
         win.AppWindowApp.Show();

@@ -43,7 +43,12 @@ public interface IWavesClient
 
     public Task<SMSModel?> GetQrCodeAsync(string qrCode, CancellationToken token = default);
 
-    public Task<DeviceInfo?> GetDeviceInfosAsync(CancellationToken token = default);
+    public Task<DeviceInfo?> GetDeviceInfosAsync(CancellationToken token = default); 
+    public Task<AddUserGameServer?> GetBindServerAsync(int gameId, CancellationToken token = default);
+
+    public Task<SendGameVerifyCode?> SendVerifyGameCode(string gameId, string serverId,string roldId, CancellationToken token = default);
+
+    public Task<BindGameVerifyCode?> BindGamer(string gameId, string serverId, string roleId, string verifyCode, CancellationToken token = default);
     public GameRoilDataWrapper CurrentRoil { get; set; }
 
     #region 数据终端

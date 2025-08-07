@@ -385,4 +385,63 @@ public sealed partial class WavesClient : IWavesClient
         return (DeviceInfo?)
             JsonSerializer.Deserialize(jsonStr, QRContext.Default.DeviceInfo);
     }
+
+    public async Task<SendGameVerifyCode?> SendVerifyGameCode(string gameId,string serverId, string roleId,CancellationToken token = default)
+    {
+        var url = "https://api.kurobbs.com/user/role/sendVerifyCode";
+        var request = await BuildLoginRequest(
+            url,
+            GetHeader(true, false),
+            new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+            new Dictionary<string, string>()
+            {
+                {"gameId",gameId },
+                {"roleId", roleId},
+                {"serverId",serverId }
+            }
+        );
+        var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
+        var jsonStr = await result.Content.ReadAsStringAsync(token);
+        return 
+            JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.SendGameVerifyCode);
+    }
+
+    public async Task<AddUserGameServer?> GetBindServerAsync(int gameId,CancellationToken token = default)
+    {
+        var url = "https://api.kurobbs.com/config/findGameServerList";
+        var request = await BuildLoginRequest(
+            url,
+            GetHeader(true, false),
+            new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+            new Dictionary<string, string>()
+            {
+                { "gameId",gameId.ToString()}
+            }
+        );
+        var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
+        var jsonStr = await result.Content.ReadAsStringAsync(token);
+        return 
+            JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.AddUserGameServer);
+    }
+
+    public async Task<BindGameVerifyCode?> BindGamer(string gameId, string serverId, string roleId,string verifyCode,CancellationToken token = default)
+    {
+        var url = "https://api.kurobbs.com/user/role/bindUserRole";
+        var request = await BuildLoginRequest(
+            url,
+            GetHeader(true, false),
+            new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+            new Dictionary<string, string>()
+            {
+                {"gameId",gameId },
+                {"roleId", roleId},
+                {"verifyCode",verifyCode },
+                {"serverId",serverId }
+            }
+        );
+        var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
+        var jsonStr = await result.Content.ReadAsStringAsync(token);
+        return
+            JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.BindGameVerifyCode);
+    }
 }

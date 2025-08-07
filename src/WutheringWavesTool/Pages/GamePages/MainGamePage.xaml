@@ -47,7 +47,7 @@
             <Grid.Transitions>
                 <TransitionCollection>
                     <EntranceThemeTransition FromHorizontalOffset="-20" FromVerticalOffset="-20" />
-                    
+
                 </TransitionCollection>
             </Grid.Transitions>
             <ProgressBar

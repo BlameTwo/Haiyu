@@ -25,3 +25,11 @@ namespace Waves.Api.Models;
 [JsonSerializable(typeof(CommunityWeaponData))]
 [JsonSerializable(typeof(List<CommunityWeaponData>))]
 public partial class PlayerCardRecordContext : JsonSerializerContext { }
+
+
+[JsonSerializable(typeof(AddUserGameServer))]
+[JsonSerializable(typeof(AddUserDatum))]
+[JsonSerializable(typeof(SendGameVerifyCode))]
+[JsonSerializable(typeof(BindGameVerifyCode))]
+[JsonSerializable(typeof(TokenData))]
+public partial class BindGameContext : JsonSerializerContext { }

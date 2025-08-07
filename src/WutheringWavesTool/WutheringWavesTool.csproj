@@ -1,32 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net8.0-windows10.0.26100.0</TargetFramework>
+		<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>WutheringWavesTool</RootNamespace>
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<Platforms>x64</Platforms>
-		<Version>2.3.4</Version>
-		<LangVersion>preview</LangVersion>
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-		<JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
 		<UseWinUI>true</UseWinUI>
-		<!--<WindowsPackageType>None</WindowsPackageType>-->
+		<LangVersion>preview</LangVersion>
 		<EnableMsixTooling>true</EnableMsixTooling>
+		<PublishAot>true</PublishAot>
+		<UseNativeAot>true</UseNativeAot>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
 		<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
-		<Nullable>enable</Nullable>
-		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
-		<PublishDir>bin\$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\publish\</PublishDir>
-		<PublishSingleFile>true</PublishSingleFile>
-		<PublishSingleFile>False</PublishSingleFile>
-		<PublishReadyToRun>false</PublishReadyToRun>
-		<!--无运行环境-->
-		<WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
-		<SelfContained>true</SelfContained>
-		<PublishTrimmed>true</PublishTrimmed>
-		<TrimMode>partial</TrimMode>
-		<EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
-		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<IsAotCompatible>true</IsAotCompatible>
+		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<AppxPackageSigningTimestampDigestAlgorithm>SHA512</AppxPackageSigningTimestampDigestAlgorithm>
+		<AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+		<GenerateTestArtifacts>True</GenerateTestArtifacts>
+		<AppxBundle>Auto</AppxBundle>
+		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<AppxPackageSigningTimestampServerUrl>http://timestamp.sectigo.com</AppxPackageSigningTimestampServerUrl>
 	</PropertyGroup>
 	<ItemGroup>
 		<Content Remove="Assets\HpatchzResource\hpatchz.exe" />
@@ -63,8 +62,8 @@
 		<PackageReference Include="CommunityToolkit.WinUI.Extensions" Version="8.2.250402" />
 		<PackageReference Include="CommunityToolkit.WinUI.Helpers" Version="8.2.250402" />
 		<PackageReference Include="CommunityToolkit.WinUI.Media" Version="8.2.250402" />
-		<PackageReference Include="DevWinUI" Version="8.8.0" />
-		<PackageReference Include="DevWinUI.Controls" Version="8.8.0" />
+		<PackageReference Include="DevWinUI" Version="8.9.0" />
+		<PackageReference Include="DevWinUI.Controls" Version="8.9.0" />
 		<PackageReference Include="H.NotifyIcon.WinUI" Version="2.3.0" />
 		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.3.2" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
@@ -75,7 +74,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4654" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250606001" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250513003" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
 		<PackageReference Include="Serilog" Version="4.3.1-dev-02373" />
 		<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
@@ -205,18 +204,8 @@
 
 	<!-- Publish Properties -->
 	<PropertyGroup>
-		<PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
-		<PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">False</PublishReadyToRun>
-		<PublishTrimmed Condition="'$(Configuration)' == 'Debug'">False</PublishTrimmed>
-		<PublishTrimmed Condition="'$(Configuration)' != 'Debug'">true</PublishTrimmed>
-		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 		<PackageCertificateKeyFile>WutheringWavesTool_TemporaryKey.pfx</PackageCertificateKeyFile>
-		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-		<GenerateTestArtifacts>True</GenerateTestArtifacts>
-		<AppxBundle>Auto</AppxBundle>
+		
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>

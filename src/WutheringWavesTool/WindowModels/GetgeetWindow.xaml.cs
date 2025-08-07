@@ -2,7 +2,7 @@
 
 public sealed partial class GetGeetWindow : WindowModelBase
 {
-    public GetGeetWindow()
+    public GetGeetWindow(nint value):base(value)
     {
         this.InitializeComponent();
         this.titleBar.Window = this;

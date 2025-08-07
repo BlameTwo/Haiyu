@@ -11,9 +11,9 @@ public class ViewFactorys : IViewFactorys
 
     public GetGeetWindow CreateGeetWindow()
     {
-        var windw = new GetGeetWindow();
-        windw.MaxHeight = 510;
-        windw.MaxWidth = 700;
+        var windw = new GetGeetWindow(WindowNative.GetWindowHandle(AppContext.App.MainWindow));
+        windw.Manager.MaxHeight = 510;
+        windw.Manager.MaxWidth = 700;
         return windw;
     }
 
@@ -23,11 +23,11 @@ public class ViewFactorys : IViewFactorys
     public WindowModelBase ShowWindowBase<T>(object data)
         where T : UIElement, IWindowPage
     {
-        var win = new WindowModelBase();
+        var win = new WindowModelBase(WindowNative.GetWindowHandle(AppContext.App.MainWindow));
         var page = Instance.Service!.GetRequiredService<T>();
-        page.SetData(data);
+        if(data != null)
+            page.SetData(data);
         page.SetWindow(win);
-        win.IsTitleBarVisible = true;
         win.Content = page;
         if (win.Content is FrameworkElement fs)
         {
@@ -38,27 +38,34 @@ public class ViewFactorys : IViewFactorys
 
     public WindowModelBase ShowAdminDevice()
     {
-        var window = this.ShowWindowBase<DeviceInfoPage>(null); 
-        window.MaxHeight = 530;
-        window.MaxWidth = 750;
-        return window;
+        var win = new WindowModelBase(WindowNative.GetWindowHandle(AppContext.App.MainWindow));
+        var page = Instance.Service!.GetRequiredService<DeviceInfoPage>();
+        page.SetWindow(win);
+        win.Content = page;
+        if (win.Content is FrameworkElement fs)
+        {
+            fs.RequestedTheme = ElementTheme.Dark;
+        }
+        win.Manager.MaxHeight = 530;
+        win.Manager.MaxWidth = 750;
+        return win;
     }
 
     public WindowModelBase ShowRolesDataWindow(ShowRoleData detily)
     {
         var window = this.ShowWindowBase<GamerRoilsDetilyPage>(detily);
-        window.MaxHeight = 530;
-        window.MaxWidth = 750;
+        window.Manager.MaxHeight = 530;
+        window.Manager.MaxWidth = 750;
         return window;
     }
 
     public WindowModelBase ShowPlayerRecordWindow()
     {
         var window = this.ShowWindowBase<PlayerRecordPage>(null);
-        window.MaxHeight = 700;
-        window.MinHeight = 700;
-        window.MaxWidth = 500;
-        window.MinWidth = 500;
+        window.Manager.MaxHeight = 700;
+        window.Manager.MinHeight = 700;
+        window.Manager.MaxWidth = 500;
+        window.Manager.MinWidth = 500;
         return window;
     }
 
@@ -69,7 +76,7 @@ public class ViewFactorys : IViewFactorys
             ToolWindow window = new ToolWindow();
             var content = Instance.GetService<ToolPage>();
             window.content.Content = content;
-            window.Show();
+            window.Activate();
             return true;
         }
         catch (Exception)
