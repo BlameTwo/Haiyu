@@ -12,7 +12,7 @@ partial class GameContextBase
 {
     public async Task<FileVersion> GetLocalDLSSAsync()
     {
-        var gameFolder = await this.GameLocalConfig.GetConfigAsync(
+        var gameFolder = GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
         var path = Path.Combine(
@@ -34,7 +34,7 @@ partial class GameContextBase
 
     public async Task<FileVersion> GetLocalDLSSGenerateAsync()
     {
-        var gameFolder = await this.GameLocalConfig.GetConfigAsync(
+        var gameFolder = GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
         var path = Path.Combine(
@@ -56,7 +56,7 @@ partial class GameContextBase
 
     public async Task<FileVersion> GetLocalXeSSGenerateAsync()
     {
-        var gameFolder = await this.GameLocalConfig.GetConfigAsync(
+        var gameFolder = GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
         var path = Path.Combine(

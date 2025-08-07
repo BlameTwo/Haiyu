@@ -10,8 +10,7 @@
     xmlns:item="using:WutheringWavesTool.Models"
     xmlns:local="using:WutheringWavesTool.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:DevWinUI"
-    xmlns:wuc="using:DevWinUI"
+    xmlns:ui="using:CommunityToolkit.WinUI.Controls"
     xmlns:wui="using:WutheringWavesTool.Controls"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>

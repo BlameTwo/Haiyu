@@ -8,7 +8,6 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:WutheringWavesTool.Pages.Communitys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:wuc="using:DevWinUI"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">

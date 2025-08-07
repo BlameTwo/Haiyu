@@ -1,4 +1,6 @@
-﻿namespace WutheringWavesTool.Controls;
+﻿using CommunityToolkit.WinUI;
+
+namespace WutheringWavesTool.Controls;
 
 [TemplateVisualState(Name = LoadingState, GroupName = CommonGroup)]
 [TemplateVisualState(Name = LoadedState, GroupName = CommonGroup)]

@@ -43,10 +43,10 @@ public sealed partial class GameResourceViewModel : DialogViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
-        var result = await GameContext.GameLocalConfig.GetConfigAsync(
+        var result =  GameContext.GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
-        var prodFolder = await GameContext.GameLocalConfig.GetConfigAsync(
+        var prodFolder = GameContext.GameLocalConfig.GetConfig(
             GameLocalSettingName.ProdDownloadFolderPath
         );
         long gameSize = 0L;

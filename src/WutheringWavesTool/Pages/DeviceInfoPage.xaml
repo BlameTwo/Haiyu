@@ -9,7 +9,6 @@
     xmlns:local="using:WutheringWavesTool.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:qrModel="using:Waves.Api.Models.QRLogin"
-    xmlns:ui="using:DevWinUI"
     xmlns:vmWrapper="using:WutheringWavesTool.ViewModel"
     xmlns:wrapper="using:Waves.Api.Models"
     xmlns:wui="using:CommunityToolkit.WinUI.Controls"
@@ -49,24 +48,24 @@
             <ItemsRepeater ItemsSource="{x:Bind ViewModel.Devices, Mode=OneWay}">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate x:DataType="qrModel:DeviceDatum">
-                        <ui:SettingsExpander
+                        <wui:SettingsExpander
                             Margin="0,10,0,0"
                             Description="{x:Bind AuthDeviceNo}"
                             Header="{x:Bind DeviceName}"
                             ItemsSource="{x:Bind DeviceRoles}">
-                            <ui:SettingsExpander.ItemTemplate>
+                            <wui:SettingsExpander.ItemTemplate>
                                 <DataTemplate x:DataType="qrModel:DeviceRole">
-                                    <ui:SettingsCard Header="{x:Bind Puid}" IsClickEnabled="False">
-                                        <ui:SettingsCard.Description>
+                                    <wui:SettingsCard Header="{x:Bind Puid}" IsClickEnabled="False">
+                                        <wui:SettingsCard.Description>
                                             <TextBlock>
                                                 <Run Text="自动登陆" />
                                                 <Run Text="{x:Bind AutoLogin}" />
                                             </TextBlock>
-                                        </ui:SettingsCard.Description>
-                                    </ui:SettingsCard>
+                                        </wui:SettingsCard.Description>
+                                    </wui:SettingsCard>
                                 </DataTemplate>
-                            </ui:SettingsExpander.ItemTemplate>
-                        </ui:SettingsExpander>
+                            </wui:SettingsExpander.ItemTemplate>
+                        </wui:SettingsExpander>
                     </DataTemplate>
                 </ItemsRepeater.ItemTemplate>
             </ItemsRepeater>

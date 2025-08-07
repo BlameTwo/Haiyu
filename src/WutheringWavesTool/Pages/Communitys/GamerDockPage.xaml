@@ -9,7 +9,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
-    xmlns:wuc="using:DevWinUI"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

@@ -17,7 +17,7 @@ global using System.Threading.Tasks;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;
 global using CommunityToolkit.Mvvm.Messaging;
-global using DevWinUI;
+
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.UI;
 global using Microsoft.UI.Windowing;

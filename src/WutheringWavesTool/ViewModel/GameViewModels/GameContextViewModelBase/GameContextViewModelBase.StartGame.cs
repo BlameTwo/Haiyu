@@ -11,7 +11,7 @@ partial class GameContextViewModelBase
         }
         if (_bthType == 4)
         {
-            var localVersion = await GameContext.GameLocalConfig.GetConfigAsync(
+            var localVersion = GameContext.GameLocalConfig.GetConfig(
                 GameLocalSettingName.LocalGameVersion
             );
             var result = Version.Parse(this.DisplayVersion) > Version.Parse(localVersion);

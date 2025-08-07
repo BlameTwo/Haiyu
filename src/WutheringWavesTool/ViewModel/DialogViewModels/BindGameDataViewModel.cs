@@ -55,7 +55,7 @@ public sealed partial class BindGameDataViewModel : DialogViewModelBase, IDispos
             return;
         }
         this.Roils = gamers.Data.ToObservableCollection();
-        var bindUser = await GameContext.GameLocalConfig.GetConfigAsync(
+        var bindUser = GameContext.GameLocalConfig.GetConfig(
             GameContextExtension.BindUser
         );
         if (string.IsNullOrWhiteSpace(bindUser))

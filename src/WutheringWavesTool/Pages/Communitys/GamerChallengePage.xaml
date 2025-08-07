@@ -9,13 +9,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:wModel="using:Waves.Api.Models.Communitys.DataCenter"
-    xmlns:wc="using:DevWinUI"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
-    xmlns:wuc="using:DevWinUI"
+    xmlns:wui="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
 
-        <Style x:Key="DefaultSettingsExpanderStyle" TargetType="ui:BossExpander">
+        <Style x:Key="DefaultSettingsExpanderStyle" TargetType="wui:SettingsExpander">
             <Style.Setters>
                 <Setter Property="Background" Value="{ThemeResource SettingsCardBackground}" />
                 <Setter Property="Foreground" Value="{ThemeResource SettingsCardForeground}" />
@@ -53,7 +52,7 @@
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         CornerRadius="{TemplateBinding CornerRadius}">
-                                        <wc:SettingsCard
+                                        <wui:SettingsCard
                                             Padding="10,0,0,0"
                                             VerticalAlignment="Center"
                                             Background="Transparent"
@@ -129,25 +128,23 @@
             <ItemsControl ItemsSource="{x:Bind ViewModel.Items, Mode=OneWay}">
                 <ItemsControl.ItemContainerTransitions>
                     <TransitionCollection>
-
                         <RepositionThemeTransition />
                     </TransitionCollection>
                 </ItemsControl.ItemContainerTransitions>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="wrapper:DataCenterChallengeBossItemWrapper">
-                        <ui:BossExpander
+                        <wui:SettingsExpander
                             Margin="0,5"
                             Padding="20"
                             HorizontalAlignment="Stretch"
-                            HeanderBackground="{x:Bind BossHeader}"
                             ItemsSource="{x:Bind IndexWrapper}"
                             Style="{ThemeResource DefaultSettingsExpanderStyle}">
-                            <ui:BossExpander.Transitions>
+                            <wui:SettingsExpander.Transitions>
                                 <TransitionCollection>
                                     <AddDeleteThemeTransition />
                                 </TransitionCollection>
-                            </ui:BossExpander.Transitions>
-                            <ui:BossExpander.Header>
+                            </wui:SettingsExpander.Transitions>
+                            <wui:SettingsExpander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <Image
                                         Height="35"
@@ -160,11 +157,11 @@
                                         FontSize="15"
                                         Text="{x:Bind BossName}" />
                                 </StackPanel>
-                            </ui:BossExpander.Header>
-                            <ui:BossExpander.ItemTemplate>
+                            </wui:SettingsExpander.Header>
+                            <wui:SettingsExpander.ItemTemplate>
                                 <DataTemplate x:DataType="wrapper:DataCenterGamerChallengeIndexListWrapper">
-                                    <wuc:SettingsCard IsClickEnabled="True">
-                                        <wuc:SettingsCard.Header>
+                                    <wui:SettingsCard IsClickEnabled="True">
+                                        <wui:SettingsCard.Header>
                                             <Grid>
                                                 <ItemsControl ItemsSource="{x:Bind Roles}" Visibility="{x:Bind ItemsVisibility, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <ItemsControl.ItemTemplate>
@@ -216,7 +213,7 @@
                                                     Text="没有挑战记录~"
                                                     Visibility="{x:Bind ItemsVisibility, Converter={StaticResource BoolToVisibilityReversalConverter}}" />
                                             </Grid>
-                                        </wuc:SettingsCard.Header>
+                                        </wui:SettingsCard.Header>
                                         <StackPanel Orientation="Vertical">
                                             <TextBlock>
                                                 <Run Text="Boss Lv:" />
@@ -227,15 +224,15 @@
                                                 <Run Text="{x:Bind Time, Converter={StaticResource IntToSecondTimeConverter}}" />
                                             </TextBlock>
                                         </StackPanel>
-                                    </wuc:SettingsCard>
+                                    </wui:SettingsCard>
                                 </DataTemplate>
-                            </ui:BossExpander.ItemTemplate>
+                            </wui:SettingsExpander.ItemTemplate>
                             <TextBlock>
                                 <Run Text="{x:Bind Count}" />
                                 <Run Text="/" />
                                 <Run Text="{x:Bind MaxCount}" />
                             </TextBlock>
-                        </ui:BossExpander>
+                        </wui:SettingsExpander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

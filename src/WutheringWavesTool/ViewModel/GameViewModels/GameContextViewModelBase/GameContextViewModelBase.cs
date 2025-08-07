@@ -1,4 +1,4 @@
-﻿using SqlSugar;
+﻿
 
 namespace WutheringWavesTool.ViewModel.GameViewModels
 {
@@ -183,7 +183,7 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
             {
                 var launcher = await GameContext.GetGameLauncherSourceAsync(this.CTS.Token);
                 await this.GameContext.StartDownloadTaskAsync(
-                    await GameContext.GameLocalConfig.GetConfigAsync(
+                    GameContext.GameLocalConfig.GetConfig(
                         GameLocalSettingName.GameLauncherBassFolder
                     ),
                     launcher
@@ -212,7 +212,7 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
             {
                 var launcher = await GameContext.GetGameLauncherSourceAsync(this.CTS.Token);
                 await this.GameContext.StartDownloadTaskAsync(
-                    await GameContext.GameLocalConfig.GetConfigAsync(
+                    GameContext.GameLocalConfig.GetConfig(
                         GameLocalSettingName.GameLauncherBassFolder
                     ),
                     launcher

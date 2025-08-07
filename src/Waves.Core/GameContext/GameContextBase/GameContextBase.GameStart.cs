@@ -20,10 +20,10 @@ namespace Waves.Core.GameContext
         {
             try
             {
-                string gameProgram = await this.GameLocalConfig.GetConfigAsync(
+                string gameProgram = GameLocalConfig.GetConfig(
                     GameLocalSettingName.GameLauncherBassProgram
                 );
-                string gameFolder = await this.GameLocalConfig.GetConfigAsync(
+                string gameFolder = GameLocalConfig.GetConfig(
                     GameLocalSettingName.GameLauncherBassFolder
                 );
                 Process ps = new();

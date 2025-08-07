@@ -10,8 +10,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Waves.Api.Models.Communitys.DataCenter"
     xmlns:ui="using:WutheringWavesTool.Controls"
-    xmlns:wc="using:DevWinUI"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
+    xmlns:wui="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
         <Style x:Key="DefaultExploreExpanderStyle" TargetType="ui:BossExpander">
@@ -52,7 +52,7 @@
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Stretch"
                                         CornerRadius="{TemplateBinding CornerRadius}">
-                                        <wc:SettingsCard
+                                        <wui:SettingsCard
                                             Padding="10,0,0,0"
                                             VerticalAlignment="Center"
                                             BorderThickness="0"

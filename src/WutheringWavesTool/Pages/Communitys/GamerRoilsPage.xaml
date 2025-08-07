@@ -12,7 +12,6 @@
     xmlns:uModel="using:WutheringWavesTool.Models.Wrapper"
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:vModel="using:WutheringWavesTool.Models"
-    xmlns:wuc="using:DevWinUI"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>

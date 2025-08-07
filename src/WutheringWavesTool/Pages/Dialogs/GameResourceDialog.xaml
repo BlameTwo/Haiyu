@@ -7,7 +7,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:WutheringWavesTool.Pages.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:DevWinUI"
+    xmlns:ui="using:CommunityToolkit.WinUI.Controls"
     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
     CornerRadius="5"
     RequestedTheme="Dark"

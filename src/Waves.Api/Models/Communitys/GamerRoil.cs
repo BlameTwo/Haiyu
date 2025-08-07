@@ -132,6 +132,9 @@ public class GameRoilDataItem
     [JsonPropertyName("actionRecoverSwitch")]
     public bool ActionRecoverSwitch { get; set; }
 
+    [JsonPropertyName("headPhotoUrl")]
+    public string HeadPhotoUrl { get; set; }
+
     [JsonIgnore]
     public IRelayCommand CopyIdCommand =>
         new RelayCommand(() =>

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using CommunityToolkit.WinUI.Controls;
+using System.Threading.Tasks;
 using Windows.System;
 using WutheringWavesTool.Models.Wrapper.WindowRoils;
 
@@ -6,10 +7,10 @@ namespace WutheringWavesTool.Pages.Communitys.Windows;
 
 public sealed partial class GamerRoilsDetilyPage : Page, IWindowPage
 {
-    public GamerRoilsDetilyPage(GamerRoilsDetilyViewModel viewModel)
+    public GamerRoilsDetilyPage()
     {
         this.InitializeComponent();
-        ViewModel = viewModel;
+        ViewModel = Instance.GetService<GamerRoilsDetilyViewModel>();
         this.title_bth.Click += Button_Click;
         this.Loaded += this.Page_Loaded;
     }
@@ -66,13 +67,12 @@ public sealed partial class GamerRoilsDetilyPage : Page, IWindowPage
         }
     }
 
-    private void SelectorBarSegmented_SelectionChanged(
-        SelectorBar sender,
-        SelectorBarSelectionChangedEventArgs args
-    )
+
+    private void Segmented_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (sender.SelectedItem == null)
+        if (e.AddedItems == null || e.AddedItems.Count == 0) return;
+        if (this.ViewModel == null)
             return;
-        this.ViewModel.GamerRoilViewModel.SetPage(sender.SelectedItem.Tag.ToString());
+        this.ViewModel.GamerRoilViewModel.SetPage((e.AddedItems[0] as SegmentedItem).Tag.ToString());
     }
 }

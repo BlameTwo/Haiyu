@@ -213,7 +213,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         var network = await NetworkCheck.PingAsync(GameAPIConfig.BaseAddress[0]);
         if (network == null || network.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
-            await MessageBox.ShowAsync("网络未连接，请检查网络配置与系统网络代理");
             Environment.Exit(0);
         }
         var result = await WavesClient.IsLoginAsync(this.CTS.Token);

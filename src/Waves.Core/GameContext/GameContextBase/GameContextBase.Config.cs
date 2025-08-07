@@ -37,8 +37,8 @@ partial class GameContextBase
     public async Task<GameContextConfig> ReadContextConfigAsync(CancellationToken token = default)
     {
         GameContextConfig config = new();
-        var speed = await this.GameLocalConfig.GetConfigAsync(GameLocalSettingName.LimitSpeed);
-        var dx11 = await this.GameLocalConfig.GetConfigAsync(GameLocalSettingName.IsDx11);
+        var speed = GameLocalConfig.GetConfig(GameLocalSettingName.LimitSpeed);
+        var dx11 = GameLocalConfig.GetConfig(GameLocalSettingName.IsDx11);
         if (int.TryParse(speed, out var rate))
         {
             config.LimitSpeed = rate;

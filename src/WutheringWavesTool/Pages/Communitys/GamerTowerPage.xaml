@@ -8,7 +8,7 @@
     xmlns:local="using:WutheringWavesTool.Pages.Communitys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wModel="using:Waves.Api.Models.Communitys.DataCenter"
-    xmlns:wc="using:DevWinUI"
+    xmlns:wc="using:CommunityToolkit.WinUI.Controls"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>

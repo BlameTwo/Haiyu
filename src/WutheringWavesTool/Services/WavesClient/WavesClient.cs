@@ -1,7 +1,7 @@
-﻿using Azure.Core;
-using NetTaste;
+﻿
 using Waves.Api.Models.QRLogin;
 using Windows.System.Profile;
+using WutheringWavesTool.Helpers;
 using ZXing.Aztec.Internal;
 
 namespace WutheringWavesTool.Services;
@@ -40,7 +40,45 @@ public sealed partial class WavesClient : IWavesClient
     }
     
 
-    private Dictionary<string, string> GetHeader(bool isNeedToken, bool isNeedBAT = true)
+    private Dictionary<string, string> GetDeviceHeader(bool isNeedToken, bool isNeedBAT = true)
+
+    {
+        var dict = new Dictionary<string, string>()
+        {
+            { "Accept", "application/json, text/plain, */*" },
+            { "Accept-Encoding", "gzip, deflate" },
+            { "Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7" },
+            { "source", "android" },
+            {
+                "devCode",
+                HardwareIdGenerator.GenerateUniqueId()
+            },
+            //{ "model","23117RK66C"},
+            { "version","2.5.3"},
+            { "lang","zh-Hans"},
+            { "countryCode","CN"},
+        };
+        if (isNeedBAT)
+        {
+            if (!string.IsNullOrWhiteSpace(this.BAT))
+                dict.Add("b-at", this.BAT ?? "");
+        }
+        if (isNeedToken)
+        {
+            if (this.Token == null || string.IsNullOrWhiteSpace(Token))
+            {
+                dict.Add("token", this.Token);
+            }
+            else
+            {
+                dict.Add("token", Token);
+            }
+        }
+        return dict;
+    }
+
+
+    private Dictionary<string, string> GetWebHeader(bool isNeedToken, bool isNeedBAT = true)
     {
         var dict = new Dictionary<string, string>()
         {
@@ -49,19 +87,15 @@ public sealed partial class WavesClient : IWavesClient
             { "Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7" },
             {
                 "User-Agent",
-                "Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
+                "Mozilla/5.0 (Linux; Android 12; 23117RK66C Build/V417IR; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/101.0.4951.61 Safari/537.36 Kuro/2.5.3 KuroGameBox/2.5.3"
             },
+            {"did","AAB886CD651C77F028B4E7A883D10A1240E08BBF" },
             { "source", "android" },
-            { "did", "1F48CAEBD509B31B7D63AACFE543FCA356AB50D8" },
             {
                 "devCode",
-                "AAB886CD651C77F028B4E7A883D10A1240E08BBF"
-                //GetPackageSpecificId()
+                "39.65.173.32, Mozilla/5.0 (Linux; Android 12; 23117RK66C Build/V417IR; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/101.0.4951.61 Safari/537.36 Kuro/2.5.3 KuroGameBox/2.5.3"
+                
             },
-            { "model","SM-A5260"},
-            { "version","2.5.3"},
-            { "lang","zh-Hans"},
-            { "countryCode","CN"},
         };
         if (isNeedBAT)
         {
@@ -136,7 +170,7 @@ public sealed partial class WavesClient : IWavesClient
             { "roleId", roleId.ToString() },
             { "userId", userId.ToString() },
         };
-        var header = GetHeader(true);
+        var header = GetDeviceHeader(true);
         var request = await BuildRequestAsync(
             "https://api.kurobbs.com/encourage/signIn/initSignInV2",
             HttpMethod.Post,
@@ -153,7 +187,7 @@ public sealed partial class WavesClient : IWavesClient
 
     public async Task<SignRecord?> GetSignRecordAsync(string userId, string roldId)
     {
-        var header = GetHeader(true);
+        var header = GetDeviceHeader(true);
         var queryData = new Dictionary<string, string>()
         {
             { "gameId", "3" },
@@ -177,7 +211,7 @@ public sealed partial class WavesClient : IWavesClient
 
     public async Task<SignInResult?> SignInAsync(string userId, string roleId)
     {
-        var header = GetHeader(true, false);
+        var header = GetDeviceHeader(true, false);
         var queryData = new Dictionary<string, string>()
         {
             { "gameId", "3" },
@@ -204,7 +238,7 @@ public sealed partial class WavesClient : IWavesClient
 
     public async Task<AccountMine?> GetWavesMineAsync(long id, CancellationToken token = default)
     {
-        var header = GetHeader(true);
+        var header = GetDeviceHeader(true);
         var content = new Dictionary<string, string>() { { "otherUserId", id.ToString() } };
         var request = await BuildRequestAsync(
             "https://api.kurobbs.com/user/mineV2",
@@ -278,14 +312,10 @@ public sealed partial class WavesClient : IWavesClient
             { "Accept-Encoding", "gzip, deflate" },
             { "Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7" },
             {
-                "User-Agent",
-                "Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
-            },
-            {
                 "devCode",
-                "null, Mozilla/5.0 (Linux; Android 9; SM-S9260 Build/PQ3A.190705.01061653; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/91.0.4472.114 Safari/537.36 Kuro/2.5.0 KuroGameBox/2.5.0"
+                "Mozilla/5.0 (Linux; Android 12; 23117RK66C Build/V417IR; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/101.0.4951.61 Safari/537.36 Kuro/2.5.3 KuroGameBox/2.5.3"
             },
-            { "did", "1F48CAEBD509B31B7D63AACFE543FCA356AB50D8" },
+            { "did", "AAB886CD651C77F028B4E7A883D10A1240E08BBF" },
             { "source", "android" },
             { "token", this.Token },
             { "Connection", "keep-alive" },
@@ -330,7 +360,7 @@ public sealed partial class WavesClient : IWavesClient
     public async Task<ScanScreenModel?> PostQrValueAsync(string qrText,CancellationToken token = default)
     {
         var url = "https://api.kurobbs.com/user/auth/roleInfos";
-        var request = await BuildRequestAsync(url, HttpMethod.Post, GetHeader(true,false), new MediaTypeHeaderValue("application/x-www-form-urlencoded"), new Dictionary<string, string>()
+        var request = await BuildRequestAsync(url, HttpMethod.Post, GetDeviceHeader(true,false), new MediaTypeHeaderValue("application/x-www-form-urlencoded"), new Dictionary<string, string>()
         {
             { "qrCode",qrText}
         },true);
@@ -342,7 +372,7 @@ public sealed partial class WavesClient : IWavesClient
     public async Task<QRLoginResult?> QRLoginAsync(string qrText,string verifyCode,CancellationToken token = default)
     {
         var url = "https://api.kurobbs.com/user/auth/scanLogin";
-        var request = await BuildRequestAsync(url, HttpMethod.Post, GetHeader(true, false), new MediaTypeHeaderValue("application/x-www-form-urlencoded"), new Dictionary<string, string>()
+        var request = await BuildRequestAsync(url, HttpMethod.Post, GetDeviceHeader(true, false), new MediaTypeHeaderValue("application/x-www-form-urlencoded"), new Dictionary<string, string>()
         {
             {"autoLogin","true" },
             { "qrCode",qrText},
@@ -361,7 +391,7 @@ public sealed partial class WavesClient : IWavesClient
         };
         var request = await BuildLoginRequest(
             "https://api.kurobbs.com/user/sms/scanSms",
-            GetHeader(true,false),
+            GetDeviceHeader(true,false),
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
             query
         );
@@ -376,7 +406,7 @@ public sealed partial class WavesClient : IWavesClient
         var url = "https://api.kurobbs.com/user/auth/device/list";
         var request = await BuildLoginRequest(
             url,
-            GetHeader(true, false),
+            GetDeviceHeader(true, false),
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
             []
         );
@@ -391,7 +421,7 @@ public sealed partial class WavesClient : IWavesClient
         var url = "https://api.kurobbs.com/user/role/sendVerifyCode";
         var request = await BuildLoginRequest(
             url,
-            GetHeader(true, false),
+            GetDeviceHeader(true, false),
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
             new Dictionary<string, string>()
             {
@@ -411,7 +441,7 @@ public sealed partial class WavesClient : IWavesClient
         var url = "https://api.kurobbs.com/config/findGameServerList";
         var request = await BuildLoginRequest(
             url,
-            GetHeader(true, false),
+            GetDeviceHeader(true, false),
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
             new Dictionary<string, string>()
             {
@@ -429,7 +459,7 @@ public sealed partial class WavesClient : IWavesClient
         var url = "https://api.kurobbs.com/user/role/bindUserRole";
         var request = await BuildLoginRequest(
             url,
-            GetHeader(true, false),
+            GetDeviceHeader(true, false),
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
             new Dictionary<string, string>()
             {

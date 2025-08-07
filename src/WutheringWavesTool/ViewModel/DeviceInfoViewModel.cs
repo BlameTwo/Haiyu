@@ -1,4 +1,4 @@
-﻿using SqlSugar;
+﻿
 using Waves.Api.Models.QRLogin;
 
 namespace WutheringWavesTool.ViewModel;

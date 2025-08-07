@@ -32,8 +32,6 @@ public sealed partial class GamerRoilsDetilyViewModel : ViewModelBase, IDisposab
     [ObservableProperty]
     public partial string Title { get; set; }
 
-    [ObservableProperty]
-    public partial bool SessionLoad { get; set; }
 
     [RelayCommand]
     async Task Loaded()
@@ -99,7 +97,6 @@ public sealed partial class GamerRoilsDetilyViewModel : ViewModelBase, IDisposab
     {
         this.Title = item.RoleName;
         await this.GamerRoilViewModel.SetDataAsync(item);
-        this.SessionLoad = true;
     }
 
     public void Dispose()

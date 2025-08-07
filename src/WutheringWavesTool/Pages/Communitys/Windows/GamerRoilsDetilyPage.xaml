@@ -11,9 +11,9 @@
     xmlns:selector="using:WutheringWavesTool.Controls.Selector"
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper.WindowRoils"
-    xmlns:wuc="using:DevWinUI"
-    RequestedTheme="Dark"
+    xmlns:wuc="using:CommunityToolkit.WinUI.Controls"
     xmlns:wui="using:CommunityToolkit.WinUI"
+    RequestedTheme="Dark"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="RoleItemTempalte" x:DataType="wrapper:NavigationRoilsDetilyItem">
@@ -80,10 +80,7 @@
             MenuItemsSource="{x:Bind ViewModel.Roles, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.SelectItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectionChanged="view_SelectionChanged">
-            <Grid
-                x:Name="session"
-                Margin="5"
-                x:Load="{x:Bind ViewModel.SessionLoad, Mode=OneWay}">
+            <Grid x:Name="session" Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="7*" />
@@ -155,30 +152,32 @@
                         <Run Text="{x:Bind ViewModel.GamerRoilViewModel.RoleLevel, Mode=OneWay}" />
                     </TextBlock>
                 </Grid>
-                <wuc:SelectorBarSegmented Grid.Column="1" SelectionChanged="SelectorBarSegmented_SelectionChanged">
-                    <SelectorBarItem IsSelected="True" Tag="Weapon">
-                        <SelectorBarItem.Icon>
+                <wuc:Segmented Grid.Column="1" SelectionChanged="Segmented_SelectionChanged">
+                    <wuc:SegmentedItem IsSelected="True" Tag="Weapon">
+                        <wuc:SegmentedItem.Icon>
                             <FontIcon FontFamily="{ThemeResource RoilDetilyFont}" Glyph="&#xE615;" />
-                        </SelectorBarItem.Icon>
-                    </SelectorBarItem>
-                    <SelectorBarItem Tag="PhantomData">
-                        <SelectorBarItem.Icon>
+                        </wuc:SegmentedItem.Icon>
+                    </wuc:SegmentedItem>
+                    <wuc:SegmentedItem Tag="PhantomData">
+                        <wuc:SegmentedItem.Icon>
                             <FontIcon FontFamily="{ThemeResource RoilDetilyFont}" Glyph="&#xE6E3;" />
-                        </SelectorBarItem.Icon>
-                    </SelectorBarItem>
-                    <SelectorBarItem Tag="Chain">
-                        <SelectorBarItem.Icon>
+                        </wuc:SegmentedItem.Icon>
+                    </wuc:SegmentedItem>
+                    <wuc:SegmentedItem Tag="Chain">
+                        <wuc:SegmentedItem.Icon>
                             <FontIcon FontFamily="{ThemeResource RoilDetilyFont}" Glyph="&#xE67C;" />
-                        </SelectorBarItem.Icon>
-                    </SelectorBarItem>
-                </wuc:SelectorBarSegmented>
+                        </wuc:SegmentedItem.Icon>
+                    </wuc:SegmentedItem>
+                </wuc:Segmented>
                 <!--  武器  -->
                 <Grid
                     Grid.Row="1"
                     Grid.Column="1"
                     Margin="0,5,0,0"
                     Padding="8"
-                    Style="{ThemeResource GridPanel}"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
                     Visibility="{x:Bind ViewModel.GamerRoilViewModel.WeaponVisibility, Mode=OneWay}">
                     <Grid.Transitions>
                         <TransitionCollection>
@@ -333,7 +332,10 @@
                                         <RowDefinition Height="220" />
                                         <RowDefinition Height="4*" />
                                     </Grid.RowDefinitions>
-                                    <Grid Style="{ThemeResource GridPanel}">
+                                    <Grid
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
                                             <RowDefinition />
@@ -445,7 +447,9 @@
                                         Grid.Row="1"
                                         Margin="0,10,0,0"
                                         Padding="10"
-                                        Style="{ThemeResource GridPanel}">
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1">
 
                                         <StackPanel
                                             Grid.Row="1"
@@ -502,7 +506,9 @@
                                     x:Name="background"
                                     Margin="0,5"
                                     Padding="10"
-                                    Style="{ThemeResource GridPanel}">
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1">
                                     <i:Interaction.Behaviors>
                                         <i:DataTriggerBehavior
                                             Binding="{Binding Unlocked, Mode=OneWay}"

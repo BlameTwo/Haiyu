@@ -15,7 +15,6 @@
     xmlns:uvm="using:WutheringWavesTool.ViewModel.Communitys"
     xmlns:wModel="using:Waves.Api.Models.Communitys"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
-    xmlns:wuc="using:DevWinUI"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">

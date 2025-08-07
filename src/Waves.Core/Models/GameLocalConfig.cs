@@ -1,6 +1,6 @@
-﻿using System.Text.Json.Serialization;
-using Newtonsoft.Json.Linq;
-using SqlSugar;
+﻿using MemoryPack;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Waves.Core.Models;
 
@@ -44,90 +44,120 @@ public class GameLocalSettingName
     public const string GameTime = nameof(GameTime);
 }
 
+
 public class GameLocalConfig
 {
+    private Dictionary<string, string> _settings = new Dictionary<string, string>();
+    private readonly SemaphoreSlim _fileLock = new SemaphoreSlim(1, 1);
+
+    // 创建一个JsonSerializerContext实例，它包含了为AOT预生成的代码
+    private readonly LocalSettingsJsonContext _jsonContext = new LocalSettingsJsonContext(
+        new JsonSerializerOptions
+        {
+            WriteIndented = true // 让输出的JSON更易读
+        }
+    );
+
     public string SettingPath { get; set; }
 
+    public GameLocalConfig(string settingPath)
+    {
+        SettingPath = settingPath;
+        LoadConfig();
+    }
+
+    /// <summary>
+    /// 从JSON文件加载配置到内存
+    /// </summary>
+    private void LoadConfig()
+    {
+        if (!File.Exists(SettingPath))
+        {
+            _settings = new Dictionary<string, string>();
+            return;
+        }
+
+        try
+        {
+            var jsonString = File.ReadAllText(SettingPath);
+
+            // 使用我们AOT友好的上下文进行反序列化
+            var loadedSettings = JsonSerializer.Deserialize(jsonString, typeof(Dictionary<string, string>), _jsonContext) as Dictionary<string, string>;
+            _settings = loadedSettings ?? new Dictionary<string, string>();
+        }
+        catch
+        {
+            _settings = new Dictionary<string, string>();
+        }
+    }
+
+    /// <summary>
+    /// 将内存中的配置异步保存到JSON文件
+    /// </summary>
+    private async Task SaveConfigToFileAsync()
+    {
+        await _fileLock.WaitAsync();
+        try
+        {
+            // 使用我们AOT友好的上下文进行序列化
+            var jsonString = JsonSerializer.Serialize(_settings, typeof(Dictionary<string, string>), _jsonContext);
+            await File.WriteAllTextAsync(SettingPath, jsonString);
+        }
+        finally
+        {
+            _fileLock.Release();
+        }
+    }
+
+    /// <summary>
+    /// 保存配置
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public async Task<bool> SaveConfigAsync(string key, string value)
     {
         try
         {
-            string connectionString = $"Data Source={SettingPath};";
-            using (
-                ISqlSugarClient context = new SqlSugarClient(
-                    new ConnectionConfig()
-                    {
-                        ConnectionString = connectionString,
-                        DbType = DbType.Sqlite,
-                        IsAutoCloseConnection = true,
-                    }
-                )
-            )
-            {
-                context.CodeFirst.InitTables<LocalSettings>();
-                var settings = new LocalSettings() { Key = key, Value = value };
-                var existingSetting = (
-                    await context.Queryable<LocalSettings>().Where(x => x.Key == key).AnyAsync()
-                );
-                if (existingSetting)
-                {
-                    await context.Updateable(settings).ExecuteCommandAsync();
-                }
-                else
-                {
-                    await context.Insertable(settings).ExecuteCommandAsync();
-                }
-                return true;
-            }
+            _settings[key] = value;
+            await SaveConfigToFileAsync();
+            return true;
         }
-        catch (Exception)
+        catch
         {
             return false;
         }
     }
 
-    public async Task<string> GetConfigAsync(string key)
+    /// <summary>
+    /// 获取配置
+    /// </summary>
+    /// <param name="key"></param>
+    /// <returns></returns>
+    public string GetConfig(string key)
     {
-        string connectionString = $"Data Source={SettingPath};";
-        using (
-            SqlSugarClient context = new SqlSugarClient(
-                new ConnectionConfig()
-                {
-                    ConnectionString = connectionString,
-                    DbType = DbType.Sqlite,
-                    IsAutoCloseConnection = true,
-                }
-            )
-        )
+        // 尝试从内存中的字典获取值
+        if (_settings.TryGetValue(key, out string value))
         {
-            context.CodeFirst.InitTables<LocalSettings>();
-            var existingSetting = (
-                await context.Queryable<LocalSettings>().Where(x => x.Key == key).FirstAsync()
-            );
-            if (existingSetting == null)
-            {
-                return null;
-            }
-            else
-            {
-                return existingSetting.Value;
-            }
+            return value;
         }
+
+        return null;
     }
 }
 
-[SugarTable("settings")]
 public class LocalSettings
 {
     [JsonPropertyName("key")]
-    [SugarColumn(ColumnName = "Key", IsPrimaryKey = true)]
     public string Key { get; set; }
 
     [JsonPropertyName("value")]
-    [SugarColumn(ColumnName = "Value")]
     public string Value { get; set; }
 }
 
+
+
 [JsonSerializable(typeof(LocalSettings))]
 [JsonSerializable(typeof(List<LocalSettings>))]
-public partial class LocalSettingsJsonContext : JsonSerializerContext { }
+[JsonSerializable(typeof(Dictionary<string, string>))]
+public partial class LocalSettingsJsonContext : JsonSerializerContext { };

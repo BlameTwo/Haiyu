@@ -1,4 +1,6 @@
-﻿namespace WutheringWavesTool.Controls;
+﻿using CommunityToolkit.WinUI.Controls;
+
+namespace WutheringWavesTool.Controls;
 
 public partial class BossExpander : SettingsExpander
 {

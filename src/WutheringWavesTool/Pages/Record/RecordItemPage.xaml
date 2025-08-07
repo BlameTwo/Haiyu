@@ -8,7 +8,6 @@
     xmlns:itemWrapper="using:WutheringWavesTool.Models.Wrapper"
     xmlns:local="using:WutheringWavesTool.Pages.Record"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:wuc="using:DevWinUI"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
@@ -22,7 +21,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <Grid Padding="20" Style="{ThemeResource GridPanel}">
+            <Grid Padding="20" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
@@ -45,7 +44,7 @@
                 Grid.Row="1"
                 Margin="0,0,0,0"
                 Padding="20"
-                Style="{ThemeResource GridPanel}">
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
                 <ItemsRepeater ItemsSource="{x:Bind ViewModel.StarItems, Mode=OneWay}">
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="itemWrapper:RecordActivityFiveStarItemWrapper">

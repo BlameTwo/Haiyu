@@ -25,9 +25,9 @@
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="wModel:RoleSkinList">
                             <Grid
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                 BorderThickness="1"
-                                CornerRadius="5"
-                                Style="{ThemeResource GridPanel}">
+                                CornerRadius="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="auto" />
@@ -80,9 +80,9 @@
                         <DataTemplate x:DataType="wModel:WeaponSkinList">
                             <Grid
                                 Margin="4"
+                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                 BorderThickness="1"
-                                CornerRadius="5"
-                                Style="{ThemeResource GridPanel}">
+                                CornerRadius="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition Height="auto" />

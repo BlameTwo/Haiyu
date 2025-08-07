@@ -1,4 +1,6 @@
-﻿namespace WutheringWavesTool.Services;
+﻿using WutheringWavesTool.Helpers;
+
+namespace WutheringWavesTool.Services;
 
 partial class WavesClient
 {
@@ -7,7 +9,7 @@ partial class WavesClient
         CancellationToken token = default
     )
     {
-        var header = GetHeader(true);
+        var header = GetDeviceHeader(true);
         var queryData = new Dictionary<string, string>()
         {
             { "gameId", "3" },
@@ -32,7 +34,7 @@ partial class WavesClient
 
     public async Task<GamerRoil?> GetWavesGamerAsync(CancellationToken token = default)
     {
-        var header = GetHeader(true);
+        var header = GetDeviceHeader(true);
         var content = new Dictionary<string, string>() { { "gameId", "3" } };
         var request = await BuildRequestAsync(
             "https://api.kurobbs.com/gamer/role/list",
@@ -57,14 +59,13 @@ partial class WavesClient
         var header = new Dictionary<string, string>()
         {
             { "osVersion", "Android" },
-            { "devCode", "073A9EFAC18FC50616DD15808DAE719DBCB904B7" },
-            { "distinct_id", "96b1567b-b5e6-422f-a1dd-7cb1e58c5db7" },
+            { "devCode", HardwareIdGenerator.GenerateUniqueId() },
+            { "distinct_id", "e0f62c50-4c62-4983-9f6a-bf96f3566095" },
             { "countryCode", "CN" },
             { "model", "23127PN0CC" },
             { "source", "android" },
             { "lang", "zh-Hans" },
-            { "version", "2.2.0" },
-            { "versionCode", "2200" },
+            { "version", "2.5.3" },
             { "channelId", "2" },
             { "Accept-Encoding", "gzip" },
             { "User-Agent", "okhttp/3.11.0" },
@@ -95,7 +96,7 @@ partial class WavesClient
         var header = new Dictionary<string, string>()
         {
             { "osVersion", "Android" },
-            { "devCode", "073A9EFAC18FC50616DD15808DAE719DBCB904B7" },
+            { "devCode", HardwareIdGenerator.GenerateUniqueId() },
             { "distinct_id", "96b1567b-b5e6-422f-a1dd-7cb1e58c5db7" },
             { "countryCode", "CN" },
             { "model", "android" },
@@ -110,7 +111,7 @@ partial class WavesClient
         var query = new Dictionary<string, string>()
         {
             { "mobile", mobile },
-            { "devCode", "2fba3859fe9bfe9099f2696b8648c2c6" },
+            { "devCode", HardwareIdGenerator.GenerateUniqueId()},
             { "code", code },
         };
         var request = await BuildLoginRequest(

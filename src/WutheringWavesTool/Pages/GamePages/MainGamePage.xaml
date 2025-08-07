@@ -15,7 +15,6 @@
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:sound="using:WutheringWavesTool.Controls.Behaviors"
     xmlns:ui="using:CommunityToolkit.WinUI"
-    xmlns:wuc="using:DevWinUI"
     Background="Transparent"
     mc:Ignorable="d">
     <Page.Resources />
@@ -172,17 +171,12 @@
                         </Button.Flyout>
                     </Button>
                 </StackPanel>
-                <wuc:AutoScrollView
+                <TextBlock
                     Grid.Column="1"
                     Margin="5,0,0,0"
                     VerticalAlignment="Center"
-                    IsPlaying="True"
-                    ScrollingPixelsPreSecond="40">
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        FontFamily="{ThemeResource DefaultFont}"
-                        Text="{x:Bind ViewModel.BottomBarContent, Mode=OneWay}" />
-                </wuc:AutoScrollView>
+                    FontFamily="{ThemeResource DefaultFont}"
+                    Text="{x:Bind ViewModel.BottomBarContent, Mode=OneWay}" />
             </Grid>
             <StackPanel
                 Grid.Column="2"

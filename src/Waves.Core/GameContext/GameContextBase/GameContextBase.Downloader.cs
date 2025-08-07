@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
-using Dm.filter;
-using SqlSugar;
 using Waves.Api.Models;
 using Waves.Core.Common;
 using Waves.Core.Models;
@@ -66,7 +64,7 @@ public partial class GameContextBase
     public async Task UpdateGameAsync()
     {
         _downloadCTS = new CancellationTokenSource();
-        var folder = await GameLocalConfig.GetConfigAsync(
+        var folder = GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
         var launcher = await this.GetGameLauncherSourceAsync(_downloadCTS.Token);
@@ -106,10 +104,10 @@ public partial class GameContextBase
 
     async Task DownloadComplate(GameLauncherSource source)
     {
-        var currentVersion = await GameLocalConfig.GetConfigAsync(
+        var currentVersion = GameLocalConfig.GetConfig(
             GameLocalSettingName.LocalGameVersion
         );
-        var installFolder = await GameLocalConfig.GetConfigAsync(
+        var installFolder = GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
         if (string.IsNullOrWhiteSpace(currentVersion))
@@ -388,7 +386,7 @@ public partial class GameContextBase
 
     async Task UpdateGameResourceAsync(string folder, GameLauncherSource launcher)
     {
-        var currentVersion = await GameLocalConfig.GetConfigAsync(
+        var currentVersion = GameLocalConfig.GetConfig(
             GameLocalSettingName.LocalGameVersion
         );
         var previous = launcher
@@ -1522,7 +1520,7 @@ public partial class GameContextBase
     public async Task RepirGameAsync()
     {
         Logger.WriteInfo("开始修复游戏");
-        var installFolder = await GameLocalConfig.GetConfigAsync(
+        var installFolder = GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
         var launcher = await this.GetGameLauncherSourceAsync();

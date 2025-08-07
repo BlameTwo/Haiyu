@@ -1,4 +1,6 @@
-﻿using SqlSugar;
+﻿
+
+using WutheringWavesTool.Helpers;
 
 namespace WutheringWavesTool;
 
@@ -17,7 +19,6 @@ public partial class App : ClientApplication
     {
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         this.UnhandledException += App_UnhandledException;
-        StaticConfig.EnableAot = true;
         Directory.CreateDirectory(BassFolder);
         Directory.CreateDirectory(RecordFolder);
         Directory.CreateDirectory(WrallpaperFolder);

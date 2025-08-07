@@ -18,7 +18,6 @@
     xmlns:tb="using:H.NotifyIcon"
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
-    xmlns:wuc="using:DevWinUI"
     xmlns:wui="using:CommunityToolkit.WinUI"
     RequestedTheme="Dark"
     mc:Ignorable="d">
@@ -132,11 +131,14 @@
                                     </Grid.ColumnDefinitions>
                                     <Border CornerRadius="5">
                                         <Image
-                                            Width="18"
-                                            Height="18"
+                                            Width="25"
+                                            Height="25"
                                             Source="{x:Bind GameHeadUrl}" />
                                     </Border>
-                                    <Grid Grid.Column="1" Margin="10,0,0,0">
+                                    <Grid
+                                        Grid.Column="1"
+                                        Margin="10,0,0,0"
+                                        VerticalAlignment="Center">
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition />
@@ -160,7 +162,7 @@
                     </ComboBox>
                     <Button
                         Margin="5,0,0,0"
-                        Padding="6"
+                        Padding="8"
                         VerticalAlignment="Center"
                         Command="{x:Bind ViewModel.RefreshRoleListsCommand}"
                         CornerRadius="5"
@@ -173,7 +175,7 @@
                     </Button>
                     <Button
                         Margin="5,0,0,0"
-                        Padding="5"
+                        Padding="7"
                         VerticalAlignment="Center"
                         CornerRadius="3"
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
@@ -236,12 +238,15 @@
                             Glyph="&#xEC7A;" />
                         <Button.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Command="{x:Bind ViewModel.OpenPlayerRecordWindowCommand}" Text="抽卡分析">
+                                <MenuFlyoutItem
+                                    Command="{x:Bind ViewModel.OpenPlayerRecordWindowCommand}"
+                                    IsEnabled="False"
+                                    Text="抽卡分析">
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEAD8;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
-
+                                <MenuFlyoutItem Text="数据统计" />
                             </MenuFlyout>
                         </Button.Flyout>
                     </Button>

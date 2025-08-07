@@ -4,7 +4,6 @@ using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
 using CommunityToolkit.Mvvm.Input;
-using SqlSugar;
 using Waves.Api.Models;
 using Waves.Core.Common;
 using Waves.Core.Contracts;
@@ -60,8 +59,7 @@ public abstract partial class GameContextBase : IGameContext
     {
         this.HttpClientService.BuildClient();
         Directory.CreateDirectory(GamerConfigPath);
-        this.GameLocalConfig = new GameLocalConfig();
-        GameLocalConfig.SettingPath = GamerConfigPath + "\\Settings.db";
+        this.GameLocalConfig = new GameLocalConfig(GamerConfigPath + "\\Settings.bat");
         var logPath = GamerConfigPath + "\\logs\\log.log";
         Logger.InitLogger(logPath, Serilog.RollingInterval.Day);
         await InitSettingAsync();
@@ -82,16 +80,16 @@ public abstract partial class GameContextBase : IGameContext
     )
     {
         GameContextStatus status = new GameContextStatus();
-        var localVersion = await GameLocalConfig.GetConfigAsync(
+        var localVersion = GameLocalConfig.GetConfig(
             GameLocalSettingName.LocalGameVersion
         );
-        var gameBaseFolder = await GameLocalConfig.GetConfigAsync(
+        var gameBaseFolder = GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
-        var gameProgramFile = await GameLocalConfig.GetConfigAsync(
+        var gameProgramFile = GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassProgram
         );
-        var updateing = await GameLocalConfig.GetConfigAsync(
+        var updateing = GameLocalConfig.GetConfig(
             GameLocalSettingName.LocalGameUpdateing
         );
         if (string.IsNullOrWhiteSpace(gameBaseFolder))
@@ -147,7 +145,7 @@ public abstract partial class GameContextBase : IGameContext
 
     public async Task DeleteResourceAsync()
     {
-        var folder = await this.GameLocalConfig.GetConfigAsync(
+        var folder = this.GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
         await Task.Run(() =>

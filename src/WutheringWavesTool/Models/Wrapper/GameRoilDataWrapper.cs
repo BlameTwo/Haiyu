@@ -21,7 +21,7 @@ public partial class GameRoilDataWrapper : ObservableObject
         Item = item;
         this.Id = item.Id;
         this.RoleName = item.RoleName;
-        this.GameHeadUrl = new(new(item.GameHeadUrl));
+        this.GameHeadUrl = new(new(item.HeadPhotoUrl));
     }
 }
 
