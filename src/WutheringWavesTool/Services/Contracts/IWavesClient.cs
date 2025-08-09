@@ -1,4 +1,5 @@
-﻿using Waves.Api.Models.QRLogin;
+﻿using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
+using Waves.Api.Models.QRLogin;
 
 namespace WavesLauncher.Core.Contracts;
 
@@ -105,9 +106,13 @@ public interface IWavesClient
         CancellationToken token = default
     );
 
+    Task<BriefHeader?> GetBriefHeaderAsync(CancellationToken token = default);
+
     #endregion
     public Task<RefreshToken?> UpdateRefreshToken(
         GameRoilDataItem item,
         CancellationToken token = default
     );
+
+    public Task InitAsync();
 }

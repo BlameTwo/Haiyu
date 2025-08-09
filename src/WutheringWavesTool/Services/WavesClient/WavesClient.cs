@@ -1,4 +1,5 @@
 ﻿
+using System.Threading.Tasks;
 using Waves.Api.Models.QRLogin;
 using Windows.System.Profile;
 using WutheringWavesTool.Helpers;
@@ -15,6 +16,7 @@ public sealed partial class WavesClient : IWavesClient
     public IHttpClientService HttpClientService { get; }
     public GameRoilDataWrapper CurrentRoil { get; set; }
     public string? BAT { get; private set; }
+    public string Ip { get; private set; }
 
     public WavesClient(IHttpClientService httpClientService)
     {
@@ -89,12 +91,12 @@ public sealed partial class WavesClient : IWavesClient
                 "User-Agent",
                 "Mozilla/5.0 (Linux; Android 12; 23117RK66C Build/V417IR; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/101.0.4951.61 Safari/537.36 Kuro/2.5.3 KuroGameBox/2.5.3"
             },
-            {"did","AAB886CD651C77F028B4E7A883D10A1240E08BBF" },
+            {"did", HardwareIdGenerator.GenerateUniqueId() },
             { "source", "android" },
             {
                 "devCode",
-                "39.65.173.32, Mozilla/5.0 (Linux; Android 12; 23117RK66C Build/V417IR; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/101.0.4951.61 Safari/537.36 Kuro/2.5.3 KuroGameBox/2.5.3"
-                
+                $"{this.Ip}, Mozilla/5.0 (Linux; Android 12; 23117RK66C Build/V417IR; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/101.0.4951.61 Safari/537.36 Kuro/2.5.3 KuroGameBox/2.5.3"
+
             },
         };
         if (isNeedBAT)
@@ -315,7 +317,7 @@ public sealed partial class WavesClient : IWavesClient
                 "devCode",
                 "Mozilla/5.0 (Linux; Android 12; 23117RK66C Build/V417IR; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/101.0.4951.61 Safari/537.36 Kuro/2.5.3 KuroGameBox/2.5.3"
             },
-            { "did", "AAB886CD651C77F028B4E7A883D10A1240E08BBF" },
+            { "did", HardwareIdGenerator.GenerateUniqueId() },
             { "source", "android" },
             { "token", this.Token },
             { "Connection", "keep-alive" },
@@ -473,5 +475,13 @@ public sealed partial class WavesClient : IWavesClient
         var jsonStr = await result.Content.ReadAsStringAsync(token);
         return
             JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.BindGameVerifyCode);
+    }
+
+    public async Task InitAsync()
+    {
+        using(HttpClient client =new HttpClient())
+        {
+            this.Ip = await client.GetStringAsync("https://event.kurobbs.com/event/ip");
+        }
     }
 }

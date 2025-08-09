@@ -74,6 +74,8 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
                     }
                     this.Difficulties.RemoveAll();
                 }
+                this.CTS.Cancel();
+                this.CTS.Dispose();
             }
             disposedValue = true;
         }

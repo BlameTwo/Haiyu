@@ -17,6 +17,7 @@ public partial class App : ClientApplication
 
     public App()
     {
+        var result = HardwareIdGenerator.GenerateUniqueId();
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         this.UnhandledException += App_UnhandledException;
         Directory.CreateDirectory(BassFolder);

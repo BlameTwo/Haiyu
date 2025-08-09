@@ -1,4 +1,7 @@
-﻿namespace WutheringWavesTool.Services;
+﻿using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
+using ZXing.Aztec.Internal;
+
+namespace WutheringWavesTool.Services;
 
 partial class WavesClient
 {
@@ -397,6 +400,36 @@ partial class WavesClient
             return JsonSerializer.Deserialize(
                 jsonData,
                 CommunityContext.Default.GamerSlashDetailData
+            );
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public async Task<BriefHeader?> GetBriefHeaderAsync(CancellationToken token = default)
+    {
+        try
+        {
+            var header = GetWebHeader(true);
+            var content = new Dictionary<string, string>()
+            {
+                
+            };
+            var request = await BuildRequestAsync(
+                "https://api.kurobbs.com/aki/resource/period/list",
+                HttpMethod.Get,
+                header,
+                new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+                content
+            );
+            var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
+            var jsonStr = await result.Content.ReadAsStringAsync(token);
+            
+            return JsonSerializer.Deserialize(
+                jsonStr,
+                CommunityContext.Default.BriefHeader
             );
         }
         catch (Exception ex)

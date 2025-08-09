@@ -56,5 +56,11 @@ public sealed partial class CommunitySwitchPageWrapper : ObservableObject
                 Tag = "Boss2",
                 Icon = "\uE6CA",
             },
+            new CommunitySwitchPageWrapper()
+            {
+                DisplayName = "资源简报",
+                Tag = "Resource",
+                Icon ="\uE6B5"
+            }
         };
 }

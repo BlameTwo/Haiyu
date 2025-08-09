@@ -26,6 +26,7 @@ public sealed partial class PageService : IPageService
         this.RegisterView<GamerExploreIndexPage, GamerExploreIndexViewModel>();
         this.RegisterView<GamerTowerPage, GamerTowerViewModel>();
         this.RegisterView<GamerSkinPage, GamerSkinViewModel>();
+        this.RegisterView<ResourceBriefPage, ResourceBriefViewModel>();
 
         this.RegisterView<RecordItemPage, RecordItemViewModel>();
         this.RegisterView<TestPage, TestViewModel>();

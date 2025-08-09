@@ -2,6 +2,7 @@
 using System.Text.Json.Serialization;
 using Waves.Api.Models.Communitys;
 using Waves.Api.Models.Communitys.DataCenter;
+using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
 using Waves.Api.Models.Record;
 
 namespace Waves.Api.Models;
@@ -80,4 +81,10 @@ namespace Waves.Api.Models;
 [JsonSerializable(typeof(SlashRoleList))]
 [JsonSerializable(typeof(SlashDifficultyList))]
 [JsonSerializable(typeof(SlashChallengeList))]
+//资源简报
+[JsonSerializable(typeof(BriefHeader))]
+[JsonSerializable(typeof(BrieData))]
+[JsonSerializable(typeof(BrieVersion))]
+[JsonSerializable(typeof(BrieWeek))]
+[JsonSerializable(typeof(BrieMonth))]
 public partial class CommunityContext : JsonSerializerContext { }

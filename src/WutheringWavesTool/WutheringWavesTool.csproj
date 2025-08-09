@@ -31,6 +31,10 @@
 		<Content Remove="Assets\HpatchzResource\hpatchz.exe" />
 		<Content Remove="Assets\RolePage\appLogo.png" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Assets\Fonts\gameIcon.ttf" />
+	  <None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<Content Include="Assets\Js\gt4.js">
@@ -101,9 +105,6 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Update="Assets\clickSound.wav">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Update="Assets\Fonts\gameIcon.ttf">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 		<Content Update="Assets\GameIcons\pgr.ico">
@@ -184,6 +185,9 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\Communitys\ResourceBriefPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Pages\DeviceInfoPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>

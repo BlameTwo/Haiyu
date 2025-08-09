@@ -96,6 +96,12 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
+            case "Resource":
+                NavigationService.NavigationTo<ResourceBriefViewModel>(
+                    WavesClient.CurrentRoil.Item,
+                    new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
+                );
+                break;
         }
     }
 

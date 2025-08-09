@@ -187,6 +187,7 @@ public partial class QrLoginViewModel : DialogViewModelBase
             TipMessage = "该设备不安全，安全验证已经发送至手机";
             var result2 = await WavesClient.GetQrCodeAsync(QRResult);
             VerifyCodeVisibility = Visibility.Visible;
+            return;
         }
         else if(result.Code == 200)
         {

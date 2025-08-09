@@ -26,6 +26,7 @@ public static class Instance
             .AddTransient<GameResourceViewModel>()
             .AddTransient<DeviceInfoPage>()
             .AddTransient<DeviceInfoViewModel>()
+            .AddTransient<ResourceBriefViewModel>()
             #region GameContext
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()

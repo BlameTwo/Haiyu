@@ -1,5 +1,6 @@
 ﻿using H.NotifyIcon;
 using Windows.ApplicationModel.DataTransfer;
+using WutheringWavesTool.Helpers;
 using WutheringWavesTool.Services.DialogServices;
 
 namespace WutheringWavesTool.ViewModel;
@@ -73,6 +74,14 @@ public sealed partial class SettingViewModel : ViewModelBase
             package.SetText(WavesClient.Token);
             Clipboard.SetContent(package);
         }
+    }
+
+    [RelayCommand]
+    async Task CopyDid()
+    {
+        DataPackage package = new();
+        package.SetText(HardwareIdGenerator.GenerateUniqueId());
+        Clipboard.SetContent(package);
     }
 
     [RelayCommand]

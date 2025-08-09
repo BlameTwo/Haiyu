@@ -28,6 +28,7 @@ public sealed partial class GameRoilsViewModel : ViewModelBase, ICommunityViewMo
 
     private async Task RefreshDataAsync(GameRoilDataItem item)
     {
+        SelectFilter = null;
         this.User = item;
         var data = await WavesClient.RefreshGamerDataAsync(item, this.CTS.Token);
         if (data == null || (data != null && !data.Data))

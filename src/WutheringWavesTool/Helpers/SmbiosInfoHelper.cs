@@ -74,12 +74,10 @@ public class HardwareIdGenerator
         try
         {
             string diskSerial = GetHardDiskSerial();
-            string cpuId = GetCpuId(); // 注意：CPUID 通常需内联汇编，此处简化为模拟
+            string cpuId = GetCpuId(); 
 
-            // 拼接所有硬件信息
             string combined = $"{diskSerial}|{cpuId}";
 
-            // 使用 SHA-1 生成 40 位哈希
             using (var sha1 = SHA1.Create())
             {
                 byte[] hashBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(combined));
@@ -88,7 +86,7 @@ public class HardwareIdGenerator
                 {
                     sb.Append(b.ToString("X2"));
                 }
-                return sb.ToString(); // 大写十六进制
+                return sb.ToString();
             }
         }
         catch
@@ -97,7 +95,6 @@ public class HardwareIdGenerator
         }
     }
 
-    // ==================== 获取硬盘序列号 ====================
     private static string GetHardDiskSerial()
     {
         IntPtr hDevice = CreateFile(

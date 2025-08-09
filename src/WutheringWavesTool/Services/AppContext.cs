@@ -33,6 +33,7 @@ public class AppContext<T> : IAppContext<T>
 
     public async Task LauncherAsync(T app)
     {
+        await Instance.GetService<IWavesClient>().InitAsync();
         await Instance
             .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainGameContext))
             .InitAsync();
