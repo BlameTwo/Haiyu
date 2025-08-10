@@ -1,4 +1,5 @@
-﻿using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
+﻿using System.Text;
+using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
 using ZXing.Aztec.Internal;
 
 namespace WutheringWavesTool.Services;
@@ -430,6 +431,51 @@ partial class WavesClient
             return JsonSerializer.Deserialize(
                 jsonStr,
                 CommunityContext.Default.BriefHeader
+            );
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    public async Task<ResourceBrefItem> GetVersionBrefItemAsync(string roleId,string serverId,string versionId,CancellationToken token = default)
+    {
+
+        return await GetBrefItemAsync("https://api.kurobbs.com/aki/resource/version", roleId, serverId, versionId, token);
+    }
+    public async Task<ResourceBrefItem> GetWeekBrefItemAsync(string roleId,string serverId,string versionId,CancellationToken token = default)
+    {
+        return await GetBrefItemAsync("https://api.kurobbs.com/aki/resource/week", roleId, serverId, versionId, token);
+    }
+    public async Task<ResourceBrefItem> GetMonthBrefItemAsync(string roleId,string serverId,string versionId,CancellationToken token = default)
+    {
+        return await GetBrefItemAsync("https://api.kurobbs.com/aki/resource/month", roleId, serverId, versionId, token);
+    }
+    private async Task<ResourceBrefItem> GetBrefItemAsync(string url,string roleId, string serverId, string versionId, CancellationToken token = default)
+    {
+        try
+        {
+            var header = GetWebHeader(true);
+            var content = new Dictionary<string, string>()
+            {
+                {"period" ,versionId },
+                {"roleId" ,roleId },
+                {"serverId" ,serverId },
+            };
+            var request = await BuildRequestAsync(
+                url,
+                HttpMethod.Post,
+                header,
+                new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+                content
+            );
+            var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
+            var jsonStr = await result.Content.ReadAsStringAsync(token);
+
+            return JsonSerializer.Deserialize(
+                jsonStr,
+                CommunityContext.Default.ResourceBrefItem
             );
         }
         catch (Exception ex)

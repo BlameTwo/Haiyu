@@ -84,7 +84,10 @@ namespace Waves.Api.Models;
 //资源简报
 [JsonSerializable(typeof(BriefHeader))]
 [JsonSerializable(typeof(BrieData))]
-[JsonSerializable(typeof(BrieVersion))]
-[JsonSerializable(typeof(BrieWeek))]
-[JsonSerializable(typeof(BrieMonth))]
+[JsonSerializable(typeof(BrieItem))]
+[JsonSerializable(typeof(CoinList))]
+[JsonSerializable(typeof(ResourceBrefItemData))]
+[JsonSerializable(typeof(Recommend))]
+[JsonSerializable(typeof(ResourceBrefItem))]
+[JsonSerializable(typeof(StarList))]
 public partial class CommunityContext : JsonSerializerContext { }

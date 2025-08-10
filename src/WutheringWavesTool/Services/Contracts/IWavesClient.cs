@@ -108,6 +108,9 @@ public interface IWavesClient
 
     Task<BriefHeader?> GetBriefHeaderAsync(CancellationToken token = default);
 
+    public Task<ResourceBrefItem> GetVersionBrefItemAsync(string roleId, string serverId, string versionId, CancellationToken token = default);
+    public Task<ResourceBrefItem> GetWeekBrefItemAsync(string roleId, string serverId, string versionId, CancellationToken token = default);
+    public Task<ResourceBrefItem> GetMonthBrefItemAsync(string roleId, string serverId, string versionId, CancellationToken token = default);
     #endregion
     public Task<RefreshToken?> UpdateRefreshToken(
         GameRoilDataItem item,

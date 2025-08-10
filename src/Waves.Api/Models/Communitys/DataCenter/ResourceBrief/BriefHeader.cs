@@ -4,23 +4,15 @@ namespace Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
 public class BrieData
 {
     [JsonPropertyName("weeks")]
-    public List<BrieWeek> Weeks { get; set; }
+    public List<BrieItem> Weeks { get; set; }
 
     [JsonPropertyName("months")]
-    public List<BrieMonth> Months { get; set; }
+    public List<BrieItem> Months { get; set; }
 
     [JsonPropertyName("versions")]
-    public List<BrieVersion> Versions { get; set; }
+    public List<BrieItem> Versions { get; set; }
 }
 
-public class BrieMonth
-{
-    [JsonPropertyName("title")]
-    public string Title { get; set; }
-
-    [JsonPropertyName("index")]
-    public int Index { get; set; }
-}
 
 public class BriefHeader
 {
@@ -37,16 +29,8 @@ public class BriefHeader
     public bool Success { get; set; }
 }
 
-public class BrieVersion
-{
-    [JsonPropertyName("title")]
-    public string Title { get; set; }
 
-    [JsonPropertyName("index")]
-    public int Index { get; set; }
-}
-
-public class BrieWeek
+public class BrieItem
 {
     [JsonPropertyName("title")]
     public string Title { get; set; }

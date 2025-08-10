@@ -32,4 +32,5 @@ public sealed partial class ResourceBriefPage : Page,IPage
     {
         ViewModel.Dispose();
     }
+
 }

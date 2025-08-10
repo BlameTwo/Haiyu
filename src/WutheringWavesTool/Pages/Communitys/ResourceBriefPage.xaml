@@ -7,11 +7,41 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:WutheringWavesTool.Pages.Communitys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Waves.Api.Models.Communitys.DataCenter.ResourceBrief"
+    xmlns:wui="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
         </i:EventTriggerBehavior>
     </i:Interaction.Behaviors>
-    <Grid />
+    <Grid Margin="0,-38,0,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid HorizontalAlignment="Right">
+            <Grid.ChildrenTransitions>
+                <TransitionCollection>
+                    <RepositionThemeTransition />
+                </TransitionCollection>
+            </Grid.ChildrenTransitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <wui:Segmented ItemsSource="{x:Bind ViewModel.HeanderName, Mode=OneWay}" SelectedItem="{x:Bind ViewModel.SelectHeaderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ComboBox
+                Grid.Column="1"
+                Margin="5,0,0,0"
+                ItemsSource="{x:Bind ViewModel.SubBrieItems, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectSubBrieItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="model:BrieItem">
+                        <TextBlock Text="{x:Bind Title}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </Grid>
+    </Grid>
 </Page>
