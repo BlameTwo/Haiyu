@@ -27,6 +27,13 @@ public partial class ResourceBriefViewModel:ViewModelBase,IDisposable
         "周"
     };
 
+    [ObservableProperty]
+    public partial ObservableCollection<BrefListItem> CoinList { get; set; }
+
+
+    [ObservableProperty]
+    public partial ObservableCollection<BrefListItem> StarList { get; set; }
+
     public List<BrieItem> BrieWeek { get; set; }
 
 
@@ -73,14 +80,35 @@ public partial class ResourceBriefViewModel:ViewModelBase,IDisposable
         if (SelectHeaderName == "版本")
         {
             var data = await WavesClient.GetVersionBrefItemAsync(this.Item.RoleId, this.Item.ServerId, value.Index.ToString(), this.CTS.Token);
+            if(data == null||data.Code != 200)
+            {
+                TipShow.ShowMessage(data.Msg??"数据拉取错误", Symbol.Clear);
+                return;
+            }
+            this.CoinList = data.Data.CoinList.ToObservableCollection();
+            this.StarList = data.Data.StarList.ToObservableCollection();
         }
         else if (SelectHeaderName == "月")
         {
-            var data = await WavesClient.GetMonthBrefItemAsync(this.Item.RoleId, this.Item.ServerId, value.Index.ToString(), this.CTS.Token);
+            var data = await WavesClient.GetMonthBrefItemAsync(this.Item.RoleId, this.Item.ServerId, value.Index.ToString(), this.CTS.Token); 
+            if (data == null || data.Code != 200)
+            {
+                TipShow.ShowMessage(data.Msg ?? "数据拉取错误", Symbol.Clear);
+                return;
+            }
+            this.CoinList = data.Data.CoinList.ToObservableCollection();
+            this.StarList = data.Data.StarList.ToObservableCollection();
         }
         else if (SelectHeaderName == "周")
         {
             var data = await WavesClient.GetWeekBrefItemAsync(this.Item.RoleId, this.Item.ServerId, value.Index.ToString(), this.CTS.Token);
+            if (data == null || data.Code != 200)
+            {
+                TipShow.ShowMessage(data.Msg ?? "数据拉取错误", Symbol.Clear);
+                return;
+            }
+            this.CoinList = data.Data.CoinList.ToObservableCollection();
+            this.StarList = data.Data.StarList.ToObservableCollection();
         }
     }
     

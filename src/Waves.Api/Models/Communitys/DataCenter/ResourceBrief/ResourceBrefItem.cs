@@ -2,7 +2,7 @@
 
 namespace Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
 
-public class CoinList
+public class BrefListItem
 {
     [JsonPropertyName("type")]
     public string Type { get; set; }
@@ -23,10 +23,10 @@ public class ResourceBrefItemData
     public int TotalStar { get; set; }
 
     [JsonPropertyName("coinList")]
-    public List<CoinList> CoinList { get; set; }
+    public List<BrefListItem> CoinList { get; set; }
 
     [JsonPropertyName("starList")]
-    public List<StarList> StarList { get; set; }
+    public List<BrefListItem> StarList { get; set; }
 
     [JsonPropertyName("coinInc")]
     public object CoinInc { get; set; }
@@ -71,14 +71,3 @@ public class ResourceBrefItem
     public bool Success { get; set; }
 }
 
-public class StarList
-{
-    [JsonPropertyName("type")]
-    public string Type { get; set; }
-
-    [JsonPropertyName("num")]
-    public int Num { get; set; }
-
-    [JsonPropertyName("sort")]
-    public int Sort { get; set; }
-}

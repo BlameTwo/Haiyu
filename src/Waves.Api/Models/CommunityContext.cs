@@ -85,9 +85,8 @@ namespace Waves.Api.Models;
 [JsonSerializable(typeof(BriefHeader))]
 [JsonSerializable(typeof(BrieData))]
 [JsonSerializable(typeof(BrieItem))]
-[JsonSerializable(typeof(CoinList))]
+[JsonSerializable(typeof(BrefListItem))]
 [JsonSerializable(typeof(ResourceBrefItemData))]
 [JsonSerializable(typeof(Recommend))]
 [JsonSerializable(typeof(ResourceBrefItem))]
-[JsonSerializable(typeof(StarList))]
 public partial class CommunityContext : JsonSerializerContext { }
