@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Waves.Api.Models;
+using Waves.Api.Models.Launcher;
 using Waves.Core.GameContext.Contexts;
 using Waves.Core.Models;
 using Waves.Core.Models.Downloader;
@@ -78,11 +79,13 @@ partial class GameContextBase
             Logger.WriteError($"请求{url}出错：{ex.Message}");
             return null;
         }
+
     }
 
     public async Task<GameLauncherStarter?> GetLauncherStarterAsync(
         CancellationToken token = default
     )
+
     {
         string url = "";
         try
@@ -111,5 +114,32 @@ partial class GameContextBase
             Logger.WriteError($"请求{url}出错：{ex.Message}");
             return null;
         }
+    }
+
+    public async Task<LIndex?> GetDefaultLauncherValue(CancellationToken token = default) 
+    {
+
+        var url = $"{GameAPIConfig.BaseAddress[0]}/launcher/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/index.json";
+        var result = await HttpClientService.HttpClient.GetAsync(url, token);
+        result.EnsureSuccessStatusCode(); var jsonStr = await result.Content.ReadAsStringAsync();
+        var pathIndexSource = JsonSerializer.Deserialize<LIndex>(
+            jsonStr,
+            LauncherConfig.Default.LIndex
+        );
+        return pathIndexSource;
+    }
+    
+
+    public async Task<LauncherBackgroundData?> GetLauncherBackgroundDataAsync(string backgroundCode,CancellationToken token = default)
+    {
+        var url = $"{GameAPIConfig.BaseAddress[0]}/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/background/{backgroundCode}/{this.Config.Language}.json";
+
+        var result = await HttpClientService.HttpClient.GetAsync(url, token);
+        result.EnsureSuccessStatusCode(); var jsonStr = await result.Content.ReadAsStringAsync();
+        var pathIndexSource = JsonSerializer.Deserialize<LauncherBackgroundData>(
+            jsonStr,
+            LauncherConfig.Default.LauncherBackgroundData
+        );
+        return pathIndexSource;
     }
 }

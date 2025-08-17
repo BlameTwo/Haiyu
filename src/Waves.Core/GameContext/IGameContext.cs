@@ -1,4 +1,5 @@
 ﻿using Waves.Api.Models;
+using Waves.Api.Models.Launcher;
 using Waves.Core.Contracts;
 using Waves.Core.Models;
 using Waves.Core.Models.Downloader;
@@ -83,4 +84,8 @@ public interface IGameContext
     Task StopGameAsync();
     Task DeleteResourceAsync();
     #endregion
+
+    Task<LIndex?> GetDefaultLauncherValue(CancellationToken token = default);
+
+    Task<LauncherBackgroundData?> GetLauncherBackgroundDataAsync(string backgroundCode, CancellationToken token = default);
 }
