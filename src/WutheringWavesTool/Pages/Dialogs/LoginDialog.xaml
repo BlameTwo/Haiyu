@@ -6,6 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:WutheringWavesTool.Pages.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:property="using:WutheringWavesTool.Controls.Propertys"
+    property:CursorProperty.CursorCode="111"
     CornerRadius="5"
     RequestedTheme="Dark"
     mc:Ignorable="d">

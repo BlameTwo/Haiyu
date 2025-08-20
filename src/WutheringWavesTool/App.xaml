@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:converter="using:WutheringWavesTool.Converter"
     xmlns:local="using:WutheringWavesTool"
+    xmlns:property="using:WutheringWavesTool.Controls.Propertys"
     xmlns:tool="using:WutheringWavesTool.Common"
     RequestedTheme="Dark">
     <tool:ClientApplication.Resources>

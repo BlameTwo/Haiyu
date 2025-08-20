@@ -40,6 +40,7 @@ public partial class TitleBar : ContentControl
         this.RightPaddingColumn = (ColumnDefinition)
             this.GetTemplateChild(nameof(RightPaddingColumn));
         this.Loaded += TitleBar_Loaded;
+        CursorProperty.SetCursorCode(this, 111);
     }
 
     private void TitleBar_Loaded(object sender, RoutedEventArgs e)

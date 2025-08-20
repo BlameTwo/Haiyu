@@ -9,6 +9,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:WutheringWavesTool.Pages.Communitys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:property="using:WutheringWavesTool.Controls.Propertys"
     xmlns:uModel="using:WutheringWavesTool.Models.Wrapper"
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:vModel="using:WutheringWavesTool.Models"
@@ -25,6 +26,7 @@
             <ComboBox
                 Width="100"
                 HorizontalAlignment="Stretch"
+                property:CursorProperty.CursorCode="109"
                 ItemsSource="{x:Bind ViewModel.GamerFilter, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBox.ItemTemplate>

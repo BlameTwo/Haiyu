@@ -39,6 +39,7 @@
 		<Content Remove="Assets\RolePage\appLogo.png" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Remove="Assets\Cursor\ShouAnRenPostion.ani" />
 	  <None Remove="Assets\Fonts\gameIcon.ttf" />
 	  <None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
 	</ItemGroup>
@@ -103,6 +104,9 @@
 		<Content Update="Assets\clickSound2.wav">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<None Update="Assets\Cursor\Resource.res">
+		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</None>
 		<Content Update="Assets\Font.ttf">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -189,6 +193,9 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
+		<Content Update="Assets\Cursor\ShouAnRenPostion.ani">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

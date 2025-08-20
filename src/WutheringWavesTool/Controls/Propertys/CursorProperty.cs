@@ -7,8 +7,6 @@ namespace WutheringWavesTool.Controls.Propertys;
 public class CursorProperty
 {
 
-
-
     public static int GetCursorCode(DependencyObject obj)
     {
         return (int)obj.GetValue(CursorCodeProperty);
@@ -19,7 +17,6 @@ public class CursorProperty
         obj.SetValue(CursorCodeProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for CursorCode.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty CursorCodeProperty =
         DependencyProperty.RegisterAttached("CursorCode", typeof(int), typeof(CursorProperty), new PropertyMetadata(-1,OnCursorValueChanged));
 
@@ -31,7 +28,7 @@ public class CursorProperty
             {
                 return;
             }
-            InputCursor customCursor = InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 111);
+            InputCursor customCursor = InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", (uint)value);
             CursorHelper.SetCursor(element, customCursor);
         }
     }
