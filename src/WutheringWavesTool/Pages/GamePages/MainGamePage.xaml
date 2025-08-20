@@ -13,6 +13,7 @@
     xmlns:local="using:WutheringWavesTool.Pages.GamePages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
+    xmlns:n="using:System.Numerics"
     xmlns:sound="using:WutheringWavesTool.Controls.Behaviors"
     xmlns:ui="using:CommunityToolkit.WinUI"
     Background="Transparent"
@@ -303,6 +304,15 @@
                             </i:EventTriggerBehavior>
                             <i:EventTriggerBehavior EventName="PointerExited">
                                 <b:StartAnimationAction Animation="{x:Bind ShadowExitAnimation}" />
+                            </i:EventTriggerBehavior>
+                            <i:EventTriggerBehavior EventName="Loaded">
+                                <b:StartAnimationAction>
+                                    <b:StartAnimationAction.Animation>
+                                        <ani:AnimationSet>
+                                            <ani:OffsetAnimation From="-5,-20" To="0" />
+                                        </ani:AnimationSet>
+                                    </b:StartAnimationAction.Animation>
+                                </b:StartAnimationAction>
                             </i:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
 

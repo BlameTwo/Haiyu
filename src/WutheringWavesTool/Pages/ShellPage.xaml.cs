@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
-using CommunityToolkit.WinUI.Behaviors;
+﻿using CommunityToolkit.WinUI.Behaviors;
+using Microsoft.UI.Input;
+using System.Threading.Tasks;
 using Waves.Core.Common;
 using WutheringWavesTool.Common;
+using WutheringWavesTool.Helpers;
 using WutheringWavesTool.Pages.GamePages;
 
 namespace WutheringWavesTool.Pages;
@@ -19,7 +21,6 @@ public sealed partial class ShellPage : Page
         this.ViewModel.HomeNavigationViewService.Register(this.navigationView);
         this.ViewModel.TipShow.Owner = this.panel;
         this.ViewModel.Image = this.image;
-        //this.ViewModel.BackControl = this.backControl;
         this.ViewModel.AppContext.SetTitleControl(this.titlebar);
     }
 

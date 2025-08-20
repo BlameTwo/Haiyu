@@ -14,9 +14,15 @@ public partial class App : ClientApplication
     public static string WrallpaperFolder => BassFolder + "\\WallpaperImages";
 
     public string ToolsPosionFilePath => App.BassFolder + "\\ToolsPostion.json";
+    [DllImport("shcore.dll", SetLastError = true)]
+    private static extern int SetProcessDpiAwareness(int dpiAwareness);
 
+    private const int PROCESS_PER_MONITOR_DPI_AWARE = 2;
     public App()
     {
+        #region PE DPI Resource
+        //SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
+        #endregion
         var result = HardwareIdGenerator.GenerateUniqueId();
         AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         this.UnhandledException += App_UnhandledException;

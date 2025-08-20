@@ -4,7 +4,7 @@
 		<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>WutheringWavesTool</RootNamespace>
-		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<!--<ApplicationManifest>app.manifest</ApplicationManifest>-->
 		<Platforms>x64</Platforms>
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
@@ -26,8 +26,15 @@
 		<AppxBundle>Auto</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<AppxPackageSigningTimestampServerUrl>http://timestamp.sectigo.com</AppxPackageSigningTimestampServerUrl>
+		
+		<!--Win32 PE-->
+		<Win32Resource>Assets/Cursor/Resource.res</Win32Resource>
+		<NoWin32Manifest>True</NoWin32Manifest>
+		<!--Win32 PE-->
+		
 	</PropertyGroup>
 	<ItemGroup>
+		<Content Remove="Assets\Cursor\Resource.res" />
 		<Content Remove="Assets\HpatchzResource\hpatchz.exe" />
 		<Content Remove="Assets\RolePage\appLogo.png" />
 	</ItemGroup>
@@ -185,6 +192,9 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+		<None Update="WutheringWavesTool.exe.manifest">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 		<Page Update="Pages\Communitys\ResourceBriefPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
@@ -210,7 +220,7 @@
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<DefaultLanguage>zh-CN</DefaultLanguage>
-		<ApplicationIcon>Assets\appLogo.ico</ApplicationIcon>
+		<!--<ApplicationIcon>Assets\appLogo.ico</ApplicationIcon>-->
 		<SignAssembly>False</SignAssembly>
 		<NeutralLanguage>zh-CN</NeutralLanguage>
 	</PropertyGroup>
