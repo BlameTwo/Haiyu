@@ -26,24 +26,23 @@
 		<AppxBundle>Auto</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<AppxPackageSigningTimestampServerUrl>http://timestamp.sectigo.com</AppxPackageSigningTimestampServerUrl>
-		
+
 		<!--Win32 PE-->
-		<Win32Resource>Assets/Cursor/Resource.res</Win32Resource>
+		<Win32Resource>Assets/Cursor/CursorResource.res</Win32Resource>
 		<NoWin32Manifest>True</NoWin32Manifest>
 		<!--Win32 PE-->
-		
+
 	</PropertyGroup>
 	<ItemGroup>
-		<Content Remove="Assets\Cursor\Resource.res" />
+		<Content Remove="Assets\Cursor\CursorResource.res" />
 		<Content Remove="Assets\HpatchzResource\hpatchz.exe" />
 		<Content Remove="Assets\RolePage\appLogo.png" />
 	</ItemGroup>
 	<ItemGroup>
-	  <None Remove="Assets\Cursor\ShouAnRenPostion.ani" />
-	  <None Remove="Assets\Fonts\gameIcon.ttf" />
-	  <None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
+		<None Remove="Assets\Fonts\gameIcon.ttf" />
+		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<Content Include="Assets\Js\gt4.js">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -104,9 +103,6 @@
 		<Content Update="Assets\clickSound2.wav">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<None Update="Assets\Cursor\Resource.res">
-		  <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-		</None>
 		<Content Update="Assets\Font.ttf">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -193,20 +189,17 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
-		<Content Update="Assets\Cursor\ShouAnRenPostion.ani">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Update="WutheringWavesTool.exe.manifest">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<Page Update="Pages\Communitys\ResourceBriefPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</Page>
 		<Page Update="Pages\DeviceInfoPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</Page>
 	</ItemGroup>
 
@@ -222,7 +215,7 @@
 	<!-- Publish Properties -->
 	<PropertyGroup>
 		<PackageCertificateKeyFile>WutheringWavesTool_TemporaryKey.pfx</PackageCertificateKeyFile>
-		
+
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>

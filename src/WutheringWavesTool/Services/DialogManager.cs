@@ -97,4 +97,19 @@ public abstract class DialogManager : IDialogManager
         await GetDialogResultAsync<CloseDialog, CloseWindowResult>(null);
 
     public async Task<QRScanResult> GetQRLoginResultAsync() => await GetDialogResultAsync<QRLoginDialog, QRScanResult>(null);
+
+
+    public async Task<ContentDialogResult> ShowMessageDialog(string header, string content, string closeText)
+    {
+        var dialog = new ContentDialog();
+        dialog.XamlRoot = this.Root;
+        dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
+        dialog.PrimaryButtonText = content;
+        dialog.CloseButtonText = closeText;
+        dialog.IsSecondaryButtonEnabled = false;
+        dialog.DefaultButton = ContentDialogButton.Close;
+        dialog.Content = new TextBlock() { Text = header };
+        var result = await dialog.ShowAsync();
+        return result;
+    }
 }

@@ -4,7 +4,7 @@ using WutheringWavesTool.Helpers;
 
 namespace WutheringWavesTool.Controls.Propertys;
 
-public class CursorProperty
+public partial class CursorProperty
 {
 
     public static int GetCursorCode(DependencyObject obj)
@@ -29,7 +29,47 @@ public class CursorProperty
                 return;
             }
             InputCursor customCursor = InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", (uint)value);
-            CursorHelper.SetCursor(element, customCursor);
+            
+        }
+    }
+
+
+
+    public static CursorType GetCursorType(DependencyObject obj)
+    {
+        return (CursorType)obj.GetValue(CursorTypeProperty);
+    }
+
+    public static void SetCursorType(DependencyObject obj, CursorType value)
+    {
+        obj.SetValue(CursorTypeProperty, value);
+    }
+
+    public static readonly DependencyProperty CursorTypeProperty =
+        DependencyProperty.RegisterAttached("CursorType", typeof(CursorType), typeof(CursorProperty), new PropertyMetadata(null));
+
+
+
+    public static CursorName GetCursorName(DependencyObject obj)
+    {
+        return (CursorName)obj.GetValue(CursorNameProperty);
+    }
+
+    public static void SetCursorName(DependencyObject obj, CursorName value)
+    {
+        obj.SetValue(CursorNameProperty, value);
+    }
+
+    public static readonly DependencyProperty CursorNameProperty =
+        DependencyProperty.RegisterAttached("CursorName", typeof(CursorName), typeof(CursorProperty), new PropertyMetadata(null, OnCursorNameChanged));
+
+    private static void OnCursorNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if(d is UIElement element)
+        {
+            var name = CursorProperty.GetCursorName(element);
+            var type = CursorProperty.GetCursorType(element);
+            CursorHelper.SetCursor(name, type, element);
         }
     }
 }

@@ -1,21 +1,30 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ 生成的包含文件。
-// 供 CursorValues1.rc 使用
+// 供 CursorResource.rc 使用
 //
-#define ShouAnRen1                  101
-#define ShouAnRen2                  102
-#define ShouAnRen3                  103
-#define ShouAnRen5                  105
-#define ShouAnRen6                  106
-#define ShouAnRen7                  107
-#define ShouAnRen8                  108
-#define ShouAnRen9                  109
-#define ShouAnRen10                  110
-#define ShouAnRen11                  111
-#define ShouAnRen12                  112
-#define ShouAnRen13                  113
-#define ShouAnRen14                  114
-#define ShouAnRen15                  115
-#define ShouAnRen16                  116
-#define ShouAnRen17                  117
-#define ShouAnRen18                  118
+#define IDR_ANICURSOR1                  101
+#define IDR_ANICURSOR2                  102
+#define IDR_ANICURSOR3                  103
+#define IDR_ANICURSOR4                  104
+#define IDR_ANICURSOR5                  105
+#define IDR_ANICURSOR6                  106
+#define IDR_ANICURSOR7                  107
+#define IDR_ANICURSOR8                  108
+#define IDR_ANICURSOR9                  109
+#define IDR_ANICURSOR10                 110
+#define IDR_ANICURSOR11                 111
+#define IDR_ANICURSOR12                 112
+#define IDR_ANICURSOR13                 113
+#define IDR_ANICURSOR14                 114
+#define IDR_ANICURSOR15                 115
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        116
+#define _APS_NEXT_COMMAND_VALUE         40001
+#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_SYMED_VALUE           101
+#endif
+#endif

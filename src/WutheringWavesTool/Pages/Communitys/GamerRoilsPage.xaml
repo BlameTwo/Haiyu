@@ -26,7 +26,6 @@
             <ComboBox
                 Width="100"
                 HorizontalAlignment="Stretch"
-                property:CursorProperty.CursorCode="109"
                 ItemsSource="{x:Bind ViewModel.GamerFilter, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ComboBox.ItemTemplate>

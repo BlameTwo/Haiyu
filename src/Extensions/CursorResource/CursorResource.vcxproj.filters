@@ -13,8 +13,14 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="FuLuoLuo">
+      <UniqueIdentifier>{6b85061a-717b-44e8-a004-a53000efd3a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KaTiXiYa">
+      <UniqueIdentifier>{8485ec0a-a2ec-4b63-a95c-7c21fda262ed}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ShouAnRen">
-      <UniqueIdentifier>{9f52861d-fff6-45e2-86b2-67bde77c8fb6}</UniqueIdentifier>
+      <UniqueIdentifier>{1687c32e-9fcf-4451-af05-9a07a4d46447}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -23,64 +29,55 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc">
+    <ResourceCompile Include="CursorResource.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ShouAnRen\Alternate.ani">
-      <Filter>ShouAnRen</Filter>
+    <None Include="FuNuoNuo\Help.ani">
+      <Filter>FuLuoLuo</Filter>
     </None>
-    <None Include="ShouAnRen\Busy.ani">
-      <Filter>ShouAnRen</Filter>
+    <None Include="FuNuoNuo\Link.ani">
+      <Filter>FuLuoLuo</Filter>
     </None>
-    <None Include="ShouAnRen\Diagonal1.ani">
-      <Filter>ShouAnRen</Filter>
+    <None Include="FuNuoNuo\Normal.ani">
+      <Filter>FuLuoLuo</Filter>
     </None>
-    <None Include="ShouAnRen\Diagonal2.ani">
-      <Filter>ShouAnRen</Filter>
+    <None Include="FuNuoNuo\Text.ani">
+      <Filter>FuLuoLuo</Filter>
     </None>
-    <None Include="ShouAnRen\Handwriting.ani">
-      <Filter>ShouAnRen</Filter>
+    <None Include="FuNuoNuo\Working.ani">
+      <Filter>FuLuoLuo</Filter>
+    </None>
+    <None Include="KaTiXiYa\Help.ani">
+      <Filter>KaTiXiYa</Filter>
+    </None>
+    <None Include="KaTiXiYa\Link.ani">
+      <Filter>KaTiXiYa</Filter>
+    </None>
+    <None Include="KaTiXiYa\Normal.ani">
+      <Filter>KaTiXiYa</Filter>
+    </None>
+    <None Include="KaTiXiYa\Text.ani">
+      <Filter>KaTiXiYa</Filter>
+    </None>
+    <None Include="KaTiXiYa\Working.ani">
+      <Filter>KaTiXiYa</Filter>
     </None>
     <None Include="ShouAnRen\Help.ani">
-      <Filter>ShouAnRen</Filter>
-    </None>
-    <None Include="ShouAnRen\Horizontal.ani">
       <Filter>ShouAnRen</Filter>
     </None>
     <None Include="ShouAnRen\Link.ani">
       <Filter>ShouAnRen</Filter>
     </None>
-    <None Include="ShouAnRen\Move.ani">
-      <Filter>ShouAnRen</Filter>
-    </None>
     <None Include="ShouAnRen\Normal.ani">
-      <Filter>ShouAnRen</Filter>
-    </None>
-    <None Include="ShouAnRen\Person.ani">
-      <Filter>ShouAnRen</Filter>
-    </None>
-    <None Include="ShouAnRen\Pin.ani">
-      <Filter>ShouAnRen</Filter>
-    </None>
-    <None Include="ShouAnRen\Precision.ani">
       <Filter>ShouAnRen</Filter>
     </None>
     <None Include="ShouAnRen\Text.ani">
       <Filter>ShouAnRen</Filter>
     </None>
-    <None Include="ShouAnRen\Unavailable.ani">
-      <Filter>ShouAnRen</Filter>
-    </None>
-    <None Include="ShouAnRen\Vertical.ani">
-      <Filter>ShouAnRen</Filter>
-    </None>
     <None Include="ShouAnRen\Working.ani">
       <Filter>ShouAnRen</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="manifest.xml" />
   </ItemGroup>
 </Project>

@@ -203,7 +203,6 @@
                                 Margin="0,-0.5,0,-1"
                                 Padding="{ThemeResource ComboBoxDropdownBorderPadding}"
                                 HorizontalAlignment="Stretch"
-                                property:CursorProperty.CursorCode="111"
                                 Background="{ThemeResource ComboBoxDropDownBackground}"
                                 BackgroundSizing="InnerBorderEdge"
                                 BorderBrush="{ThemeResource ComboBoxDropDownBorderBrush}"
@@ -212,7 +211,6 @@
                                 <ScrollViewer
                                     x:Name="ScrollViewer"
                                     MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownContentMinWidth}"
-                                    property:CursorProperty.CursorCode="111"
                                     AutomationProperties.AccessibilityView="Raw"
                                     BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}"
                                     Foreground="{ThemeResource ComboBoxDropDownForeground}"
@@ -226,7 +224,7 @@
                                     VerticalSnapPointsAlignment="Near"
                                     VerticalSnapPointsType="OptionalSingle"
                                     ZoomMode="Disabled">
-                                    <ItemsPresenter Margin="{ThemeResource ComboBoxDropdownContentMargin}" property:CursorProperty.CursorCode="111" />
+                                    <ItemsPresenter Margin="{ThemeResource ComboBoxDropdownContentMargin}" />
                                 </ScrollViewer>
                             </Border>
                         </Popup>

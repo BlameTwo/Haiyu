@@ -63,6 +63,8 @@ public sealed partial class SettingViewModel : ViewModelBase
                 this.SelectCloseIndex = 0;
                 break;
         }
+        this.OldCursorName = AppSettings.SelectCursor ?? "默认";
+        this.SelectCursorName = Cursors.Find(x=>x == AppSettings.SelectCursor) ?? Cursors[0];
     }
 
     [RelayCommand]

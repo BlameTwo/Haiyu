@@ -19,7 +19,8 @@
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
     xmlns:wui="using:CommunityToolkit.WinUI"
-    property:CursorProperty.CursorCode="111"
+    property:CursorProperty.CursorName="{x:Bind ViewModel.CursorName, Mode=OneWay}"
+    property:CursorProperty.CursorType="Normal"
     RequestedTheme="Dark"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
@@ -99,7 +100,6 @@
                     x:Name="userControl"
                     Margin="0,0,0,0"
                     HorizontalAlignment="Left"
-                    property:CursorProperty.CursorCode="111"
                     Orientation="Horizontal">
                     <Button
                         VerticalAlignment="Center"
@@ -115,7 +115,6 @@
                     </Button>
                     <ComboBox
                         VerticalAlignment="Center"
-                        property:CursorProperty.CursorCode="109"
                         ItemsSource="{x:Bind ViewModel.Roles, Mode=OneWay}"
                         SelectedItem="{x:Bind ViewModel.SelectRoles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SizeChanged="ComboBox_SizeChanged"
@@ -167,7 +166,6 @@
                         Margin="5,0,0,0"
                         Padding="8"
                         VerticalAlignment="Center"
-                        property:CursorProperty.CursorCode="109"
                         Command="{x:Bind ViewModel.RefreshRoleListsCommand}"
                         CornerRadius="5"
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
@@ -181,7 +179,6 @@
                         Margin="5,0,0,0"
                         Padding="7"
                         VerticalAlignment="Center"
-                        property:CursorProperty.CursorCode="109"
                         CornerRadius="3"
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
                         ToolTipService.ToolTip="工具箱"

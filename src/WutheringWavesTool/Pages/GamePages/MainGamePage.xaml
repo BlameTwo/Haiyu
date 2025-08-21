@@ -273,7 +273,6 @@
                     Orientation="Horizontal"
                     Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
                     <Button
-                        property:CursorProperty.CursorCode="112"
                         Background="{ThemeResource SystemFillColorSuccessBrush}"
                         BorderThickness="0"
                         Command="{x:Bind ViewModel.UpdateGameCommand}"
@@ -352,7 +351,6 @@
                         Margin="3,0,0,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        property:CursorProperty.CursorCode="109"
                         Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                         BorderThickness="0">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />

@@ -20,4 +20,6 @@ public interface IDialogManager
     public  Task<QRScanResult> GetQRLoginResultAsync();
     public void CloseDialog();
     Task ShowWallpaperDialogAsync();
+
+    public Task<ContentDialogResult> ShowMessageDialog(string header,string content,string closeText);
 }

@@ -77,6 +77,12 @@ public class AppSettings
         set => Write(value);
     }
 
+    public static string? SelectCursor
+    {
+        get => Read();
+        set => Write(value);
+    }
+
     internal static string? Read([CallerMemberName] string key = null)
     {
         try

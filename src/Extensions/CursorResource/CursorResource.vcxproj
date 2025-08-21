@@ -22,29 +22,24 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Resource.rc" />
+    <ResourceCompile Include="CursorResource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ShouAnRen\Alternate.ani" />
-    <None Include="ShouAnRen\Busy.ani" />
-    <None Include="ShouAnRen\Diagonal1.ani" />
-    <None Include="ShouAnRen\Diagonal2.ani" />
-    <None Include="ShouAnRen\Handwriting.ani" />
+    <None Include="FuNuoNuo\Help.ani" />
+    <None Include="FuNuoNuo\Link.ani" />
+    <None Include="FuNuoNuo\Normal.ani" />
+    <None Include="FuNuoNuo\Text.ani" />
+    <None Include="FuNuoNuo\Working.ani" />
+    <None Include="KaTiXiYa\Help.ani" />
+    <None Include="KaTiXiYa\Link.ani" />
+    <None Include="KaTiXiYa\Normal.ani" />
+    <None Include="KaTiXiYa\Text.ani" />
+    <None Include="KaTiXiYa\Working.ani" />
     <None Include="ShouAnRen\Help.ani" />
-    <None Include="ShouAnRen\Horizontal.ani" />
     <None Include="ShouAnRen\Link.ani" />
-    <None Include="ShouAnRen\Move.ani" />
     <None Include="ShouAnRen\Normal.ani" />
-    <None Include="ShouAnRen\Person.ani" />
-    <None Include="ShouAnRen\Pin.ani" />
-    <None Include="ShouAnRen\Precision.ani" />
     <None Include="ShouAnRen\Text.ani" />
-    <None Include="ShouAnRen\Unavailable.ani" />
-    <None Include="ShouAnRen\Vertical.ani" />
     <None Include="ShouAnRen\Working.ani" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="manifest.xml" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
