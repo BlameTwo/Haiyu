@@ -44,7 +44,7 @@ public class CursorHelper
     }
 
     public static InputCursor GetKaTiCode(CursorType type)
-    {`
+    {
         switch (type)
         {
             case CursorType.None:
