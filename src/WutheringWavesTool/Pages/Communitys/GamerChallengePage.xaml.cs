@@ -14,11 +14,11 @@ public sealed partial class GamerChallengePage : Page, IPage, IDisposable
         this.ViewModel = Instance.Service.GetRequiredService<GamerChallengeViewModel>();
     }
 
-    protected override async void OnNavigatedTo(NavigationEventArgs e)
+    protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         if (e.Parameter is GameRoilDataItem item)
         {
-            await this.ViewModel.SetDataAsync(item);
+            this.ViewModel.SetData(item);
         }
         base.OnNavigatedTo(e);
     }

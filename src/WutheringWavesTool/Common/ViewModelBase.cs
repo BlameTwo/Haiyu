@@ -15,4 +15,28 @@ public partial class ViewModelBase : ObservableRecipient
 
     [ObservableProperty]
     public partial CursorName CursorName { get; set; }
+
+    /// <summary>
+    /// 闭包返回
+    /// </summary>
+    /// <typeparam name="T">任务结果</typeparam>
+    /// <param name="task">任务本体</param>
+    /// <returns>检查结果</returns>
+    public async Task<(int,T?,string?)> TryInvokeAsync<T>(Task<T?> task)
+        where T:class
+    {
+        try
+        {
+            var result = await task;
+            return (0, result, "");
+        }
+        catch (OperationCanceledException OperationCanceledException)
+        {
+            return (-1, null,"用户取消操作");
+        }
+        catch (Exception ex)
+        {
+            return (-2, null, ex.Message);
+        }
+    }
 }

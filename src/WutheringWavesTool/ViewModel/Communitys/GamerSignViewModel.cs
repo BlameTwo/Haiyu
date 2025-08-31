@@ -46,8 +46,12 @@ public sealed partial class GamerSignViewModel : ViewModelBase
 
     async Task RefreshSignHistoryAsync()
     {
-        var game = await WavesClient.GetWavesGamerAsync();
-        var games = game.Data.Where(p => p.GameId == 3);
+        var game = await TryInvokeAsync( WavesClient.GetWavesGamerAsync(this.CTS.Token));
+        if(game .Item1 != 0)
+        {
+            return;
+        }
+        var games = game.Item2.Data.Where(p => p.GameId == 3);
         if (games.Count() != 0)
         {
             var result = await WavesClient.GetSignInDataAsync(
@@ -95,22 +99,24 @@ public sealed partial class GamerSignViewModel : ViewModelBase
     [RelayCommand]
     async Task SignAsync()
     {
-        var result = await WavesClient.SignInAsync(SignRoil.UserId.ToString(), SignRoil.RoleId);
-        if (result == null)
+        var result = await TryInvokeAsync(WavesClient.SignInAsync(SignRoil.UserId.ToString(), SignRoil.RoleId,this.CTS.Token));
+        if(result.Item1 != 0)
+        {
             return;
-        if (result.Code == 1511)
+        }
+        if (result.Item2.Code == 1511)
         {
             Debug.WriteLine("已经签到！");
         }
-        if (result.Code == 220)
+        if (result.Item2.Code == 220)
         {
             Debug.WriteLine("Token过期，重新登陆");
         }
-        if (result.Code == 1505)
+        if (result.Item2.Code == 1505)
         {
             Debug.WriteLine("活动过期");
         }
-        if (result.Code == 200)
+        if (result.Item2.Code == 200)
         {
             await RefreshSignHistoryAsync();
         }

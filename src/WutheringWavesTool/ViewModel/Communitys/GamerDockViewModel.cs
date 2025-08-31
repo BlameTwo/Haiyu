@@ -29,16 +29,16 @@ public partial class GamerDockViewModel : ViewModelBase, IDisposable
     private async Task RefreshDataAsync(GameRoilDataItem item)
     {
         this.GameRoil = item;
-        var calabash = await WavesClient.GetGamerCalabashDataAsync(GameRoil);
-        if (calabash == null)
+        var calabash = await TryInvokeAsync(WavesClient.GetGamerCalabashDataAsync(GameRoil));
+        if (calabash.Item1 == -2 || calabash.Item1 == -1)
         {
             TipShow.ShowMessage("未请求到数据坞信息", Microsoft.UI.Xaml.Controls.Symbol.Clear);
             TipShow.ShowMessage("拉取数据为空", Symbol.Clear);
         }
-        else
+        else if(calabash.Item1 == 0)
         {
-            this.GamerCalabash = calabash;
-            this.GamerPhantoms = FormatData(calabash);
+            this.GamerCalabash = calabash.Item2;
+            this.GamerPhantoms = FormatData(calabash.Item2);
         }
     }
 

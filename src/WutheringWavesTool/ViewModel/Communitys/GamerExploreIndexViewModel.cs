@@ -76,15 +76,16 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
             TipShow.ShowMessage("玩家数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
             return;
         }
-        this.BassData = await WavesClient.GetGamerExploreIndexDataAsync(
+        var data = await TryInvokeAsync(WavesClient.GetGamerExploreIndexDataAsync(
             this._roilData,
             this.CTS.Token
-        );
-        if (BassData == null)
+        ));
+        if(data.Item1 != 0)
         {
-            TipShow.ShowMessage("探索数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
+            TipShow.ShowMessage(data.Item3, Microsoft.UI.Xaml.Controls.Symbol.Clear);
             return;
         }
+        this.BassData = data.Item2;
         foreach (var item in BassData.ExploreList)
         {
             Countrys.Add(new(item));

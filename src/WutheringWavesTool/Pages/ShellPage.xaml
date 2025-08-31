@@ -230,7 +230,8 @@
                     <Button
                         CornerRadius="5"
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        ToolTipService.ToolTip="扩展">
+                        ToolTipService.ToolTip="扩展"
+                        Visibility="Collapsed">
                         <i:Interaction.Behaviors>
                             <sound:ButtonSoundBehavior />
                         </i:Interaction.Behaviors>

@@ -6,9 +6,10 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
 {
     private bool disposedValue;
 
-    public GamerSlashDetailViewModel(IWavesClient wavesClient)
+    public GamerSlashDetailViewModel(IWavesClient wavesClient,ITipShow tipShow)
     {
         WavesClient = wavesClient;
+        TipShow = tipShow;
         WeakReferenceMessenger.Default.Register<SwitchRoleMessager>(this, SwitchRoleMethod);
     }
 
@@ -18,6 +19,7 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
     }
 
     public IWavesClient WavesClient { get; }
+    public ITipShow TipShow { get; }
     public GameRoilDataItem Roil { get; private set; }
 
     #region Data
@@ -55,19 +57,17 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
 
     async Task RefreshData()
     {
-        var result = await WavesClient.GetGamerSlashDetailAsync(this.Roil, this.CTS.Token);
-        if (result == null || result.DifficultyList == null)
+        var result = await TryInvokeAsync(WavesClient.GetGamerSlashDetailAsync(this.Roil, this.CTS.Token));
+        if (result.Item1 != 0 || result.Item2.DifficultyList == null)
+        {
+            TipShow.ShowMessage("角色数据请求错误", Symbol.Clear);
             return;
-        var diff0 = result.DifficultyList.Where(x => x.Difficulty == 0).FirstOrDefault();
-        var diff1 = result.DifficultyList.Where(x => x.Difficulty == 1).FirstOrDefault();
-        var diff2 = result.DifficultyList.Where(x => x.Difficulty == 2).FirstOrDefault();
+        }
+        var diff0 = result.Item2.DifficultyList.Where(x => x.Difficulty == 0).FirstOrDefault();
+        var diff1 = result.Item2.DifficultyList.Where(x => x.Difficulty == 1).FirstOrDefault();
+        var diff2 = result.Item2.DifficultyList.Where(x => x.Difficulty == 2).FirstOrDefault();
         this.Difficulty0Header = SlashHeaderWrapper.Convert(diff0);
-        //this.Difficulty1Header = SlashHeaderWrapper.Convert(diff1);
-        //this.Difficulty2Header = SlashHeaderWrapper.Convert(diff2);
         this.SlashHeader0Items = SlashItemWrapper.Convert(diff0.ChallengeList);
-        //this.SlashHeader1Items = SlashItemWrapper.Convert(diff1.ChallengeList);
-        //var SlashHeader2Items = SlashItemWrapper.Convert(diff2.ChallengeList);
-        //SlashHeader1Items.Insert(0, SlashHeader2Items[0]);
     }
 
     private void Dispose(bool disposing)

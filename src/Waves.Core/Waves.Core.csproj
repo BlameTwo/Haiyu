@@ -7,6 +7,7 @@
 	<LanguageVersion>14</LanguageVersion>
 	<PublishAot>true</PublishAot>
 	<EnableConfigurationBindingGenerator>true</EnableConfigurationBindingGenerator>
+	<LangVersion>preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

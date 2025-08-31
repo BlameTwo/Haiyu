@@ -40,17 +40,17 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
             Items.Clear();
         else
             Items = new();
-        var result = await WavesClient.GetGamerChallengeDetails(
+        var result = await TryInvokeAsync(WavesClient.GetGamerChallengeDetails(
             this.RoilItem,
             value.CountryId,
             this.CTS.Token
-        );
-        if (result == null)
+        ));
+        if (result.Item1 != 0 || result.Item2 == null)
         {
             TipShow.ShowMessage("数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
             return;
         }
-        var value2 = result!.ChallengeInfo.Detilys.GroupBy(x => x.BossId);
+        var value2 = result!.Item2.ChallengeInfo.Detilys.GroupBy(x => x.BossId);
         foreach (var item in value2)
         {
             foreach (var com in value.BossIds)
@@ -76,13 +76,13 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
     [RelayCommand]
     async Task Loaded()
     {
-        var challData = await WavesClient.GetGamerChallengeIndexDataAsync(RoilItem, this.CTS.Token);
-        if (challData == null || challData.ChallengeList == null)
+        var challData = await TryInvokeAsync(WavesClient.GetGamerChallengeIndexDataAsync(RoilItem, this.CTS.Token));
+        if (challData.Item1 ==-1 || challData.Item1 == -2 || challData.Item2 == null || challData.Item2.ChallengeList == null)
         {
             TipShow.ShowMessage("拉取数据为空", Symbol.Clear);
             return;
         }
-        foreach (var item in challData.ChallengeList)
+        foreach (var item in challData.Item2.ChallengeList)
         {
             Countrys.Add(new(item));
         }
@@ -112,7 +112,7 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
         this.Items = null;
     }
 
-    internal async Task SetDataAsync(GameRoilDataItem Roilitem)
+    public void SetData(GameRoilDataItem Roilitem)
     {
         this.RoilItem = Roilitem;
     }

@@ -79,14 +79,14 @@ public partial class ResourceBriefViewModel:ViewModelBase,IDisposable
         if(value == null) return;
         if (SelectHeaderName == "版本")
         {
-            var data = await WavesClient.GetVersionBrefItemAsync(this.Item.RoleId, this.Item.ServerId, value.Index.ToString(), this.CTS.Token);
-            if(data == null||data.Code != 200)
+            var data = await TryInvokeAsync( WavesClient.GetVersionBrefItemAsync(this.Item.RoleId, this.Item.ServerId, value.Index.ToString(), this.CTS.Token));
+            if(data.Item1 != 0 ||data.Item2.Code != 200)
             {
-                TipShow.ShowMessage(data.Msg??"数据拉取错误", Symbol.Clear);
+                TipShow.ShowMessage(data.Item2.Msg??"数据拉取错误", Symbol.Clear);
                 return;
             }
-            this.CoinList = data.Data.CoinList.ToObservableCollection();
-            this.StarList = data.Data.StarList.ToObservableCollection();
+            this.CoinList = data.Item2.Data.CoinList.ToObservableCollection();
+            this.StarList = data.Item2.Data.StarList.ToObservableCollection();
         }
         else if (SelectHeaderName == "月")
         {
@@ -114,14 +114,14 @@ public partial class ResourceBriefViewModel:ViewModelBase,IDisposable
     
     private async Task RefreshDataAsync()
     {
-        var cache = await WavesClient.GetBriefHeaderAsync(this.CTS.Token);
-        if(cache == null ||cache.Code != 200)
+        var cache = await TryInvokeAsync( WavesClient.GetBriefHeaderAsync(this.CTS.Token));
+        if(cache.Item1 != 0||cache.Item2.Code != 200)
         {
             TipShow.ShowMessage("拉取数据失败", Symbol.Clear);
         }
-        this.BrieWeek = cache.Data.Weeks;
-        this.BrieVersion = cache.Data.Versions;
-        this.BrieMonth = cache.Data.Months;
+        this.BrieWeek = cache.Item2.Data.Weeks;
+        this.BrieVersion = cache.Item2.Data.Versions;
+        this.BrieMonth = cache.Item2.Data.Months;
         this.SelectHeaderName = HeanderName[0];
     }
 

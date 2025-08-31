@@ -30,6 +30,8 @@ public sealed class DownloadState
 
     public bool IsPaused => _isPaused;
 
+    public bool IsStop { get; internal set; }
+
     public async Task SetSpeedLimitAsync(long bytesPerSecond)
     {
         var newLimiter = new SpeedLimiter();

@@ -273,6 +273,8 @@
                     Orientation="Horizontal"
                     Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
                     <Button
+                        property:CursorProperty.CursorName="{x:Bind ViewModel.CursorName}"
+                        property:CursorProperty.CursorType="Link"
                         Background="{ThemeResource SystemFillColorSuccessBrush}"
                         BorderThickness="0"
                         Command="{x:Bind ViewModel.UpdateGameCommand}"
@@ -550,6 +552,8 @@
                 Margin="-5,0,0,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
+                property:CursorProperty.CursorName="{x:Bind ViewModel.CursorName}"
+                property:CursorProperty.CursorType="Link"
                 CornerRadius="0 10 10 0"
                 Style="{ThemeResource DefaultAcrylicButtonStyle}">
 

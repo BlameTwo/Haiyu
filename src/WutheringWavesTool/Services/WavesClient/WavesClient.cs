@@ -211,7 +211,7 @@ public sealed partial class WavesClient : IWavesClient
         return JsonSerializer.Deserialize(jsonStr, CommunityContext.Default.SignRecord);
     }
 
-    public async Task<SignInResult?> SignInAsync(string userId, string roleId)
+    public async Task<SignInResult?> SignInAsync(string userId, string roleId,CancellationToken token = default)
     {
         var header = GetDeviceHeader(true, false);
         var queryData = new Dictionary<string, string>()

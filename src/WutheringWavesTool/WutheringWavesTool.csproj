@@ -190,7 +190,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="WutheringWavesTool.exe.manifest">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

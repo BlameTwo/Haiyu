@@ -34,7 +34,7 @@ public interface IWavesClient
     );
 
     public Task<SignRecord?> GetSignRecordAsync(string userId, string roldId);
-    public Task<SignInResult?> SignInAsync(string userId, string roleId);
+    public Task<SignInResult?> SignInAsync(string userId, string roleId,CancellationToken token = default);
     public Task<AccountMine?> GetWavesMineAsync(long id, CancellationToken token = default);
 
     public Task<PlayerReponse?> GetPlayerReponseAsync(PlayerCard card);

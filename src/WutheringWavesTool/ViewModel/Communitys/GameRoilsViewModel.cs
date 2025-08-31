@@ -30,19 +30,19 @@ public sealed partial class GameRoilsViewModel : ViewModelBase, ICommunityViewMo
     {
         SelectFilter = null;
         this.User = item;
-        var data = await WavesClient.RefreshGamerDataAsync(item, this.CTS.Token);
-        if (data == null || (data != null && !data.Data))
+        var data = await TryInvokeAsync(WavesClient.RefreshGamerDataAsync(item, this.CTS.Token));
+        if (data.Item1 != 0)
+        {
+            TipShow.ShowMessage("角色数据请求错误", Symbol.Clear);
+            return;
+        }
+        var GameRoil =  await TryInvokeAsync(WavesClient.GetGamerRoleDataAsync(User, this.CTS.Token));
+        if (GameRoil.Item1 != 0)
         {
             TipShow.ShowMessage("数据请求错误", Symbol.Clear);
             return;
         }
-        var GameRoil = await WavesClient.GetGamerRoleDataAsync(User, this.CTS.Token);
-        if (GameRoil == null)
-        {
-            TipShow.ShowMessage("数据请求错误", Symbol.Clear);
-            return;
-        }
-        this.cacheRoils = FormatRole(GameRoil, User);
+        this.cacheRoils = FormatRole(GameRoil.Item2, User);
         if (this.SelectFilter == null)
         {
             this.SelectFilter = GamerFilter[0];

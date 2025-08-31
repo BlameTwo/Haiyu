@@ -31,7 +31,6 @@ public class DiffDecompressManager
             ProcessStartInfo processStartInfo = new ProcessStartInfo(
                 AppDomain.CurrentDomain.BaseDirectory + @"Assets\HpatchzResource\hpatchz.exe",
                 new string[6] { OldFolder, DiffFile, NewFolder, "-f", "-d", "-k-" + sharedKey }
-            //[$"-f {oldPath}", $"-d {diffFile}", $"-k- {sharedMemoryKey}"]
             )
             {
                 RedirectStandardError = false,
@@ -46,15 +45,15 @@ public class DiffDecompressManager
             {
                 while (!_process.HasExited)
                 {
-                    await Task.Delay(500);
-                    ulong[] values = GetProgress(TimeSpan.FromSeconds(1));
+                    await Task.Delay(1000);
+                    ulong[]? values = GetProgress(TimeSpan.FromSeconds(1));
                     if (values == null)
                         continue;
                     progress.Report((values[4], values[5]));
                 }
             }
             await _process.WaitForExitAsync();
-            File.Delete(DiffFile);
+            //File.Delete(DiffFile);
         }
         catch (Exception ex)
         {

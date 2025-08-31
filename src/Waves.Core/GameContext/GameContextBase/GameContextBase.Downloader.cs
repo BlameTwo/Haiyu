@@ -102,6 +102,63 @@ public partial class GameContextBase
         }
     }
 
+    async Task<bool> UpdataDeleteGameResource(GameLauncherSource source)
+    {
+        var currentVersion = GameLocalConfig.GetConfig(
+            GameLocalSettingName.LocalGameVersion
+        );
+        var installFolder = GameLocalConfig.GetConfig(
+            GameLocalSettingName.GameLauncherBassFolder
+        );
+        var previous = source.ResourceDefault.Config.PatchConfig.Where(x =>
+                x.Version == currentVersion
+            );
+
+        if (previous != null && previous.Count() > 0)
+        {
+            if (_downloadCTS.IsCancellationRequested)
+            {
+                return false;
+            }
+            var previou = previous.First();
+            var cdnUrl = source
+                .ResourceDefault.CdnList.Where(x => x.P != 0)
+                .OrderBy(x => x.P)
+                .First()
+                .Url;
+            var patch = await GetPatchGameResourceAsync(cdnUrl + previou.IndexFile);
+            if (patch == null)
+            {
+                Logger.WriteError("获取游戏资源失败，已经退出下载");
+                return false;
+            }
+            for (int i = 0; i < patch.DeleteFiles.Count; i++)
+            {
+                var localFile = $"{installFolder}\\{patch.DeleteFiles[i]}".Replace('/', '\\');
+                if (File.Exists(localFile))
+                {
+                    File.Delete(localFile);
+                }
+                Logger.WriteInfo($"删除旧文件{System.IO.Path.GetFileName(localFile)}");
+                this.gameContextOutputDelegate?.Invoke(
+                        this,
+                        new GameContextOutputArgs()
+                        {
+                            Type = GameContextActionType.DeleteFile,
+                            FileTotal = patch.DeleteFiles.Count,
+                            CurrentFile = i,
+                            DeleteString =
+                                i != patch.DeleteFiles.Count
+                                    ? $"正在删除旧文件{System.IO.Path.GetFileName(localFile)}"
+                                    : "稍微等一下，马上就好",
+                        }
+                    )
+                    .ConfigureAwait(false);
+            }
+        }
+        return true;
+    }
+
     async Task DownloadComplate(GameLauncherSource source)
     {
         var currentVersion = GameLocalConfig.GetConfig(
@@ -116,51 +173,6 @@ public partial class GameContextBase
                 GameLocalSettingName.LocalGameVersion,
                 source.ResourceDefault.Version
             );
-        }
-        else
-        {
-            var previous = source.ResourceDefault.Config.PatchConfig.Where(x =>
-                x.Version == currentVersion
-            );
-
-            if (previous != null && previous.Count() > 0)
-            {
-                var previou = previous.First();
-                var cdnUrl = source
-                    .ResourceDefault.CdnList.Where(x => x.P != 0)
-                    .OrderBy(x => x.P)
-                    .First()
-                    .Url;
-                var patch = await GetPatchGameResourceAsync(cdnUrl + previou.IndexFile);
-                if (patch == null)
-                {
-                    Logger.WriteError("获取游戏资源失败，已经退出下载");
-                    return;
-                }
-                for (int i = 0; i < patch.DeleteFiles.Count; i++)
-                {
-                    var localFile = $"{installFolder}\\{patch.DeleteFiles[i]}".Replace('/', '\\');
-                    if (File.Exists(localFile))
-                    {
-                        File.Delete(localFile);
-                    }
-                    Logger.WriteInfo($"删除旧文件{System.IO.Path.GetFileName(localFile)}");
-                    this.gameContextOutputDelegate?.Invoke(
-                            this,
-                            new GameContextOutputArgs()
-                            {
-                                Type = GameContextActionType.DeleteFile,
-                                FileTotal = patch.DeleteFiles.Count,
-                                CurrentFile = i,
-                                DeleteString =
-                                    i != patch.DeleteFiles.Count
-                                        ? $"正在删除旧文件{System.IO.Path.GetFileName(localFile)}"
-                                        : "稍微等一下，马上就好",
-                            }
-                        )
-                        .ConfigureAwait(false);
-                }
-            }
         }
         await this.GameLocalConfig.SaveConfigAsync(
             GameLocalSettingName.LocalGameVersion,
@@ -362,6 +374,7 @@ public partial class GameContextBase
         {
             if (_downloadCTS != null && !_downloadCTS.IsCancellationRequested)
             {
+                this._downloadState.IsStop = true;
                 await _downloadCTS.CancelAsync().ConfigureAwait(false);
             }
             Interlocked.Exchange(ref _totalProgressSize, 0L);
@@ -396,6 +409,7 @@ public partial class GameContextBase
         _totalProgressTotal = 0;
         _totalVerifiedBytes = 0;
         _totalDownloadedBytes = 0;
+       
         if (previous != null)
         {
             var cdnUrl =
@@ -418,13 +432,6 @@ public partial class GameContextBase
         }
         this._downloadState = new DownloadState(patch);
 
-        /*
-         1. 第一步如果有patch则下载patch文件，首先去解压patch文件
-         2. 第二部Resource资源表示热更新的Resource文件，直接使用chunk字节偏移更新
-         3. 最后一个删除DeleteInfo里面的文件，因每次游戏启动会去扫描文件是否删除
-         */
-
-
         _downloadCTS = new CancellationTokenSource();
         bool result = false;
         if (patch.PatchInfos != null)
@@ -434,7 +441,11 @@ public partial class GameContextBase
                    + previous.BaseUrl;
             result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
         }
-
+        if (_downloadState.IsStop || _downloadCTS.IsCancellationRequested)
+        {
+            await SetNoneStatusAsync().ConfigureAwait(false);
+            return;
+        }
         #region Update Resource
         _downloadBaseUrl =
             launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
@@ -443,10 +454,9 @@ public partial class GameContextBase
         _totalFileTotal = patch.Resource.Count - 1;
         _totalProgressTotal = 0;
         result = await Task.Run(() => UpdateGameToResources(folder, patch));
+        await DownloadComplate(launcher);
         #endregion
         #region UpdatePatcher
-        if (result)
-            await DownloadComplate(launcher);
         await SetNoneStatusAsync().ConfigureAwait(false);
         #endregion
     }
@@ -460,15 +470,20 @@ public partial class GameContextBase
             {
                 var downloadUrl = _downloadBaseUrl + item.Dest;
                 var filePath = BuildFilePath(folder,item);
+                string? krdiffPath = "";
                 if (File.Exists(filePath))
                 {
                     File.Delete(filePath);
-
                 }
-                var krdiffPath = await DownloadFileByKrDiff(
-                       item.Dest,
-                       filePath
-                );
+                krdiffPath = await DownloadFileByKrDiff(
+                      item.Dest,
+                      filePath
+                    );
+                if (krdiffPath == null)
+                {
+                    Logger.WriteError("下载差异文件取消或出现异常");
+                    return false;
+                }
                 await DecompressKrdiffFile(folder, filePath);
             }
         }
@@ -499,7 +514,6 @@ public partial class GameContextBase
                    IsAction = _downloadState?.IsActive ?? false,
                    IsPause = _downloadState?.IsPaused ?? false,
                    TipMessage = "正在解压合并资源",
-                   
                }
            )
            .ConfigureAwait(false); // 确保不阻塞下载线程
@@ -852,9 +866,9 @@ public partial class GameContextBase
                 .ConfigureAwait(false);
         }
         this._isDownload = false;
+        _downloadState?.IsStop = true;
         await _downloadCTS?.CancelAsync();
         _downloadCTS.Dispose();
-        _downloadCTS = null;
         return;
     }
 
@@ -1328,7 +1342,7 @@ public partial class GameContextBase
                 {
                     if (_downloadCTS.IsCancellationRequested)
                     {
-                        throw new OperationCanceledException();
+                        return null;
                     }
                     await _downloadState.PauseToken.WaitIfPausedAsync().ConfigureAwait(false); // 暂停检查也异步化
                     int bytesToRead = (int)Math.Min(MaxBufferSize, chunkTotalSize - totalWritten);

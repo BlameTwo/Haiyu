@@ -1,6 +1,6 @@
 ﻿namespace WutheringWavesTool.ViewModel.Communitys;
 
-public sealed partial class GamerSkinViewModel : ObservableObject, IDisposable
+public sealed partial class GamerSkinViewModel : ViewModelBase, IDisposable
 {
     private GameRoilDataItem roil;
     public IWavesClient WavesClient { get; }
@@ -33,14 +33,14 @@ public sealed partial class GamerSkinViewModel : ObservableObject, IDisposable
     [RelayCommand]
     async Task Loaded()
     {
-        var skin = await this.WavesClient.GetGamerSkinAsync(roil);
-        if (skin == null)
+        var skin = await TryInvokeAsync(this.WavesClient.GetGamerSkinAsync(roil,this.CTS.Token));
+        if (skin.Item1 == 0)
         {
             TipShow.ShowMessage("数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
             return;
         }
-        this.RoleSkins = skin.RoleSkinList.ToObservableCollection();
-        this.WeaponSkins = skin.WeaponSkinList.ToObservableCollection();
+        this.RoleSkins = skin.Item2.RoleSkinList.ToObservableCollection();
+        this.WeaponSkins = skin.Item2.WeaponSkinList.ToObservableCollection();
     }
 
     public void Dispose()
