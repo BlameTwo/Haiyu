@@ -12,7 +12,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -52,7 +52,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -88,7 +88,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -125,7 +125,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -159,7 +159,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -194,7 +194,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -233,7 +233,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -259,7 +259,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -295,7 +295,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -336,7 +336,7 @@ partial class WavesClient
     )
     {
         await this.UpdateRefreshToken(roil, token);
-        var header = GetWebHeader(true);
+        var header = GetWebHeader(false);
         var content = new Dictionary<string, string>()
         {
             { "gameId", roil.GameId.ToString() },
@@ -373,7 +373,7 @@ partial class WavesClient
         try
         {
             await this.UpdateRefreshToken(roil, token);
-            var header = GetWebHeader(true);
+            var header = GetWebHeader(false);
             var content = new Dictionary<string, string>()
             {
                 { "gameId", roil.GameId.ToString() },
@@ -413,7 +413,7 @@ partial class WavesClient
     {
         try
         {
-            var header = GetWebHeader(true);
+            var header = GetWebHeader(false);
             var content = new Dictionary<string, string>()
             {
                 
@@ -456,7 +456,7 @@ partial class WavesClient
     {
         try
         {
-            var header = GetWebHeader(true);
+            var header = GetWebHeader(false);
             var content = new Dictionary<string, string>()
             {
                 {"period" ,versionId },

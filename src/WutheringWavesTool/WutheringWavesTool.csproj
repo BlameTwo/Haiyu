@@ -11,7 +11,7 @@
 		<UseWinUI>true</UseWinUI>
 		<LangVersion>preview</LangVersion>
 		<EnableMsixTooling>true</EnableMsixTooling>
-		<PublishAot>true</PublishAot>
+		<PublishAot>false</PublishAot>
 		<UseNativeAot>true</UseNativeAot>
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
