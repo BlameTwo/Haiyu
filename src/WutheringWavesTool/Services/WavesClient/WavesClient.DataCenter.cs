@@ -413,7 +413,7 @@ partial class WavesClient
     {
         try
         {
-            var header = GetWebHeader(false);
+            var header = GetWebHeader(true);
             var content = new Dictionary<string, string>()
             {
                 
@@ -456,7 +456,7 @@ partial class WavesClient
     {
         try
         {
-            var header = GetWebHeader(false);
+            var header = GetWebHeader(true);
             var content = new Dictionary<string, string>()
             {
                 {"period" ,versionId },
