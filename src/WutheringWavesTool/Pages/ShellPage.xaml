@@ -228,32 +228,6 @@
             <ui:TitleBar.Footer>
                 <StackPanel Orientation="Horizontal">
                     <Button
-                        CornerRadius="5"
-                        Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        ToolTipService.ToolTip="扩展"
-                        Visibility="Collapsed">
-                        <i:Interaction.Behaviors>
-                            <sound:ButtonSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="12"
-                            Glyph="&#xEC7A;" />
-                        <Button.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem
-                                    Command="{x:Bind ViewModel.OpenPlayerRecordWindowCommand}"
-                                    IsEnabled="False"
-                                    Text="抽卡分析">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEAD8;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                                <MenuFlyoutItem Text="数据统计" />
-                            </MenuFlyout>
-                        </Button.Flyout>
-                    </Button>
-                    <Button
                         Margin="5,0,0,0"
                         Command="{x:Bind ViewModel.MinCommand}"
                         CornerRadius="5"
@@ -405,7 +379,14 @@
                             <FontIcon FontFamily="/Assets/Fonts/seguiemj.ttf#Segoe UI Emoji" Glyph="&#x1F4E6;" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
-
+                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.CloudGameViewModel" Content="云工具">
+                        <i:Interaction.Behaviors>
+                            <sound:NavigationViewItemSoundBehavior />
+                        </i:Interaction.Behaviors>
+                        <NavigationViewItem.Icon>
+                            <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x2601;" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
                 </NavigationView.MenuItems>
                 <NavigationView.PaneFooter>
                     <Button

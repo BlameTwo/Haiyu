@@ -33,4 +33,11 @@ public interface ICloudGameService
     );
     Task<RecordModel> GetRecordAsync();
     Task<PlayerReponse> GetGameRecordResource(string recordId, string userId);
+    /// <summary>
+    /// 创建连接会话
+    /// </summary>
+    /// <param name="loginData"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    Task<(bool,string)> OpenUserAsync(LoginData loginData,CancellationToken token = default);
 }

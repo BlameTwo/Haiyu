@@ -100,6 +100,8 @@ public sealed partial class ShellViewModel : ViewModelBase
         );
     }
 
+
+
     [RelayCommand]
     void BackPage()
     {
@@ -262,13 +264,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         window.Activate();
     }
 
-    [RelayCommand]
-    public void ShowActivity()
-    {
-        var window = ViewFactorys.ShowActivityTimeWindow();
-        window.SetWindowSize(900, 550);
-        window.Activate();
-    }
 
     [RelayCommand]
     async Task UnLogin()

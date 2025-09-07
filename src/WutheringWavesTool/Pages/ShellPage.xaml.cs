@@ -1,6 +1,6 @@
-﻿using CommunityToolkit.WinUI.Behaviors;
+﻿using System.Threading.Tasks;
+using CommunityToolkit.WinUI.Behaviors;
 using Microsoft.UI.Input;
-using System.Threading.Tasks;
 using Waves.Core.Common;
 using WutheringWavesTool.Common;
 using WutheringWavesTool.Helpers;

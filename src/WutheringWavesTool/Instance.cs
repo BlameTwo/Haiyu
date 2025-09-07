@@ -18,8 +18,6 @@ public static class Instance
             .AddSingleton<ShellViewModel>()
             .AddTransient<ToolPage>()
             .AddTransient<ToolViewModel>()
-            .AddTransient<ActivityTimePage>()
-            .AddTransient<ActivityTimeViewModel>()
             .AddTransient<PlayerRecordPage>()
             .AddTransient<PlayerRecordViewModel>()
             .AddTransient<SettingViewModel>()
@@ -29,6 +27,7 @@ public static class Instance
             .AddTransient<DeviceInfoPage>()
             .AddTransient<DeviceInfoViewModel>()
             .AddTransient<ResourceBriefViewModel>()
+            .AddTransient<CloudGameViewModel>()
         #region GameContext
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()

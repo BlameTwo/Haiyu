@@ -41,7 +41,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Assets\Fonts\gameIcon.ttf" />
-		<None Remove="Pages\ActivityTimePage.xaml" />
+		<None Remove="Controls\Styles\Card.xaml" />
+		<None Remove="Pages\CloudGamePage.xaml" />
 		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
 		<None Remove="Pages\Dialogs\WebGameLogin.xaml" />
 	</ItemGroup>
@@ -198,10 +199,13 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<Page Update="Pages\Dialogs\WebGameLogin.xaml">
+		<Page Update="Controls\Styles\Card.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
-		<Page Update="Pages\ActivityTimePage.xaml">
+		<Page Update="Pages\CloudGamePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="Pages\Dialogs\WebGameLogin.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
 		<None Update="WutheringWavesTool.exe.manifest">

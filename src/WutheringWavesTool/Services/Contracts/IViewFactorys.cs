@@ -12,6 +12,5 @@ public interface IViewFactorys
     public WindowModelBase ShowPlayerRecordWindow();
     public TransparentWindow CreateTransperentWindow();
     public WindowModelBase ShowAdminDevice();
-    public WindowModelBase ShowActivityTimeWindow();
     public bool ShowToolWindow();
 }

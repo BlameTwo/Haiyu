@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="WutheringWavesTool.Pages.CloudGamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:WutheringWavesTool.Pages"
+    xmlns:m="using:Waves.Api.Models.CloudGame"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:WutheringWavesTool.Controls"
+    xmlns:wui="using:CommunityToolkit.WinUI.Controls"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <i:EventTriggerBehavior EventName="Loaded">
+            <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </i:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+    <Grid Margin="25">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid
+            Grid.RowSpan="2"
+            Width="210"
+            Height="210"
+            Padding="10"
+            Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
+            CornerRadius="10"
+            Visibility="{x:Bind ViewModel.LoadVisibility, Mode=OneWay}">
+            <StackPanel
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <Viewbox Width="35" Height="35">
+                    <ProgressRing IsActive="True" />
+                </Viewbox>
+                <TextBlock
+                    Margin="0,10,0,0"
+                    FontSize="12"
+                    Text="创建登陆会话" />
+            </StackPanel>
+        </Grid>
+        <StackPanel Orientation="Horizontal">
+            <ComboBox
+                Padding="10"
+                VerticalContentAlignment="Center"
+                ItemsSource="{x:Bind ViewModel.Users, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectedUser, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="m:LoginData">
+                        <Grid VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <ui:ImageEx
+                                Width="20"
+                                Height="20"
+                                Source="https://mc.kurogames.com/cloud/assets/avatar-cb06ab22.png" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,-3,0,0"
+                                VerticalAlignment="Center"
+                                Text="{x:Bind Phone}" />
+                        </Grid>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel
+            Padding="5"
+            HorizontalAlignment="Right"
+            Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+            CornerRadius="5"
+            Orientation="Horizontal">
+            <Button
+                Command="{x:Bind ViewModel.ShowAddCommand}"
+                Style="{ThemeResource TransparentButtonStyle}"
+                ToolTipService.ToolTip="添加账号">
+                <FontIcon
+                    FontFamily="Segoe Fluent Icons"
+                    FontSize="13.5"
+                    Glyph="&#xE8FA;" />
+            </Button>
+            <Button Style="{ThemeResource TransparentButtonStyle}" ToolTipService.ToolTip="刷新会话">
+                <FontIcon
+                    FontFamily="Segoe Fluent Icons"
+                    FontSize="13.5"
+                    Glyph="&#xE72C;" />
+            </Button>
+            <Button Style="{ThemeResource TransparentButtonStyle}" ToolTipService.ToolTip="云工具为云鸣潮账户数据">
+                <FontIcon
+                    FontFamily="Segoe Fluent Icons"
+                    FontSize="13.5"
+                    Glyph="&#xE7BA;" />
+            </Button>
+        </StackPanel>
+        <Grid
+            Grid.Row="1"
+            Margin="0,15,0,0"
+            Visibility="{x:Bind ViewModel.DataVisibility, Mode=OneWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <ui:Card
+                Title="唤取记录"
+                Grid.Column="0"
+                Margin="0,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                FontFamily="{ThemeResource DefaultFont}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Button
+                        Margin="0,0,0,2.5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Command="{x:Bind ViewModel.GetRecordUrlCommand}"
+                        Content="获取抽卡数据"
+                        Style="{ThemeResource AccentButtonStyle}" />
+                    <Button
+                        Grid.Row="1"
+                        Margin="0,2.5,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Content="单次本地分析（不包含历史）"
+                        Style="{ThemeResource AccentButtonStyle}" />
+                </Grid>
+            </ui:Card>
+            <ui:Card
+                Title="攻略信息"
+                Grid.Column="1"
+                Margin="5,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                FontFamily="{ThemeResource DefaultFont}"
+                Visibility="Collapsed">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Button
+                        Margin="0,0,0,2.5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Content="攻略站"
+                        Style="{ThemeResource AccentButtonStyle}" />
+                    <Button
+                        Grid.Row="1"
+                        Margin="0,2.5,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Content="Wiki"
+                        Style="{ThemeResource AccentButtonStyle}" />
+                </Grid>
+            </ui:Card>
+            <!--<ui:Card
+                Title="游戏Wiki"
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" />-->
+
+            <!--<Button
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" />
+            <Button
+                Grid.Row="1"
+                Grid.Column="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch" />-->
+        </Grid>
+    </Grid>
+</Page>

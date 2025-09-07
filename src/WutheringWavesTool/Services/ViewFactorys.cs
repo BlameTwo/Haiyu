@@ -59,8 +59,6 @@ public class ViewFactorys : IViewFactorys
         return window;
     }
 
-    public WindowModelBase ShowActivityTimeWindow()
-        => this.ShowWindowBase<ActivityTimePage>(null);
 
     public WindowModelBase ShowPlayerRecordWindow()
     {

@@ -177,7 +177,6 @@ public class CloudGameService : ICloudGameService
             var result = await HttpClientService.HttpClient.SendAsync(message);
             var str = await result.Content.ReadAsStringAsync();
             var model = JsonSerializer.Deserialize(str, CloundContext.Default.EndLoginReponse);
-            this.RecordToken = model.Data.Token;
             return model;
         }
         catch (Exception ex)
@@ -252,5 +251,26 @@ public class CloudGameService : ICloudGameService
         );
         message.Headers.Add("Kr-Ver", "1.9.0");
         return message;
+    }
+
+    public async Task<(bool,string)> OpenUserAsync(LoginData loginData,CancellationToken token = default)
+    {
+        try
+        {
+            var accessToken = await LoginPhoneTokenAsync(
+                loginData.PhoneToken,
+                loginData.Phone,
+                token
+            );
+            var getToken = await GetAccessTokenAsync(accessToken.Data.Code);
+
+            var endLogin = await GetTokenAsync(accessToken.Data, getToken.Data.AccessToken);
+            this.RecordToken = endLogin.Data.Token;
+            return (true, "成功");
+        }
+        catch (Exception ex)
+        {
+            return (false, ex.Message);
+        }
     }
 }
