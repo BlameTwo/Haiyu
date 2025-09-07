@@ -54,27 +54,30 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
 
     private async void GeeSuccessMethod(object recipient, GeeSuccessMessanger message)
     {
-        this.GeetValue = message.Result;
-        if (string.IsNullOrWhiteSpace(GeetValue))
-            return;
-        var sendSMS = await WavesClient.SendSMSAsync(Phone, GeetValue);
-        if (sendSMS == null)
+        if(message.Type == GeetType.Login)
         {
-            TipMessage = "验证失败！";
-            return;
-        }
-        if (sendSMS.Code == 242)
-        {
-            TipMessage = "短信验证码发送频繁！";
-            return;
-        }
-        if (sendSMS.Data.GeeTest == false)
-        {
-            TipMessage = "验证码发送成功！";
-        }
-        else
-        {
-            TipMessage = "请再次点击获取验证码";
+            this.GeetValue = message.Result;
+            if (string.IsNullOrWhiteSpace(GeetValue))
+                return;
+            var sendSMS = await WavesClient.SendSMSAsync(Phone, GeetValue);
+            if (sendSMS == null)
+            {
+                TipMessage = "验证失败！";
+                return;
+            }
+            if (sendSMS.Code == 242)
+            {
+                TipMessage = "短信验证码发送频繁！";
+                return;
+            }
+            if (sendSMS.Data.GeeTest == false)
+            {
+                TipMessage = "验证码发送成功！";
+            }
+            else
+            {
+                TipMessage = "请再次点击获取验证码";
+            }
         }
     }
 
@@ -98,7 +101,7 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Phone))
             return;
-        var view = ViewFactorys.CreateGeetWindow();
+        var view = ViewFactorys.CreateGeetWindow(GeetType.Login);
         view.AppWindowApp.Show();
     }
 

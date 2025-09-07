@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Waves.Api.Models.Record;
+using Waves.Api.Models.CloudGame;
 
 namespace Waves.Api.Models.Wrappers;
 

@@ -32,6 +32,8 @@ public partial class App : ClientApplication
         GameContextFactory.GameBassPath = BassFolder;
         Instance.InitService();
         this.InitializeComponent();
+        var id = DeviceNumGenerator.GenerateId();
+        Directory.CreateDirectory(AppSettings.CloudFolderPath);
     }
 
     private void CurrentDomain_UnhandledException(

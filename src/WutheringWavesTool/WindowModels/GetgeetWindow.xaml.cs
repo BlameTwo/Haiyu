@@ -2,12 +2,26 @@
 
 public sealed partial class GetGeetWindow : WindowModelBase
 {
-    public GetGeetWindow(nint value):base(value)
+    public GeetType Type { get; }
+
+    public GetGeetWindow(nint value, GeetType type) :base(value)
     {
         this.InitializeComponent();
         this.titleBar.Window = this;
+        Type = type;
         this.webView2.NavigationCompleted += WebView2_NavigationCompleted;
-        this.webView2.Source = new(AppDomain.CurrentDomain.BaseDirectory + "Assets\\geet.html");
+        switch (Type)
+        {
+            case GeetType.Login:
+
+                this.webView2.Source = new(AppDomain.CurrentDomain.BaseDirectory + "Assets\\geet.html");
+                break;
+            case GeetType.WebGame:
+                this.webView2.Source = new(AppDomain.CurrentDomain.BaseDirectory + "Assets\\geet2.html");
+                break;
+            default:
+                break;
+        }
     }
 
     private void WebView2_NavigationCompleted(
@@ -27,7 +41,7 @@ public sealed partial class GetGeetWindow : WindowModelBase
         try
         {
             WeakReferenceMessenger.Default.Send<GeeSuccessMessanger>(
-                new(args.TryGetWebMessageAsString())
+                new(args.TryGetWebMessageAsString(),Type)
             );
             this.webView2.Close();
             this.Close();

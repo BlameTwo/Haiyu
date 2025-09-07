@@ -1,5 +1,6 @@
 ﻿using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
 using Waves.Api.Models.QRLogin;
+using Waves.Api.Models.Wiki;
 
 namespace WavesLauncher.Core.Contracts;
 
@@ -34,22 +35,46 @@ public interface IWavesClient
     );
 
     public Task<SignRecord?> GetSignRecordAsync(string userId, string roldId);
-    public Task<SignInResult?> SignInAsync(string userId, string roleId,CancellationToken token = default);
+    public Task<SignInResult?> SignInAsync(
+        string userId,
+        string roleId,
+        CancellationToken token = default
+    );
     public Task<AccountMine?> GetWavesMineAsync(long id, CancellationToken token = default);
 
-    public Task<PlayerReponse?> GetPlayerReponseAsync(PlayerCard card);
-    public Task<ScanScreenModel?> PostQrValueAsync(string qrText, CancellationToken token = default);
+    public Task<ScanScreenModel?> PostQrValueAsync(
+        string qrText,
+        CancellationToken token = default
+    );
 
-    public Task<QRLoginResult?> QRLoginAsync(string qrText, string verifyCode, CancellationToken token = default);
+    public Task<QRLoginResult?> QRLoginAsync(
+        string qrText,
+        string verifyCode,
+        CancellationToken token = default
+    );
 
     public Task<SMSModel?> GetQrCodeAsync(string qrCode, CancellationToken token = default);
 
-    public Task<DeviceInfo?> GetDeviceInfosAsync(CancellationToken token = default); 
-    public Task<AddUserGameServer?> GetBindServerAsync(int gameId, CancellationToken token = default);
+    public Task<DeviceInfo?> GetDeviceInfosAsync(CancellationToken token = default);
+    public Task<AddUserGameServer?> GetBindServerAsync(
+        int gameId,
+        CancellationToken token = default
+    );
 
-    public Task<SendGameVerifyCode?> SendVerifyGameCode(string gameId, string serverId,string roldId, CancellationToken token = default);
+    public Task<SendGameVerifyCode?> SendVerifyGameCode(
+        string gameId,
+        string serverId,
+        string roldId,
+        CancellationToken token = default
+    );
 
-    public Task<BindGameVerifyCode?> BindGamer(string gameId, string serverId, string roleId, string verifyCode, CancellationToken token = default);
+    public Task<BindGameVerifyCode?> BindGamer(
+        string gameId,
+        string serverId,
+        string roleId,
+        string verifyCode,
+        CancellationToken token = default
+    );
     public GameRoilDataWrapper CurrentRoil { get; set; }
 
     #region 数据终端
@@ -108,9 +133,24 @@ public interface IWavesClient
 
     Task<BriefHeader?> GetBriefHeaderAsync(CancellationToken token = default);
 
-    public Task<ResourceBrefItem> GetVersionBrefItemAsync(string roleId, string serverId, string versionId, CancellationToken token = default);
-    public Task<ResourceBrefItem> GetWeekBrefItemAsync(string roleId, string serverId, string versionId, CancellationToken token = default);
-    public Task<ResourceBrefItem> GetMonthBrefItemAsync(string roleId, string serverId, string versionId, CancellationToken token = default);
+    public Task<ResourceBrefItem> GetVersionBrefItemAsync(
+        string roleId,
+        string serverId,
+        string versionId,
+        CancellationToken token = default
+    );
+    public Task<ResourceBrefItem> GetWeekBrefItemAsync(
+        string roleId,
+        string serverId,
+        string versionId,
+        CancellationToken token = default
+    );
+    public Task<ResourceBrefItem> GetMonthBrefItemAsync(
+        string roleId,
+        string serverId,
+        string versionId,
+        CancellationToken token = default
+    );
     #endregion
     public Task<RefreshToken?> UpdateRefreshToken(
         GameRoilDataItem item,
@@ -118,4 +158,8 @@ public interface IWavesClient
     );
 
     public Task InitAsync();
+
+    #region Wiki
+    public Task<MainConfig> GetMainWikiAsync(CancellationToken token = default);
+    #endregion
 }

@@ -3,7 +3,7 @@
 public interface IViewFactorys
 {
     public IAppContext<App> AppContext { get; }
-    public GetGeetWindow CreateGeetWindow();
+    public GetGeetWindow CreateGeetWindow(GeetType type);
 
     public WindowModelBase ShowSignWindow(GameRoilDataItem role);
 
@@ -12,5 +12,6 @@ public interface IViewFactorys
     public WindowModelBase ShowPlayerRecordWindow();
     public TransparentWindow CreateTransperentWindow();
     public WindowModelBase ShowAdminDevice();
+    public WindowModelBase ShowActivityTimeWindow();
     public bool ShowToolWindow();
 }

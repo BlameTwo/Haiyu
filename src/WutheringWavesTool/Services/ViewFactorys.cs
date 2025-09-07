@@ -9,9 +9,9 @@ public class ViewFactorys : IViewFactorys
 
     public IAppContext<App> AppContext { get; }
 
-    public GetGeetWindow CreateGeetWindow()
+    public GetGeetWindow CreateGeetWindow(GeetType type)
     {
-        var windw = new GetGeetWindow(WindowNative.GetWindowHandle(AppContext.App.MainWindow));
+        var windw = new GetGeetWindow(WindowNative.GetWindowHandle(AppContext.App.MainWindow),type);
         windw.Manager.MaxHeight = 510;
         windw.Manager.MaxWidth = 700;
         return windw;
@@ -58,6 +58,9 @@ public class ViewFactorys : IViewFactorys
         window.Manager.MaxWidth = 750;
         return window;
     }
+
+    public WindowModelBase ShowActivityTimeWindow()
+        => this.ShowWindowBase<ActivityTimePage>(null);
 
     public WindowModelBase ShowPlayerRecordWindow()
     {

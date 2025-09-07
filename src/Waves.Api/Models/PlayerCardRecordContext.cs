@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using Waves.Api.Models.CloudGame;
 using Waves.Api.Models.Record;
 using Waves.Api.Models.Wrappers;
 
@@ -25,7 +26,6 @@ namespace Waves.Api.Models;
 [JsonSerializable(typeof(CommunityWeaponData))]
 [JsonSerializable(typeof(List<CommunityWeaponData>))]
 public partial class PlayerCardRecordContext : JsonSerializerContext { }
-
 
 [JsonSerializable(typeof(AddUserGameServer))]
 [JsonSerializable(typeof(AddUserDatum))]

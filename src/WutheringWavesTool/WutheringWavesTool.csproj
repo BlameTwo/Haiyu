@@ -11,7 +11,7 @@
 		<UseWinUI>true</UseWinUI>
 		<LangVersion>preview</LangVersion>
 		<EnableMsixTooling>true</EnableMsixTooling>
-		<PublishAot>false</PublishAot>
+		<PublishAot>true</PublishAot>
 		<UseNativeAot>true</UseNativeAot>
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
@@ -35,12 +35,15 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Content Remove="Assets\Cursor\CursorResource.res" />
+		<Content Remove="assets\geet2.html" />
 		<Content Remove="Assets\HpatchzResource\hpatchz.exe" />
 		<Content Remove="Assets\RolePage\appLogo.png" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Assets\Fonts\gameIcon.ttf" />
+		<None Remove="Pages\ActivityTimePage.xaml" />
 		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
+		<None Remove="Pages\Dialogs\WebGameLogin.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -189,9 +192,18 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
+		<None Update="Assets\geet2.html">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\Dialogs\WebGameLogin.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="Pages\ActivityTimePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<None Update="WutheringWavesTool.exe.manifest">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>

@@ -13,11 +13,13 @@ public static class Instance
     public static void InitService()
     {
         Service = new ServiceCollection()
-            #region View and ViewModel
+        #region View and ViewModel
             .AddSingleton<ShellPage>()
             .AddSingleton<ShellViewModel>()
             .AddTransient<ToolPage>()
             .AddTransient<ToolViewModel>()
+            .AddTransient<ActivityTimePage>()
+            .AddTransient<ActivityTimeViewModel>()
             .AddTransient<PlayerRecordPage>()
             .AddTransient<PlayerRecordViewModel>()
             .AddTransient<SettingViewModel>()
@@ -27,13 +29,13 @@ public static class Instance
             .AddTransient<DeviceInfoPage>()
             .AddTransient<DeviceInfoViewModel>()
             .AddTransient<ResourceBriefViewModel>()
-            #region GameContext
+        #region GameContext
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()
             .AddTransient<GlobalGameViewModel>()
             .AddTransient<MainPGRViewModel>()
-            #endregion
-            #region Community
+        #endregion
+        #region Community
             .AddTransient<GamerSignPage>()
             .AddTransient<GamerSignViewModel>()
             .AddTransient<GamerRoilsDetilyViewModel>()
@@ -44,17 +46,19 @@ public static class Instance
             .AddTransient<GamerTowerViewModel>()
             .AddTransient<GamerSkinViewModel>()
             .AddTransient<GamerSlashDetailViewModel>()
-            #endregion
-            #region Record
+        #endregion
+        #region Record
             .AddTransient<RecordItemViewModel>()
-            #endregion
-            #region Roil
+        #endregion
+        #region Roil
             .AddTransient<GamerRoilsDetilyPage>()
             .AddTransient<GamerRoilViewModel>()
-            #endregion
-            #region Dialog
+        #endregion
+        #region Dialog
             .AddTransient<LoginDialog>()
             .AddTransient<LoginGameViewModel>()
+            .AddTransient<WebGameLogin>()
+            .AddTransient<WebGameViewModel>()
             .AddTransient<BindGameDataDialog>()
             .AddTransient<BindGameDataViewModel>()
             .AddTransient<SelectWallpaperDialog>()
@@ -66,17 +70,23 @@ public static class Instance
             .AddTransient<SelectDownloadGameViewModel>()
             .AddTransient<QRLoginDialog>()
             .AddTransient<QrLoginViewModel>()
-            #endregion
-            #endregion
-            #region Navigation
+        #endregion
+        #endregion
+        #region Navigation
             .AddTransient<IPageService, PageService>()
             .AddTransient<IPickersService, PickersService>()
             .AddSingleton<ITipShow, TipShow>()
-            #endregion
-            #region Base
+        #endregion
+        #region Base
             .AddSingleton<IAppContext<App>, AppContext<App>>()
             .AddSingleton<IWavesClient, WavesClient>()
+            .AddSingleton<ICloudGameService, CloudGameService>()
             .AddTransient<IViewFactorys, ViewFactorys>()
+            .AddSingleton<CloudConfigManager>((s) =>
+            {
+                var mananger = new CloudConfigManager(AppSettings.CloudFolderPath);
+                return mananger;
+            })
             .AddSingleton<IWallpaperService, WallpaperService>(
                 (s) =>
                 {

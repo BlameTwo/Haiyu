@@ -6,6 +6,8 @@ public class AppSettings
 {
     private static readonly string SettingsFilePath = Path.Combine(App.BassFolder, "System.json");
 
+    public static readonly string CloudFolderPath = App.BassFolder+"\\Cloud";
+
     // 存储所有设置的内存缓存
     private static List<LocalSettings> _settingsCache;
 

@@ -112,4 +112,6 @@ public abstract class DialogManager : IDialogManager
         var result = await dialog.ShowAsync();
         return result;
     }
+
+    public async Task ShowWebGameDialogAsync() => await ShowDialogAsync<WebGameLogin>();
 }

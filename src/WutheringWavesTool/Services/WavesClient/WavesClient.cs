@@ -1,5 +1,4 @@
-﻿
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Waves.Api.Models.QRLogin;
 using Windows.System.Profile;
 using WutheringWavesTool.Helpers;
@@ -23,6 +22,7 @@ public sealed partial class WavesClient : IWavesClient
         HttpClientService = httpClientService;
         HttpClientService.BuildClient();
     }
+
     public string GetPackageSpecificId()
     {
         try
@@ -40,10 +40,8 @@ public sealed partial class WavesClient : IWavesClient
             return string.Empty;
         }
     }
-    
 
     private Dictionary<string, string> GetDeviceHeader(bool isNeedToken, bool isNeedBAT = true)
-
     {
         var dict = new Dictionary<string, string>()
         {
@@ -51,14 +49,11 @@ public sealed partial class WavesClient : IWavesClient
             { "Accept-Encoding", "gzip, deflate" },
             { "Accept-Language", "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7" },
             { "source", "android" },
-            {
-                "devCode",
-                HardwareIdGenerator.GenerateUniqueId()
-            },
+            { "devCode", HardwareIdGenerator.GenerateUniqueId() },
             //{ "model","23117RK66C"},
-            { "version","2.5.3"},
-            { "lang","zh-Hans"},
-            { "countryCode","CN"},
+            { "version", "2.5.3" },
+            { "lang", "zh-Hans" },
+            { "countryCode", "CN" },
         };
         if (isNeedBAT)
         {
@@ -79,7 +74,6 @@ public sealed partial class WavesClient : IWavesClient
         return dict;
     }
 
-
     private Dictionary<string, string> GetWebHeader(bool isNeedToken, bool isNeedBAT = true)
     {
         var dict = new Dictionary<string, string>()
@@ -91,12 +85,11 @@ public sealed partial class WavesClient : IWavesClient
                 "User-Agent",
                 "Mozilla/5.0 (Linux; Android 12; 23117RK66C Build/V417IR; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/101.0.4951.61 Safari/537.36 Kuro/2.5.3 KuroGameBox/2.5.3"
             },
-            {"did", HardwareIdGenerator.GenerateUniqueId() },
+            { "did", HardwareIdGenerator.GenerateUniqueId() },
             { "source", "android" },
             {
                 "devCode",
                 $"{this.Ip}, Mozilla/5.0 (Linux; Android 12; 23117RK66C Build/V417IR; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/101.0.4951.61 Safari/537.36 Kuro/2.5.3 KuroGameBox/2.5.3"
-
             },
         };
         if (isNeedBAT)
@@ -211,7 +204,11 @@ public sealed partial class WavesClient : IWavesClient
         return JsonSerializer.Deserialize(jsonStr, CommunityContext.Default.SignRecord);
     }
 
-    public async Task<SignInResult?> SignInAsync(string userId, string roleId,CancellationToken token = default)
+    public async Task<SignInResult?> SignInAsync(
+        string userId,
+        string roleId,
+        CancellationToken token = default
+    )
     {
         var header = GetDeviceHeader(true, false);
         var queryData = new Dictionary<string, string>()
@@ -255,36 +252,6 @@ public sealed partial class WavesClient : IWavesClient
         var jsonStr = await result.Content.ReadAsStringAsync();
         return (AccountMine?)
             JsonSerializer.Deserialize(jsonStr, typeof(AccountMine), CommunityContext.Default);
-    }
-
-    public async Task<PlayerReponse?> GetPlayerReponseAsync(PlayerCard card)
-    {
-        try
-        {
-            var url = "https://gmserver-api.aki-game2.com/gacha/record/query";
-            var content = new StringContent(
-                JsonSerializer.Serialize(card, CommunityContext.Default.PlayerCard),
-                System.Text.Encoding.UTF8,
-                new System.Net.Http.Headers.MediaTypeHeaderValue("application/json")
-            );
-            var message = new HttpRequestMessage()
-            {
-                Content = content,
-                RequestUri = new Uri(url),
-                Method = HttpMethod.Post,
-            };
-            var reponse = await HttpClientService.HttpClient.SendAsync(message);
-            var Jsonstr = await reponse.Content.ReadAsStringAsync();
-            return (PlayerReponse?)
-                JsonSerializer.Deserialize(
-                    await reponse.Content.ReadAsStringAsync(),
-                    CommunityContext.Default.PlayerReponse
-                );
-        }
-        catch (Exception ex)
-        {
-            return null;
-        }
     }
 
     public async Task<bool> IsLoginAsync(CancellationToken token = default)
@@ -358,49 +325,66 @@ public sealed partial class WavesClient : IWavesClient
         }
         return bassData;
     }
-    
-    public async Task<ScanScreenModel?> PostQrValueAsync(string qrText,CancellationToken token = default)
+
+    public async Task<ScanScreenModel?> PostQrValueAsync(
+        string qrText,
+        CancellationToken token = default
+    )
     {
         var url = "https://api.kurobbs.com/user/auth/roleInfos";
-        var request = await BuildRequestAsync(url, HttpMethod.Post, GetDeviceHeader(true,false), new MediaTypeHeaderValue("application/x-www-form-urlencoded"), new Dictionary<string, string>()
-        {
-            { "qrCode",qrText}
-        },true);
+        var request = await BuildRequestAsync(
+            url,
+            HttpMethod.Post,
+            GetDeviceHeader(true, false),
+            new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+            new Dictionary<string, string>() { { "qrCode", qrText } },
+            true
+        );
         var result = await HttpClientService.HttpClient.SendAsync(request, token);
         var jsonStr = await result.Content.ReadAsStringAsync(token);
-        return JsonSerializer.Deserialize<ScanScreenModel>(jsonStr, QRContext.Default.ScanScreenModel);
+        return JsonSerializer.Deserialize<ScanScreenModel>(
+            jsonStr,
+            QRContext.Default.ScanScreenModel
+        );
     }
 
-    public async Task<QRLoginResult?> QRLoginAsync(string qrText,string verifyCode,CancellationToken token = default)
+    public async Task<QRLoginResult?> QRLoginAsync(
+        string qrText,
+        string verifyCode,
+        CancellationToken token = default
+    )
     {
         var url = "https://api.kurobbs.com/user/auth/scanLogin";
-        var request = await BuildRequestAsync(url, HttpMethod.Post, GetDeviceHeader(true, false), new MediaTypeHeaderValue("application/x-www-form-urlencoded"), new Dictionary<string, string>()
-        {
-            {"autoLogin","true" },
-            { "qrCode",qrText},
-            { "verifyCode",verifyCode }
-        }, true);
+        var request = await BuildRequestAsync(
+            url,
+            HttpMethod.Post,
+            GetDeviceHeader(true, false),
+            new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
+            new Dictionary<string, string>()
+            {
+                { "autoLogin", "true" },
+                { "qrCode", qrText },
+                { "verifyCode", verifyCode },
+            },
+            true
+        );
         var result = await HttpClientService.HttpClient.SendAsync(request, token);
         var jsonStr = await result.Content.ReadAsStringAsync(token);
         return JsonSerializer.Deserialize<QRLoginResult>(jsonStr, QRContext.Default.QRLoginResult);
     }
 
-    public async Task<SMSModel?> GetQrCodeAsync(string qrCode,CancellationToken token = default)
+    public async Task<SMSModel?> GetQrCodeAsync(string qrCode, CancellationToken token = default)
     {
-        var query = new Dictionary<string, string>()
-        {
-            { "geeTestData", "" },
-        };
+        var query = new Dictionary<string, string>() { { "geeTestData", "" } };
         var request = await BuildLoginRequest(
             "https://api.kurobbs.com/user/sms/scanSms",
-            GetDeviceHeader(true,false),
+            GetDeviceHeader(true, false),
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
             query
         );
         var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
         var jsonStr = await result.Content.ReadAsStringAsync(token);
-        return (SMSModel?)
-            JsonSerializer.Deserialize(jsonStr,QRContext.Default.SMSModel);
+        return (SMSModel?)JsonSerializer.Deserialize(jsonStr, QRContext.Default.SMSModel);
     }
 
     public async Task<DeviceInfo?> GetDeviceInfosAsync(CancellationToken token = default)
@@ -414,11 +398,15 @@ public sealed partial class WavesClient : IWavesClient
         );
         var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
         var jsonStr = await result.Content.ReadAsStringAsync(token);
-        return (DeviceInfo?)
-            JsonSerializer.Deserialize(jsonStr, QRContext.Default.DeviceInfo);
+        return (DeviceInfo?)JsonSerializer.Deserialize(jsonStr, QRContext.Default.DeviceInfo);
     }
 
-    public async Task<SendGameVerifyCode?> SendVerifyGameCode(string gameId,string serverId, string roleId,CancellationToken token = default)
+    public async Task<SendGameVerifyCode?> SendVerifyGameCode(
+        string gameId,
+        string serverId,
+        string roleId,
+        CancellationToken token = default
+    )
     {
         var url = "https://api.kurobbs.com/user/role/sendVerifyCode";
         var request = await BuildLoginRequest(
@@ -427,36 +415,40 @@ public sealed partial class WavesClient : IWavesClient
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
             new Dictionary<string, string>()
             {
-                {"gameId",gameId },
-                {"roleId", roleId},
-                {"serverId",serverId }
+                { "gameId", gameId },
+                { "roleId", roleId },
+                { "serverId", serverId },
             }
         );
         var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
         var jsonStr = await result.Content.ReadAsStringAsync(token);
-        return 
-            JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.SendGameVerifyCode);
+        return JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.SendGameVerifyCode);
     }
 
-    public async Task<AddUserGameServer?> GetBindServerAsync(int gameId,CancellationToken token = default)
+    public async Task<AddUserGameServer?> GetBindServerAsync(
+        int gameId,
+        CancellationToken token = default
+    )
     {
         var url = "https://api.kurobbs.com/config/findGameServerList";
         var request = await BuildLoginRequest(
             url,
             GetDeviceHeader(true, false),
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
-            new Dictionary<string, string>()
-            {
-                { "gameId",gameId.ToString()}
-            }
+            new Dictionary<string, string>() { { "gameId", gameId.ToString() } }
         );
         var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
         var jsonStr = await result.Content.ReadAsStringAsync(token);
-        return 
-            JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.AddUserGameServer);
+        return JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.AddUserGameServer);
     }
 
-    public async Task<BindGameVerifyCode?> BindGamer(string gameId, string serverId, string roleId,string verifyCode,CancellationToken token = default)
+    public async Task<BindGameVerifyCode?> BindGamer(
+        string gameId,
+        string serverId,
+        string roleId,
+        string verifyCode,
+        CancellationToken token = default
+    )
     {
         var url = "https://api.kurobbs.com/user/role/bindUserRole";
         var request = await BuildLoginRequest(
@@ -465,21 +457,20 @@ public sealed partial class WavesClient : IWavesClient
             new MediaTypeHeaderValue("application/x-www-form-urlencoded"),
             new Dictionary<string, string>()
             {
-                {"gameId",gameId },
-                {"roleId", roleId},
-                {"verifyCode",verifyCode },
-                {"serverId",serverId }
+                { "gameId", gameId },
+                { "roleId", roleId },
+                { "verifyCode", verifyCode },
+                { "serverId", serverId },
             }
         );
         var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
         var jsonStr = await result.Content.ReadAsStringAsync(token);
-        return
-            JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.BindGameVerifyCode);
+        return JsonSerializer.Deserialize(jsonStr, BindGameContext.Default.BindGameVerifyCode);
     }
 
     public async Task InitAsync()
     {
-        using(HttpClient client =new HttpClient())
+        using (HttpClient client = new HttpClient())
         {
             this.Ip = await client.GetStringAsync("https://event.kurobbs.com/event/ip");
         }

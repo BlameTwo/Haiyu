@@ -34,7 +34,7 @@ public sealed partial class GamerSkinViewModel : ViewModelBase, IDisposable
     async Task Loaded()
     {
         var skin = await TryInvokeAsync(this.WavesClient.GetGamerSkinAsync(roil,this.CTS.Token));
-        if (skin.Item1 == 0)
+        if (skin.Item1 != 0)
         {
             TipShow.ShowMessage("数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
             return;

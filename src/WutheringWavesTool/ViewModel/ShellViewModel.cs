@@ -1,22 +1,23 @@
-﻿using CommunityToolkit.WinUI.Animations;
+﻿using System.Drawing;
+using System.Threading.Tasks;
+using CommunityToolkit.WinUI.Animations;
 using H.NotifyIcon;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.DirectX;
-using System.Drawing;
-using System.Threading.Tasks;
 using Waves.Core.Common;
 using Windows.Graphics;
 using Windows.Graphics.Capture;
 using Windows.Graphics.DirectX.Direct3D11;
 using Windows.Graphics.Imaging;
 using WutheringWavesTool.Common.QR;
+using WutheringWavesTool.Models.Wrapper;
 using WutheringWavesTool.Pages.GamePages;
 using WutheringWavesTool.Services.DialogServices;
 using WutheringWavesTool.Services.Navigations.NavigationViewServices;
 using WutheringWavesTool.ViewModel.GameViewModels;
 using ZXing;
 using ZXing.Common;
-using WutheringWavesTool.Models.Wrapper;
+
 namespace WutheringWavesTool.ViewModel;
 
 public sealed partial class ShellViewModel : ViewModelBase
@@ -43,6 +44,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         WavesClient = wavesClient;
         RegisterMessanger();
     }
+
     public INavigationService HomeNavigationService { get; }
     public INavigationViewService HomeNavigationViewService { get; }
     public ITipShow TipShow { get; }
@@ -153,9 +155,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     async Task OpenScreenCapture()
     {
         var result = await DialogManager.GetQRLoginResultAsync();
-
     }
-    
 
     [RelayCommand]
     void OpenTest()
@@ -182,6 +182,12 @@ public sealed partial class ShellViewModel : ViewModelBase
         await DialogManager.ShowLoginDialogAsync();
     }
 
+    [RelayCommand]
+    async Task LoginWebGame()
+    {
+        await DialogManager.ShowWebGameDialogAsync();
+    }
+
     private async void LoginMessangerMethod(object recipient, LoginMessanger message)
     {
         this.LoginBthVisibility = Visibility.Collapsed;
@@ -198,7 +204,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         if (gamers == null || gamers.Code != 200)
             return;
         this.Roles = gamers.Data.FormatRoil();
-        if(Roles != null)
+        if (Roles != null)
         {
             if (Roles.Count > 0)
                 this.SelectRoles = Roles[0];
@@ -230,12 +236,37 @@ public sealed partial class ShellViewModel : ViewModelBase
         }
         this.AppContext.MainTitle.UpDate();
         OpenMain();
+
+        //var client = Instance.GetService<ICloudGameService>();
+        //var tokens = await client.ConfigManager.GetUsersAsync();
+        //var accessToken = await client.LoginPhoneTokenAsync(
+        //    tokens[0].PhoneToken,
+        //    tokens[0].Phone,
+        //    this.CTS.Token
+        //);
+        //var getToken = await client.GetAccessTokenAsync(accessToken.Data.Code);
+        //
+        //var endLogin = await client.GetTokenAsync(accessToken.Data, getToken.Data.AccessToken);
+        //
+        //var getrecord = await client.GetRecordAsync();
+        //var recordData = await client.GetGameRecordResource(
+        //    getrecord.Data.RecordId,
+        //    getrecord.Data.PlayerId.ToString()
+        //);
     }
 
     [RelayCommand]
     public void ShowDeviceInfo()
     {
         var window = ViewFactorys.ShowAdminDevice();
+        window.Activate();
+    }
+
+    [RelayCommand]
+    public void ShowActivity()
+    {
+        var window = ViewFactorys.ShowActivityTimeWindow();
+        window.SetWindowSize(900, 550);
         window.Activate();
     }
 
@@ -262,14 +293,9 @@ public sealed partial class ShellViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    void OpenCounter(RoutedEventArgs args)
-    {
-        
-    }
+    void OpenCounter(RoutedEventArgs args) { }
 
-    private void ComputerWin_Closed(object sender, WindowEventArgs args)
-    {
-    }
+    private void ComputerWin_Closed(object sender, WindowEventArgs args) { }
 
     internal void SetSelectItem(Type sourcePageType)
     {

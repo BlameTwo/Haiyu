@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Waves.Api.Models.Record;
+namespace Waves.Api.Models.CloudGame;
 
 public class PlayerCard
 {
