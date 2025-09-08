@@ -105,7 +105,10 @@ public static class Instance
             .AddKeyedTransient<INavigationService, CommunityNavigationService>(
                 nameof(CommunityNavigationService)
             )
-            #endregion
+            .AddKeyedTransient<INavigationService, WebGameNavigationService>(
+                nameof(WebGameNavigationService)
+            )
+        #endregion
             .AddKeyedSingleton<IDialogManager, MainDialogService>(nameof(MainDialogService))
             #region Record
             .AddScoped<IDialogManager, ScopeDialogService>()

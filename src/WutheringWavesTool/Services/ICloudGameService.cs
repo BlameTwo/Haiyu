@@ -32,7 +32,7 @@ public interface ICloudGameService
         CancellationToken token = default
     );
     Task<RecordModel> GetRecordAsync();
-    Task<PlayerReponse> GetGameRecordResource(string recordId, string userId);
+    Task<PlayerReponse> GetGameRecordResource(string recordId, string userId, int poolType);
     /// <summary>
     /// 创建连接会话
     /// </summary>

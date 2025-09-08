@@ -206,14 +206,14 @@ public class CloudGameService : ICloudGameService
         return model;
     }
 
-    public async Task<PlayerReponse> GetGameRecordResource(string recordId, string userId)
+    public async Task<PlayerReponse> GetGameRecordResource(string recordId, string userId,int poolType)
     {
         RecardQuery query = new RecardQuery();
         query.CardPoolId = "5c13a63f85465e9fcc0f24d6efb15083";
         query.RecordId = recordId;
         query.LanguageCode = "zh-Hans";
         query.PlayerId = userId;
-        query.CardPoolType = 1;
+        query.CardPoolType = poolType;
         query.ServerId = "76402e5b20be2c39f095a152090afddc";
         HttpRequestMessage message = new HttpRequestMessage(
             HttpMethod.Post,

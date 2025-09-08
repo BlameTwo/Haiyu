@@ -7,6 +7,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:WutheringWavesTool.Pages"
     xmlns:m="using:Waves.Api.Models.CloudGame"
+    xmlns:m2="using:WutheringWavesTool.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:WutheringWavesTool.Controls"
     xmlns:wui="using:CommunityToolkit.WinUI.Controls"
@@ -68,6 +69,16 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            <wui:Segmented
+                Margin="15,0,0,0"
+                ItemsSource="{x:Bind ViewModel.NavigationItems, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectNavigation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <wui:Segmented.ItemTemplate>
+                    <DataTemplate x:DataType="m2:CloudGameNavigationItem">
+                        <TextBlock Margin="5" Text="{x:Bind DisplayName}" />
+                    </DataTemplate>
+                </wui:Segmented.ItemTemplate>
+            </wui:Segmented>
         </StackPanel>
         <StackPanel
             Padding="5"
@@ -101,91 +112,58 @@
             Grid.Row="1"
             Margin="0,15,0,0"
             Visibility="{x:Bind ViewModel.DataVisibility, Mode=OneWay}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
                 <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <ui:Card
-                Title="唤取记录"
-                Grid.Column="0"
-                Margin="0,0,0,0"
+            <ComboBox
+                Padding="10"
                 HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                FontFamily="{ThemeResource DefaultFont}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Button
-                        Margin="0,0,0,2.5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Command="{x:Bind ViewModel.GetRecordUrlCommand}"
-                        Content="获取抽卡数据"
-                        Style="{ThemeResource AccentButtonStyle}" />
-                    <Button
-                        Grid.Row="1"
-                        Margin="0,2.5,0,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Content="单次本地分析（不包含历史）"
-                        Style="{ThemeResource AccentButtonStyle}" />
-                </Grid>
-            </ui:Card>
-            <ui:Card
-                Title="攻略信息"
-                Grid.Column="1"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                FontFamily="{ThemeResource DefaultFont}"
-                Visibility="Collapsed">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Button
-                        Margin="0,0,0,2.5"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Content="攻略站"
-                        Style="{ThemeResource AccentButtonStyle}" />
-                    <Button
-                        Grid.Row="1"
-                        Margin="0,2.5,0,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Content="Wiki"
-                        Style="{ThemeResource AccentButtonStyle}" />
-                </Grid>
-            </ui:Card>
-            <!--<ui:Card
-                Title="游戏Wiki"
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" />-->
-
-            <!--<Button
-                Grid.Row="1"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" />
-            <Button
-                Grid.Row="1"
-                Grid.Column="1"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" />
-            <Button
-                Grid.Row="1"
-                Grid.Column="2"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch" />-->
+                ItemsSource="{x:Bind ViewModel.RecordNavigationItems, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectRecordType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="m2:GameRecordNavigationItem">
+                        <TextBlock FontFamily="{ThemeResource DefaultFont}" Text="{x:Bind DisplayName}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ListView Grid.Row="1" ItemsSource="{x:Bind ViewModel.ResourceItems, Mode=OneWay}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="m:Datum">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{x:Bind Name}" />
+                            <TextBlock Grid.Column="1" Text="{x:Bind QualityLevel}" />
+                            <TextBlock Grid.Column="2" Text="{x:Bind Time}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <StackPanel
+                Grid.Row="2"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button Command="{x:Bind ViewModel.PrevPageCommand}" Style="{ThemeResource TransparentButtonStyle}">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76B;" />
+                </Button>
+                <TextBlock
+                    Margin="10,0,0,0"
+                    VerticalAlignment="Center"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="15"
+                    Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" />
+                <Button
+                    Margin="10,0,0,0"
+                    Command="{x:Bind ViewModel.NextPageCommand}"
+                    Style="{ThemeResource TransparentButtonStyle}">
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76C;" />
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>
