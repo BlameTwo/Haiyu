@@ -225,6 +225,7 @@
                 </Button>
                 <StackPanel Orientation="Horizontal">
                     <Button
+                        Width="40"
                         Height="40"
                         Margin="0,0,5,0"
                         Padding="10"
@@ -248,8 +249,9 @@
                         Text="/"
                         Visibility="{x:Bind ViewModel.GameInputFolderBthVisibility, Mode=OneWay}" />
                     <Button
+                        Width="40"
                         Height="40"
-                        Margin="5,0,0,0"
+                        Margin="5,0,5,0"
                         Padding="10"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"

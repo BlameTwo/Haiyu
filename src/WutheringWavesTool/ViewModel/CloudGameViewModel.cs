@@ -17,6 +17,19 @@ public partial class CloudGameViewModel : ViewModelBase
         CloudGameService = cloudGameService;
         TipShow = tipShow;
         DialogManager = dialogManager;
+        RegisterMananger();
+    }
+
+    private void RegisterMananger()
+    {
+        this.Messenger.Register<CloudLoginMessager>(this, CloudLoginMethod);
+    }
+
+    private async void CloudLoginMethod(object recipient, CloudLoginMessager message)
+    {
+        if (message == null || !message.Refresh)
+            return;
+        await this.Loaded();
     }
 
     public ICloudGameService CloudGameService { get; }
@@ -70,6 +83,12 @@ public partial class CloudGameViewModel : ViewModelBase
     [ObservableProperty]
     public partial Visibility DataVisibility { get; set; } = Visibility.Collapsed;
 
+    [ObservableProperty]
+    public partial Visibility NoLoginVisibility { get; set; } = Visibility.Collapsed;
+
+    [ObservableProperty]
+    public partial bool IsLoginUser { get; set; } = true;
+
     // Pagination related properties (use distinct names to avoid conflicts with source-generator)
     private long currentPage = 1; // 当前页，从1开始
     public long CurrentPage
@@ -95,25 +114,34 @@ public partial class CloudGameViewModel : ViewModelBase
     [RelayCommand]
     public async Task Loaded()
     {
-        // 请在当前代码中写入获取本地User的逻辑
         var users = await TryInvokeAsync(CloudGameService.ConfigManager.GetUsersAsync());
-        if (users.Item1 != 0)
+        if (users.Item1 != 0 || users.Item2.Count == 0)
         {
             TipShow.ShowMessage("获取本地用户失败", Symbol.Clear);
+            NoLoginVisibility = Visibility.Visible;
+            this.LoadVisibility = Visibility.Collapsed;
+            this.DataVisibility = Visibility.Collapsed;
+            this.IsLoginUser = false;
+            return;
         }
+        this.IsLoginUser = true;
         this.Users = users.Item2;
         this.SelectedUser = Users[0];
     }
+
+    
 
     async partial void OnSelectedUserChanged(LoginData value)
     {
         if (value == null)
             return;
+        NoLoginVisibility = Visibility.Collapsed;
         this.LoadVisibility = Visibility.Visible;
         this.DataVisibility = Visibility.Collapsed;
         this.SelectNavigation = null;
         this.SelectRecordType = null;
         var result = await CloudGameService.OpenUserAsync(value);
+        NoLoginVisibility = Visibility.Collapsed;
         this.LoadVisibility = Visibility.Collapsed;
         this.DataVisibility = Visibility.Visible;
         this.SelectNavigation = NavigationItems[0];
@@ -142,7 +170,7 @@ public partial class CloudGameViewModel : ViewModelBase
             )
         );
         this.cacheItems = resource.Item2.Data;
-        this.PageSize = 10;
+        this.PageSize = 8;
         this.CurrentPage = 1;
         UpdatePageCount();
         LoadPageItems();

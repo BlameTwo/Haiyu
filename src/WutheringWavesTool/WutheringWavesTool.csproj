@@ -25,7 +25,6 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<AppxBundle>Auto</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-		<AppxPackageSigningTimestampServerUrl>http://timestamp.sectigo.com</AppxPackageSigningTimestampServerUrl>
 
 		<!--Win32 PE-->
 		<Win32Resource>Assets/Cursor/CursorResource.res</Win32Resource>

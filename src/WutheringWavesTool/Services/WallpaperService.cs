@@ -46,9 +46,10 @@ public class WallpaperService : IWallpaperService
         }
         else
         {
-            await this.SetWallpaperAsync(
-                AppDomain.CurrentDomain.BaseDirectory + "Assets/Images/changli.png"
-            );
+            //await this.SetWallpaperAsync(
+            //    AppDomain.CurrentDomain.BaseDirectory + "Assets\\Images\\changli.png"
+            //);
+            TipShow.ShowMessage("当前为默认壁纸，请前往设置更换", Symbol.Pictures);
         }
     }
 
@@ -81,9 +82,9 @@ public class WallpaperService : IWallpaperService
                 return false;
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            TipShow.ShowMessage("图片路径或格式不合法，无法解析", Symbol.Pictures);
+            TipShow.ShowMessage($"图片路径或格式不合法,{ex.Message}", Symbol.Pictures);
             return false;
         }
     }

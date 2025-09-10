@@ -308,6 +308,7 @@
             x:Name="image"
             Grid.RowSpan="2"
             Canvas.ZIndex="-1"
+            Source="Assets/Images/changli.png"
             Stretch="UniformToFill">
             <ani:Explicit.Animations>
                 <ani:AnimationSet x:Name="To8" IsSequential="True">
