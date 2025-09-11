@@ -48,7 +48,6 @@ global using WavesLauncher.Core.Contracts;
 global using Windows.Foundation;
 global using Windows.Media.Casting;
 global using Windows.Storage;
-global using Windows.Storage.Pickers;
 global using Windows.Storage.Streams;
 global using Windows.UI;
 global using WinRT.Interop;

@@ -1,10 +1,12 @@
-﻿namespace WutheringWavesTool.Services.Contracts;
+﻿using Microsoft.Windows.Storage.Pickers;
+
+namespace WutheringWavesTool.Services.Contracts;
 
 public interface IPickersService
 {
-    public Task<StorageFolder> GetFolderPicker();
+    public Task<PickFolderResult> GetFolderPicker();
 
-    public Task<StorageFile> GetFileOpenPicker(List<string> extention);
+    public Task<PickFileResult> GetFileOpenPicker(List<string> extention);
 
-    public Task<StorageFile> GetFileSavePicker();
+    public Task<PickFileResult> GetFileSavePicker();
 }

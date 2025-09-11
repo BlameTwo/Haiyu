@@ -95,7 +95,7 @@
                                     Margin="0,8,0,0"
                                     VerticalAlignment="Stretch"
                                     CornerRadius="5">
-                                    <Image Source="{x:Bind RoleIconUrl}" Stretch="Uniform" />
+                                    <ui:ImageEx Source="{x:Bind RoleIconUrl}" Stretch="Uniform" />
                                 </Border>
                                 <Border
                                     Grid.Row="1"

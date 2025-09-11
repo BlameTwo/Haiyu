@@ -39,15 +39,27 @@ public partial class App : ClientApplication
     private void CurrentDomain_UnhandledException(
         object sender,
         System.UnhandledExceptionEventArgs e
-    ) { }
+    )
+    {
+        
+    }
 
     private void App_UnhandledException(
         object sender,
         Microsoft.UI.Xaml.UnhandledExceptionEventArgs e
     )
-    {
-        e.Handled = true;
-        File.WriteAllText("D:\\output.log", e.Message);
+    { 
+        try
+        {
+            Instance.Service.GetService<ITipShow>().ShowMessage(e.Message, Symbol.Clear);
+        }
+        catch (Exception)
+        {
+        }
+        finally
+        {
+            e.Handled = true;
+        }
     }
 
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
