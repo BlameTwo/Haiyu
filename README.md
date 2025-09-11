@@ -4,7 +4,7 @@
    <br/>
    <br/>
 
-   [![NET 6.0](https://img.shields.io/badge/dotnet-8.0-purple.svg?style=flat-square&color=512bd4)](https://learn.microsoft.com/zh-cn/dotnet/core/whats-new/dotnet-7)
+   [![NET 8.0](https://img.shields.io/badge/dotnet-8.0-purple.svg?style=flat-square&color=512bd4)](https://learn.microsoft.com/zh-cn/dotnet/core/whats-new/dotnet-7)
    [![C#](https://img.shields.io/badge/CSharp-14.0-purple.svg?style=flat-square&color=512bd4)](https://learn.microsoft.com/zh-cn/dotnet/csharp/)
    [![Window-WinUI3](https://img.shields.io/badge/WindowsAppSDK-v1.6-blue)](https://learn.microsoft.com/en-us/windows/apps/windows-app-sdk/)
    [![Window-WinUI3](https://img.shields.io/badge/AOT-purple)](https://learn.microsoft.com/zh-cn/dotnet/core/deploying/native-aot/interop/)
