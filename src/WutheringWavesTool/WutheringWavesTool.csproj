@@ -1,24 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
-		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
 		<RootNamespace>WutheringWavesTool</RootNamespace>
 		<!--<ApplicationManifest>app.manifest</ApplicationManifest>-->
-		<Platforms>x64</Platforms>
-		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
+		<Platforms>x86;x64</Platforms>
 		<UseWinUI>true</UseWinUI>
-		<LangVersion>preview</LangVersion>
-		<EnableMsixTooling>true</EnableMsixTooling>
 		<PublishAot>true</PublishAot>
-		<UseNativeAot>true</UseNativeAot>
-		<InvariantGlobalization>true</InvariantGlobalization>
-		<CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
-		<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
-		<IsAotCompatible>true</IsAotCompatible>
-		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<LangVersion>preview</LangVersion>
+		<RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x64</RuntimeIdentifier>
+		<RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x64</RuntimeIdentifier>
+		<WindowsSdkPackageVersion>10.0.26100.53</WindowsSdkPackageVersion>
+		<EnableMsixTooling>true</EnableMsixTooling>
+		<PackageCertificateKeyFile>AsmrOne.WinUI3_TemporaryKey.pfx</PackageCertificateKeyFile>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA512</AppxPackageSigningTimestampDigestAlgorithm>
 		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
@@ -79,10 +77,12 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3485.44" />
+		<!--
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.205">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+		</PackageReference>-->
+		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250907003" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
