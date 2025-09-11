@@ -1,18 +1,18 @@
 ﻿namespace WutheringWavesTool.Models.Enums;
 
 
-public enum GameMode
+public enum GameMode:int
 {
     /// <summary>
     /// 点染
     /// </summary>
-    DotDyeing,
+    DotDyeing = 0,
     /// <summary>
     /// 染色
     /// </summary>
-    Dyeing,
+    Dyeing = 1,
     /// <summary>
     /// 游戏模式
     /// </summary>
-    Game,
+    Game = 2,
 }

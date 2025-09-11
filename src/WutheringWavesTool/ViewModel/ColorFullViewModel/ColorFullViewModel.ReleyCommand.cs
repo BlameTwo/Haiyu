@@ -14,6 +14,13 @@ partial class ColorFullViewModel
         GameColumsSize = 6;
         this.GameGrid = ColorGameGenerator.GenerateColorGame(6,6).ToObservableCollection();
     }
+    [RelayCommand]
+    void Generator10X10()
+    {
+        GameGrid.Clear();
+        GameColumsSize = 10;
+        this.GameGrid = ColorGameGenerator.GenerateColorGame(10, 10).ToObservableCollection();
+    }
 
 
     [RelayCommand]
@@ -25,8 +32,8 @@ partial class ColorFullViewModel
     }
 
     [RelayCommand]
-    void SetGameMode(GameMode mode)
+    void SetGameMode(int mode)
     {
-        this.Mode = mode;
+        this.Mode = (GameMode)mode;
     }
 }

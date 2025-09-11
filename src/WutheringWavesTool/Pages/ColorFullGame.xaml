@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:WutheringWavesTool.Models.ColorFullGame"
     xmlns:ui="using:WutheringWavesTool.Controls"
+    xmlns:ui1="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
 
     <Grid>
@@ -53,6 +54,8 @@
                     </MenuBarItem>
                     <MenuBarItem Title="生成棋盘">
                         <MenuFlyoutItem Command="{x:Bind ViewModel.Generator8X12Command}" Text="8X12(鸣潮)" />
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.Generator6X6Command}" Text="6X6" />
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.Generator10X10Command}" Text="10X10" />
                     </MenuBarItem>
                     <MenuBarItem Title="编辑">
                         <RadioMenuFlyoutItem
@@ -63,12 +66,18 @@
                                 <enum:GameMode>DotDyeing</enum:GameMode>
                             </RadioMenuFlyoutItem.CommandParameter>
                         </RadioMenuFlyoutItem>
-                        <RadioMenuFlyoutItem GroupName="GameMode" Text="染色模式">
+                        <RadioMenuFlyoutItem
+                            Command="{x:Bind ViewModel.SetGameModeCommand}"
+                            GroupName="GameMode"
+                            Text="染色模式">
                             <RadioMenuFlyoutItem.CommandParameter>
                                 <enum:GameMode>Dyeing</enum:GameMode>
                             </RadioMenuFlyoutItem.CommandParameter>
                         </RadioMenuFlyoutItem>
-                        <RadioMenuFlyoutItem GroupName="GameMode" Text="游戏模式">
+                        <RadioMenuFlyoutItem
+                            Command="{x:Bind ViewModel.SetGameModeCommand}"
+                            GroupName="GameMode"
+                            Text="游戏模式">
                             <RadioMenuFlyoutItem.CommandParameter>
                                 <enum:GameMode>Game</enum:GameMode>
                             </RadioMenuFlyoutItem.CommandParameter>
@@ -77,37 +86,97 @@
                 </MenuBar>
             </ui:TitleBar.Header>
         </ui:TitleBar>
-        <ItemsRepeater
-            Grid.Row="1"
-            Margin="15,10,0,0"
-            HorizontalAlignment="Left"
-            ItemsSource="{x:Bind ViewModel.GameGrid, Mode=OneWay}">
-            <ItemsRepeater.ItemTemplate>
-                <DataTemplate x:DataType="model:ColorCell">
-                    <Grid
-                        Width="60"
-                        Height="60"
-                        Background="{x:Bind CurrentColor, Mode=OneWay}"
-                        CornerRadius="10">
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            HorizontalTextAlignment="Center">
-                            <Run Text="行" />
-                            <Run Text="{x:Bind Row, Mode=OneWay}" />
-                            <Run Text="列" />
-                            <Run Text="{x:Bind Column, Mode=OneWay}" />
-                        </TextBlock>
-                    </Grid>
-                </DataTemplate>
-            </ItemsRepeater.ItemTemplate>
-            <ItemsRepeater.Layout>
-                <UniformGridLayout
-                    MaximumRowsOrColumns="{x:Bind ViewModel.GameColumsSize, Mode=OneWay}"
-                    MinColumnSpacing="5"
-                    MinRowSpacing="5" />
-            </ItemsRepeater.Layout>
-        </ItemsRepeater>
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Viewbox MaxHeight="500" HorizontalAlignment="Left">
+                <ItemsView
+                    Margin="15,10,0,0"
+                    HorizontalAlignment="Left"
+                    IsItemInvokedEnabled="True"
+                    ItemsSource="{x:Bind ViewModel.GameGrid, Mode=OneWay}"
+                    SelectionMode="None">
+                    <i:Interaction.Behaviors>
+                        <i:EventTriggerBehavior EventName="ItemInvoked">
+                            <i:InvokeCommandAction Command="{x:Bind ViewModel.CellClickedCommand}" />
+                        </i:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    <ItemsView.ItemTransitionProvider>
+                        <LinedFlowLayoutItemCollectionTransitionProvider />
+                    </ItemsView.ItemTransitionProvider>
+                    <ItemsView.ItemTemplate>
+                        <DataTemplate x:DataType="model:ColorCell">
+                            <ItemContainer>
+                                <Grid
+                                    Width="60"
+                                    Height="60"
+                                    Background="{x:Bind CurrentColor, Mode=OneWay}"
+                                    CornerRadius="10">
+                                    <Grid.BackgroundTransition>
+                                        <BrushTransition />
+                                    </Grid.BackgroundTransition>
+
+                                    <TextBlock
+                                        VerticalAlignment="Center"
+                                        FontSize="12"
+                                        HorizontalTextAlignment="Center">
+                                        <Run Text="行" />
+                                        <Run Text="{x:Bind Row, Mode=OneWay}" />
+                                        <Run Text="列" />
+                                        <Run Text="{x:Bind Column, Mode=OneWay}" />
+                                    </TextBlock>
+                                    <Grid.Transitions>
+                                        <TransitionCollection>
+                                            <RepositionThemeTransition />
+                                        </TransitionCollection>
+                                    </Grid.Transitions>
+                                </Grid>
+                            </ItemContainer>
+                        </DataTemplate>
+                    </ItemsView.ItemTemplate>
+                    <ItemsView.Layout>
+                        <UniformGridLayout
+                            MaximumRowsOrColumns="{x:Bind ViewModel.GameColumsSize, Mode=OneWay}"
+                            MinColumnSpacing="5"
+                            MinRowSpacing="5" />
+                    </ItemsView.Layout>
+                </ItemsView>
+            </Viewbox>
+            <ui1:Segmented
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                ItemsSource="{x:Bind ViewModel.AvailableColors, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectAvailableColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectionMode="Single">
+                <ui1:Segmented.ItemTemplate>
+                    <DataTemplate x:DataType="model:AvailableColor">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Width="20"
+                                Height="20"
+                                Background="{x:Bind Color, Mode=OneWay}"
+                                CornerRadius="5" />
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="5,0,0,0"
+                                Text="{x:Bind Name, Mode=OneWay}" />
+                        </Grid>
+                    </DataTemplate>
+                </ui1:Segmented.ItemTemplate>
+                <ui1:Segmented.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical" />
+                    </ItemsPanelTemplate>
+                </ui1:Segmented.ItemsPanel>
+            </ui1:Segmented>
+        </Grid>
+
 
     </Grid>
 </Page>
