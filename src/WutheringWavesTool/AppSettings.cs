@@ -5,6 +5,7 @@ namespace WutheringWavesTool;
 public class AppSettings
 {
     private static readonly string SettingsFilePath = Path.Combine(App.BassFolder, "System.json");
+    public static readonly string LogPath  = App.BassFolder+"\\appLogs";
 
     public static readonly string CloudFolderPath = App.BassFolder+"\\Cloud";
 

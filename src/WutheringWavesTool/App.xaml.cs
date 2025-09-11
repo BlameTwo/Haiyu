@@ -1,5 +1,6 @@
 ﻿
 
+using Waves.Core.Services;
 using WutheringWavesTool.Helpers;
 
 namespace WutheringWavesTool;
@@ -52,9 +53,11 @@ public partial class App : ClientApplication
         try
         {
             Instance.Service.GetService<ITipShow>().ShowMessage(e.Message, Symbol.Clear);
+            Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(e.Message);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(ex.Message);
         }
         finally
         {

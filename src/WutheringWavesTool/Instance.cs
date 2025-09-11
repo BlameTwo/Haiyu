@@ -1,4 +1,5 @@
-﻿using Windows.Gaming.Input;
+﻿using Waves.Core.Services;
+using Windows.Gaming.Input;
 using WutheringWavesTool.Models.Dialogs;
 using WutheringWavesTool.Services.DialogServices;
 using WutheringWavesTool.Services.Navigations.NavigationViewServices;
@@ -110,6 +111,12 @@ public static class Instance
             )
         #endregion
             .AddKeyedSingleton<IDialogManager, MainDialogService>(nameof(MainDialogService))
+            .AddKeyedSingleton<LoggerService>("AppLog", (s,e) =>
+            {
+                var logger = new LoggerService();
+                logger.InitLogger(AppSettings.LogPath, Serilog.RollingInterval.Day);
+                return logger;
+            })
             #region Record
             .AddScoped<IDialogManager, ScopeDialogService>()
             .AddScoped<ITipShow, TipShow>()
