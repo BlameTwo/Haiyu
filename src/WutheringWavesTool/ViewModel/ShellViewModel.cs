@@ -1,22 +1,8 @@
-﻿using System.Drawing;
-using System.Threading.Tasks;
-using CommunityToolkit.WinUI.Animations;
-using H.NotifyIcon;
-using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.DirectX;
+﻿using H.NotifyIcon;
 using Waves.Core.Common;
-using Windows.Graphics;
-using Windows.Graphics.Capture;
 using Windows.Graphics.DirectX.Direct3D11;
-using Windows.Graphics.Imaging;
-using WutheringWavesTool.Common.QR;
-using WutheringWavesTool.Models.Wrapper;
-using WutheringWavesTool.Pages.GamePages;
 using WutheringWavesTool.Services.DialogServices;
-using WutheringWavesTool.Services.Navigations.NavigationViewServices;
 using WutheringWavesTool.ViewModel.GameViewModels;
-using ZXing;
-using ZXing.Common;
 
 namespace WutheringWavesTool.ViewModel;
 
@@ -100,6 +86,11 @@ public sealed partial class ShellViewModel : ViewModelBase
         );
     }
 
+    [RelayCommand]
+    void OpenColorGame()
+    {
+        this.ViewFactorys.ShowColorGame().Activate();
+    }
 
 
     [RelayCommand]

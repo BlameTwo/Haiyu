@@ -90,4 +90,7 @@ public class ViewFactorys : IViewFactorys
     {
         return new TransparentWindow();
     }
+
+    public WindowModelBase ShowColorGame()
+        =>ShowWindowBase<ColorFullGame>(null);
 }

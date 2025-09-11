@@ -228,6 +228,17 @@
             <ui:TitleBar.Footer>
                 <StackPanel Orientation="Horizontal">
                     <Button
+                        Command="{x:Bind ViewModel.OpenColorGameCommand}"
+                        Style="{ThemeResource TransparentButtonStyle}"
+                        ToolTipService.ToolTip="溢彩画">
+                        <FontIcon
+                            Margin="0,-3,0,0"
+                            FontFamily="Segoe UI Emoji"
+                            FontSize="14"
+                            Glyph="&#x1F3A8;" />
+                    </Button>
+                    <Button
+                        Width="40"
                         Margin="5,0,0,0"
                         Command="{x:Bind ViewModel.MinCommand}"
                         CornerRadius="5"
@@ -263,6 +274,7 @@
                         </i:Interaction.Behaviors>
                     </Button>
                     <Button
+                        Width="40"
                         Margin="5,0,5,0"
                         BorderThickness="0"
                         Command="{x:Bind ViewModel.CloseWindowCommand}"

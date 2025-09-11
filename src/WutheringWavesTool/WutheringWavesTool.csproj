@@ -1,22 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
 		<TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
-		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>WutheringWavesTool</RootNamespace>
 		<!--<ApplicationManifest>app.manifest</ApplicationManifest>-->
-		<Platforms>x86;x64</Platforms>
+		<Platforms>x64</Platforms>
+		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
 		<UseWinUI>true</UseWinUI>
-		<PublishAot>true</PublishAot>
 		<LangVersion>preview</LangVersion>
-		<RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &gt;= 8">win-x64</RuntimeIdentifier>
-		<RuntimeIdentifier Condition="$([MSBuild]::GetTargetFrameworkVersion('$(TargetFramework)')) &lt; 8">win10-x64</RuntimeIdentifier>
-		<WindowsSdkPackageVersion>10.0.26100.53</WindowsSdkPackageVersion>
 		<EnableMsixTooling>true</EnableMsixTooling>
-		<PackageCertificateKeyFile>AsmrOne.WinUI3_TemporaryKey.pfx</PackageCertificateKeyFile>
-		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<PublishAot>true</PublishAot>
+		<UseNativeAot>true</UseNativeAot>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
+		<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
+		<IsAotCompatible>true</IsAotCompatible>
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA512</AppxPackageSigningTimestampDigestAlgorithm>
 		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
@@ -40,6 +42,7 @@
 		<None Remove="Assets\Fonts\gameIcon.ttf" />
 		<None Remove="Controls\Styles\Card.xaml" />
 		<None Remove="Pages\CloudGamePage.xaml" />
+		<None Remove="Pages\ColorFullGame.xaml" />
 		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
 		<None Remove="Pages\Dialogs\WebGameLogin.xaml" />
 	</ItemGroup>
@@ -77,12 +80,10 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3485.44" />
-		<!--
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.205">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>-->
-		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
+		</PackageReference>
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.4948" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.250907003" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
@@ -193,19 +194,22 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Update="Assets\geet2.html">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<Page Update="Controls\Styles\Card.xaml">
+		<Page Update="Pages\ColorFullGame.xaml">
 		  <Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="Controls\Styles\Card.xaml">
+			<Generator>MSBuild:Compile</Generator>
 		</Page>
 		<Page Update="Pages\CloudGamePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</Page>
 		<Page Update="Pages\Dialogs\WebGameLogin.xaml">
-		  <Generator>MSBuild:Compile</Generator>
+			<Generator>MSBuild:Compile</Generator>
 		</Page>
 		<None Update="WutheringWavesTool.exe.manifest">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
