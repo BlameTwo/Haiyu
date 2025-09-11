@@ -58,11 +58,13 @@
 进入到<a href="https://github.com/BlameTwo/WutheringWavesTool/releases">Release</a>页面下载最新版本进行安装。
 
 ##### 其他引用
+[WindowsAppSdk](https://github.com/microsoft/WindowsAppSDK)
+[DevWinUI](https://github.com/ghost1372/DevWinUI)
+[CommunityToolkit](https://github.com/CommunityToolkit)
+[WinUIEx](https://github.com/dotMorten/WinUIEx)
+[H.NotifyIcon.WinUI](https://github.com/HavenDV/H.NotifyIcon)
+[Win2D](https://github.com/microsoft/Win2D)
 
-微信小程序：漂泊着工房
-
-[鸣潮助手](https://mc.appfeng.com/)
-
-
-
-
+鸣谢
+[扑克](https://github.com/Poker-sang)
+[ghost1372](https://github.com/ghost1372)
