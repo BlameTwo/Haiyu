@@ -5,6 +5,7 @@ using Waves.Core.Services;
 using WavesLauncher.Core.Contracts;
 using Windows.ApplicationModel.Contacts.DataProvider;
 using WutheringWavesTool.Services.DialogServices;
+using TitleBar = WutheringWavesTool.Controls.TitleBar;
 
 namespace WutheringWavesTool.Services;
 
@@ -51,8 +52,9 @@ public class AppContext<T> : IAppContext<T>
         var page = Instance.Service!.GetRequiredService<ShellPage>();
         page.titlebar.Window = win;
         win.Content = page;
-        win.MaxWidth = 1100;
-        win.MaxHeight = 700;
+        var scale = TitleBar.GetScaleAdjustment(win);
+        win.MaxWidth = 1200 / scale;
+        win.MaxHeight = 650 / scale;
         win.IsResizable = false;
         win.IsMaximizable = false;
         this.App.MainWindow = win;

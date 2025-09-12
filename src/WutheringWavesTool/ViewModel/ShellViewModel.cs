@@ -89,7 +89,8 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     void OpenColorGame()
     {
-        this.ViewFactorys.ShowColorGame().Activate();
+        var result = this.ViewFactorys.ShowColorGame();
+        result.Activate();
     }
 
 

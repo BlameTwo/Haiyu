@@ -91,7 +91,7 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Viewbox MaxHeight="500" HorizontalAlignment="Left">
+            <Viewbox HorizontalAlignment="Left">
                 <ItemsView
                     Margin="15,10,0,0"
                     HorizontalAlignment="Left"
