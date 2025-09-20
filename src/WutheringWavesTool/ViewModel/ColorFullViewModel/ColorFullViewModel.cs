@@ -4,9 +4,10 @@ namespace WutheringWavesTool.ViewModel;
 
 public sealed partial class ColorFullViewModel:ViewModelBase
 {
-    public ColorFullViewModel()
+    public ColorFullViewModel(ITipShow tipShow)
     {
         this.Generator8X12();
+        TipShow = tipShow;
     }
 
     [ObservableProperty]
@@ -22,23 +23,28 @@ public sealed partial class ColorFullViewModel:ViewModelBase
 
     [ObservableProperty]
     public partial AvailableColor SelectAvailableColor { get; set; }
-
+    public ITipShow TipShow { get; }
 
     [RelayCommand]
     public void CellClicked(ItemsViewItemInvokedEventArgs cell)
     {
+        TipShow.ShowMessage("触发选中", Symbol.Clear);
+        if (this.SelectAvailableColor == null)
+            return;
         if (cell.InvokedItem is ColorCell value)
         {
-            if(this.Mode == Models.Enums.GameMode.DotDyeing)
+            TipShow.ShowMessage($"选择格子{value.Row}:{value.Column}", Symbol.Clear);
+            if (this.Mode == Models.Enums.GameMode.DotDyeing)
             {
+                TipShow.ShowMessage($"点燃模式", Symbol.Clear);
                 value.CurrentColor = SelectAvailableColor.Color;
             }
             if(this.Mode == Models.Enums.GameMode.Dyeing)
             {
+                TipShow.ShowMessage($"染色模式", Symbol.Clear);
                 if (cell != null && !value.CurrentColor.Color.Equals(SelectAvailableColor.Color))
                 {
                     FloodFill(value.Row, value.Column, value.CurrentColor.Color, SelectAvailableColor.Color.Color);
-
                     CheckWinCondition();
                 }
             }

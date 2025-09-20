@@ -15,5 +15,6 @@ public interface IWallpaperService
 
     public void RegisterHostPath(string folder);
 
+    public bool SetWallpaperForUrl(string uri);
     IAsyncEnumerable<WallpaperModel> GetFilesAsync(CancellationToken token = default);
 }

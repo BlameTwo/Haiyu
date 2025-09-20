@@ -66,7 +66,7 @@ public class NavigationServiceBase : INavigationService
         else if (RootFrame.Content == null)
         {
             Paramter = args;
-            return RootFrame.Navigate(pageType, Paramter, new DrillInNavigationTransitionInfo());
+            return RootFrame.Navigate(pageType, Paramter, new EntranceNavigationTransitionInfo());
         }
         return false;
     }

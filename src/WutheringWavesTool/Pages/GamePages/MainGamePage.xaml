@@ -546,7 +546,6 @@
                         </ItemsRepeater>
                     </ScrollView>
                 </Grid>
-
             </Grid>
             <Button
                 Grid.Column="1"
@@ -558,7 +557,6 @@
                 property:CursorProperty.CursorType="Link"
                 CornerRadius="0 10 10 0"
                 Style="{ThemeResource DefaultAcrylicButtonStyle}">
-
                 <i:Interaction.Behaviors>
                     <sound:ControlSoundBehavior />
                     <i:EventTriggerBehavior EventName="Loaded">
@@ -568,7 +566,8 @@
                         IsOpen="{x:Bind ViewModel.IsOpen, Mode=OneWay}"
                         Orientation="Horizontal"
                         Owner="{x:Bind leftControl, Mode=OneWay}"
-                        Offset="10">
+                        Offset="10"
+                        Duration="0:0:0.4">
                         <bs:ControlOffsetButtonAnimationBehaviors.OpenIcon>
                             <FontIcon
                                 FontFamily="Segoe Fluent Icons"
@@ -585,5 +584,15 @@
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
+        <control:ImageEx
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Canvas.ZIndex="-1"
+            Source="{x:Bind ViewModel.VersionLogo, Mode=OneWay}"
+            Stretch="UniformToFill" />
     </Grid>
 </Page>

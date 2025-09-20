@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:WutheringWavesTool.Pages"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
     xmlns:m="using:Waves.Api.Models.CloudGame"
     xmlns:m2="using:WutheringWavesTool.Models"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -148,100 +149,121 @@
             Grid.Row="1"
             Margin="0,15,0,0"
             Visibility="{x:Bind ViewModel.DataVisibility, Mode=OneWay}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-            <TextBlock
-                VerticalAlignment="Center"
-                FontFamily="{ThemeResource DefaultFont}"
-                Text="唤取类型：" />
-            <ComboBox
-                Grid.Column="1"
-                Padding="10"
-                HorizontalAlignment="Stretch"
-                ItemsSource="{x:Bind ViewModel.RecordNavigationItems, Mode=OneWay}"
-                SelectedItem="{x:Bind ViewModel.SelectRecordType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="m2:GameRecordNavigationItem">
-                        <TextBlock FontFamily="{ThemeResource DefaultFont}" Text="{x:Bind DisplayName}" />
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3">
-                <ItemsControl ItemsSource="{x:Bind ViewModel.ResourceItems, Mode=OneWay}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="m:Datum">
-                            <Grid
-                                Margin="0,5,0,0"
-                                Padding="8.5"
-                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                BorderThickness="1"
-                                CornerRadius="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-                                    FontFamily="{ThemeResource DefaultFont}"
-                                    FontSize="15"
-                                    Text="{x:Bind Name}" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Center"
-                                    FontFamily="{ThemeResource DefaultFont}"
-                                    FontSize="15"
-                                    Text="{x:Bind ResourceType}" />
-                                <TextBlock
-                                    Grid.Column="2"
-                                    HorizontalAlignment="Right"
-                                    FontFamily="{ThemeResource DefaultFont}"
-                                    FontSize="15"
-                                    Text="{x:Bind Time}" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemContainerTransitions>
-                        <TransitionCollection>
-                            <AddDeleteThemeTransition />
-                        </TransitionCollection>
-                    </ItemsControl.ItemContainerTransitions>
-                </ItemsControl>
 
-            </ScrollViewer>
-
-            <StackPanel
-                Grid.Row="2"
-                Grid.ColumnSpan="3"
-                HorizontalAlignment="Center"
-                Orientation="Horizontal">
-                <Button Command="{x:Bind ViewModel.PrevPageCommand}" Style="{ThemeResource TransparentButtonStyle}">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76B;" />
-                </Button>
+            <Grid Visibility="{x:Bind ViewModel.RecordVisibility, Mode=OneWay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
                 <TextBlock
-                    Margin="10,0,0,0"
                     VerticalAlignment="Center"
                     FontFamily="{ThemeResource DefaultFont}"
-                    FontSize="15">
-                    <Run Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" />
-                    <Run FontWeight="Bold" Text="/" />
-                    <Run Text="{x:Bind ViewModel.TotalPages, Mode=OneWay}" />
-                </TextBlock>
-                <Button
-                    Margin="10,0,0,0"
-                    Command="{x:Bind ViewModel.NextPageCommand}"
-                    Style="{ThemeResource TransparentButtonStyle}">
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76C;" />
-                </Button>
-            </StackPanel>
+                    Text="唤取类型：" />
+                <ComboBox
+                    Grid.Column="1"
+                    Padding="10"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{x:Bind ViewModel.RecordNavigationItems, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectRecordType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="m2:GameRecordNavigationItem">
+                            <TextBlock FontFamily="{ThemeResource DefaultFont}" Text="{x:Bind DisplayName}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3">
+                    <ItemsControl ItemsSource="{x:Bind ViewModel.ResourceItems, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="m:Datum">
+                                <Grid
+                                    Margin="0,5,0,0"
+                                    Padding="8.5"
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        FontFamily="{ThemeResource DefaultFont}"
+                                        FontSize="15"
+                                        Text="{x:Bind Name}" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Center"
+                                        FontFamily="{ThemeResource DefaultFont}"
+                                        FontSize="15"
+                                        Text="{x:Bind ResourceType}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        FontFamily="{ThemeResource DefaultFont}"
+                                        FontSize="15"
+                                        Text="{x:Bind Time}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemContainerTransitions>
+                            <TransitionCollection>
+                                <ContentThemeTransition />
+                            </TransitionCollection>
+                        </ItemsControl.ItemContainerTransitions>
+                    </ItemsControl>
+
+                </ScrollViewer>
+
+                <StackPanel
+                    Grid.Row="2"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button Command="{x:Bind ViewModel.PrevPageCommand}" Style="{ThemeResource TransparentButtonStyle}">
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76B;" />
+                    </Button>
+                    <TextBlock
+                        Margin="10,0,0,0"
+                        VerticalAlignment="Center"
+                        FontFamily="{ThemeResource DefaultFont}"
+                        FontSize="15">
+                        <Run Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" />
+                        <Run FontWeight="Bold" Text="/" />
+                        <Run Text="{x:Bind ViewModel.TotalPages, Mode=OneWay}" />
+                    </TextBlock>
+                    <Button
+                        Margin="10,0,0,0"
+                        Command="{x:Bind ViewModel.NextPageCommand}"
+                        Style="{ThemeResource TransparentButtonStyle}">
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76C;" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <Grid Background="LightBlue" Visibility="{x:Bind ViewModel.AnalysisVisibility, Mode=OneWay}">
+                <lvc:CartesianChart x:Name="chart" ZoomMode="Both">
+
+                    <lvc:CartesianChart.Series>
+                        <lvc:SeriesCollection>
+                            <lvc:XamlColumnSeries Values="{x:Bind ViewModel.AllPoints, Mode=OneWay}" />
+                        </lvc:SeriesCollection>
+                    </lvc:CartesianChart.Series>
+
+                    <lvc:CartesianChart.XAxes>
+                        <lvc:AxesCollection>
+                            <lvc:XamlDateTimeAxis DateFormatter="{x:Bind ViewModel.Formatter}" Interval="1.00:00:00" />
+                        </lvc:AxesCollection>
+                    </lvc:CartesianChart.XAxes>
+
+                </lvc:CartesianChart>
+            </Grid>
         </Grid>
+        <Grid />
     </Grid>
 </Page>

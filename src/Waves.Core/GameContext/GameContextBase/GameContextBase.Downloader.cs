@@ -64,9 +64,7 @@ public partial class GameContextBase
     public async Task UpdateGameAsync()
     {
         _downloadCTS = new CancellationTokenSource();
-        var folder = GameLocalConfig.GetConfig(
-            GameLocalSettingName.GameLauncherBassFolder
-        );
+        var folder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
         var launcher = await this.GetGameLauncherSourceAsync(_downloadCTS.Token);
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
@@ -104,15 +102,11 @@ public partial class GameContextBase
 
     async Task<bool> UpdataDeleteGameResource(GameLauncherSource source)
     {
-        var currentVersion = GameLocalConfig.GetConfig(
-            GameLocalSettingName.LocalGameVersion
-        );
-        var installFolder = GameLocalConfig.GetConfig(
-            GameLocalSettingName.GameLauncherBassFolder
-        );
+        var currentVersion = GameLocalConfig.GetConfig(GameLocalSettingName.LocalGameVersion);
+        var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
         var previous = source.ResourceDefault.Config.PatchConfig.Where(x =>
-                x.Version == currentVersion
-            );
+            x.Version == currentVersion
+        );
 
         if (previous != null && previous.Count() > 0)
         {
@@ -161,12 +155,8 @@ public partial class GameContextBase
 
     async Task DownloadComplate(GameLauncherSource source)
     {
-        var currentVersion = GameLocalConfig.GetConfig(
-            GameLocalSettingName.LocalGameVersion
-        );
-        var installFolder = GameLocalConfig.GetConfig(
-            GameLocalSettingName.GameLauncherBassFolder
-        );
+        var currentVersion = GameLocalConfig.GetConfig(GameLocalSettingName.LocalGameVersion);
+        var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
         if (string.IsNullOrWhiteSpace(currentVersion))
         {
             await this.GameLocalConfig.SaveConfigAsync(
@@ -201,6 +191,17 @@ public partial class GameContextBase
     private async Task StartDownloadAsync(string folder, IndexGameResource resource)
     {
         _downloadState.IsActive = true;
+        // Fix 修复游戏时旧文件排除
+        var localFile = new DirectoryInfo(folder).GetFiles("*", SearchOption.AllDirectories);
+        var serverFile = resource.Resource.Select(x => BuildFilePath(folder, x));
+        var localFileWhere = localFile.Where(file => !serverFile.Contains(file.FullName)).ToList();
+        if (localFileWhere != null && localFileWhere.Any())
+        {
+            localFileWhere.ForEach(x => File.Delete(x.FullName));
+            Logger.WriteInfo(
+                    $"删除：删除版本旧文件{string.Join(',', localFileWhere)}"
+                );
+        }
         await UpdateFileProgress(GameContextActionType.Verify, 0);
         #region 下载逻辑
         try
@@ -399,9 +400,7 @@ public partial class GameContextBase
 
     async Task UpdateGameResourceAsync(string folder, GameLauncherSource launcher)
     {
-        var currentVersion = GameLocalConfig.GetConfig(
-            GameLocalSettingName.LocalGameVersion
-        );
+        var currentVersion = GameLocalConfig.GetConfig(GameLocalSettingName.LocalGameVersion);
         var previous = launcher
             .ResourceDefault.Config.PatchConfig.Where(x => x.Version == currentVersion)
             .FirstOrDefault();
@@ -409,7 +408,7 @@ public partial class GameContextBase
         _totalProgressTotal = 0;
         _totalVerifiedBytes = 0;
         _totalDownloadedBytes = 0;
-       
+
         if (previous != null)
         {
             var cdnUrl =
@@ -437,8 +436,8 @@ public partial class GameContextBase
         if (patch.PatchInfos != null)
         {
             _downloadBaseUrl =
-                   launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
-                   + previous.BaseUrl;
+                launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
+                + previous.BaseUrl;
             result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
         }
         if (_downloadState.IsStop || _downloadCTS.IsCancellationRequested)
@@ -463,22 +462,19 @@ public partial class GameContextBase
 
     private async Task<bool> DownloadPatcheToResource(string folder, PatchIndexGameResource patch)
     {
-        var patchInfos = patch.PatchInfos.Where(x=>x.Dest.EndsWith("krdiff"));
+        var patchInfos = patch.PatchInfos.Where(x => x.Dest.EndsWith("krdiff"));
         foreach (var item in patchInfos)
         {
-            if(item.Dest.EndsWith("krdiff"))
+            if (item.Dest.EndsWith("krdiff"))
             {
                 var downloadUrl = _downloadBaseUrl + item.Dest;
-                var filePath = BuildFilePath(folder,item);
+                var filePath = BuildFilePath(folder, item);
                 string? krdiffPath = "";
                 if (File.Exists(filePath))
                 {
                     File.Delete(filePath);
                 }
-                krdiffPath = await DownloadFileByKrDiff(
-                      item.Dest,
-                      filePath
-                    );
+                krdiffPath = await DownloadFileByKrDiff(item.Dest, filePath);
                 if (krdiffPath == null)
                 {
                     Logger.WriteError("下载差异文件取消或出现异常");
@@ -490,7 +486,7 @@ public partial class GameContextBase
         return true;
     }
 
-    private async Task DecompressKrdiffFile(string folder,string? krdiffPath)
+    private async Task DecompressKrdiffFile(string folder, string? krdiffPath)
     {
         if (krdiffPath == null)
             return;
@@ -501,22 +497,22 @@ public partial class GameContextBase
             if (gameContextOutputDelegate == null)
                 return;
             await gameContextOutputDelegate
-           .Invoke(
-               this,
-               new GameContextOutputArgs
-               {
-                   Type = GameContextActionType.Decompress,
-                   CurrentSize = (long)e.Item1,
-                   TotalSize = (long)e.Item2,
-                   DownloadSpeed = 0,
-                   VerifySpeed = 0,
-                   RemainingTime = TimeSpan.FromMicroseconds(0),
-                   IsAction = _downloadState?.IsActive ?? false,
-                   IsPause = _downloadState?.IsPaused ?? false,
-                   TipMessage = "正在解压合并资源",
-               }
-           )
-           .ConfigureAwait(false); // 确保不阻塞下载线程
+                .Invoke(
+                    this,
+                    new GameContextOutputArgs
+                    {
+                        Type = GameContextActionType.Decompress,
+                        CurrentSize = (long)e.Item1,
+                        TotalSize = (long)e.Item2,
+                        DownloadSpeed = 0,
+                        VerifySpeed = 0,
+                        RemainingTime = TimeSpan.FromMicroseconds(0),
+                        IsAction = _downloadState?.IsActive ?? false,
+                        IsPause = _downloadState?.IsPaused ?? false,
+                        TipMessage = "正在解压合并资源",
+                    }
+                )
+                .ConfigureAwait(false); // 确保不阻塞下载线程
         };
         await manager.StartAsync(progress);
     }
@@ -1295,10 +1291,7 @@ public partial class GameContextBase
         }
     }
 
-    private async Task<string?> DownloadFileByKrDiff(
-        string dest,
-        string filePath
-    )
+    private async Task<string?> DownloadFileByKrDiff(string dest, string filePath)
     {
         try
         {
@@ -1330,7 +1323,10 @@ public partial class GameContextBase
                     .Content.ReadAsStreamAsync(_downloadCTS.Token)
                     .ConfigureAwait(false);
                 long totalWritten = 0;
-                long chunkTotalSize = long.Parse(response.Content.Headers.GetValues("Content-Length").First()); ;
+                long chunkTotalSize = long.Parse(
+                    response.Content.Headers.GetValues("Content-Length").First()
+                );
+                ;
                 var memoryPool = ArrayPool<byte>.Shared;
                 fileStream.Seek(0, SeekOrigin.Begin);
                 bool isBreak = false;
@@ -1365,16 +1361,22 @@ public partial class GameContextBase
                         await UpdateFileProgress(
                                 GameContextActionType.Download,
                                 accumulatedBytes,
-                                true,"下载差异文件"
+                                true,
+                                "下载差异文件"
                             )
                             .ConfigureAwait(false);
                         accumulatedBytes = 0;
                     }
                 }
-                
+
                 if (accumulatedBytes > 0 && !isBreak)
                 {
-                    await UpdateFileProgress(GameContextActionType.Download, accumulatedBytes, true,"下载差异文件")
+                    await UpdateFileProgress(
+                            GameContextActionType.Download,
+                            accumulatedBytes,
+                            true,
+                            "下载差异文件"
+                        )
                         .ConfigureAwait(false);
                 }
                 if (totalWritten != chunkTotalSize)
@@ -1424,9 +1426,9 @@ public partial class GameContextBase
     private async Task UpdateFileProgress(
         GameContextActionType type,
         long fileSize,
-        bool isAdd = true
-,
-        string v = null)
+        bool isAdd = true,
+        string v = null
+    )
     {
         if (type == GameContextActionType.Download)
         {
@@ -1471,7 +1473,7 @@ public partial class GameContextBase
                     RemainingTime = RemainingTime,
                     IsAction = _downloadState?.IsActive ?? false,
                     IsPause = _downloadState?.IsPaused ?? false,
-                    TipMessage = v
+                    TipMessage = v,
                 }
             )
             .ConfigureAwait(false); // 确保不阻塞下载线程
@@ -1519,6 +1521,8 @@ public partial class GameContextBase
         _totalFileTotal = resource.Resource.Count - 1;
         _totalProgressTotal = 0;
         this._downloadState = new DownloadState(resource);
+        if (gameContextOutputDelegate == null)
+            return;
         await gameContextOutputDelegate?.Invoke(
             this,
             new GameContextOutputArgs
@@ -1534,9 +1538,7 @@ public partial class GameContextBase
     public async Task RepirGameAsync()
     {
         Logger.WriteInfo("开始修复游戏");
-        var installFolder = GameLocalConfig.GetConfig(
-            GameLocalSettingName.GameLauncherBassFolder
-        );
+        var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
         var launcher = await this.GetGameLauncherSourceAsync();
         await Task.Run(async () => await StartDownloadTaskAsync(installFolder, launcher));
     }

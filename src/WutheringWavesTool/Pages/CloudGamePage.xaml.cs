@@ -1,3 +1,5 @@
+using LiveChartsCore.SkiaSharpView.SKCharts;
+
 namespace WutheringWavesTool.Pages;
 
 public sealed partial class CloudGamePage : Page,IPage

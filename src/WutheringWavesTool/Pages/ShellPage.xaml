@@ -230,7 +230,8 @@
                     <Button
                         Command="{x:Bind ViewModel.OpenColorGameCommand}"
                         Style="{ThemeResource TransparentButtonStyle}"
-                        ToolTipService.ToolTip="溢彩画">
+                        ToolTipService.ToolTip="溢彩画"
+                        Visibility="Collapsed">
                         <FontIcon
                             Margin="0,-3,0,0"
                             FontFamily="Segoe UI Emoji"

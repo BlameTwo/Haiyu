@@ -114,12 +114,10 @@ public class AppSettings
 
         if (value == null)
         {
-            // 移除指定 key 的项
             _settingsCache.RemoveAll(x => x.Key == key);
         }
         else
         {
-            // 查找是否存在该 key
             var existing = _settingsCache.FirstOrDefault(x => x.Key == key);
             if (existing != null)
             {

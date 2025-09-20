@@ -8,6 +8,7 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
         public IDialogManager DialogManager { get; }
         public IAppContext<App> AppContext { get; }
         public ITipShow TipShow { get; }
+        public IWallpaperService WallpaperService { get; }
 
         protected GameContextViewModelBase(
             IGameContext gameContext,
@@ -20,6 +21,7 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
             DialogManager = dialogManager;
             AppContext = appContext;
             TipShow = tipShow;
+            WallpaperService = Instance.GetService<IWallpaperService>();
             GameContext.GameContextOutput += GameContext_GameContextOutput;
             this.AppContext.WallpaperService.WallpaperPletteChanged +=
                 WallpaperService_WallpaperPletteChanged;
@@ -63,6 +65,9 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
         public partial string LauncherIcon { get; set; }
 
         [ObservableProperty]
+        public partial ImageSource VersionLogo { get; set; }
+
+        [ObservableProperty]
         public partial string LauncheContent { get; set; }
 
         [ObservableProperty]
@@ -84,41 +89,52 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
         [RelayCommand]
         async Task Loaded()
         {
-            var status = await this.GameContext.GetGameContextStatusAsync(this.CTS.Token);
-            if (!status.IsGameExists && !status.IsGameInstalled)
+            try
             {
-                ShowSelectInstallBth();
-            }
-            if (status.IsGameExists && !status.IsGameInstalled && !status.IsLauncher)
-            {
-                ShowGameDownloadBth();
-            }
-            else if (!status.IsAction && status.IsGameExists && status.IsGameInstalled)
-            {
-                ShowGameLauncherBth(status.IsUpdate, status.DisplayVersion, status.Gameing);
-            }
-            if (status.IsGameExists && (status.IsPause || status.IsAction))
-            {
-                if (status.IsAction && status.IsPause)
+                var status = await this.GameContext.GetGameContextStatusAsync(this.CTS.Token);
+                if (!status.IsGameExists && !status.IsGameInstalled)
                 {
-                    this.BottomBarContent = "下载已经暂停";
-                    this.PauseIcon = "\uE768";
+                    ShowSelectInstallBth();
                 }
-                else
+                if (status.IsGameExists && !status.IsGameInstalled && !status.IsLauncher)
+                {
+                    ShowGameDownloadBth();
+                }
+                else if (!status.IsAction && status.IsGameExists && status.IsGameInstalled)
+                {
+                    ShowGameLauncherBth(status.IsUpdate, status.DisplayVersion, status.Gameing);
+                }
+                if (status.IsGameExists && (status.IsPause || status.IsAction))
+                {
+                    if (status.IsAction && status.IsPause)
+                    {
+                        this.BottomBarContent = "下载已经暂停";
+                        this.PauseIcon = "\uE768";
+                    }
+                    else
+                    {
+                        this.PauseIcon = "\uE769";
+                    }
+                    ShowGameDownloadingBth();
+                }
+                if (status.IsGameExists && status.IsGameInstalled && !status.IsPause && status.IsAction)
                 {
                     this.PauseIcon = "\uE769";
                 }
-                ShowGameDownloadingBth();
+                if (status.IsGameExists && status.IsGameInstalled && status.IsPause && status.IsAction)
+                {
+                    this.PauseIcon = "\uE768";
+                }
+                var index = await this.GameContext.GetDefaultLauncherValue(this.CTS.Token);
+                var background = await this.GameContext.GetLauncherBackgroundDataAsync(index.FunctionCode.Background, this.CTS.Token);
+                WallpaperService.SetWallpaperForUrl(background.FirstFrameImage);
+                this.VersionLogo = new BitmapImage(new(background.Slogan));
+                await LoadAfter();
             }
-            if (status.IsGameExists && status.IsGameInstalled && !status.IsPause && status.IsAction)
+            catch (Exception ex)
             {
-                this.PauseIcon = "\uE769";
+                TipShow.ShowMessage(ex.Message, Symbol.Clear);
             }
-            if (status.IsGameExists && status.IsGameInstalled && status.IsPause && status.IsAction)
-            {
-                this.PauseIcon = "\uE768";
-            }
-            await LoadAfter();
         }
 
         private void ShowGameLauncherBth(bool isUpdate, string version, bool gameing)

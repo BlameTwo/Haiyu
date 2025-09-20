@@ -52,14 +52,28 @@ public class AppContext<T> : IAppContext<T>
         var page = Instance.Service!.GetRequiredService<ShellPage>();
         page.titlebar.Window = win;
         win.Content = page;
-        var scale = TitleBar.GetScaleAdjustment(win);
-        win.MaxWidth = 1200 / scale;
-        win.MaxHeight = 650 / scale;
+        win.Activate();
+        try
+        {
+            var scale = TitleBar.GetScaleAdjustment(win);
+            int targetDipWidth = 1100;
+            int targetDipHeight = 600;
+            var pixelWidth = (int)Math.Round(targetDipWidth * scale);
+            var pixelHeight = (int)Math.Round(targetDipHeight * scale);
+            win.AppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = pixelWidth, Height = pixelHeight });
+        }
+        catch
+        {
+            // Fallback to logical size if DPI detection fails
+            win.MaxWidth = 1100;
+            win.MaxHeight = 700;
+        }
+
         win.IsResizable = false;
         win.IsMaximizable = false;
+       
         this.App.MainWindow = win;
         (win.AppWindow.Presenter as OverlappedPresenter)!.SetBorderAndTitleBar(true, false);
-        win.Activate();
         if (await WavesClient.IsLoginAsync())
         {
             var gamers = await WavesClient.GetWavesGamerAsync();

@@ -46,7 +46,7 @@ public class NavigationViewServiceBase : INavigationViewService
                 NavigationService.NavigationTo(
                     pageKey,
                     paramter,
-                    new DrillInNavigationTransitionInfo()
+                    new EntranceNavigationTransitionInfo()
                 );
             }
         }

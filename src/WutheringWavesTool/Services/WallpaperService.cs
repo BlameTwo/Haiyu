@@ -25,7 +25,7 @@ public class WallpaperService : IWallpaperService
     /// <summary>
     /// 切换壁纸自动取色开关
     /// </summary>
-    public bool PletteEnable { get; set; } = true;
+    public bool PletteEnable { get; set; } = false;
 
     public string BaseFolder { get; private set; }
     public Controls.ImageEx ImageHost { get; private set; }
@@ -42,7 +42,7 @@ public class WallpaperService : IWallpaperService
         this.ImageHost = image;
         if (!string.IsNullOrWhiteSpace(AppSettings.WallpaperPath))
         {
-            await this.SetWallpaperAsync(AppSettings.WallpaperPath);
+            //await this.SetWallpaperAsync(AppSettings.WallpaperPath);
         }
         else
         {
@@ -89,6 +89,18 @@ public class WallpaperService : IWallpaperService
         }
     }
 
+    public bool SetWallpaperForUrl(string uri)
+    {
+        try
+        {
+            this.ImageHost.Source = new BitmapImage(new(uri));
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
     public OctreeColorExtractor ColorPlette { get; private set; }
 
     //public ImageColorPaletteHelper ColorPlette { get; private set; }

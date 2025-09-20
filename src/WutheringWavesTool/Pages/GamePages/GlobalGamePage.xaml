@@ -560,5 +560,16 @@
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
+
+        <control:ImageEx
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Canvas.ZIndex="-1"
+            Source="{x:Bind ViewModel.VersionLogo, Mode=OneWay}"
+            Stretch="UniformToFill" />
     </Grid>
 </Page>

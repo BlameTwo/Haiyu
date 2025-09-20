@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ani="using:CommunityToolkit.WinUI.Animations"
     xmlns:b="using:CommunityToolkit.WinUI.Behaviors"
+    xmlns:control="using:WutheringWavesTool.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:WutheringWavesTool.Pages.GamePages"
@@ -388,5 +389,16 @@
             </StackPanel>
         </Grid>
         <!--  下载结束  -->
+
+        <control:ImageEx
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Canvas.ZIndex="-1"
+            Source="{x:Bind ViewModel.VersionLogo, Mode=OneWay}"
+            Stretch="UniformToFill" />
     </Grid>
 </Page>

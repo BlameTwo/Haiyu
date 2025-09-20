@@ -1,4 +1,6 @@
-﻿using Waves.Api.Models.CloudGame;
+﻿using LiveChartsCore.Defaults;
+using System.Globalization;
+using Waves.Api.Models.CloudGame;
 using Windows.Devices.Bluetooth.Advertisement;
 using WutheringWavesTool.Services.DialogServices;
 
@@ -51,21 +53,22 @@ public partial class CloudGameViewModel : ViewModelBase
         new ObservableCollection<CloudGameNavigationItem>()
         {
             new CloudGameNavigationItem() { DisplayName = "唤取记录", Tag = "record" },
+            new CloudGameNavigationItem() { DisplayName = "唤取分析", Tag = "analysis" },
         };
 
     [ObservableProperty]
     public partial ObservableCollection<GameRecordNavigationItem> RecordNavigationItems { get; set; } =
         new ObservableCollection<GameRecordNavigationItem>()
         {
-            new GameRecordNavigationItem(){ Id = 1, DisplayName = "角色活动唤取" },
-            new GameRecordNavigationItem(){ Id = 2, DisplayName = "武器活动唤取" },
-            new GameRecordNavigationItem(){ Id = 3, DisplayName = "角色常驻唤取" },
-            new GameRecordNavigationItem(){ Id = 4, DisplayName = "武器常驻唤取" },
-            new GameRecordNavigationItem(){ Id = 5, DisplayName = "新手唤取" },
-            new GameRecordNavigationItem(){ Id = 6, DisplayName = "新手自选唤取" },
-            new GameRecordNavigationItem(){ Id = 7, DisplayName = "感恩定向唤取" },
-            new GameRecordNavigationItem(){ Id = 8, DisplayName = "角色新旅唤取" },
-            new GameRecordNavigationItem(){ Id = 9, DisplayName = "武器新旅唤取" },
+            new GameRecordNavigationItem() { Id = 1, DisplayName = "角色活动唤取" },
+            new GameRecordNavigationItem() { Id = 2, DisplayName = "武器活动唤取" },
+            new GameRecordNavigationItem() { Id = 3, DisplayName = "角色常驻唤取" },
+            new GameRecordNavigationItem() { Id = 4, DisplayName = "武器常驻唤取" },
+            new GameRecordNavigationItem() { Id = 5, DisplayName = "新手唤取" },
+            new GameRecordNavigationItem() { Id = 6, DisplayName = "新手自选唤取" },
+            new GameRecordNavigationItem() { Id = 7, DisplayName = "感恩定向唤取" },
+            new GameRecordNavigationItem() { Id = 8, DisplayName = "角色新旅唤取" },
+            new GameRecordNavigationItem() { Id = 9, DisplayName = "武器新旅唤取" },
         };
 
     [ObservableProperty]
@@ -86,25 +89,38 @@ public partial class CloudGameViewModel : ViewModelBase
     [ObservableProperty]
     public partial Visibility NoLoginVisibility { get; set; } = Visibility.Collapsed;
 
+    /// <summary>
+    /// 唤取记录隐藏
+    /// </summary>
+    [ObservableProperty]
+    public partial Visibility RecordVisibility { get; set; } = Visibility.Collapsed;
+
+    /// <summary>
+    /// 唤取分析隐藏
+    /// </summary>
+    [ObservableProperty]
+    public partial Visibility AnalysisVisibility { get; set; } = Visibility.Collapsed;
+
     [ObservableProperty]
     public partial bool IsLoginUser { get; set; } = true;
 
-    // Pagination related properties (use distinct names to avoid conflicts with source-generator)
-    private long currentPage = 1; // 当前页，从1开始
+    [ObservableProperty]
+    public partial ObservableCollection<DateTimePoint> AllPoints { get; set; } = new();
+
+    private long currentPage = 1;
     public long CurrentPage
     {
         get => currentPage;
         set => SetProperty(ref currentPage, value);
     }
 
-    private long totalPages = 1; // 总页数
+    private long totalPages = 1;
     public long TotalPages
     {
         get => totalPages;
         set => SetProperty(ref totalPages, value);
     }
 
-    // Ensure default page size is 10 items per page
     partial void OnPageSizeChanged(long value)
     {
         if (value <= 0)
@@ -129,7 +145,8 @@ public partial class CloudGameViewModel : ViewModelBase
         this.SelectedUser = Users[0];
     }
 
-    
+    public Func<DateTime, string> Formatter { get; set; } =
+        date => date.ToString("MMMM dd");
 
     async partial void OnSelectedUserChanged(LoginData value)
     {
@@ -154,7 +171,15 @@ public partial class CloudGameViewModel : ViewModelBase
 
         if (value.Tag == "record")
         {
-           this.SelectRecordType = RecordNavigationItems[0];
+            this.RecordVisibility = Visibility.Visible;
+            this.AnalysisVisibility = Visibility.Collapsed;
+            this.SelectRecordType = RecordNavigationItems[0];
+        }
+        if(value.Tag == "analysis")
+        {
+            this.RecordVisibility = Visibility.Collapsed;
+            this.AnalysisVisibility = Visibility.Visible;
+            this.SelectRecordType = null;
         }
     }
 
@@ -163,10 +188,22 @@ public partial class CloudGameViewModel : ViewModelBase
         if (value == null || SelectedUser == null)
             return;
         var url = await TryInvokeAsync(CloudGameService.GetRecordAsync());
+        if (url.Item2.Code == 315)
+        {
+            TipShow.ShowMessage("登陆状态失效，请直接重新添加账号", Symbol.Clear);
+            return;
+        }
+        if(url.Item2.Code == 5)
+        {
+
+            TipShow.ShowMessage("请求频繁，请稍等5s-10s", Symbol.Clear);
+            return;
+        }
         var resource = await TryInvokeAsync(
             CloudGameService.GetGameRecordResource(
                 url.Item2.Data.RecordId,
-                url.Item2.Data.PlayerId.ToString(),value.Id
+                url.Item2.Data.PlayerId.ToString(),
+                value.Id
             )
         );
         this.cacheItems = resource.Item2.Data;
@@ -174,6 +211,29 @@ public partial class CloudGameViewModel : ViewModelBase
         this.CurrentPage = 1;
         UpdatePageCount();
         LoadPageItems();
+        var result = resource.Item2.Data
+            .GroupBy(item =>
+            {
+                DateTime parsedDate;
+                if (DateTime.TryParseExact(item.Time, "yyyy-MM-dd HH:mm:ss",
+                                           CultureInfo.InvariantCulture,
+                                           DateTimeStyles.None,
+                                           out parsedDate))
+                {
+                    return parsedDate.Date;
+                }
+                return (DateTime?)null; // 无法解析的日期返回 null，不会参与分组
+            })
+            .Where(g => g.Key.HasValue) // 过滤掉无效日期
+            .ToDictionary(
+                g => g.Key.Value.ToString("yyyy-MM-dd"),
+                g => g.Count()
+            );
+        foreach (var item in result)
+        {
+
+            this.AllPoints.Add(new DateTimePoint(DateTime.Parse(item.Key), item.Value));
+        }
     }
 
     // 更新总页数

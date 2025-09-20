@@ -262,6 +262,10 @@ public class CloudGameService : ICloudGameService
                 loginData.Phone,
                 token
             );
+            if(accessToken.Code == 20001)
+            {
+                return (false, "登陆失效");
+            }
             var getToken = await GetAccessTokenAsync(accessToken.Data.Code);
 
             var endLogin = await GetTokenAsync(accessToken.Data, getToken.Data.AccessToken);

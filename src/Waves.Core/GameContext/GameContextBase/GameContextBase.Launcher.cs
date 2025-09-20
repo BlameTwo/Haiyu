@@ -118,8 +118,16 @@ partial class GameContextBase
 
     public async Task<LIndex?> GetDefaultLauncherValue(CancellationToken token = default) 
     {
+        string url = "";
+        if (this.ContextName == nameof(GlobalGameContext))
+        {
 
-        var url = $"{GameAPIConfig.BaseAddress[0]}/launcher/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/index.json";
+            url = $"{GameAPIConfig.BaseAddress[1]}/launcher/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/index.json";
+        }
+        else
+        {
+            url = $"{GameAPIConfig.BaseAddress[0]}/launcher/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/index.json";
+        }
         var result = await HttpClientService.HttpClient.GetAsync(url, token);
         result.EnsureSuccessStatusCode(); var jsonStr = await result.Content.ReadAsStringAsync();
         var pathIndexSource = JsonSerializer.Deserialize<LIndex>(
@@ -132,9 +140,18 @@ partial class GameContextBase
 
     public async Task<LauncherBackgroundData?> GetLauncherBackgroundDataAsync(string backgroundCode,CancellationToken token = default)
     {
-        var url = $"{GameAPIConfig.BaseAddress[0]}/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/background/{backgroundCode}/{this.Config.Language}.json";
+        var address = ""; 
+        if (this.ContextName == nameof(GlobalGameContext))
+        {
 
-        var result = await HttpClientService.HttpClient.GetAsync(url, token);
+            address = $"{GameAPIConfig.BaseAddress[1]}";
+        }
+        else
+        {
+            address = $"{GameAPIConfig.BaseAddress[0]}";
+        }
+        address+= $"/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/background/{backgroundCode}/{this.Config.Language}.json";
+        var result = await HttpClientService.HttpClient.GetAsync(address, token);
         result.EnsureSuccessStatusCode(); var jsonStr = await result.Content.ReadAsStringAsync();
         var pathIndexSource = JsonSerializer.Deserialize<LauncherBackgroundData>(
             jsonStr,
