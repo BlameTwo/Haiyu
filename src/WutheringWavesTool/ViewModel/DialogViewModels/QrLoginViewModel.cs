@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.Graphics.Canvas;
+using Waves.Api.Models.QRLogin;
 using Windows.Graphics;
 using Windows.Graphics.Capture;
 using WutheringWavesTool.Common.QR;
@@ -39,6 +40,12 @@ public partial class QrLoginViewModel : DialogViewModelBase
 
     [ObservableProperty]
     public partial string ScreenMessage { get; set; } = "选择显示器";
+
+    [ObservableProperty]
+    public partial ObservableCollection<Datum> Datums { get; set; }
+
+    [ObservableProperty]
+    public partial Datum SelectDatum { get; set; }
 
     [ObservableProperty]
     public partial string GameName { get; set; }
@@ -84,7 +91,7 @@ public partial class QrLoginViewModel : DialogViewModelBase
             var result2 = reader.decode(binaryBitmap);
             if (result2 == null)
                 return;
-            if(result2.Text != null)
+           if(result2.Text != null)
             {
                 this.QRResult = result2.Text;
                 var result =  await WavesClient.PostQrValueAsync(QRResult, CTS.Token);
@@ -98,8 +105,8 @@ public partial class QrLoginViewModel : DialogViewModelBase
                     _framePool?.Dispose();
                     _framePool = null;
                     _session = null;
-                    GameName = result.Data[0].GameName;
-                    Phone = result.Data[0].Mobile;
+                    this.Datums = result.Data.ToObservableCollection();
+                    this.SelectDatum = Datums[0];
                     this.LoginBthVisibility = Visibility.Visible;
                     SessionVisibility = Visibility.Visible;
                 }
@@ -176,7 +183,7 @@ public partial class QrLoginViewModel : DialogViewModelBase
     [RelayCommand]
     async Task LoginAsync()
     {
-        var result = await  WavesClient.QRLoginAsync(QRResult, VerifyCode, CTS.Token);
+        var result = await  WavesClient.QRLoginAsync(QRResult, VerifyCode,this.SelectDatum.Id, CTS.Token);
         if (result == null)
         {
             TipMessage = "登陆失败，请及时联系开发者";

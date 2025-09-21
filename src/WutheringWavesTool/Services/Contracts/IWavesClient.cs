@@ -50,6 +50,7 @@ public interface IWavesClient
     public Task<QRLoginResult?> QRLoginAsync(
         string qrText,
         string verifyCode,
+        string id,
         CancellationToken token = default
     );
 

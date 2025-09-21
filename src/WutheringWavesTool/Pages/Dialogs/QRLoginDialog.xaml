@@ -6,12 +6,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:WutheringWavesTool.Pages.Dialogs"
+    xmlns:loginModel="using:Waves.Api.Models.QRLogin"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
     Padding="0"
     CornerRadius="5"
     mc:Ignorable="d">
-    <Grid Width="400" Height="250">
+    <Grid Width="400" Height="400">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -70,8 +71,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock
@@ -79,29 +79,19 @@
                 HorizontalAlignment="Center"
                 FontFamily="{ThemeResource DefaultFont}"
                 FontSize="17"
-                Text="请确认以下信息" />
-            <TextBlock
+                Text="请选择游戏角色" />
+            <ListView
                 Grid.Row="1"
+                Grid.ColumnSpan="2"
                 Margin="0,10,0,0"
-                HorizontalAlignment="Center"
-                Text="游戏名称：" />
-            <TextBlock
-                Grid.Row="2"
-                Margin="0,10,0,0"
-                HorizontalAlignment="Center"
-                Text="手机号（已加密）：" />
-            <TextBlock
-                Grid.Row="1"
-                Grid.Column="1"
-                Margin="0,10,0,0"
-                HorizontalAlignment="Center"
-                Text="{x:Bind ViewModel.GameName, Mode=OneWay}" />
-            <TextBlock
-                Grid.Row="2"
-                Grid.Column="1"
-                Margin="0,10,0,0"
-                HorizontalAlignment="Center"
-                Text="{x:Bind ViewModel.Phone, Mode=OneWay}" />
+                ItemsSource="{x:Bind ViewModel.Datums, Mode=OneWay}"
+                SelectedItem="{x:Bind ViewModel.SelectDatum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="loginModel:Datum">
+                        <TextBlock Text="{x:Bind GetName}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
         <TextBlock
             Grid.Row="5"

@@ -348,9 +348,11 @@ public sealed partial class WavesClient : IWavesClient
         );
     }
 
+
     public async Task<QRLoginResult?> QRLoginAsync(
         string qrText,
         string verifyCode,
+        string id,
         CancellationToken token = default
     )
     {
@@ -364,6 +366,7 @@ public sealed partial class WavesClient : IWavesClient
             {
                 { "autoLogin", "true" },
                 { "qrCode", qrText },
+                {"id",id },
                 { "verifyCode", verifyCode },
             },
             true

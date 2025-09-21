@@ -191,16 +191,21 @@ public partial class GameContextBase
     private async Task StartDownloadAsync(string folder, IndexGameResource resource)
     {
         _downloadState.IsActive = true;
-        // Fix 修复游戏时旧文件排除
         var localFile = new DirectoryInfo(folder).GetFiles("*", SearchOption.AllDirectories);
-        var serverFile = resource.Resource.Select(x => BuildFilePath(folder, x));
-        var localFileWhere = localFile.Where(file => !serverFile.Contains(file.FullName)).ToList();
-        if (localFileWhere != null && localFileWhere.Any())
+        var serverFileSet = new HashSet<string>(resource.Resource.Select(x => BuildFilePath(folder, x)));
+
+        var filesToDelete = localFile
+            .Where(file => !serverFileSet.Contains(file.FullName))
+            .ToList();
+
+        if (filesToDelete.Any())
         {
-            localFileWhere.ForEach(x => File.Delete(x.FullName));
-            Logger.WriteInfo(
-                    $"删除：删除版本旧文件{string.Join(',', localFileWhere)}"
-                );
+            foreach (var file in filesToDelete)
+            {
+                File.Delete(file.FullName);
+            }
+            var fileNames = filesToDelete.Select(f => Path.GetFileName(f.FullName));
+            Logger.WriteInfo($"删除：删除版本旧文件{string.Join(',', fileNames)}");
         }
         await UpdateFileProgress(GameContextActionType.Verify, 0);
         #region 下载逻辑

@@ -67,7 +67,7 @@
             FooterVerticalAlignment="Center"
             IsExtendsContentIntoTitleBar="True"
             TitleMode="Tall">
-            <ui:TitleBar.Title>
+            <!--<ui:TitleBar.Title>
                 <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
                     <StackPanel.ChildrenTransitions>
                         <TransitionCollection>
@@ -94,13 +94,67 @@
                         Foreground="{ThemeResource SystemColorGrayTextBrush}"
                         Text="{x:Bind ViewModel.ServerName, Mode=OneWay}" />
                 </StackPanel>
-            </ui:TitleBar.Title>
+            </ui:TitleBar.Title>-->
             <ui:TitleBar.Header>
                 <StackPanel
                     x:Name="userControl"
                     Margin="0,0,0,0"
                     HorizontalAlignment="Left"
                     Orientation="Horizontal">
+                    <Button
+                        Width="60"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Style="{ThemeResource DefaultAcrylicButtonStyle}">
+                        <ui:ImageEx
+                            Width="25"
+                            Height="25"
+                            Margin="0,0,0,0"
+                            VerticalAlignment="Center"
+                            Source="ms-appx:///Assets/appLogo.ico"
+                            Stretch="UniformToFill" />
+                        <Button.Flyout>
+                            <Flyout>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock
+                                        FontSize="18"
+                                        FontWeight="Bold"
+                                        Text="鸣潮" />
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Margin="0,10,0,0"
+                                        Orientation="Vertical">
+                                        <CheckBox VerticalAlignment="Center" Content="官服" />
+                                        <CheckBox VerticalAlignment="Center" Content="B服" />
+                                        <CheckBox VerticalAlignment="Center" Content="国际服" />
+
+                                    </StackPanel>
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        FontSize="18"
+                                        FontWeight="Bold"
+                                        Text="战双帕米什" />
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="0,10,0,0"
+                                        Orientation="Vertical">
+                                        <CheckBox VerticalAlignment="Center" Content="官服" />
+                                        <CheckBox VerticalAlignment="Center" Content="B服" />
+                                        <CheckBox VerticalAlignment="Center" Content="国际服" />
+                                    </StackPanel>
+                                </Grid>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
                     <Button
                         VerticalAlignment="Center"
                         Command="{x:Bind ViewModel.LoginCommand}"
@@ -347,7 +401,7 @@
                 SelectedItem="{x:Bind ViewModel.SelectItem, Mode=OneWay}"
                 Style="{ThemeResource MainNavigationViewStyle}">
                 <NavigationView.MenuItems>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.MainGameViewModel" Content="官服">
+                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.MainGameViewModel" ToolTipService.ToolTip="鸣潮（官服）">
 
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
@@ -356,7 +410,7 @@
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/global.ico" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.GlobalGameViewModel" Content="国际服">
+                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.GlobalGameViewModel" ToolTipService.ToolTip="鸣潮（国际服）">
 
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
@@ -365,7 +419,7 @@
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/global.ico" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.BiliBiliGameViewModel" Content="B服">
+                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.BiliBiliGameViewModel" ToolTipService.ToolTip="鸣潮（B服）">
 
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
@@ -374,7 +428,7 @@
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/bilibili.ico" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.MainPGRViewModel" Content="战双帕弥什">
+                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.MainPGRViewModel">
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
                         </i:Interaction.Behaviors>
@@ -412,7 +466,6 @@
                         Control.IsTemplateFocusTarget="True"
                         CornerRadius="5"
                         Style="{ThemeResource TransparentButtonStyle}">
-
                         <i:Interaction.Behaviors>
                             <sound:ControlSoundBehavior />
                         </i:Interaction.Behaviors>
