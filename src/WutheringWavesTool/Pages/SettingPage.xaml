@@ -40,7 +40,8 @@
                 HorizontalContentAlignment="Stretch"
                 Command="{x:Bind ViewModel.SelectWallpaperCommand}"
                 Header="壁纸"
-                IsClickEnabled="True">
+                IsClickEnabled="True"
+                Visibility="Collapsed">
                 <ui:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B9;" />
                 </ui:SettingsCard.HeaderIcon>

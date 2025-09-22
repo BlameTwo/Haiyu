@@ -76,6 +76,9 @@
 
         #region 战双
 
+        /// <summary>
+        /// 战双官服
+        /// </summary>
         public static GameAPIConfig MainBGRConfig =>
             new GameAPIConfig()
             {
@@ -89,6 +92,42 @@
                 LauncherConfigUrl =
                     "https://prod-volcdn-gamestarter.kurogame.xyz/launcher/launcher/10012_RnIUKs3r59Csliu3N0rl5uRWWBOFDaJL/G148/index.json",
                 Language = "zh-Hans",
+            };
+
+        /// <summary>
+        /// 战双B服
+        /// </summary>
+        public static GameAPIConfig BiliBiliBGRConfig =>
+            new GameAPIConfig()
+            {
+                AppId = "10011",
+                GameID = "G148",
+                AppKey = "qYQv6TyyyhCKD3ox3gssyolNPwMoCPZt",
+                GameIdentity = "Haru",
+                GameExeName = "PGR.exe",
+                ConfigUrl =
+                    "https://prod-cn-alicdn-gamestarter.kurogame.com/launcher/game/G148/10011_qYQv6TyyyhCKD3ox3gssyolNPwMoCPZt/index.json",
+                LauncherConfigUrl =
+                    "https://prod-cn-alicdn-gamestarter.kurogame.com/launcher/launcher/10011_qYQv6TyyyhCKD3ox3gssyolNPwMoCPZt/G148/index.json",
+                Language = "zh-Hans",
+            };
+
+        /// <summary>
+        /// 战双国际服
+        /// </summary>
+        public static GameAPIConfig GlobalBGRConfig =>
+            new GameAPIConfig()
+            {
+                AppId = "50015",
+                GameID = "G143",
+                AppKey = "LWdk9D2Ep9mpJmqBZZkcPBU2YNraEWBQ",
+                GameIdentity = "Haru",
+                GameExeName = "PGR.exe",
+                ConfigUrl =
+                    "https://prod-alicdn-gamestarter.kurogame.com/launcher/game/G143/50015_LWdk9D2Ep9mpJmqBZZkcPBU2YNraEWBQ/index.json",
+                LauncherConfigUrl =
+                    "https://prod-alicdn-gamestarter.kurogame.com/launcher/launcher/50015_LWdk9D2Ep9mpJmqBZZkcPBU2YNraEWBQ/G143/index.json",
+                Language = "en",
             };
         #endregion
     }

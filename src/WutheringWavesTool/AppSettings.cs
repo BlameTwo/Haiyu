@@ -1,13 +1,11 @@
-﻿
-
-namespace WutheringWavesTool;
+﻿namespace WutheringWavesTool;
 
 public class AppSettings
 {
     private static readonly string SettingsFilePath = Path.Combine(App.BassFolder, "System.json");
-    public static readonly string LogPath  = App.BassFolder+"\\appLogs";
+    public static readonly string LogPath = App.BassFolder + "\\appLogs";
 
-    public static readonly string CloudFolderPath = App.BassFolder+"\\Cloud";
+    public static readonly string CloudFolderPath = App.BassFolder + "\\Cloud";
 
     // 存储所有设置的内存缓存
     private static List<LocalSettings> _settingsCache;
@@ -85,6 +83,107 @@ public class AppSettings
         get => Read();
         set => Write(value);
     }
+
+    #region 鸣潮
+    public static bool? ShowWavesMainGame
+    {
+        get
+        {
+            try
+            {
+                return Convert.ToBoolean(Read());
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        set => Write(value.ToString());
+    }
+
+    public static bool? ShowWavesBilibiliGame
+    {
+        get
+        {
+            try
+            {
+                return Convert.ToBoolean(Read());
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        set => Write(value.ToString());
+    }
+
+    public static bool? ShowWavesGlobalGame
+    {
+        get
+        {
+            try
+            {
+                return Convert.ToBoolean(Read());
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        set => Write(value.ToString());
+    }
+
+    #endregion
+
+    #region 战双帕弥什
+    public static bool? ShowPGRMainGame
+    {
+        get
+        {
+            try
+            {
+                return Convert.ToBoolean(Read());
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        set => Write(value.ToString());
+    }
+
+    public static bool? ShowPGRBilibiliGame
+    {
+        get
+        {
+            try
+            {
+                return Convert.ToBoolean(Read());
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        set => Write(value.ToString());
+    }
+
+    public static bool? ShowPGRGlobalGame
+    {
+        get
+        {
+            try
+            {
+                return Convert.ToBoolean(Read());
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        set => Write(value.ToString());
+    }
+    #endregion
 
     internal static string? Read([CallerMemberName] string key = null)
     {

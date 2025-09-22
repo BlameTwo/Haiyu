@@ -47,6 +47,12 @@ public class AppContext<T> : IAppContext<T>
         await Instance
             .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainPGRGameContext))
             .InitAsync();
+        await Instance
+            .Service!.GetRequiredKeyedService<IGameContext>(nameof(BiliBiliPRGGameContext))
+            .InitAsync();
+        await Instance
+            .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalPRGGameContext))
+            .InitAsync();
         this.App = app;
         var win = new MainWindow();
         var page = Instance.Service!.GetRequiredService<ShellPage>();
@@ -60,7 +66,9 @@ public class AppContext<T> : IAppContext<T>
             int targetDipHeight = 600;
             var pixelWidth = (int)Math.Round(targetDipWidth * scale);
             var pixelHeight = (int)Math.Round(targetDipHeight * scale);
-            win.AppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = pixelWidth, Height = pixelHeight });
+            win.AppWindow.Resize(
+                new Windows.Graphics.SizeInt32 { Width = pixelWidth, Height = pixelHeight }
+            );
         }
         catch
         {
@@ -71,7 +79,7 @@ public class AppContext<T> : IAppContext<T>
 
         win.IsResizable = false;
         win.IsMaximizable = false;
-       
+
         this.App.MainWindow = win;
         (win.AppWindow.Presenter as OverlappedPresenter)!.SetBorderAndTitleBar(true, false);
         if (await WavesClient.IsLoginAsync())

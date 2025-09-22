@@ -17,6 +17,8 @@ public sealed partial class PageService : IPageService
         this.RegisterView<GlobalGamePage, GlobalGameViewModel>();
         this.RegisterView<BiliBiliGamePage, BiliBiliGameViewModel>();
         this.RegisterView<MainPGRGamePage, MainPGRViewModel>();
+        this.RegisterView<BiliBiliPGRGamePage, BiliBiliPGRGameViewModel>();
+        this.RegisterView<GlobalPGRGamePage, GlobalPGRViewModel>();
         this.RegisterView<StatisticsPage, StatisticsViewModel>();
         #endregion
         this.RegisterView<GamerRoilsPage, GameRoilsViewModel>();
@@ -44,7 +46,7 @@ public sealed partial class PageService : IPageService
     }
 
     public void RegisterView<View, ViewModel>()
-        where View : Page
+        where View : Page,IPage
         where ViewModel : ObservableObject
     {
         var key = typeof(ViewModel).FullName;

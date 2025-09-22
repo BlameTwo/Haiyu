@@ -2,10 +2,10 @@
 
 namespace WutheringWavesTool.ViewModel.GameViewModels
 {
-    public partial class MainPGRViewModel : GameContextViewModelBase
+    public class GlobalPGRViewModel : GameContextViewModelBase
     {
-        public MainPGRViewModel(
-            [FromKeyedServices(nameof(MainPGRGameContext))] IGameContext gameContext,
+        public GlobalPGRViewModel(
+            [FromKeyedServices(nameof(GlobalPRGGameContext))] IGameContext gameContext,
             [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
             IAppContext<App> appContext,
             ITipShow tipShow

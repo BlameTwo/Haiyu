@@ -45,6 +45,8 @@
 		<None Remove="Pages\ColorFullGame.xaml" />
 		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
 		<None Remove="Pages\Dialogs\WebGameLogin.xaml" />
+		<None Remove="Pages\GamePages\BiliBiliPGRGamePage.xaml" />
+		<None Remove="Pages\GamePages\GlobalPGRGamePage.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -200,6 +202,12 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\GamePages\GlobalPGRGamePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="Pages\GamePages\BiliBiliPGRGamePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Pages\ColorFullGame.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>

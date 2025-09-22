@@ -1,4 +1,5 @@
-﻿using WutheringWavesTool.Services.DialogServices;
+﻿
+using WutheringWavesTool.Services.DialogServices;
 
 namespace WutheringWavesTool.ViewModel.GameViewModels;
 

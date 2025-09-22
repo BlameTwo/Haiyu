@@ -23,6 +23,7 @@
     property:CursorProperty.CursorType="Normal"
     RequestedTheme="Dark"
     mc:Ignorable="d">
+
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
@@ -103,6 +104,7 @@
                     Orientation="Horizontal">
                     <Button
                         Width="60"
+                        Margin="0,0,0,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Style="{ThemeResource DefaultAcrylicButtonStyle}">
@@ -114,7 +116,10 @@
                             Source="ms-appx:///Assets/appLogo.ico"
                             Stretch="UniformToFill" />
                         <Button.Flyout>
-                            <Flyout>
+                            <Flyout Placement="Bottom" ShouldConstrainToRootBounds="False">
+                                <Flyout.SystemBackdrop>
+                                    <MicaBackdrop />
+                                </Flyout.SystemBackdrop>
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
@@ -132,9 +137,18 @@
                                         Grid.Row="1"
                                         Margin="0,10,0,0"
                                         Orientation="Vertical">
-                                        <CheckBox VerticalAlignment="Center" Content="官服" />
-                                        <CheckBox VerticalAlignment="Center" Content="B服" />
-                                        <CheckBox VerticalAlignment="Center" Content="国际服" />
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Content="官服"
+                                            IsChecked="{x:Bind ViewModel.ShowWavesMainGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Content="B服"
+                                            IsChecked="{x:Bind ViewModel.ShowWavesBilibiliGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Content="国际服"
+                                            IsChecked="{x:Bind ViewModel.ShowWavesGlobalGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                     </StackPanel>
                                     <TextBlock
@@ -147,9 +161,18 @@
                                         Grid.Column="1"
                                         Margin="0,10,0,0"
                                         Orientation="Vertical">
-                                        <CheckBox VerticalAlignment="Center" Content="官服" />
-                                        <CheckBox VerticalAlignment="Center" Content="B服" />
-                                        <CheckBox VerticalAlignment="Center" Content="国际服" />
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Content="官服"
+                                            IsChecked="{x:Bind ViewModel.ShowPGRMainGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Content="B服"
+                                            IsChecked="{x:Bind ViewModel.ShowPGRBilibiliGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Content="国际服"
+                                            IsChecked="{x:Bind ViewModel.ShowPGRGlobalGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
                                 </Grid>
                             </Flyout>
@@ -168,6 +191,7 @@
                             Glyph="&#xE631;" />
                     </Button>
                     <ComboBox
+                        Margin="10,0,0,0"
                         VerticalAlignment="Center"
                         ItemsSource="{x:Bind ViewModel.Roles, Mode=OneWay}"
                         SelectedItem="{x:Bind ViewModel.SelectRoles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -401,7 +425,21 @@
                 SelectedItem="{x:Bind ViewModel.SelectItem, Mode=OneWay}"
                 Style="{ThemeResource MainNavigationViewStyle}">
                 <NavigationView.MenuItems>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.MainGameViewModel" ToolTipService.ToolTip="鸣潮（官服）">
+                    <NavigationViewItem
+                        property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.MainGameViewModel"
+                        ToolTipService.ToolTip="鸣潮（官服）"
+                        Visibility="{x:Bind ViewModel.ShowWavesMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <i:Interaction.Behaviors>
+                            <sound:NavigationViewItemSoundBehavior />
+                        </i:Interaction.Behaviors>
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/GameIcons/global.ico" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                    <NavigationViewItem
+                        property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.GlobalGameViewModel"
+                        ToolTipService.ToolTip="鸣潮（国际服）"
+                        Visibility="{x:Bind ViewModel.ShowWavesGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
@@ -410,16 +448,10 @@
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/global.ico" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.GlobalGameViewModel" ToolTipService.ToolTip="鸣潮（国际服）">
-
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <NavigationViewItem.Icon>
-                            <ImageIcon Source="ms-appx:///Assets/GameIcons/global.ico" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.BiliBiliGameViewModel" ToolTipService.ToolTip="鸣潮（B服）">
+                    <NavigationViewItem
+                        property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.BiliBiliGameViewModel"
+                        ToolTipService.ToolTip="鸣潮（B服）"
+                        Visibility="{x:Bind ViewModel.ShowWavesBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
@@ -428,7 +460,32 @@
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/bilibili.ico" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.MainPGRViewModel">
+                    <NavigationViewItem
+                        property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.MainPGRViewModel"
+                        ToolTipService.ToolTip="战双帕弥什（官方）"
+                        Visibility="{x:Bind ViewModel.ShowPGRMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <i:Interaction.Behaviors>
+                            <sound:NavigationViewItemSoundBehavior />
+                        </i:Interaction.Behaviors>
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                    <NavigationViewItem
+                        property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.BiliBiliPGRGameViewModel"
+                        ToolTipService.ToolTip="战双帕弥什（B服）"
+                        Visibility="{x:Bind ViewModel.ShowPGRBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <i:Interaction.Behaviors>
+                            <sound:NavigationViewItemSoundBehavior />
+                        </i:Interaction.Behaviors>
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                    <NavigationViewItem
+                        property:NavigationItemClickHelper.NavigationKey="WutheringWavesTool.ViewModel.GameViewModels.GlobalPGRViewModel"
+                        ToolTipService.ToolTip="战双帕弥什（国际服）"
+                        Visibility="{x:Bind ViewModel.ShowPGRGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
                         </i:Interaction.Behaviors>

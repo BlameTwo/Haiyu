@@ -93,7 +93,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         result.Activate();
     }
 
-
     [RelayCommand]
     void BackPage()
     {
@@ -229,24 +228,14 @@ public sealed partial class ShellViewModel : ViewModelBase
             await this.RefreshRoleLists();
         }
         this.AppContext.MainTitle.UpDate();
+        this.ShowPGRBilibiliGame = (bool)AppSettings.ShowPGRBilibiliGame;
+        this.ShowPGRGlobalGame = (bool)AppSettings.ShowPGRGlobalGame;
+        this.ShowPGRMainGame = (bool)AppSettings.ShowPGRMainGame;
+        this.ShowWavesMainGame = (bool)AppSettings.ShowWavesMainGame;
+        this.ShowWavesGlobalGame = (bool)AppSettings.ShowWavesGlobalGame;
+        this.ShowWavesBilibiliGame = (bool)AppSettings.ShowWavesBilibiliGame;
         OpenMain();
 
-        //var client = Instance.GetService<ICloudGameService>();
-        //var tokens = await client.ConfigManager.GetUsersAsync();
-        //var accessToken = await client.LoginPhoneTokenAsync(
-        //    tokens[0].PhoneToken,
-        //    tokens[0].Phone,
-        //    this.CTS.Token
-        //);
-        //var getToken = await client.GetAccessTokenAsync(accessToken.Data.Code);
-        //
-        //var endLogin = await client.GetTokenAsync(accessToken.Data, getToken.Data.AccessToken);
-        //
-        //var getrecord = await client.GetRecordAsync();
-        //var recordData = await client.GetGameRecordResource(
-        //    getrecord.Data.RecordId,
-        //    getrecord.Data.PlayerId.ToString()
-        //);
     }
 
     [RelayCommand]
@@ -255,7 +244,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         var window = ViewFactorys.ShowAdminDevice();
         window.Activate();
     }
-
 
     [RelayCommand]
     async Task UnLogin()
@@ -289,4 +277,57 @@ public sealed partial class ShellViewModel : ViewModelBase
         var page = this.HomeNavigationViewService.GetSelectItem(sourcePageType);
         SelectItem = page;
     }
+
+    #region 鸣潮
+    [ObservableProperty]
+    public partial bool? ShowWavesMainGame { get; set; }
+
+
+    partial void OnShowWavesMainGameChanged(bool? value)
+    {
+        AppSettings.ShowWavesMainGame = value;
+    }
+
+    [ObservableProperty]
+    public partial bool? ShowWavesBilibiliGame { get; set; }
+
+    partial void OnShowWavesBilibiliGameChanged(bool? value)
+    {
+        AppSettings.ShowWavesBilibiliGame = value;
+    }
+
+    [ObservableProperty]
+    public partial bool? ShowWavesGlobalGame { get; set; }
+
+    partial void OnShowWavesGlobalGameChanged(bool? value)
+    {
+        AppSettings.ShowWavesGlobalGame = value;
+    }
+    #endregion
+
+    #region 战双帕弥什
+    [ObservableProperty]
+    public partial bool? ShowPGRMainGame { get; set; }
+
+    partial void OnShowPGRMainGameChanged(bool? value)
+    {
+        AppSettings.ShowPGRMainGame = value;
+    }
+
+    [ObservableProperty]
+    public partial bool? ShowPGRBilibiliGame { get; set; }
+
+    partial void OnShowPGRBilibiliGameChanged(bool? value)
+    {
+        AppSettings.ShowPGRBilibiliGame = value;
+    }
+
+    [ObservableProperty]
+    public partial bool? ShowPGRGlobalGame { get; set; }
+
+    partial void OnShowPGRGlobalGameChanged(bool? value)
+    {
+        AppSettings.ShowPGRGlobalGame = value;
+    }
+    #endregion
 }

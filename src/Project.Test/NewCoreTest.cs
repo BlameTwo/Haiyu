@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Waves.Core;
 using Waves.Core.GameContext;
-using Waves.Core.GameContext.Contexts;
+using Waves.Core.GameContext.Contexts.Waves;
 
 namespace Project.Test;
 

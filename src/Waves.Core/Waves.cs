@@ -52,6 +52,22 @@ public static class Waves
                     context.HttpClientService = provider.GetRequiredService<IHttpClientService>();
                     return context;
                 }
+            ).AddKeyedSingleton<IGameContext, BiliBiliPRGGameContext>(
+                nameof(BiliBiliPRGGameContext),
+                (provider, c) =>
+                {
+                    var context = GameContextFactory.GetBiliBiliPRGGameContext();
+                    context.HttpClientService = provider.GetRequiredService<IHttpClientService>();
+                    return context;
+                }
+            ).AddKeyedSingleton<IGameContext, GlobalPRGGameContext>(
+                nameof(GlobalPRGGameContext),
+                (provider, c) =>
+                {
+                    var context = GameContextFactory.GetGlobalPGRGameContext();
+                    context.HttpClientService = provider.GetRequiredService<IHttpClientService>();
+                    return context;
+                }
             )
             .AddTransient<IHttpClientService, HttpClientService>();
         return services;

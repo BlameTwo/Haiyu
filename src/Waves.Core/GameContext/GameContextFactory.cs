@@ -16,13 +16,6 @@ public static class GameContextFactory
             IsLimitSpeed = false,
         };
 
-    internal static MainPGRGameContext GetMainPGRGameContext() =>
-        new MainPGRGameContext(GameAPIConfig.MainBGRConfig)
-        {
-            GamerConfigPath = GameContextFactory.GameBassPath + "\\MainPGRConfig",
-            IsLimitSpeed = false,
-        };
-
     internal static GlobalGameContext GetGlobalGameContext() =>
         new GlobalGameContext(GameAPIConfig.GlobalConfig)
         {
@@ -34,6 +27,25 @@ public static class GameContextFactory
         new MainGameContext(GameAPIConfig.MainAPiConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\MainConfig",
+            IsLimitSpeed = false,
+        };
+
+    internal static MainPGRGameContext GetMainPGRGameContext() =>
+        new MainPGRGameContext(GameAPIConfig.MainBGRConfig)
+        {
+            GamerConfigPath = GameContextFactory.GameBassPath + "\\MainPGRConfig",
+            IsLimitSpeed = false,
+        };
+
+    internal static BiliBiliPRGGameContext GetBiliBiliPRGGameContext() =>
+        new BiliBiliPRGGameContext(GameAPIConfig.BiliBiliBGRConfig)
+        {
+            GamerConfigPath = GameContextFactory.GameBassPath + "\\BilibiliPRGConfig",
+            IsLimitSpeed = false,
+        }; internal static GlobalPRGGameContext GetGlobalPGRGameContext() =>
+        new GlobalPRGGameContext(GameAPIConfig.GlobalBGRConfig)
+        {
+            GamerConfigPath = GameContextFactory.GameBassPath + "\\GlokbalPGRConfig",
             IsLimitSpeed = false,
         };
 }
