@@ -25,7 +25,6 @@ public partial class App : ClientApplication
         //SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         #endregion
         var result = HardwareIdGenerator.GenerateUniqueId();
-        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
         this.UnhandledException += App_UnhandledException;
         Directory.CreateDirectory(BassFolder);
         Directory.CreateDirectory(RecordFolder);
@@ -37,32 +36,25 @@ public partial class App : ClientApplication
         Directory.CreateDirectory(AppSettings.CloudFolderPath);
     }
 
-    private void CurrentDomain_UnhandledException(
-        object sender,
-        System.UnhandledExceptionEventArgs e
-    )
-    {
-        
-    }
 
     private void App_UnhandledException(
         object sender,
         Microsoft.UI.Xaml.UnhandledExceptionEventArgs e
     )
     { 
-        try
-        {
-            Instance.Service.GetService<ITipShow>().ShowMessage(e.Message, Symbol.Clear);
-            Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(e.Message);
-        }
-        catch (Exception ex)
-        {
-            Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(ex.Message);
-        }
-        finally
-        {
-            e.Handled = true;
-        }
+        //try
+        //{
+        //    Instance.Service.GetService<ITipShow>().ShowMessage(e.Message, Symbol.Clear);
+        //    Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(e.Message);
+        //}
+        //catch (Exception ex)
+        //{
+        //    Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(ex.Message);
+        //}
+        //finally
+        //{
+        //    e.Handled = true;
+        //}
     }
 
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)

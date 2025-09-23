@@ -37,20 +37,9 @@ public class WallpaperService : IWallpaperService
         this.BaseFolder = folder;
     }
 
-    public async Task RegisterImageHostAsync(Controls.ImageEx image)
+    public void RegisterImageHost(Controls.ImageEx image)
     {
         this.ImageHost = image;
-        if (!string.IsNullOrWhiteSpace(AppSettings.WallpaperPath))
-        {
-            //await this.SetWallpaperAsync(AppSettings.WallpaperPath);
-        }
-        else
-        {
-            //await this.SetWallpaperAsync(
-            //    AppDomain.CurrentDomain.BaseDirectory + "Assets\\Images\\changli.png"
-            //);
-            TipShow.ShowMessage("当前为默认壁纸，请前往设置更换", Symbol.Pictures);
-        }
     }
 
     public async Task<bool> SetWallpaperAsync(string path)
@@ -73,7 +62,6 @@ public class WallpaperService : IWallpaperService
             {
                 this.ImageHost.Source = result.Item1;
                 this.NowHexValue = result.Item3!;
-                AppSettings.WallpaperPath = result.Item2;
                 return true;
             }
             else

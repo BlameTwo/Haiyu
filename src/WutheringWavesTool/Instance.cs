@@ -65,8 +65,6 @@ public static class Instance
             .AddTransient<WebGameViewModel>()
             .AddTransient<BindGameDataDialog>()
             .AddTransient<BindGameDataViewModel>()
-            .AddTransient<SelectWallpaperDialog>()
-            .AddTransient<SelectWallpaperViewModel>()
             .AddTransient<SelectGameFolderDialog>()
             .AddTransient<SelectGameFolderViewModel>()
             .AddTransient<CloseDialog>()

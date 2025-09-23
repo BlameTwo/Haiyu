@@ -56,10 +56,10 @@ public sealed partial class ShellPage : Page
 
     public ShellViewModel ViewModel { get; }
 
-    private async void ShellPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void ShellPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         this.ViewModel.DialogManager.RegisterRoot(this.XamlRoot);
-        await this.ViewModel.AppContext.WallpaperService.RegisterImageHostAsync(this.image);
+        this.ViewModel.AppContext.WallpaperService.RegisterImageHost(this.image);
     }
 
     private void ComboBox_SizeChanged(object sender, SizeChangedEventArgs e)

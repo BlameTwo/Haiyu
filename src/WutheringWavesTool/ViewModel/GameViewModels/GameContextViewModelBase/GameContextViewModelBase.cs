@@ -75,7 +75,11 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
         #endregion
 
         [ObservableProperty]
-        public partial string PauseIcon { get; set; }
+        public partial string PauseIcon 
+        { 
+            get; 
+            set; 
+        }
 
         [ObservableProperty]
         public partial string BottomBarContent { get; set; }
@@ -109,7 +113,7 @@ namespace WutheringWavesTool.ViewModel.GameViewModels
                     if (status.IsAction && status.IsPause)
                     {
                         this.BottomBarContent = "下载已经暂停";
-                        this.PauseIcon = "\uE768";
+                        this.PauseIcon = "\uE896";
                     }
                     else
                     {

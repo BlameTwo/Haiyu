@@ -102,55 +102,75 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-            <wui:Segmented
+            <TextBlock
                 Margin="15,0,0,0"
-                IsEnabled="{x:Bind ViewModel.IsLoginUser, Mode=OneWay}"
-                ItemsSource="{x:Bind ViewModel.NavigationItems, Mode=OneWay}"
-                SelectedItem="{x:Bind ViewModel.SelectNavigation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <wui:Segmented.ItemTemplate>
-                    <DataTemplate x:DataType="m2:CloudGameNavigationItem">
-                        <TextBlock Margin="5" Text="{x:Bind DisplayName}" />
-                    </DataTemplate>
-                </wui:Segmented.ItemTemplate>
-            </wui:Segmented>
+                VerticalAlignment="Center"
+                FontFamily="{ThemeResource DefaultFont}"
+                FontSize="18"
+                Text="唤取记录" />
+
         </StackPanel>
         <StackPanel
             Padding="5"
             HorizontalAlignment="Right"
-            Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
-            CornerRadius="5"
             Orientation="Horizontal">
-            <Button
-                Command="{x:Bind ViewModel.ShowAddCommand}"
-                Style="{ThemeResource TransparentButtonStyle}"
-                ToolTipService.ToolTip="添加账号">
-                <FontIcon
-                    FontFamily="Segoe Fluent Icons"
-                    FontSize="13.5"
-                    Glyph="&#xE8FA;" />
-            </Button>
-            <Button
-                Command="{x:Bind ViewModel.LoadedCommand}"
-                Style="{ThemeResource TransparentButtonStyle}"
-                ToolTipService.ToolTip="刷新会话">
-                <FontIcon
-                    FontFamily="Segoe Fluent Icons"
-                    FontSize="13.5"
-                    Glyph="&#xE72C;" />
-            </Button>
-            <Button Style="{ThemeResource TransparentButtonStyle}" ToolTipService.ToolTip="云工具为云鸣潮账户数据">
-                <FontIcon
-                    FontFamily="Segoe Fluent Icons"
-                    FontSize="13.5"
-                    Glyph="&#xE7BA;" />
-            </Button>
+            <StackPanel
+                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
+                BorderThickness="1"
+                CornerRadius="5"
+                Orientation="Horizontal">
+                <Button
+                    Command="{x:Bind ViewModel.ShowAddCommand}"
+                    Style="{ThemeResource TransparentButtonStyle}"
+                    ToolTipService.ToolTip="添加账号">
+                    <FontIcon
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="13.5"
+                        Glyph="&#xE8FA;" />
+                </Button>
+                <Button
+                    Command="{x:Bind ViewModel.LoadedCommand}"
+                    Style="{ThemeResource TransparentButtonStyle}"
+                    ToolTipService.ToolTip="刷新会话">
+                    <FontIcon
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="13.5"
+                        Glyph="&#xE72C;" />
+                </Button>
+                <Button Style="{ThemeResource TransparentButtonStyle}" ToolTipService.ToolTip="云工具为云鸣潮账户数据">
+                    <FontIcon
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="13.5"
+                        Glyph="&#xE7BA;" />
+                </Button>
+            </StackPanel>
+            <StackPanel
+                Margin="5,0,0,0"
+                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
+                BorderThickness="1"
+                CornerRadius="5"
+                Orientation="Horizontal">
+                <Button
+                    Margin="0,0,0,0"
+                    Style="{ThemeResource TransparentButtonStyle}"
+                    ToolTipService.ToolTip="分析面板">
+                    <FontIcon
+                        VerticalAlignment="Center"
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="13.5"
+                        Glyph="&#xE659;" />
+                </Button>
+            </StackPanel>
+
         </StackPanel>
         <Grid
             Grid.Row="1"
             Margin="0,15,0,0"
             Visibility="{x:Bind ViewModel.DataVisibility, Mode=OneWay}">
 
-            <Grid Visibility="{x:Bind ViewModel.RecordVisibility, Mode=OneWay}">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition />
@@ -244,25 +264,10 @@
                         Style="{ThemeResource TransparentButtonStyle}">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76C;" />
                     </Button>
+
                 </StackPanel>
             </Grid>
-            <Grid Background="LightBlue" Visibility="{x:Bind ViewModel.AnalysisVisibility, Mode=OneWay}">
-                <lvc:CartesianChart x:Name="chart" ZoomMode="Both">
 
-                    <lvc:CartesianChart.Series>
-                        <lvc:SeriesCollection>
-                            <lvc:XamlColumnSeries Values="{x:Bind ViewModel.AllPoints, Mode=OneWay}" />
-                        </lvc:SeriesCollection>
-                    </lvc:CartesianChart.Series>
-
-                    <lvc:CartesianChart.XAxes>
-                        <lvc:AxesCollection>
-                            <lvc:XamlDateTimeAxis DateFormatter="{x:Bind ViewModel.Formatter}" Interval="1.00:00:00" />
-                        </lvc:AxesCollection>
-                    </lvc:CartesianChart.XAxes>
-
-                </lvc:CartesianChart>
-            </Grid>
         </Grid>
         <Grid />
     </Grid>

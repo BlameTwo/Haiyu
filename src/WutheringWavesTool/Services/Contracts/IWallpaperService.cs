@@ -9,7 +9,7 @@ public interface IWallpaperService
 
     public bool PletteEnable { get; set; }
     public event WallpaperPletteChangedDelegate WallpaperPletteChanged;
-    public Task RegisterImageHostAsync(Controls.ImageEx image);
+    public void RegisterImageHost(Controls.ImageEx image);
 
     public OctreeColorExtractor ColorPlette { get; }
 

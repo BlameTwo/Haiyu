@@ -68,34 +68,6 @@
             FooterVerticalAlignment="Center"
             IsExtendsContentIntoTitleBar="True"
             TitleMode="Tall">
-            <!--<ui:TitleBar.Title>
-                <StackPanel Margin="0,0,0,0" Orientation="Horizontal">
-                    <StackPanel.ChildrenTransitions>
-                        <TransitionCollection>
-                            <RepositionThemeTransition />
-                        </TransitionCollection>
-                    </StackPanel.ChildrenTransitions>
-                    <Grid
-                        Width="60"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}">
-                        <ui:ImageEx
-                            Width="25"
-                            Height="25"
-                            Margin="0,0,0,0"
-                            VerticalAlignment="Center"
-                            Source="ms-appx:///Assets/appLogo.ico"
-                            Stretch="UniformToFill" />
-                    </Grid>
-                    <TextBlock
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="{ThemeResource SystemColorGrayTextBrush}"
-                        Text="{x:Bind ViewModel.ServerName, Mode=OneWay}" />
-                </StackPanel>
-            </ui:TitleBar.Title>-->
             <ui:TitleBar.Header>
                 <StackPanel
                     x:Name="userControl"
@@ -179,6 +151,7 @@
                         </Button.Flyout>
                     </Button>
                     <Button
+                        Margin="10,0,0,0"
                         VerticalAlignment="Center"
                         Command="{x:Bind ViewModel.LoginCommand}"
                         CornerRadius="5"
@@ -399,7 +372,6 @@
             x:Name="image"
             Grid.RowSpan="2"
             Canvas.ZIndex="-1"
-            Source="Assets/Images/changli.png"
             Stretch="UniformToFill">
             <ani:Explicit.Animations>
                 <ani:AnimationSet x:Name="To8" IsSequential="True">

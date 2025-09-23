@@ -28,6 +28,8 @@ namespace WutheringWavesTool.Pages.GamePages
 
         public BiliBiliPGRGameViewModel ViewModel { get; }
 
+        
+
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.ViewModel.Dispose();

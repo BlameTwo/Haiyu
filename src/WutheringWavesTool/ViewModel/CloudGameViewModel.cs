@@ -48,13 +48,6 @@ public partial class CloudGameViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<LoginData> Users { get; set; }
 
-    [ObservableProperty]
-    public partial ObservableCollection<CloudGameNavigationItem> NavigationItems { get; set; } =
-        new ObservableCollection<CloudGameNavigationItem>()
-        {
-            new CloudGameNavigationItem() { DisplayName = "唤取记录", Tag = "record" },
-            new CloudGameNavigationItem() { DisplayName = "唤取分析", Tag = "analysis" },
-        };
 
     [ObservableProperty]
     public partial ObservableCollection<GameRecordNavigationItem> RecordNavigationItems { get; set; } =
@@ -74,8 +67,6 @@ public partial class CloudGameViewModel : ViewModelBase
     [ObservableProperty]
     public partial GameRecordNavigationItem SelectRecordType { get; set; }
 
-    [ObservableProperty]
-    public partial CloudGameNavigationItem SelectNavigation { get; set; }
 
     [ObservableProperty]
     public partial LoginData SelectedUser { get; set; }
@@ -89,17 +80,6 @@ public partial class CloudGameViewModel : ViewModelBase
     [ObservableProperty]
     public partial Visibility NoLoginVisibility { get; set; } = Visibility.Collapsed;
 
-    /// <summary>
-    /// 唤取记录隐藏
-    /// </summary>
-    [ObservableProperty]
-    public partial Visibility RecordVisibility { get; set; } = Visibility.Collapsed;
-
-    /// <summary>
-    /// 唤取分析隐藏
-    /// </summary>
-    [ObservableProperty]
-    public partial Visibility AnalysisVisibility { get; set; } = Visibility.Collapsed;
 
     [ObservableProperty]
     public partial bool IsLoginUser { get; set; } = true;
@@ -145,9 +125,6 @@ public partial class CloudGameViewModel : ViewModelBase
         this.SelectedUser = Users[0];
     }
 
-    public Func<DateTime, string> Formatter { get; set; } =
-        date => date.ToString("MMMM dd");
-
     async partial void OnSelectedUserChanged(LoginData value)
     {
         if (value == null)
@@ -155,33 +132,14 @@ public partial class CloudGameViewModel : ViewModelBase
         NoLoginVisibility = Visibility.Collapsed;
         this.LoadVisibility = Visibility.Visible;
         this.DataVisibility = Visibility.Collapsed;
-        this.SelectNavigation = null;
         this.SelectRecordType = null;
         var result = await CloudGameService.OpenUserAsync(value);
         NoLoginVisibility = Visibility.Collapsed;
         this.LoadVisibility = Visibility.Collapsed;
         this.DataVisibility = Visibility.Visible;
-        this.SelectNavigation = NavigationItems[0];
+        this.SelectRecordType = RecordNavigationItems[0];
     }
 
-    partial void OnSelectNavigationChanged(CloudGameNavigationItem value)
-    {
-        if (value == null)
-            return;
-
-        if (value.Tag == "record")
-        {
-            this.RecordVisibility = Visibility.Visible;
-            this.AnalysisVisibility = Visibility.Collapsed;
-            this.SelectRecordType = RecordNavigationItems[0];
-        }
-        if(value.Tag == "analysis")
-        {
-            this.RecordVisibility = Visibility.Collapsed;
-            this.AnalysisVisibility = Visibility.Visible;
-            this.SelectRecordType = null;
-        }
-    }
 
     async partial void OnSelectRecordTypeChanged(GameRecordNavigationItem value)
     {
@@ -229,11 +187,6 @@ public partial class CloudGameViewModel : ViewModelBase
                 g => g.Key.Value.ToString("yyyy-MM-dd"),
                 g => g.Count()
             );
-        foreach (var item in result)
-        {
-
-            this.AllPoints.Add(new DateTimePoint(DateTime.Parse(item.Key), item.Value));
-        }
     }
 
     // 更新总页数

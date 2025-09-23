@@ -38,18 +38,6 @@
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
-                Command="{x:Bind ViewModel.SelectWallpaperCommand}"
-                Header="壁纸"
-                IsClickEnabled="True"
-                Visibility="Collapsed">
-                <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B9;" />
-                </ui:SettingsCard.HeaderIcon>
-            </ui:SettingsCard>
-            <ui:SettingsCard
-                Margin="0,5,0,0"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
                 Description="更改选项需要重启生效"
                 Header="元素鼠标指针">
                 <ui:SettingsCard.HeaderIcon>

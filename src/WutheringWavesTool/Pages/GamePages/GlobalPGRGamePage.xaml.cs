@@ -17,6 +17,13 @@ namespace WutheringWavesTool.Pages.GamePages
 
         public GlobalPGRViewModel ViewModel { get; }
 
+        private void SelectorBar_SelectionChanged(
+            SelectorBar sender,
+            SelectorBarSelectionChangedEventArgs args
+        )
+        {
+            this.ViewModel.SelectTab(sender.SelectedItem.Text);
+        }
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.ViewModel.Dispose();

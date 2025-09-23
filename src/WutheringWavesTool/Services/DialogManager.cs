@@ -66,17 +66,14 @@ public abstract class DialogManager : IDialogManager
         GC.Collect();
     }
 
-    public async Task ShowWallpaperDialogAsync()
-    {
-        await ShowDialogAsync<SelectWallpaperDialog>(null);
-    }
-
     public async Task<Result> GetDialogResultAsync<T, Result>(object? data)
         where T : ContentDialog, IResultDialog<Result>, new()
         where Result : new()
     {
         if (_dialog != null)
-            return new Result();
+        {
+            _dialog = null;
+        }
         var dialog = Instance.Service.GetRequiredService<T>();
         dialog.XamlRoot = this.Root;
         dialog.SetData(data);
