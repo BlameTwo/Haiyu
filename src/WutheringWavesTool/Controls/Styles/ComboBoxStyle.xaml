@@ -6,7 +6,7 @@
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:media="using:Microsoft.UI.Xaml.Media"
     xmlns:primitives="using:Microsoft.UI.Xaml.Controls.Primitives"
-    xmlns:property="using:WutheringWavesTool.Controls.Propertys">
+    xmlns:property="using:Haiyu.Controls.Propertys">
     <Style x:Key="AcrylicComboBoxStyle" TargetType="ComboBox">
         <Setter Property="Padding" Value="{ThemeResource ComboBoxPadding}" />
         <Setter Property="MaxDropDownHeight" Value="504" />

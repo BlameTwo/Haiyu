@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace WutheringWavesTool.Common.PInvoke;
+namespace Haiyu.Common.PInvoke;
 
 public static class Sound
 {

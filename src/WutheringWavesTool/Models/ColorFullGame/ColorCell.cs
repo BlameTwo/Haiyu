@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace WutheringWavesTool.Models.ColorFullGame
+namespace Haiyu.Models.ColorFullGame
 {
     public partial class ColorCell:ObservableObject
     {

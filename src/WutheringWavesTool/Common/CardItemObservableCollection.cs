@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Common;
+﻿namespace Haiyu.Common;
 
 public sealed partial class CardItemObservableCollection<T> : ObservableCollection<T>
 {

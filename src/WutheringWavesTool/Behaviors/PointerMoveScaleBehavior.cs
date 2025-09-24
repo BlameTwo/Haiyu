@@ -4,7 +4,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 
-namespace WutheringWavesTool.Behaviors;
+namespace Haiyu.Behaviors;
 
 public sealed class PointerMoveScaleBehavior : Behavior<FrameworkElement>
 {

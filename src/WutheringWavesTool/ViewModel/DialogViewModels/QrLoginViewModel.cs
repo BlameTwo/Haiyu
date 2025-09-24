@@ -3,13 +3,13 @@ using Microsoft.Graphics.Canvas;
 using Waves.Api.Models.QRLogin;
 using Windows.Graphics;
 using Windows.Graphics.Capture;
-using WutheringWavesTool.Common.QR;
-using WutheringWavesTool.Models.Dialogs;
-using WutheringWavesTool.Services.DialogServices;
+using Haiyu.Common.QR;
+using Haiyu.Models.Dialogs;
+using Haiyu.Services.DialogServices;
 using ZXing;
 using ZXing.Common;
 
-namespace WutheringWavesTool.ViewModel.DialogViewModels;
+namespace Haiyu.ViewModel.DialogViewModels;
 
 public partial class QrLoginViewModel : DialogViewModelBase
 {

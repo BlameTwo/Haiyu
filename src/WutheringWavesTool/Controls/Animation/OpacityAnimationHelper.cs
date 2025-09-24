@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Controls.Animation;
+﻿namespace Haiyu.Controls.Animation;
 
 public static class OpacityAnimationHelper
 {

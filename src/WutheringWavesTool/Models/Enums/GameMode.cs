@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models.Enums;
+﻿namespace Haiyu.Models.Enums;
 
 
 public enum GameMode:int

@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Controls;
+﻿namespace Haiyu.Controls;
 
 public partial class ImageEx : ImageExBase
 {

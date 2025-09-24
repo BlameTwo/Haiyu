@@ -1,8 +1,8 @@
 ﻿
 using Microsoft.UI.Input;
-using WutheringWavesTool.Helpers;
+using Haiyu.Helpers;
 
-namespace WutheringWavesTool.Controls.Propertys;
+namespace Haiyu.Controls.Propertys;
 
 public partial class CursorProperty
 {
@@ -28,7 +28,7 @@ public partial class CursorProperty
             {
                 return;
             }
-            InputCursor customCursor = InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", (uint)value);
+            InputCursor customCursor = InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", (uint)value);
             
         }
     }

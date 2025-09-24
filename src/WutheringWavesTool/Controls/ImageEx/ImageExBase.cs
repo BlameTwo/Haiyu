@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.WinUI;
 
-namespace WutheringWavesTool.Controls;
+namespace Haiyu.Controls;
 
 [TemplateVisualState(Name = LoadingState, GroupName = CommonGroup)]
 [TemplateVisualState(Name = LoadedState, GroupName = CommonGroup)]

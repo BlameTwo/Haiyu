@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.WindowModels;
+﻿namespace Haiyu.WindowModels;
 
 public sealed partial class GetGeetWindow : WindowModelBase
 {

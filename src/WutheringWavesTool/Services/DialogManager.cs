@@ -1,7 +1,7 @@
-﻿using WutheringWavesTool.Models.Dialogs;
+﻿using Haiyu.Models.Dialogs;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public abstract class DialogManager : IDialogManager
 {

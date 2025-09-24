@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Models.Wrapper.CommunitySlash;
+﻿using Haiyu.Models.Wrapper.CommunitySlash;
 
-namespace WutheringWavesTool.ViewModel.Communitys;
+namespace Haiyu.ViewModel.Communitys;
 
 public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposable
 {

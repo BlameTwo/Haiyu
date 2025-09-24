@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models.Wrapper;
+﻿namespace Haiyu.Models.Wrapper;
 
 public sealed partial class RecordActivityFiveStarItemWrapper : ObservableObject
 {

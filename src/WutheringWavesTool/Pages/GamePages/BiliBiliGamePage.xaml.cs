@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.ViewModel.GameViewModels;
+﻿using Haiyu.ViewModel.GameViewModels;
 
-namespace WutheringWavesTool.Pages.GamePages;
+namespace Haiyu.Pages.GamePages;
 
 public sealed partial class BiliBiliGamePage : Page, IPage
 {

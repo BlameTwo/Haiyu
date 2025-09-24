@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 
-namespace WutheringWavesTool.Behaviors;
+namespace Haiyu.Behaviors;
 
 public sealed class FilpViewAutoPlayBehavior : Behavior<FlipView>
 {

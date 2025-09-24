@@ -1,8 +1,8 @@
 ﻿using System.Numerics;
 using CommunityToolkit.WinUI.Animations;
-using WutheringWavesTool.ViewModel.GameViewModels;
+using Haiyu.ViewModel.GameViewModels;
 
-namespace WutheringWavesTool.Pages.GamePages;
+namespace Haiyu.Pages.GamePages;
 
 public sealed partial class MainGamePage : Page, IPage
 {

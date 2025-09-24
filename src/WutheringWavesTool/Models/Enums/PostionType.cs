@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WutheringWavesTool.Models.Enums
+namespace Haiyu.Models.Enums
 {
     public enum PostionType : uint
     {

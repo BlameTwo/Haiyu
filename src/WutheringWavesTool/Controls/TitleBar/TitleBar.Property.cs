@@ -1,6 +1,6 @@
 ﻿using Windows.Graphics;
 
-namespace WutheringWavesTool.Controls;
+namespace Haiyu.Controls;
 
 /// <summary>
 /// TitleBar的依赖属性

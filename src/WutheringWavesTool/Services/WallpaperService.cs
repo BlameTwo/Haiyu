@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
-using WutheringWavesTool.Helpers;
+using Haiyu.Helpers;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public delegate void WallpaperPletteChangedDelegate(object sender, PletteArgs color);
 

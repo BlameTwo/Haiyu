@@ -4,7 +4,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Graphics.Imaging;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace WutheringWavesTool.Helpers;
+namespace Haiyu.Helpers;
 
 public static class ImageIOHelper
 {

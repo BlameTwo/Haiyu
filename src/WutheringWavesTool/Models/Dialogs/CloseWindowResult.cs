@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models.Dialogs;
+﻿namespace Haiyu.Models.Dialogs;
 
 public class CloseWindowResult
 {

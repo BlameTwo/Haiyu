@@ -3,7 +3,7 @@
 using System.Threading.Tasks;
 using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
 
-namespace WutheringWavesTool.ViewModel.Communitys;
+namespace Haiyu.ViewModel.Communitys;
 
 
 public partial class ResourceBriefViewModel:ViewModelBase,IDisposable

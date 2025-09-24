@@ -1,9 +1,9 @@
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
-using WutheringWavesTool.ViewModel.GameViewModels;
+using Haiyu.ViewModel.GameViewModels;
 
-namespace WutheringWavesTool.Pages.GamePages
+namespace Haiyu.Pages.GamePages
 {
     public sealed partial class GlobalPGRGamePage : Page,IPage
     {

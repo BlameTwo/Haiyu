@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Services;
+﻿namespace Haiyu.Services;
 
 public class PlayerRecordContext : Contracts.IPlayerRecordContext
 {

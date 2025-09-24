@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="WutheringWavesTool.Pages.Communitys.GamerExploreIndexPage"
+    x:Class="Haiyu.Pages.Communitys.GamerExploreIndexPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Worldwrapper="using:WutheringWavesTool.Models.Wrapper.CommunityWorld"
+    xmlns:Worldwrapper="using:Haiyu.Models.Wrapper.CommunityWorld"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:WutheringWavesTool.Pages.Communitys"
+    xmlns:local="using:Haiyu.Pages.Communitys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Waves.Api.Models.Communitys.DataCenter"
-    xmlns:ui="using:WutheringWavesTool.Controls"
-    xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
+    xmlns:ui="using:Haiyu.Controls"
+    xmlns:wrapper="using:Haiyu.Models.Wrapper"
     xmlns:wui="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <Page.Resources />

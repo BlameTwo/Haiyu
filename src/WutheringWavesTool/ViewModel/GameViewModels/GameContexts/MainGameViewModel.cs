@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using WutheringWavesTool.Services.DialogServices;
+using Haiyu.Services.DialogServices;
 
-namespace WutheringWavesTool.ViewModel.GameViewModels;
+namespace Haiyu.ViewModel.GameViewModels;
 
 public sealed partial class MainGameViewModel : GameContextViewModelBase
 {

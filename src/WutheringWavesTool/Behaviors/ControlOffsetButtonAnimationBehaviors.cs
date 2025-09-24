@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using CommunityToolkit.WinUI.Animations;
 
-namespace WutheringWavesTool.Behaviors;
+namespace Haiyu.Behaviors;
 
 public sealed class ControlOffsetButtonAnimationBehaviors : Behavior<Button>
 {

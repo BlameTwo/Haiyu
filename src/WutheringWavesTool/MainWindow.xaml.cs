@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Composition.SystemBackdrops;
 using WinUIEx.Messaging;
 
-namespace WutheringWavesTool;
+namespace Haiyu;
 
 public sealed partial class MainWindow : WinUIEx.WindowEx
 {

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Windows.Web.AtomPub;
-using WutheringWavesTool.Helpers;
-using WutheringWavesTool.Models.Wrapper.WindowRoils;
+using Haiyu.Helpers;
+using Haiyu.Models.Wrapper.WindowRoils;
 
-namespace WutheringWavesTool.ViewModel.Communitys.WinViewModel;
+namespace Haiyu.ViewModel.Communitys.WinViewModel;
 
 public sealed partial class GamerRoilViewModel : ViewModelBase, IDisposable
 {

@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Services.Contracts;
+﻿namespace Haiyu.Services.Contracts;
 
 public interface INavigationService
 {

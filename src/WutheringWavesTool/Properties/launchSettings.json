@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "WutheringWavesTool (Package)": {
+    "Haiyu (Package)": {
       "commandName": "MsixPackage"
     },
-    "WutheringWavesTool (Unpackaged)": {
+    "Haiyu (Unpackaged)": {
       "commandName": "Project"
     }
   }

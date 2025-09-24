@@ -1,10 +1,10 @@
 ﻿using H.NotifyIcon;
 using Waves.Core.Common;
 using Windows.Graphics.DirectX.Direct3D11;
-using WutheringWavesTool.Services.DialogServices;
-using WutheringWavesTool.ViewModel.GameViewModels;
+using Haiyu.Services.DialogServices;
+using Haiyu.ViewModel.GameViewModels;
 
-namespace WutheringWavesTool.ViewModel;
+namespace Haiyu.ViewModel;
 
 public sealed partial class ShellViewModel : ViewModelBase
 {

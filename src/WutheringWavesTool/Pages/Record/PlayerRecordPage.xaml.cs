@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Pages.Record;
+﻿namespace Haiyu.Pages.Record;
 
 public sealed partial class PlayerRecordPage : Page, IWindowPage
 {

@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Controls.Propertys;
+﻿namespace Haiyu.Controls.Propertys;
 
 public class NavigationItemClickHelper
 {

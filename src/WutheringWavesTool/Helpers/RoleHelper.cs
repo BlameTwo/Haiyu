@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WutheringWavesTool.Helpers
+namespace Haiyu.Helpers
 {
     internal class RoleHelper
     {

@@ -1,6 +1,6 @@
 ﻿
 
-namespace WutheringWavesTool.ViewModel.GameViewModels
+namespace Haiyu.ViewModel.GameViewModels
 {
     public abstract partial class GameContextViewModelBase : ViewModelBase, IDisposable
     {

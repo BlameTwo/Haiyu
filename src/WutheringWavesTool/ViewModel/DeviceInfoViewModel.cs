@@ -1,7 +1,7 @@
 ﻿
 using Waves.Api.Models.QRLogin;
 
-namespace WutheringWavesTool.ViewModel;
+namespace Haiyu.ViewModel;
 
 public class DeviceInfoDisplayHeader
 {

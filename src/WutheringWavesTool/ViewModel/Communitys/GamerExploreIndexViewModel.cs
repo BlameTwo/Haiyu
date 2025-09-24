@@ -1,7 +1,7 @@
 ﻿using System;
-using WutheringWavesTool.Models.Wrapper.CommunityWorld;
+using Haiyu.Models.Wrapper.CommunityWorld;
 
-namespace WutheringWavesTool.ViewModel.Communitys;
+namespace Haiyu.ViewModel.Communitys;
 
 public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
 {

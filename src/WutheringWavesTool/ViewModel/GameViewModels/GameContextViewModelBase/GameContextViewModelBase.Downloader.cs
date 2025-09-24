@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.ViewModel.GameViewModels;
+﻿namespace Haiyu.ViewModel.GameViewModels;
 
 partial class GameContextViewModelBase
 {

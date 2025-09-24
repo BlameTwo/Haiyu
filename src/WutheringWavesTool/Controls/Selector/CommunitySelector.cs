@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Controls.Selector;
+﻿namespace Haiyu.Controls.Selector;
 
 public partial class CommunitySelector : DataTemplateSelector
 {

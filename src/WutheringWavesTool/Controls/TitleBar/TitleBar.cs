@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Controls;
+﻿namespace Haiyu.Controls;
 
 [TemplatePart(Name = nameof(LeftDropColumn), Type = typeof(ColumnDefinition))]
 [TemplatePart(Name = nameof(IconTitleDropColumn), Type = typeof(ColumnDefinition))]

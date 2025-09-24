@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Services.DialogServices;
+﻿using Haiyu.Services.DialogServices;
 
-namespace WutheringWavesTool.ViewModel;
+namespace Haiyu.ViewModel;
 
 public partial class CommunityViewModel : ViewModelBase, IDisposable
 {

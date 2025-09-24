@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.ViewModel;
+﻿namespace Haiyu.ViewModel;
 
 public sealed partial class ToolViewModel : ViewModelBase
 {

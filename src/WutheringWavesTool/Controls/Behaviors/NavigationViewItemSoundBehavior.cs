@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WutheringWavesTool.Controls.Behaviors
+namespace Haiyu.Controls.Behaviors
 {
     internal class NavigationViewItemSoundBehavior : Behavior<NavigationViewItem>
     {

@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Common;
+﻿namespace Haiyu.Common;
 
 public interface IAdaptive<Forward, Back>
 {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WutheringWavesTool.Services.DialogServices;
+using Haiyu.Services.DialogServices;
 
-namespace WutheringWavesTool.ViewModel.DialogViewModels;
+namespace Haiyu.ViewModel.DialogViewModels;
 
 public partial class SelectDownloadGameViewModel : DialogViewModelBase
 {

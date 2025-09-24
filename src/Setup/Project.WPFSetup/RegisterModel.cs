@@ -13,7 +13,7 @@ public class RegisterModel
     //public string DisplayName => Resource1.InstallName;
     //public string DisplayVersion => Resource1.Version;
     //public int EstimatedSize { get; set; }
-    //public string HelpLink => "https://github.com/blametwo/WutheringWavesTool.git";
+    //public string HelpLink => "https://github.com/blametwo/Haiyu.git";
     //public string InstallDate => DateTime.Now.ToString();
     //public string InstallLocation { get; set; }
     //public string InstallSource { get; set; }

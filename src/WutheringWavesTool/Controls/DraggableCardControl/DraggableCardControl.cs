@@ -7,7 +7,7 @@ using Microsoft.UI.Xaml.Hosting;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Markup;
 
-namespace WutheringWavesTool.Controls;
+namespace Haiyu.Controls;
 
 /// <summary>
 /// 可拖动的卡片控件.

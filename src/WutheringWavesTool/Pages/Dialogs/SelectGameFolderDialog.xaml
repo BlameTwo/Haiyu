@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentDialog
-    x:Class="WutheringWavesTool.Pages.Dialogs.SelectGameFolderDialog"
+    x:Class="Haiyu.Pages.Dialogs.SelectGameFolderDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:WutheringWavesTool.Pages.Dialogs"
+    xmlns:local="using:Haiyu.Pages.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:WutheringWavesTool.Controls"
+    xmlns:ui="using:Haiyu.Controls"
     Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
     CornerRadius="5"
     RequestedTheme="Dark"

@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 
-namespace WutheringWavesTool.Common.Bases;
+namespace Haiyu.Common.Bases;
 
 public partial class WindowModelBase :Window
 {

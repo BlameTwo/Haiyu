@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Waves.Api.Models.QRLogin;
 using Windows.System.Profile;
-using WutheringWavesTool.Helpers;
+using Haiyu.Helpers;
 using ZXing.Aztec.Internal;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public sealed partial class WavesClient : IWavesClient
 {

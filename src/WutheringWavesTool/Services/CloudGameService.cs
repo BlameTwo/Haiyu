@@ -1,10 +1,10 @@
 ﻿using System.Net.Http.Json;
 using Waves.Api.Models.CloudGame;
-using WutheringWavesTool.Helpers;
+using Haiyu.Helpers;
 using ZXing.Aztec.Internal;
 using ZXing.QrCode.Internal;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public class CloudGameService : ICloudGameService
 {

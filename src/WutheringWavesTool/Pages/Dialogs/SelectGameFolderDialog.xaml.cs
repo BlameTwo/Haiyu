@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Models.Dialogs;
+﻿using Haiyu.Models.Dialogs;
 
-namespace WutheringWavesTool.Pages.Dialogs
+namespace Haiyu.Pages.Dialogs
 {
     public sealed partial class SelectGameFolderDialog
         : ContentDialog,

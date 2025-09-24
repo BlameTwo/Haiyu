@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Models.ColorFullGame;
+﻿using Haiyu.Models.ColorFullGame;
 
-namespace WutheringWavesTool.ViewModel;
+namespace Haiyu.ViewModel;
 
 public sealed partial class ColorFullViewModel:ViewModelBase
 {

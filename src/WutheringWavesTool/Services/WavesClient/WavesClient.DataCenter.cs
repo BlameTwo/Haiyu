@@ -2,7 +2,7 @@
 using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
 using ZXing.Aztec.Internal;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 partial class WavesClient
 {

@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Controls;
+﻿namespace Haiyu.Controls;
 
 public delegate void ImageExFailedEventHandler(object sender, ImageExFailedEventArgs e);
 

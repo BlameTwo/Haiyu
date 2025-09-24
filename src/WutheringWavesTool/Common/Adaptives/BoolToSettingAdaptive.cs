@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Common.Adaptives
+﻿namespace Haiyu.Common.Adaptives
 {
     public class BoolToSettingAdaptive : IAdaptive<bool, string>
     {

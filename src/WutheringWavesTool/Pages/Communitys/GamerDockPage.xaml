@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="WutheringWavesTool.Pages.Communitys.GamerDockPage"
+    x:Class="Haiyu.Pages.Communitys.GamerDockPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:WutheringWavesTool.Pages.Communitys"
+    xmlns:local="using:Haiyu.Pages.Communitys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:WutheringWavesTool.Controls"
-    xmlns:wrapper="using:WutheringWavesTool.Models.Wrapper"
+    xmlns:ui="using:Haiyu.Controls"
+    xmlns:wrapper="using:Haiyu.Models.Wrapper"
     mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">

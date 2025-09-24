@@ -23,7 +23,7 @@ public class SetupProperty
     public IList<ISetup> UnSetups { get; private set; }
     public string InstallExeName { get; internal set; }
 
-    public string HelpLink => "https://www.github.com/blametwo/WutheringWavesTool.git";
+    public string HelpLink => "https://www.github.com/blametwo/Haiyu.git";
 
     public SetupProperty(IList<ISetup> setups, IList<ISetup> unSetups)
     {

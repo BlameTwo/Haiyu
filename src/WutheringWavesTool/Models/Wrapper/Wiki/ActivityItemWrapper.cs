@@ -1,6 +1,6 @@
 ﻿using Waves.Api.Models.Wiki;
 
-namespace WutheringWavesTool.Models.Wrapper.Wiki;
+namespace Haiyu.Models.Wrapper.Wiki;
 
 public sealed partial class ActivityWrapper:ObservableObject
 {

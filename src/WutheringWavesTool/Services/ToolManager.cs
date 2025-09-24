@@ -1,6 +1,6 @@
 ﻿using Windows.Graphics;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public sealed class ToolManager : IToolManager
 {

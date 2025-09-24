@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models.Messanger;
+﻿namespace Haiyu.Models.Messanger;
 
 public  class CloudLoginMessager
 {

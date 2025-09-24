@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models.Wrapper.CommunitySlash;
+﻿namespace Haiyu.Models.Wrapper.CommunitySlash;
 
 public partial class SlashHeaderWrapper : ObservableObject
 {

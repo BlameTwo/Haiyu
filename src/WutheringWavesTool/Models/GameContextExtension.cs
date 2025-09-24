@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models;
+﻿namespace Haiyu.Models;
 
 public static class GameContextExtension
 {

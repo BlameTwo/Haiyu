@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using Waves.Api.Models;
 using Windows.System;
-using WutheringWavesTool.Models.Dialogs;
-using WutheringWavesTool.Services.DialogServices;
+using Haiyu.Models.Dialogs;
+using Haiyu.Services.DialogServices;
 
-namespace WutheringWavesTool.Pages.Dialogs
+namespace Haiyu.Pages.Dialogs
 {
     public sealed partial class SelectDownoadGameDialog
         : ContentDialog,

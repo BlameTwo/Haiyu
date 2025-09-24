@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WutheringWavesTool.Models.Wrapper.CommunitySlash;
+namespace Haiyu.Models.Wrapper.CommunitySlash;
 
 public sealed partial class SlashItemWrapper : ObservableObject
 {

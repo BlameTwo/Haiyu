@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.ViewModel.Communitys;
+﻿namespace Haiyu.ViewModel.Communitys;
 
 public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
 {

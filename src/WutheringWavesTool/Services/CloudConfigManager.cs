@@ -2,7 +2,7 @@
 using Waves.Api.Models.CloudGame;
 using Waves.Api.Models.QRLogin;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public sealed partial class CloudConfigManager
 {

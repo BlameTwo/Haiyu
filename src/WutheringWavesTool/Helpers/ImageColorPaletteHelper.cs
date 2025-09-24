@@ -3,7 +3,7 @@ using CommunityToolkit.WinUI.Helpers;
 using Microsoft.Graphics.Canvas;
 using ColorHelper = CommunityToolkit.WinUI.Helpers.ColorHelper;
 
-namespace WutheringWavesTool.Helpers;
+namespace Haiyu.Helpers;
 
 /// <summary>
 /// 图片调色

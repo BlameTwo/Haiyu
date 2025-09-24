@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="WutheringWavesTool.Pages.Communitys.ResourceBriefPage"
+    x:Class="Haiyu.Pages.Communitys.ResourceBriefPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:local="using:WutheringWavesTool.Pages.Communitys"
+    xmlns:local="using:Haiyu.Pages.Communitys"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="using:Waves.Api.Models.Communitys.DataCenter.ResourceBrief"
     xmlns:wui="using:CommunityToolkit.WinUI.Controls"

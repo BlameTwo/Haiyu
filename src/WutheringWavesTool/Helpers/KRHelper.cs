@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Helpers;
+﻿namespace Haiyu.Helpers;
 
 public static class KRHelper
 {

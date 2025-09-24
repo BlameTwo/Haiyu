@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Markup;
 
-namespace WutheringWavesTool.Controls;
+namespace Haiyu.Controls;
 
 [ContentProperty(Name = nameof(Content))]
 public partial class Card : Control

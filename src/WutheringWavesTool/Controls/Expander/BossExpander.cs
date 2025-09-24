@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.WinUI.Controls;
 
-namespace WutheringWavesTool.Controls;
+namespace Haiyu.Controls;
 
 public partial class BossExpander : SettingsExpander
 {

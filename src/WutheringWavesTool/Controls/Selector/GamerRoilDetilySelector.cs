@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Models.Wrapper.WindowRoils;
+﻿using Haiyu.Models.Wrapper.WindowRoils;
 
-namespace WutheringWavesTool.Controls.Selector;
+namespace Haiyu.Controls.Selector;
 
 public partial class GamerRoilDetilySelector : DataTemplateSelector
 {

@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Services;
+﻿namespace Haiyu.Services;
 
 public sealed class TipShow : ITipShow
 {

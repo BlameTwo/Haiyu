@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models.Args;
+﻿namespace Haiyu.Models.Args;
 
 /// <summary>
 /// 创建抽卡记录参数

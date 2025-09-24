@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.ViewModel.Record;
+﻿namespace Haiyu.ViewModel.Record;
 
 public sealed partial class RecordItemViewModel : ViewModelBase
 {

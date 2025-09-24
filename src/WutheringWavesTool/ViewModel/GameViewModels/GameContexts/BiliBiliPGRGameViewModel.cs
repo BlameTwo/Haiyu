@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Services.DialogServices;
+﻿using Haiyu.Services.DialogServices;
 
-namespace WutheringWavesTool.ViewModel.GameViewModels
+namespace Haiyu.ViewModel.GameViewModels
 {
     public class BiliBiliPGRGameViewModel: GameContextViewModelBase
     {

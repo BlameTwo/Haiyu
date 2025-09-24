@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using System.Runtime.InteropServices;
-namespace WutheringWavesTool.Helpers;
+namespace Haiyu.Helpers;
 public class HardwareIdGenerator
 {
     // ==================== API 声明 ====================

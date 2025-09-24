@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Helpers;
+﻿using Haiyu.Helpers;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 partial class WavesClient
 {

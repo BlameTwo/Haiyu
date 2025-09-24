@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WutheringWavesTool.Models.Wrapper;
+namespace Haiyu.Models.Wrapper;
 
 public partial class StaminaWrapper : ObservableObject
 {

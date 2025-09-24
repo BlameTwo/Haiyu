@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Controls;
+﻿namespace Haiyu.Controls;
 
 partial class TitleBar
 {

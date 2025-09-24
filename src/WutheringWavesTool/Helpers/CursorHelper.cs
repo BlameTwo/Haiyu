@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Input;
 using Windows.UI.Core;
 
-namespace WutheringWavesTool.Helpers;
+namespace Haiyu.Helpers;
 
 public class CursorHelper
 {
@@ -48,19 +48,19 @@ public class CursorHelper
         switch (type)
         {
             case CursorType.None:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 108);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 108);
             case CursorType.Help:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 106);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 106);
             case CursorType.Link:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 107);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 107);
             case CursorType.Normal:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 108);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 108);
             case CursorType.Text:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 109);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 109);
             case CursorType.Working:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 110);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 110);
             default:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 108);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 108);
         }
     }
 
@@ -70,19 +70,19 @@ public class CursorHelper
         {
             case CursorType.None:
 
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 103);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 103);
             case CursorType.Help:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 101);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 101);
             case CursorType.Link:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 102);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 102);
             case CursorType.Normal:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 103);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 103);
             case CursorType.Text:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 104);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 104);
             case CursorType.Working:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 105);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 105);
             default:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 103);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 103);
         }
     }
 
@@ -91,19 +91,19 @@ public class CursorHelper
         switch (type)
         {
             case CursorType.None:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 113);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 113);
             case CursorType.Help:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 111);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 111);
             case CursorType.Link:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 112);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 112);
             case CursorType.Normal:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 113);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 113);
             case CursorType.Text:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 114);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 114);
             case CursorType.Working:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 115);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 115);
             default:
-                return InputDesktopResourceCursor.CreateFromModule(@"WutheringWavesTool.exe", 113);
+                return InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", 113);
         }
     }
 

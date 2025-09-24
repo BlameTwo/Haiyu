@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.WinUI.Controls;
 using System.Threading.Tasks;
 using Windows.System;
-using WutheringWavesTool.Models.Wrapper.WindowRoils;
+using Haiyu.Models.Wrapper.WindowRoils;
 
-namespace WutheringWavesTool.Pages.Communitys.Windows;
+namespace Haiyu.Pages.Communitys.Windows;
 
 public sealed partial class GamerRoilsDetilyPage : Page, IWindowPage
 {

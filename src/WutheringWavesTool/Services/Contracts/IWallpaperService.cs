@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Helpers;
+﻿using Haiyu.Helpers;
 
-namespace WutheringWavesTool.Services.Contracts;
+namespace Haiyu.Services.Contracts;
 
 public interface IWallpaperService
 {

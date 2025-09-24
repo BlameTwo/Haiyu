@@ -1,5 +1,5 @@
 ﻿using Microsoft.Windows.Storage.Pickers;
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public class PickersService : IPickersService
 {

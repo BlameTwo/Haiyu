@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Pages.Communitys;
+﻿namespace Haiyu.Pages.Communitys;
 
 public sealed partial class GamerDockPage : Page, IPage, IDisposable
 {

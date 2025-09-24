@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="WutheringWavesTool.Pages.SettingPage"
+    x:Class="Haiyu.Pages.SettingPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:WutheringWavesTool.Controls"
+    xmlns:controls="using:Haiyu.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:gamer="using:Waves.Api.Models.Communitys"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:item="using:WutheringWavesTool.Models"
-    xmlns:local="using:WutheringWavesTool.Pages"
+    xmlns:item="using:Haiyu.Models"
+    xmlns:local="using:Haiyu.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:CommunityToolkit.WinUI.Controls"
-    xmlns:wui="using:WutheringWavesTool.Controls"
+    xmlns:wui="using:Haiyu.Controls"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">

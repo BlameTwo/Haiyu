@@ -1,7 +1,7 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
-namespace WutheringWavesTool.Controls;
+namespace Haiyu.Controls;
 
 public sealed partial class ImageGroupAnimation : UserControl
 {

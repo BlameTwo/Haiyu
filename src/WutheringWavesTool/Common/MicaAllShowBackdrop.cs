@@ -2,7 +2,7 @@
 using Microsoft.UI.Composition;
 using Microsoft.UI.Composition.SystemBackdrops;
 
-namespace WutheringWavesTool.Common
+namespace Haiyu.Common
 {
     internal sealed partial class InputActiveDesktopAcrylicBackdrop
         : Microsoft.UI.Xaml.Media.SystemBackdrop

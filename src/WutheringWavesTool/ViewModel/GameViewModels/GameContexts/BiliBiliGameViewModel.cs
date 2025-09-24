@@ -1,7 +1,7 @@
 ﻿
-using WutheringWavesTool.Services.DialogServices;
+using Haiyu.Services.DialogServices;
 
-namespace WutheringWavesTool.ViewModel.GameViewModels;
+namespace Haiyu.ViewModel.GameViewModels;
 
 public partial class BiliBiliGameViewModel : GameContextViewModelBase
 {

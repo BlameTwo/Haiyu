@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
-    x:Class="WutheringWavesTool.Pages.Record.RecordItemPage"
+    x:Class="Haiyu.Pages.Record.RecordItemPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:itemWrapper="using:WutheringWavesTool.Models.Wrapper"
-    xmlns:local="using:WutheringWavesTool.Pages.Record"
+    xmlns:itemWrapper="using:Haiyu.Models.Wrapper"
+    xmlns:local="using:Haiyu.Pages.Record"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>

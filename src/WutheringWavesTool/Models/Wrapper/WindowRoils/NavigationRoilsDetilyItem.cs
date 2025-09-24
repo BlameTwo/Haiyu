@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Helpers;
+﻿using Haiyu.Helpers;
 
-namespace WutheringWavesTool.Models.Wrapper.WindowRoils;
+namespace Haiyu.Models.Wrapper.WindowRoils;
 
 public interface INavigationRoilsItem { }
 

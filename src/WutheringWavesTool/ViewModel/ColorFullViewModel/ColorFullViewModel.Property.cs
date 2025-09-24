@@ -1,7 +1,7 @@
-﻿using WutheringWavesTool.Models.ColorFullGame;
-using WutheringWavesTool.Models.Enums;
+﻿using Haiyu.Models.ColorFullGame;
+using Haiyu.Models.Enums;
 
-namespace WutheringWavesTool.ViewModel;
+namespace Haiyu.ViewModel;
 
 partial class ColorFullViewModel
 {

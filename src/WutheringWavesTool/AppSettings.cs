@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool;
+﻿namespace Haiyu;
 
 public class AppSettings
 {

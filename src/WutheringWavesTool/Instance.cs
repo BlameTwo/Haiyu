@@ -1,11 +1,11 @@
 ﻿using Waves.Core.Services;
 using Windows.Gaming.Input;
-using WutheringWavesTool.Models.Dialogs;
-using WutheringWavesTool.Services.DialogServices;
-using WutheringWavesTool.Services.Navigations.NavigationViewServices;
-using WutheringWavesTool.ViewModel.GameViewModels;
+using Haiyu.Models.Dialogs;
+using Haiyu.Services.DialogServices;
+using Haiyu.Services.Navigations.NavigationViewServices;
+using Haiyu.ViewModel.GameViewModels;
 
-namespace WutheringWavesTool;
+namespace Haiyu;
 
 public static class Instance
 {

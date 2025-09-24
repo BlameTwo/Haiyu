@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WutheringWavesTool.Models.Messanger
+namespace Haiyu.Models.Messanger
 {
     public class SwitchRoleMessager
     {

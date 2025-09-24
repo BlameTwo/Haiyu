@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Models.Dialogs;
+﻿using Haiyu.Models.Dialogs;
 
-namespace WutheringWavesTool.Services.Contracts;
+namespace Haiyu.Services.Contracts;
 
 public interface IDialogManager
 {

@@ -1,3 +1,3 @@
-﻿namespace WutheringWavesTool.Controls.MusicControl;
+﻿namespace Haiyu.Controls.MusicControl;
 
 public class MusicControl { }

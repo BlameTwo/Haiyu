@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Helpers;
+﻿using Haiyu.Helpers;
 
-namespace WutheringWavesTool.Models.Wrapper;
+namespace Haiyu.Models.Wrapper;
 
 public partial class DataCenterBassItemWrapper : ObservableObject
 {

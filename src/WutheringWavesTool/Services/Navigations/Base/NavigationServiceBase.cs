@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Services.Navigations.Base;
+﻿namespace Haiyu.Services.Navigations.Base;
 
 public class NavigationServiceBase : INavigationService
 {

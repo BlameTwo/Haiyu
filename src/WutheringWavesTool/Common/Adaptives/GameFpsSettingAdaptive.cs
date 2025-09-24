@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Common.Adaptives;
+﻿namespace Haiyu.Common.Adaptives;
 
 internal class GameFpsSettingAdaptive : IAdaptive<bool, string>
 {

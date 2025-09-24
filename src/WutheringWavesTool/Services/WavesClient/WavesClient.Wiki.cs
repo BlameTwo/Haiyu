@@ -1,8 +1,8 @@
 ﻿using System.Net.Http.Json;
 using Waves.Api.Models.Wiki;
-using WutheringWavesTool.Helpers;
+using Haiyu.Helpers;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 partial class WavesClient
 {

@@ -1,8 +1,8 @@
 ﻿using System;
-using WutheringWavesTool.Models.ColorFullGame;
-using WutheringWavesTool.ViewModel;
+using Haiyu.Models.ColorFullGame;
+using Haiyu.ViewModel;
 
-namespace WutheringWavesTool.Helpers;
+namespace Haiyu.Helpers;
 
 public static class ColorGameGenerator
 {

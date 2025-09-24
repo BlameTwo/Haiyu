@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls.Primitives;
-using WutheringWavesTool.Models.Wrapper.WindowRoils;
+using Haiyu.Models.Wrapper.WindowRoils;
 
-namespace WutheringWavesTool.ViewModel.Communitys.WinViewModel;
+namespace Haiyu.ViewModel.Communitys.WinViewModel;
 
 public sealed partial class GamerRoilsDetilyViewModel : ViewModelBase, IDisposable
 {

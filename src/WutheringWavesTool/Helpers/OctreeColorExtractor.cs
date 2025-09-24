@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Graphics.Canvas;
 
-namespace WutheringWavesTool.Helpers
+namespace Haiyu.Helpers
 {
     public class OctreeColorExtractor
     {

@@ -2,11 +2,11 @@
 using CommunityToolkit.WinUI.Behaviors;
 using Microsoft.UI.Input;
 using Waves.Core.Common;
-using WutheringWavesTool.Common;
-using WutheringWavesTool.Helpers;
-using WutheringWavesTool.Pages.GamePages;
+using Haiyu.Common;
+using Haiyu.Helpers;
+using Haiyu.Pages.GamePages;
 
-namespace WutheringWavesTool.Pages;
+namespace Haiyu.Pages;
 
 public sealed partial class ShellPage : Page
 {

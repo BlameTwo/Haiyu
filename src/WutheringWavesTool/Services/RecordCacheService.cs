@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public sealed partial class RecordCacheService : IRecordCacheService
 {

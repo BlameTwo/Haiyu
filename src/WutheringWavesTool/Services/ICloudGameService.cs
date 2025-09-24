@@ -1,6 +1,6 @@
 ﻿using Waves.Api.Models.CloudGame;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 /// <summary>
 /// 云鸣潮接口会话

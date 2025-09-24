@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WutheringWavesTool.Models.Dialogs
+namespace Haiyu.Models.Dialogs
 {
     public class QRScanResult
     {

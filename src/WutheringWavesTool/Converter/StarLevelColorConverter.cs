@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Converter;
+﻿namespace Haiyu.Converter;
 
 public partial class StarLevelColorConverter : IValueConverter
 {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WutheringWavesTool.Models.Wrapper.CommunityWorld
+namespace Haiyu.Models.Wrapper.CommunityWorld
 {
     public partial class ExploreIndexCountry : ObservableObject
     {

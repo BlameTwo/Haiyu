@@ -80,7 +80,7 @@ namespace Project.WPFSetup.Resources {
         }
         
         /// <summary>
-        ///   查找类似 WutheringWavesTool.exe 的本地化字符串。
+        ///   查找类似 Haiyu.exe 的本地化字符串。
         /// </summary>
         internal static string ProgramExe {
             get {

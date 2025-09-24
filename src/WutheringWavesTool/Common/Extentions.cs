@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using Windows.Graphics;
 
-namespace WutheringWavesTool.Common;
+namespace Haiyu.Common;
 
 public static class Extentions
 {

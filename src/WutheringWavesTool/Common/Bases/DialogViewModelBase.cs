@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Services.DialogServices;
+﻿using Haiyu.Services.DialogServices;
 
-namespace WutheringWavesTool.Common.Bases;
+namespace Haiyu.Common.Bases;
 
 public abstract partial class DialogViewModelBase : ViewModelBase
 {

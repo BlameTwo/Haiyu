@@ -1,7 +1,7 @@
-﻿using WutheringWavesTool.Pages.GamePages;
-using WutheringWavesTool.ViewModel.GameViewModels;
+﻿using Haiyu.Pages.GamePages;
+using Haiyu.ViewModel.GameViewModels;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public sealed partial class PageService : IPageService
 {

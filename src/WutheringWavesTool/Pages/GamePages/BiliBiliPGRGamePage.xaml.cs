@@ -12,9 +12,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using WutheringWavesTool.ViewModel.GameViewModels;
+using Haiyu.ViewModel.GameViewModels;
 
-namespace WutheringWavesTool.Pages.GamePages
+namespace Haiyu.Pages.GamePages
 {
     public sealed partial class BiliBiliPGRGamePage : Page,IPage
     {

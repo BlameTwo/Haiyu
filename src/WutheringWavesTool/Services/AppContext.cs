@@ -4,10 +4,10 @@ using Microsoft.UI.Dispatching;
 using Waves.Core.Services;
 using WavesLauncher.Core.Contracts;
 using Windows.ApplicationModel.Contacts.DataProvider;
-using WutheringWavesTool.Services.DialogServices;
-using TitleBar = WutheringWavesTool.Controls.TitleBar;
+using Haiyu.Services.DialogServices;
+using TitleBar = Haiyu.Controls.TitleBar;
 
-namespace WutheringWavesTool.Services;
+namespace Haiyu.Services;
 
 public class AppContext<T> : IAppContext<T>
     where T : ClientApplication

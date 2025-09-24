@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Controls.Behaviors;
+﻿namespace Haiyu.Controls.Behaviors;
 
 public class ButtonSoundBehavior : Behavior<ButtonBase>
 {

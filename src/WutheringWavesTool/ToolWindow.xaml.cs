@@ -1,7 +1,7 @@
 ﻿using Windows.Graphics;
-using TitleBar = WutheringWavesTool.Controls.TitleBar;
+using TitleBar = Haiyu.Controls.TitleBar;
 
-namespace WutheringWavesTool;
+namespace Haiyu;
 
 public sealed partial class ToolWindow : WindowEx
 {

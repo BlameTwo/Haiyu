@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Services;
+﻿namespace Haiyu.Services;
 
 public class ViewFactorys : IViewFactorys
 {
@@ -84,6 +84,11 @@ public class ViewFactorys : IViewFactorys
         {
             return false;
         }
+    }
+
+    public Window ShowAnalysisRecord()
+    {
+
     }
 
     public TransparentWindow CreateTransperentWindow()

@@ -1,9 +1,9 @@
 ﻿
 
 using Waves.Core.Services;
-using WutheringWavesTool.Helpers;
+using Haiyu.Helpers;
 
-namespace WutheringWavesTool;
+namespace Haiyu;
 
 public partial class App : ClientApplication
 {

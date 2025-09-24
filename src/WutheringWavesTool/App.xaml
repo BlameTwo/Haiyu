@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <tool:ClientApplication
-    x:Class="WutheringWavesTool.App"
+    x:Class="Haiyu.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:control="using:WutheringWavesTool.Controls"
-    xmlns:converter="using:WutheringWavesTool.Converter"
-    xmlns:local="using:WutheringWavesTool"
-    xmlns:property="using:WutheringWavesTool.Controls.Propertys"
-    xmlns:tool="using:WutheringWavesTool.Common"
+    xmlns:control="using:Haiyu.Controls"
+    xmlns:converter="using:Haiyu.Converter"
+    xmlns:local="using:Haiyu"
+    xmlns:property="using:Haiyu.Controls.Propertys"
+    xmlns:tool="using:Haiyu.Common"
     RequestedTheme="Dark">
     <tool:ClientApplication.Resources>
         <ResourceDictionary>

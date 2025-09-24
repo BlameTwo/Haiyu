@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Services.Navigations.NavigationViewServices;
+﻿namespace Haiyu.Services.Navigations.NavigationViewServices;
 
 public class HomeNavigationViewService : NavigationViewServiceBase
 {

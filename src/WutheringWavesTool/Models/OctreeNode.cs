@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WutheringWavesTool.Helpers;
+using Haiyu.Helpers;
 
-namespace WutheringWavesTool.Models
+namespace Haiyu.Models
 {
     public class OctreeNode
     {

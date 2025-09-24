@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml.Hosting;
 using Microsoft.UI.Xaml.Shapes;
 
-namespace WutheringWavesTool.Controls;
+namespace Haiyu.Controls;
 
 public partial class LayerData : ObservableObject
 {

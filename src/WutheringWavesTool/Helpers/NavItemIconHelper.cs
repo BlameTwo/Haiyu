@@ -1,6 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 
-namespace WutheringWavesTool.Helpers;
+namespace Haiyu.Helpers;
 
 internal class NavItemIconHelper
 {

@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Pages.Dialogs;
+﻿namespace Haiyu.Pages.Dialogs;
 
 public sealed partial class BindGameDataDialog : ContentDialog, IDialog
 {

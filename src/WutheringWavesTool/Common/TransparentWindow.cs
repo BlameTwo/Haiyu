@@ -1,8 +1,8 @@
 ﻿using Windows.Graphics;
 using WinUIEx;
-using WutheringWavesTool.Models.Enums;
+using Haiyu.Models.Enums;
 
-namespace WutheringWavesTool.Common;
+namespace Haiyu.Common;
 
 public partial class TransparentWindow : WindowEx
 {

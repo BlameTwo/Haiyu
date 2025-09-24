@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models.Args;
+﻿namespace Haiyu.Models.Args;
 
 public class RecordArgs
 {

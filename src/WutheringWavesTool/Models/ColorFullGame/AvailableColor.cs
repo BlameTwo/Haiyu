@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models.ColorFullGame;
+﻿namespace Haiyu.Models.ColorFullGame;
 
 public partial class AvailableColor : ObservableObject
 {

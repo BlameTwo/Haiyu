@@ -1,9 +1,9 @@
 ﻿using H.NotifyIcon;
 using Windows.ApplicationModel.DataTransfer;
-using WutheringWavesTool.Helpers;
-using WutheringWavesTool.Services.DialogServices;
+using Haiyu.Helpers;
+using Haiyu.Services.DialogServices;
 
-namespace WutheringWavesTool.ViewModel;
+namespace Haiyu.ViewModel;
 
 public sealed partial class SettingViewModel : ViewModelBase
 {

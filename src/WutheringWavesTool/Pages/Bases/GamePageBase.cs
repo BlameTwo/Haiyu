@@ -1,3 +1,3 @@
-﻿namespace WutheringWavesTool.Pages.Bases;
+﻿namespace Haiyu.Pages.Bases;
 
 public partial class GamePageBase : Page { }

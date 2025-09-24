@@ -1,7 +1,7 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Windows.Graphics.Imaging;
 using ZXing;
-namespace WutheringWavesTool.Common.QR;
+namespace Haiyu.Common.QR;
 
 public sealed class CanvasBitmapLuminanceSource : LuminanceSource
 {

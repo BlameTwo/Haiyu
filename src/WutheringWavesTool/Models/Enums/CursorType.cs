@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models;
+﻿namespace Haiyu.Models;
 
 /// <summary>
 /// 鼠标元素图标

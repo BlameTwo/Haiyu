@@ -1,7 +1,7 @@
 ﻿using Microsoft.Windows.AppLifecycle;
 using Windows.ApplicationModel.Core;
 
-namespace WutheringWavesTool.ViewModel;
+namespace Haiyu.ViewModel;
 
 partial class SettingViewModel
 {

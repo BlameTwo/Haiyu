@@ -1,6 +1,6 @@
-﻿using WutheringWavesTool.Services.DialogServices;
+﻿using Haiyu.Services.DialogServices;
 
-namespace WutheringWavesTool.ViewModel.DialogViewModels;
+namespace Haiyu.ViewModel.DialogViewModels;
 
 public sealed partial class GameResourceViewModel : DialogViewModelBase
 {

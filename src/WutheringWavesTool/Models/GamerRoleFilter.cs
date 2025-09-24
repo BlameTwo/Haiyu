@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models;
+﻿namespace Haiyu.Models;
 
 public sealed partial class GamerRoleFilter : ObservableObject
 {

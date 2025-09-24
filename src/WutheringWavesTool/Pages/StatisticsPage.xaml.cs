@@ -14,7 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 
 
-namespace WutheringWavesTool.Pages;
+namespace Haiyu.Pages;
 
 public sealed partial class StatisticsPage : Page,IPage
 {

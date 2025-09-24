@@ -1,5 +1,5 @@
 
-namespace WutheringWavesTool.Pages;
+namespace Haiyu.Pages;
 
 public sealed partial class ColorFullGame : Page,IWindowPage
 {

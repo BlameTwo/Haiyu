@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Models;
+﻿namespace Haiyu.Models;
 
 public class MainNavigationArgs
 {
@@ -32,7 +32,7 @@ public class MainNavigationArgs
                 {
                     Icon = "ms-appx:///Assets/GameIcons/global.ico",
                     Title = "鸣潮（官方）",
-                    NavigationKey = "WutheringWavesTool.ViewModel.GameViewModels.MainGameViewModel",
+                    NavigationKey = "Haiyu.ViewModel.GameViewModels.MainGameViewModel",
                     NavigationValue = null,
                 }
             );

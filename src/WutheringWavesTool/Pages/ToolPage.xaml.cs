@@ -1,4 +1,4 @@
-﻿namespace WutheringWavesTool.Pages;
+﻿namespace Haiyu.Pages;
 
 public sealed partial class ToolPage : Page
 {
