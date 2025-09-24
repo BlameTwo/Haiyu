@@ -30,7 +30,86 @@
                     <EntranceThemeTransition FromVerticalOffset="-50" />
                 </TransitionCollection>
             </StackPanel.ChildrenTransitions>
+            <Grid Height="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid
+                    Grid.RowSpan="3"
+                    Margin="15,0,0,0"
+                    Padding="10"
+                    VerticalAlignment="Center"
+                    Background="{ThemeResource AccentAAFillColorDisabledBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="4"
+                    CornerRadius="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <controls:ImageEx
+                        Width="45"
+                        Height="45"
+                        Margin="5"
+                        Source="ms-appx:///Assets/GameIcons/global.ico" />
+                    <controls:ImageEx
+                        Grid.Column="1"
+                        Width="45"
+                        Height="45"
+                        Margin="5"
+                        Source="ms-appx:///Assets/GameIcons/bilibili.ico" />
+                    <controls:ImageEx
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Width="45"
+                        Height="45"
+                        Margin="5"
+                        Source="ms-appx:///Assets/GameIcons/pgr.ico" />
+                </Grid>
+                <controls:ImageEx
+                    Grid.RowSpan="3"
+                    Grid.ColumnSpan="2"
+                    Canvas.ZIndex="-1"
+                    CornerRadius="10"
+                    Source="ms-appx:///Assets/Settingbackground.png"
+                    Stretch="UniformToFill" />
+                <TextBlock
+                    Grid.Column="1"
+                    Margin="15,20,0,0"
+                    VerticalAlignment="Center"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="25"
+                    Text="Haiyu" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Margin="15,0,15,0"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    Text="Haiyu是一款针对于鸣潮、战双帕弥什两款游戏的启动器，其中包含了社区工具的一些功能，集抽卡记录、记录分析、鸣潮数据面板、游戏资源维护、轻量化等功能。"
+                    TextWrapping="WrapWholeWords" />
+                <StackPanel
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Margin="15,0,0,30"
+                    Orientation="Horizontal">
+                    <HyperlinkButton Content="Github" NavigateUri="https://github.com/BlameTwo/Haiyu" />
+                    <HyperlinkButton Content="鸣潮官网" NavigateUri="https://mc.kurogames.com/" />
+                    <HyperlinkButton Content="战双帕弥什官网" NavigateUri="https://pns.kurogames.com/" />
+                    <HyperlinkButton Content="下载最新版" NavigateUri="https://github.com/BlameTwo/Haiyu/releases/latest" />
+                </StackPanel>
+            </Grid>
             <TextBlock
+                Margin="0,15,0,0"
                 FontFamily="{StaticResource DefaultFont}"
                 FontSize="15"
                 Text="通用" />
@@ -46,6 +125,14 @@
                 <ui:SettingsCard.Content>
                     <ComboBox ItemsSource="{x:Bind ViewModel.Cursors, Mode=OneTime}" SelectedItem="{x:Bind ViewModel.SelectCursorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </ui:SettingsCard.Content>
+            </ui:SettingsCard>
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                Content="v1.2.8"
+                Header="版本">
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE794;" />
+                </ui:SettingsCard.HeaderIcon>
             </ui:SettingsCard>
             <ui:SettingsCard
                 Margin="0,5,0,0"

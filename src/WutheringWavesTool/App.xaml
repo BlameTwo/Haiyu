@@ -3,6 +3,7 @@
     x:Class="WutheringWavesTool.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:control="using:WutheringWavesTool.Controls"
     xmlns:converter="using:WutheringWavesTool.Converter"
     xmlns:local="using:WutheringWavesTool"
     xmlns:property="using:WutheringWavesTool.Controls.Propertys"
