@@ -1,4 +1,6 @@
-﻿namespace Haiyu.Services.Contracts;
+﻿using Waves.Api.Models.CloudGame;
+
+namespace Haiyu.Services.Contracts;
 
 public interface IViewFactorys
 {
@@ -11,6 +13,8 @@ public interface IViewFactorys
 
     public WindowModelBase ShowPlayerRecordWindow();
     public WindowModelBase ShowColorGame();
+
+    public Window ShowAnalysisRecord(LoginData data);
     public TransparentWindow CreateTransperentWindow();
     public WindowModelBase ShowAdminDevice();
     public bool ShowToolWindow();

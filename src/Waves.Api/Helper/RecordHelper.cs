@@ -130,7 +130,6 @@ public static class RecordHelper
     {
         List<Tuple<RecordCardItemWrapper, int>> result = new();
         int count = 1;
-        //无法判断歪不歪
         foreach (var item in source.Reverse())
         {
             if (item.QualityLevel == 5)

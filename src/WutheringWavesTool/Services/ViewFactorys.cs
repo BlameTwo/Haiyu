@@ -1,4 +1,7 @@
-﻿namespace Haiyu.Services;
+﻿using Waves.Api.Models.CloudGame;
+using WutheringWavesTool.Pages.Record;
+
+namespace Haiyu.Services;
 
 public class ViewFactorys : IViewFactorys
 {
@@ -86,9 +89,13 @@ public class ViewFactorys : IViewFactorys
         }
     }
 
-    public Window ShowAnalysisRecord()
+    public Window ShowAnalysisRecord(LoginData data)
+        
     {
-
+        var win = ShowWindowBase<AnalysisRecordPage>(data);
+        win.Manager.MaxHeight = 620;
+        win.Manager.MaxWidth = 1100;
+        return win;
     }
 
     public TransparentWindow CreateTransperentWindow()

@@ -1,9 +1,11 @@
-﻿using Waves.Core.Services;
-using Windows.Gaming.Input;
-using Haiyu.Models.Dialogs;
+﻿using Haiyu.Models.Dialogs;
 using Haiyu.Services.DialogServices;
 using Haiyu.Services.Navigations.NavigationViewServices;
 using Haiyu.ViewModel.GameViewModels;
+using Waves.Core.Services;
+using Windows.Gaming.Input;
+using WutheringWavesTool.Pages.Record;
+using WutheringWavesTool.ViewModel;
 
 namespace Haiyu;
 
@@ -31,6 +33,8 @@ public static class Instance
             .AddTransient<CloudGameViewModel>()
             .AddTransient<ColorFullGame>()
             .AddTransient<ColorFullViewModel>()
+            .AddTransient<AnalysisRecordViewModel>()
+            .AddTransient<AnalysisRecordPage>()
         #region GameContext
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()

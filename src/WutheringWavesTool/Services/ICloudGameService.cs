@@ -31,8 +31,8 @@ public interface ICloudGameService
         string phone,
         CancellationToken token = default
     );
-    Task<RecordModel> GetRecordAsync();
-    Task<PlayerReponse> GetGameRecordResource(string recordId, string userId, int poolType);
+    Task<RecordModel> GetRecordAsync(CancellationToken token = default);
+    Task<PlayerReponse> GetGameRecordResource(string recordId, string userId, int poolType,CancellationToken token = default);
     /// <summary>
     /// 创建连接会话
     /// </summary>

@@ -13,12 +13,14 @@ public partial class CloudGameViewModel : ViewModelBase
     public CloudGameViewModel(
         ICloudGameService cloudGameService,
         ITipShow tipShow,
-        [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager
+        [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
+        IViewFactorys viewFactorys
     )
     {
         CloudGameService = cloudGameService;
         TipShow = tipShow;
         DialogManager = dialogManager;
+        ViewFactorys = viewFactorys;
         RegisterMananger();
     }
 
@@ -37,7 +39,7 @@ public partial class CloudGameViewModel : ViewModelBase
     public ICloudGameService CloudGameService { get; }
     public ITipShow TipShow { get; }
     public IDialogManager DialogManager { get; }
-
+    public IViewFactorys ViewFactorys { get; }
     [ObservableProperty]
     public partial long PageSize { get; set; } = 1;
 
@@ -51,7 +53,7 @@ public partial class CloudGameViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial ObservableCollection<GameRecordNavigationItem> RecordNavigationItems { get; set; } = GameRecordNavigationItem.Default;
-       ;
+       
 
     [ObservableProperty]
     public partial GameRecordNavigationItem SelectRecordType { get; set; }
@@ -112,6 +114,12 @@ public partial class CloudGameViewModel : ViewModelBase
         this.IsLoginUser = true;
         this.Users = users.Item2;
         this.SelectedUser = Users[0];
+    }
+
+    [RelayCommand]
+    public void ShowAnalysis()
+    {
+        ViewFactorys.ShowAnalysisRecord(this.SelectedUser).Show();
     }
 
     async partial void OnSelectedUserChanged(LoginData value)

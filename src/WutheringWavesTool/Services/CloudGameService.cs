@@ -189,7 +189,7 @@ public class CloudGameService : ICloudGameService
     /// 获取抽卡id
     /// </summary>
     /// <returns></returns>
-    public async Task<RecordModel> GetRecordAsync()
+    public async Task<RecordModel> GetRecordAsync(CancellationToken token = default)
     {
         HttpRequestMessage message = new HttpRequestMessage(
             HttpMethod.Get,
@@ -200,13 +200,13 @@ public class CloudGameService : ICloudGameService
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
         );
         message.Headers.Add("x-token", RecordToken);
-        var result = await HttpClientService.HttpClient.SendAsync(message);
-        var str = await result.Content.ReadAsStringAsync();
+        var result = await HttpClientService.HttpClient.SendAsync(message,token);
+        var str = await result.Content.ReadAsStringAsync(token);
         var model = JsonSerializer.Deserialize(str, CloundContext.Default.RecordModel);
         return model;
     }
 
-    public async Task<PlayerReponse> GetGameRecordResource(string recordId, string userId,int poolType)
+    public async Task<PlayerReponse> GetGameRecordResource(string recordId, string userId,int poolType,CancellationToken token = default)
     {
         RecardQuery query = new RecardQuery();
         query.CardPoolId = "5c13a63f85465e9fcc0f24d6efb15083";
@@ -225,8 +225,8 @@ public class CloudGameService : ICloudGameService
             "User-Agent",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
         );
-        var result = await HttpClientService.HttpClient.SendAsync(message);
-        var str = await result.Content.ReadAsStringAsync();
+        var result = await HttpClientService.HttpClient.SendAsync(message,token);
+        var str = await result.Content.ReadAsStringAsync(token);
         return JsonSerializer.Deserialize(str, PlayerCardRecordContext.Default.PlayerReponse);
     }
 
