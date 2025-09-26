@@ -92,6 +92,7 @@ public sealed partial class WebGameViewModel : DialogViewModelBase
         if (result.Code != 0)
         {
             TipMessage = result.Msg;
+            return;
         }
         var saveResult = await CloudGameService.ConfigManager.SaveUserAsync(result.Data);
         WeakReferenceMessenger.Default.Send(new CloudLoginMessager(true,result.Data.Username));

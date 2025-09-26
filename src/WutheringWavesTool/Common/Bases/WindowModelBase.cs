@@ -32,7 +32,6 @@ public partial class WindowModelBase :Window
                 this.Content = null;
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-                WindowExtension.EnableWindow(baseHwnd, true);
             };
         }
     }

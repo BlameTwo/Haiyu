@@ -77,7 +77,7 @@ public static class RecordHelper
         }
     }
 
-    public static List<Tuple<RecordCardItemWrapper, int, bool?>>? FormatStartFive(
+    public static (List<Tuple<RecordCardItemWrapper, int, bool?>>?,int?) FormatStartFive(
         IEnumerable<RecordCardItemWrapper> source,
         List<int> ids = null
     )
@@ -87,7 +87,6 @@ public static class RecordHelper
         var items = source.Reverse();
         if (ids == null)
         {
-            //无法判断歪不歪
             foreach (var item in items)
             {
                 if (item.QualityLevel == 5)
@@ -100,7 +99,7 @@ public static class RecordHelper
                     count++;
                 }
             }
-            return result;
+            return (result,count);
         }
         foreach (var item in items)
         {
@@ -121,7 +120,7 @@ public static class RecordHelper
                 count++;
             }
         }
-        return result;
+        return (result,count);
     }
 
     public static List<Tuple<RecordCardItemWrapper, int>> FormatRecordFive(

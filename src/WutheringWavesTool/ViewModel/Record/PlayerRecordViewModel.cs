@@ -344,12 +344,12 @@ public sealed partial class PlayerRecordViewModel : ViewModelBase, IDisposable
         var resident = RecordHelper
             .FormatRecordFive(this.RoleResident!.Concat(this.WeaponsResident!))
             .CalculateAvg();
-        var range = RecordHelper
-            .FormatStartFive(RoleActivity, RecordHelper.FormatFiveRoleStar(FiveGroup!))!
-            .GetGuaranteedRange();
-        var value = Math.Round(RecordHelper.Score(range, roleAAvg, weaponAAvg, resident), 2);
-        this.Guaranteed = Math.Round(range, 2);
-        this.ScoreValue = value;
+        //var range = RecordHelper
+        //    .FormatStartFive(RoleActivity, RecordHelper.FormatFiveRoleStar(FiveGroup!))!
+        //    .GetGuaranteedRange();
+        //var value = Math.Round(RecordHelper.Score(range, roleAAvg, weaponAAvg, resident), 2);
+        //this.Guaranteed = Math.Round(range, 2);
+        //this.ScoreValue = value;
         this.StarAvg = Math.Round(
             RecordHelper
                 .FormatRecordFive(this.RoleActivity)

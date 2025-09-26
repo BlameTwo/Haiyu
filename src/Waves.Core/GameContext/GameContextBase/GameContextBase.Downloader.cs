@@ -435,7 +435,6 @@ public partial class GameContextBase
             return;
         }
         this._downloadState = new DownloadState(patch);
-
         _downloadCTS = new CancellationTokenSource();
         bool result = false;
         if (patch.PatchInfos != null)
@@ -445,11 +444,7 @@ public partial class GameContextBase
                 + previous.BaseUrl;
             result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
         }
-        if (_downloadState.IsStop || _downloadCTS.IsCancellationRequested)
-        {
-            await SetNoneStatusAsync().ConfigureAwait(false);
-            return;
-        }
+        
         #region Update Resource
         _downloadBaseUrl =
             launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
@@ -534,6 +529,29 @@ public partial class GameContextBase
         _downloadState.IsActive = true;
         _totalProgressTotal = resource.Resource.Sum(x => x.Size);
         await UpdateFileProgress(GameContextActionType.Verify, 0);
+        for (int i = 0; i < resource.DeleteFiles.Count; i++)
+        {
+            var localFile = $"{folder}\\{resource.DeleteFiles[i]}".Replace('/', '\\');
+            if (File.Exists(localFile))
+            {
+                File.Delete(localFile);
+            }
+            Logger.WriteInfo($"删除旧文件{System.IO.Path.GetFileName(localFile)}");
+            this.gameContextOutputDelegate?.Invoke(
+                    this,
+                    new GameContextOutputArgs()
+                    {
+                        Type = GameContextActionType.DeleteFile,
+                        FileTotal = resource.DeleteFiles.Count,
+                        CurrentFile = i,
+                        DeleteString =
+                            i != resource.DeleteFiles.Count
+                                ? $"正在删除旧文件{System.IO.Path.GetFileName(localFile)}"
+                                : "稍微等一下，马上就好",
+                    }
+                )
+                .ConfigureAwait(false);
+        }
         #region 下载逻辑
         try
         {

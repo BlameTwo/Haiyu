@@ -19,4 +19,13 @@ public class GameRecordNavigationItem
             new GameRecordNavigationItem() { Id = 8, DisplayName = "角色新旅唤取" },
             new GameRecordNavigationItem() { Id = 9, DisplayName = "武器新旅唤取" },
         };
+
+    public static ObservableCollection<GameRecordNavigationItem> FourDefault =>
+        new ObservableCollection<GameRecordNavigationItem>()
+        {
+            new GameRecordNavigationItem() { Id = 1, DisplayName = "角色活动唤取" },
+            new GameRecordNavigationItem() { Id = 2, DisplayName = "武器活动唤取" },
+            new GameRecordNavigationItem() { Id = 3, DisplayName = "角色常驻唤取" },
+            new GameRecordNavigationItem() { Id = 4, DisplayName = "武器常驻唤取" },
+        };
 }

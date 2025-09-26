@@ -54,6 +54,7 @@ public sealed partial class RecordItemViewModel : ViewModelBase
                     this.Items,
                     RecordHelper.FormatFiveRoleStar(this.DataItem.FiveGroup!)
                 )!
+                .Item1
                 .Format(this.DataItem.AllRole)
                 .Reverse()
                 .ToCardItemObservableCollection();
@@ -65,6 +66,7 @@ public sealed partial class RecordItemViewModel : ViewModelBase
                     this.Items,
                     RecordHelper.FormatFiveWeaponeRoleStar(this.DataItem.FiveGroup!)
                 )!
+                .Item1
                 .Format(this.DataItem.AllWeapon)
                 .Reverse()
                 .ToCardItemObservableCollection();

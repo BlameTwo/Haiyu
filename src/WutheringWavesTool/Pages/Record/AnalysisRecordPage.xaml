@@ -4,9 +4,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:itemWrapper="using:Haiyu.Models.Wrapper"
     xmlns:local="using:WutheringWavesTool.Pages.Record"
+    xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
+    xmlns:m="using:WutheringWavesTool.ViewModel"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Haiyu.Models"
     xmlns:ui="using:Haiyu.Controls"
+    xmlns:wui="using:CommunityToolkit.WinUI.Controls"
+    FontFamily="{ThemeResource DefaultFont}"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
@@ -32,101 +38,334 @@
                     Text="分析面板" />
             </ui:TitleBar.Title>
         </ui:TitleBar>
-        <Grid
-            Grid.Row="1"
-            Padding="10"
-            CornerRadius="5">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="7*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Border
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="5">
-                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <ui:ImageEx
-                        Width="80"
-                        Height="80"
-                        CornerRadius="60"
-                        Source="https://mc.kurogames.com/cloud/assets/avatar-cb06ab22.png" />
-                    <TextBlock
-                        Grid.Row="1"
-                        Margin="0,30,0,0"
-                        HorizontalAlignment="Center"
-                        FontSize="25"
-                        Text="UserName" />
-                </Grid>
-            </Border>
-            <StackPanel
-                Grid.Row="1"
-                Margin="0,5,0,0"
-                Padding="20"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="5"
-                Orientation="Vertical">
-                <StackPanel HorizontalAlignment="Stretch" Orientation="Vertical">
-                    <TextBlock Text="活动角色唤取" />
-                    <ProgressBar
-                        MinHeight="15"
-                        Maximum="80"
-                        Style="{ThemeResource FillHeightProgressBar}"
-                        Value="10" />
-                </StackPanel>
-                <StackPanel
-                    Margin="0,10,0,0"
-                    HorizontalAlignment="Stretch"
-                    Orientation="Vertical">
-                    <TextBlock Text="活动武器唤取" />
-                    <ProgressBar
-                        MinHeight="15"
-                        Maximum="80"
-                        Style="{ThemeResource FillHeightProgressBar}"
-                        Value="10" />
-                </StackPanel>
-                <StackPanel
-                    Margin="0,10,0,0"
-                    HorizontalAlignment="Stretch"
-                    Orientation="Vertical">
-                    <TextBlock Text="常驻角色唤取" />
-                    <ProgressBar
-                        MinHeight="15"
-                        Maximum="80"
-                        Style="{ThemeResource FillHeightProgressBar}"
-                        Value="10" />
-                </StackPanel>
-                <StackPanel
-                    Margin="0,10,0,0"
-                    HorizontalAlignment="Stretch"
-                    Orientation="Vertical">
-                    <TextBlock Text="常驻武器唤取" />
-                    <ProgressBar
-                        MinHeight="15"
-                        Maximum="80"
-                        Style="{ThemeResource FillHeightProgressBar}"
-                        Value="10" />
-                </StackPanel>
-            </StackPanel>
+        <Grid Grid.Row="1">
             <Grid
                 Grid.RowSpan="2"
-                Grid.Column="1"
-                Margin="5,0,0,0"
-                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
-                BorderThickness="1"
-                CornerRadius="5">
-                <ScrollView />
+                Width="210"
+                Height="210"
+                Padding="10"
+                Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
+                CornerRadius="10"
+                Visibility="{x:Bind ViewModel.LoadingVisibility, Mode=OneWay}">
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Vertical">
+                    <Viewbox Width="35" Height="35">
+                        <ProgressRing IsActive="True" />
+                    </Viewbox>
+                    <TextBlock
+                        Margin="0,10,0,0"
+                        FontSize="12"
+                        Text="创建登陆会话" />
+                </StackPanel>
+            </Grid>
+            <Grid
+                Grid.Row="1"
+                Padding="10"
+                CornerRadius="5"
+                Visibility="{x:Bind ViewModel.DataVisibility, Mode=OneWay}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="7*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border
+                    Grid.RowSpan="2"
+                    Padding="14"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <ComboBox ItemsSource="{x:Bind ViewModel.RecordNavigationItems, Mode=OneWay}" SelectedItem="{x:Bind ViewModel.SelectNavigationItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate x:DataType="model:GameRecordNavigationItem">
+                                    <TextBlock Text="{x:Bind DisplayName}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ScrollViewer
+                            Grid.Row="1"
+                            Margin="0,8,0,0"
+                            HorizontalScrollBarVisibility="Hidden"
+                            VerticalScrollBarVisibility="Hidden">
+                            <ItemsControl ItemsSource="{x:Bind ViewModel.StarItems, Mode=OneWay}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate x:DataType="itemWrapper:RecordActivityFiveStarItemWrapper">
+                                        <Grid
+                                            Margin="0,8,0,0"
+                                            Padding="10"
+                                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                            CornerRadius="5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto" />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Image
+                                                Grid.RowSpan="2"
+                                                Width="30"
+                                                Height="30"
+                                                Source="{x:Bind Icon}"
+                                                Stretch="UniformToFill" />
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Margin="5,0,0,0"
+                                                Text="{x:Bind Name}" />
+                                            <Grid
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Margin="5,0,0,0">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition Width="auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <ProgressBar
+                                                    MinHeight="15"
+                                                    Background="Transparent"
+                                                    CornerRadius="4"
+                                                    Foreground="{x:Bind Count, Converter={StaticResource RecordColorConverter}}"
+                                                    Maximum="80"
+                                                    Style="{ThemeResource FillHeightProgressBar}"
+                                                    Value="{x:Bind Count}" />
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Margin="0,0,5,0"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Center"
+                                                    Text="{x:Bind Count}" />
+                                            </Grid>
+                                            <Border
+                                                Grid.RowSpan="2"
+                                                Grid.Column="2"
+                                                Margin="15,10,0,0"
+                                                Padding="10,6"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Background="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                CornerRadius="5"
+                                                Visibility="{x:Bind Flage, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                <TextBlock
+                                                    Margin="0,-5,0,0"
+                                                    Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                                    Text="{x:Bind Flage, Converter={StaticResource RecordStarConverter}}" />
+                                            </Border>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+                <Grid
+                    Grid.RowSpan="2"
+                    Grid.Column="1"
+                    Margin="5,0,0,0"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="7*" />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Border
+                            Padding="20"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel Margin="0,5,0,0" Orientation="Vertical">
+                                <TextBlock Text="活动角色" />
+                                <TextBlock>
+                                    <Run
+                                        FontSize="30"
+                                        FontWeight="Bold"
+                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                        Text="{x:Bind ViewModel.RoleActivityAllCount, Mode=OneWay}" />
+                                    <Run Text="抽" />
+                                </TextBlock>
+                                <TextBlock FontSize="15">
+                                    <Run Text="活动  " />
+                                    <Run Text="{x:Bind ViewModel.RoleActivityCount, Mode=OneWay}" />
+                                    <Run Text="位，" />
+                                    <Run Text="常驻  " />
+                                    <Run Text="{x:Bind ViewModel.RoleActivityCount2, Mode=OneWay}" />
+                                    <Run Text="位" />
+                                </TextBlock>
+                                <TextBlock Margin="0,5,0,0" FontSize="15">
+                                    <Run Text="预计  " />
+                                    <Run Text="{x:Bind ViewModel.ExpectedActivityRoleDeily, Mode=OneWay}" />
+                                    <Run Text="发出货" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            Padding="20"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="活动武器" />
+                                <TextBlock>
+                                    <Run
+                                        FontSize="30"
+                                        FontWeight="Bold"
+                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                        Text="{x:Bind ViewModel.WeaponActivityAllCount, Mode=OneWay}" />
+                                    <Run Text="抽" />
+                                </TextBlock>
+                                <TextBlock FontSize="15">
+                                    <Run Text="活动  " />
+                                    <Run Text="{x:Bind ViewModel.WeaponActivityCount, Mode=OneWay}" />
+                                    <Run Text="个" />
+                                </TextBlock>
+                                <TextBlock Margin="0,5,0,0" FontSize="15">
+                                    <Run Text="预计" />
+                                    <Run Text="{x:Bind ViewModel.ExpectedDailyWeaponDeily, Mode=OneWay}" />
+                                    <Run Text="发出货" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Border>
+                        <Border
+                            Grid.Column="2"
+                            Margin="5,0,0,0"
+                            Padding="20"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="常驻" />
+                                <TextBlock>
+                                    <Run
+                                        FontSize="30"
+                                        FontWeight="Bold"
+                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                        Text="{x:Bind ViewModel.DailyAllCount, Mode=OneWay}" />
+                                    <Run Text="抽" />
+                                </TextBlock>
+                                <TextBlock>
+                                    <Run Text="角色预计" />
+                                    <Run Text="{x:Bind ViewModel.ExpectedRoleDeily, Mode=OneWay}" />
+                                    <Run Text="发出货" />
+                                </TextBlock>
+                                <ProgressBar Maximum="80" Value="{x:Bind ViewModel.CurrentRoleDeily, Mode=OneWay}" />
+                                <TextBlock Margin="0,5,0,0">
+                                    <Run Text="武器预计" />
+                                    <Run Text="{x:Bind ViewModel.ExpectedActivityWeaponDeily, Mode=OneWay}" />
+                                    <Run Text="发出货" />
+                                </TextBlock>
+                                <ProgressBar Maximum="80" Value="{x:Bind ViewModel.CurrentWeaponDeily, Mode=OneWay}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Row="1" Margin="0,5,0,0">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid
+                            Grid.Column="0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Margin="0,25,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="25"
+                                Text="分析总和" />
+                            <lvc:PieChart
+                                Grid.Row="1"
+                                Margin="40"
+                                AutoUpdateEnabled="True"
+                                Background="Transparent"
+                                SeriesSource="{x:Bind ViewModel.StarPipeDatas, Mode=OneWay}">
+                                <lvc:PieChart.SeriesTemplate>
+                                    <DataTemplate x:DataType="m:PieData">
+                                        <lvc:XamlPieSeries
+                                            DataLabelsFormatter="{x:Bind Formatter}"
+                                            OuterRadiusOffset="{x:Bind Offset}"
+                                            SeriesName="{x:Bind Name}"
+                                            ShowDataLabels="True"
+                                            ToolTipLabelFormatter="{x:Bind Formatter}"
+                                            Values="{x:Bind Values}" />
+                                    </DataTemplate>
+                                </lvc:PieChart.SeriesTemplate>
+                            </lvc:PieChart>
+                        </Grid>
+
+                        <Grid
+                            Grid.Column="1"
+                            Margin="5,0,0,0"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource SurfaceStrokeColorDefaultBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Grid.Column="1"
+                                Margin="0,25,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="25">
+                                <Run Text="保底分析" />
+                                <Run FontSize="12" Text="(小保底歪率：" />
+                                <Run FontSize="12" Text="{x:Bind ViewModel.Guaranteed, Mode=OneWay}" />
+                                <Run FontSize="12" Text="%" />
+                                <Run FontSize="12" Text=")" />
+                            </TextBlock>
+
+                            <lvc:PieChart
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="40"
+                                AutoUpdateEnabled="True"
+                                Background="Transparent"
+                                SeriesSource="{x:Bind ViewModel.RangePipeDatas, Mode=OneWay}">
+                                <lvc:PieChart.SeriesTemplate>
+                                    <DataTemplate x:DataType="m:PieData">
+                                        <lvc:XamlPieSeries
+                                            DataLabelsFormatter="{x:Bind Formatter}"
+                                            OuterRadiusOffset="{x:Bind Offset}"
+                                            SeriesName="{x:Bind Name}"
+                                            ShowDataLabels="True"
+                                            ToolTipLabelFormatter="{x:Bind Formatter}"
+                                            Values="{x:Bind Values}" />
+                                    </DataTemplate>
+                                </lvc:PieChart.SeriesTemplate>
+                            </lvc:PieChart>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

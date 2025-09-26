@@ -93,9 +93,9 @@ public sealed partial class GameResourceViewModel : DialogViewModelBase
             this.DeleteProdGameResourceEnable = false;
         }
 
-        this.Dlss = await GameContext.GetLocalDLSSAsync();
-        this.DlssG = await GameContext.GetLocalDLSSGenerateAsync();
-        this.Xess = await GameContext.GetLocalXeSSGenerateAsync();
+        //this.Dlss = await GameContext.GetLocalDLSSAsync();
+        //this.DlssG = await GameContext.GetLocalDLSSGenerateAsync();
+        //this.Xess = await GameContext.GetLocalXeSSGenerateAsync();
     }
 
     [RelayCommand]
