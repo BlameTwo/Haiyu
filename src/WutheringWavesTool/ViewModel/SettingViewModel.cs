@@ -11,13 +11,14 @@ public sealed partial class SettingViewModel : ViewModelBase
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
         IWavesClient wavesClient,
         IAppContext<App> appContext,
-        IViewFactorys viewFactorys
+        IViewFactorys viewFactorys,ITipShow tipShow
     )
     {
         DialogManager = dialogManager;
         WavesClient = wavesClient;
         AppContext = appContext;
         ViewFactorys = viewFactorys;
+        TipShow = tipShow;
         RegisterMessanger();
     }
 
@@ -37,7 +38,7 @@ public sealed partial class SettingViewModel : ViewModelBase
     public IWavesClient WavesClient { get; }
     public IAppContext<App> AppContext { get; }
     public IViewFactorys ViewFactorys { get; }
-
+    public ITipShow TipShow { get; }
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataItem> GamerData { get; set; }
 

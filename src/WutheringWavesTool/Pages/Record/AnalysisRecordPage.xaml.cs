@@ -1,8 +1,8 @@
 using Haiyu;
 using Waves.Api.Models.CloudGame;
-using WutheringWavesTool.ViewModel;
+using Haiyu.ViewModel;
 
-namespace WutheringWavesTool.Pages.Record;
+namespace Haiyu.Pages.Record;
 
 public sealed partial class AnalysisRecordPage : Page,IWindowPage
 {

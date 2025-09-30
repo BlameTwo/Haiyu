@@ -1,5 +1,5 @@
 ﻿using Waves.Api.Models.CloudGame;
-using WutheringWavesTool.Pages.Record;
+using Haiyu.Pages.Record;
 
 namespace Haiyu.Services;
 

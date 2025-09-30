@@ -4,8 +4,8 @@ using Haiyu.Services.Navigations.NavigationViewServices;
 using Haiyu.ViewModel.GameViewModels;
 using Waves.Core.Services;
 using Windows.Gaming.Input;
-using WutheringWavesTool.Pages.Record;
-using WutheringWavesTool.ViewModel;
+using Haiyu.Pages.Record;
+using Haiyu.ViewModel;
 
 namespace Haiyu;
 

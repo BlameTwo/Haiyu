@@ -3,7 +3,7 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
-		<RootNamespace>WutheringWavesTool</RootNamespace>
+		<RootNamespace>Haiyu</RootNamespace>
 		<!--<ApplicationManifest>app.manifest</ApplicationManifest>-->
 		<Platforms>x64</Platforms>
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
@@ -19,7 +19,7 @@
 		<IsAotCompatible>true</IsAotCompatible>
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-		<AppxPackageSigningTimestampDigestAlgorithm>SHA512</AppxPackageSigningTimestampDigestAlgorithm>
+		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
 		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
@@ -29,6 +29,8 @@
 		<!--Win32 PE-->
 		<Win32Resource>Assets/Cursor/CursorResource.res</Win32Resource>
 		<NoWin32Manifest>True</NoWin32Manifest>
+		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
+		<DefaultLanguage>zh-Hans</DefaultLanguage>
 		<!--Win32 PE-->
 
 	</PropertyGroup>
@@ -244,8 +246,10 @@
 	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
 	</PropertyGroup>
-
-	<!-- Publish Properties -->
+	
+	<!--
+	
+	-->
 	<PropertyGroup>
 		<PackageCertificateKeyFile>Haiyu.pfx</PackageCertificateKeyFile>
 
@@ -253,10 +257,11 @@
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<DefaultLanguage>zh-CN</DefaultLanguage>
-		<!--<ApplicationIcon>Assets\appLogo.ico</ApplicationIcon>-->
+
 		<SignAssembly>False</SignAssembly>
 		<NeutralLanguage>zh-CN</NeutralLanguage>
 		<AssemblyName>Haiyu</AssemblyName>
 		<AssemblyTitle>Haiyu</AssemblyTitle>
+		<GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
 	</PropertyGroup>
 </Project>

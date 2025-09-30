@@ -4,7 +4,7 @@ using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel;
 using Waves.Api.Models.CloudGame;
 
-namespace WutheringWavesTool.ViewModel;
+namespace Haiyu.ViewModel;
 
 public partial class AnalysisRecordViewModel : ViewModelBase
 {
