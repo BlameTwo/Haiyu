@@ -1,6 +1,6 @@
 <div align="center">
    <h1>鸣潮增强型启动器</h1>
-   <img align="center" height="400" src="img/main.png" alt="Main" style="zoom:80%;" data-align="center">
+   <img align="center" height="400" src="img/home.png" alt="Main" style="zoom:80%;" data-align="center">
    <br/>
    <br/>
 
@@ -37,5 +37,3 @@
 鸣谢
 [扑克](https://github.com/Poker-sang)
 [ghost1372](https://github.com/ghost1372)
-
-
