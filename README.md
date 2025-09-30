@@ -13,12 +13,9 @@
 
 <div align="center">
 
-<h4> 此程序编写目的是为了提升库洛PC游戏体验</h4>
+<h4> 基于.Net9 与WinUI3的美观、快速的库洛第三方游戏启动器</h4>
 
 </div>
-
-### 公告
-
 
 ### 下载
 
@@ -27,6 +24,7 @@
 <br>
 
 [<img src="https://get.microsoft.com/images/zh-cn%20dark.svg" width="200"/>](https://apps.microsoft.com/detail/9p70bt6bvwfh?hl=zh-CN&gl=CN)
+
 
 ### 其他引用
 
@@ -43,7 +41,5 @@
 [Win2D](https://github.com/microsoft/Win2D)
 <br>
 
-鸣谢
-[扑克](https://github.com/Poker-sang)
-<br>
-[ghost1372](https://github.com/ghost1372)
+鸣谢[扑克](https://github.com/Poker-sang)与[ghost1372](https://github.com/ghost1372)的指导
+
