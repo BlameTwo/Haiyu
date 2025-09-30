@@ -1,11 +1,12 @@
 ﻿using Haiyu.Models.Dialogs;
+using Haiyu.Pages.Record;
+using Haiyu.Plugin;
 using Haiyu.Services.DialogServices;
 using Haiyu.Services.Navigations.NavigationViewServices;
+using Haiyu.ViewModel;
 using Haiyu.ViewModel.GameViewModels;
 using Waves.Core.Services;
 using Windows.Gaming.Input;
-using Haiyu.Pages.Record;
-using Haiyu.ViewModel;
 
 namespace Haiyu;
 
@@ -16,7 +17,7 @@ public static class Instance
     public static void InitService()
     {
         Service = new ServiceCollection()
-        #region View and ViewModel
+            #region View and ViewModel
             .AddSingleton<ShellPage>()
             .AddSingleton<ShellViewModel>()
             .AddTransient<ToolPage>()
@@ -35,15 +36,15 @@ public static class Instance
             .AddTransient<ColorFullViewModel>()
             .AddTransient<AnalysisRecordViewModel>()
             .AddTransient<AnalysisRecordPage>()
-        #region GameContext
+            #region GameContext
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()
             .AddTransient<GlobalGameViewModel>()
             .AddTransient<MainPGRViewModel>()
             .AddTransient<GlobalPGRViewModel>()
             .AddTransient<BiliBiliPGRGameViewModel>()
-        #endregion
-        #region Community
+            #endregion
+            #region Community
             .AddTransient<GamerSignPage>()
             .AddTransient<GamerSignViewModel>()
             .AddTransient<GamerRoilsDetilyViewModel>()
@@ -54,15 +55,15 @@ public static class Instance
             .AddTransient<GamerTowerViewModel>()
             .AddTransient<GamerSkinViewModel>()
             .AddTransient<GamerSlashDetailViewModel>()
-        #endregion
-        #region Record
+            #endregion
+            #region Record
             .AddTransient<RecordItemViewModel>()
-        #endregion
-        #region Roil
+            #endregion
+            #region Roil
             .AddTransient<GamerRoilsDetilyPage>()
             .AddTransient<GamerRoilViewModel>()
-        #endregion
-        #region Dialog
+            #endregion
+            #region Dialog
             .AddTransient<LoginDialog>()
             .AddTransient<LoginGameViewModel>()
             .AddTransient<WebGameLogin>()
@@ -76,23 +77,26 @@ public static class Instance
             .AddTransient<SelectDownloadGameViewModel>()
             .AddTransient<QRLoginDialog>()
             .AddTransient<QrLoginViewModel>()
-        #endregion
-        #endregion
-        #region Navigation
+            #endregion
+            #endregion
+            #region Navigation
             .AddTransient<IPageService, PageService>()
             .AddTransient<IPickersService, PickersService>()
             .AddSingleton<ITipShow, TipShow>()
-        #endregion
-        #region Base
+            #endregion
+            #region Base
             .AddSingleton<IAppContext<App>, AppContext<App>>()
             .AddSingleton<IWavesClient, WavesClient>()
             .AddSingleton<ICloudGameService, CloudGameService>()
+            .AddSingleton<IScreenCaptureService,ScreenCaptureService>()
             .AddTransient<IViewFactorys, ViewFactorys>()
-            .AddSingleton<CloudConfigManager>((s) =>
-            {
-                var mananger = new CloudConfigManager(AppSettings.CloudFolderPath);
-                return mananger;
-            })
+            .AddSingleton<CloudConfigManager>(
+                (s) =>
+                {
+                    var mananger = new CloudConfigManager(AppSettings.CloudFolderPath);
+                    return mananger;
+                }
+            )
             .AddSingleton<IWallpaperService, WallpaperService>(
                 (s) =>
                 {
@@ -115,14 +119,20 @@ public static class Instance
             .AddKeyedTransient<INavigationService, WebGameNavigationService>(
                 nameof(WebGameNavigationService)
             )
-        #endregion
+            #endregion
+            #region Plugin
+            
+            #endregion
             .AddKeyedSingleton<IDialogManager, MainDialogService>(nameof(MainDialogService))
-            .AddKeyedSingleton<LoggerService>("AppLog", (s,e) =>
-            {
-                var logger = new LoggerService();
-                logger.InitLogger(AppSettings.LogPath, Serilog.RollingInterval.Day);
-                return logger;
-            })
+            .AddKeyedSingleton<LoggerService>(
+                "AppLog",
+                (s, e) =>
+                {
+                    var logger = new LoggerService();
+                    logger.InitLogger(AppSettings.LogPath, Serilog.RollingInterval.Day);
+                    return logger;
+                }
+            )
             #region Record
             .AddScoped<IDialogManager, ScopeDialogService>()
             .AddScoped<ITipShow, TipShow>()

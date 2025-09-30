@@ -25,4 +25,12 @@ partial class SettingViewModel
     {
         ShellExecute(IntPtr.Zero, "open", App.BassFolder, null, null, SW_SHOWNORMAL);
     }
+
+
+    [RelayCommand]
+    void OpenCaptureFolder()
+    {
+
+        ShellExecute(IntPtr.Zero, "open", App.ScreenCaptures, null, null, SW_SHOWNORMAL);
+    }
 }

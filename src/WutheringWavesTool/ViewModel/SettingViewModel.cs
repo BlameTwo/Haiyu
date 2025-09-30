@@ -1,7 +1,7 @@
 ﻿using H.NotifyIcon;
-using Windows.ApplicationModel.DataTransfer;
 using Haiyu.Helpers;
 using Haiyu.Services.DialogServices;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace Haiyu.ViewModel;
 
@@ -11,7 +11,9 @@ public sealed partial class SettingViewModel : ViewModelBase
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
         IWavesClient wavesClient,
         IAppContext<App> appContext,
-        IViewFactorys viewFactorys,ITipShow tipShow
+        IViewFactorys viewFactorys,
+        ITipShow tipShow,
+        IScreenCaptureService screenCaptureService
     )
     {
         DialogManager = dialogManager;
@@ -19,6 +21,7 @@ public sealed partial class SettingViewModel : ViewModelBase
         AppContext = appContext;
         ViewFactorys = viewFactorys;
         TipShow = tipShow;
+        ScreenCaptureService = screenCaptureService;
         RegisterMessanger();
     }
 
@@ -39,6 +42,8 @@ public sealed partial class SettingViewModel : ViewModelBase
     public IAppContext<App> AppContext { get; }
     public IViewFactorys ViewFactorys { get; }
     public ITipShow TipShow { get; }
+    public IScreenCaptureService ScreenCaptureService { get; }
+
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataItem> GamerData { get; set; }
 
@@ -65,7 +70,8 @@ public sealed partial class SettingViewModel : ViewModelBase
                 break;
         }
         this.OldCursorName = AppSettings.SelectCursor ?? "默认";
-        this.SelectCursorName = Cursors.Find(x=>x == AppSettings.SelectCursor) ?? Cursors[0];
+        this.SelectCursorName = Cursors.Find(x => x == AppSettings.SelectCursor) ?? Cursors[0];
+        this.InitCapture();
     }
 
     [RelayCommand]

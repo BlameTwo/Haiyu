@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Haiyu.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:ext="using:Haiyu.Plugin.Extensions"
     xmlns:gamer="using:Waves.Api.Models.Communitys"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:item="using:Haiyu.Models"
@@ -138,6 +139,54 @@
                     <Button Command="{x:Bind ViewModel.UpdateVersionCommand}" Content="检查更新" />
                 </ui:SettingsCard.Content>
             </ui:SettingsCard>
+            <ui:SettingsExpander Margin="0,5,0,0" Header="截图">
+                <ToggleSwitch
+                    x:Name="captureSwitch"
+                    IsOn="{x:Bind ViewModel.IsOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    OffContent=""
+                    OnContent="" />
+                <ui:SettingsExpander.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEE71;" />
+                </ui:SettingsExpander.HeaderIcon>
+                <ui:SettingsExpander.Items>
+                    <ui:SettingsCard
+                        Header="截图快捷键"
+                        IsClickEnabled="False"
+                        IsEnabled="{x:Bind captureSwitch.IsOn, Mode=TwoWay}">
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox
+                                Margin="0,0,5,0"
+                                ItemsSource="{x:Bind ViewModel.CaptureModifierKeys, Mode=OneWay}"
+                                SelectedItem="{x:Bind ViewModel.CaptureModifierKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="ext:ModifierKey">
+                                        <TextBlock Text="{x:Bind Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                Text="+" />
+                            <ComboBox
+                                Margin="5,0,0,0"
+                                ItemsSource="{x:Bind ViewModel.CaptureKeys, Mode=OneWay}"
+                                SelectedItem="{x:Bind ViewModel.CaptureKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate x:DataType="ext:Keys">
+                                        <TextBlock Text="{x:Bind Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                    </ui:SettingsCard>
+                    <ui:SettingsCard
+                        Command="{x:Bind ViewModel.OpenCaptureFolderCommand}"
+                        Header="截图保存文件夹"
+                        IsClickEnabled="True"
+                        IsEnabled="{x:Bind captureSwitch.IsOn, Mode=TwoWay}" />
+                </ui:SettingsExpander.Items>
+            </ui:SettingsExpander>
             <ui:SettingsCard
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"

@@ -84,6 +84,24 @@ public class AppSettings
         set => Write(value);
     }
 
+    public static string? CaptureModifierKey
+    {
+        get => Read();
+        set => Write(value);
+    }
+
+    public static string? CaptureKey
+    {
+        get => Read();
+        set => Write(value);
+    }
+
+    public static string? IsCapture
+    {
+        get=>Read();
+        set=>Write(value);
+    }
+
     #region 鸣潮
     public static bool? ShowWavesMainGame
     {

@@ -31,7 +31,6 @@ public class AppContext<T> : IAppContext<T>
     public IWavesClient WavesClient { get; }
     public IWallpaperService WallpaperService { get; }
     public IDialogManager DialogManager { get; }
-
     public async Task LauncherAsync(T app)
     {
         await Instance.GetService<IWavesClient>().InitAsync();
@@ -79,7 +78,6 @@ public class AppContext<T> : IAppContext<T>
 
         win.IsResizable = false;
         win.IsMaximizable = false;
-
         this.App.MainWindow = win;
         (win.AppWindow.Presenter as OverlappedPresenter)!.SetBorderAndTitleBar(true, false);
         if (await WavesClient.IsLoginAsync())

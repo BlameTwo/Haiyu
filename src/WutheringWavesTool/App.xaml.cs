@@ -14,6 +14,8 @@ public partial class App : ClientApplication
 
     public static string WrallpaperFolder => BassFolder + "\\WallpaperImages";
 
+    public static string ScreenCaptures => BassFolder + "\\ScreenCaptures";
+
     public string ToolsPosionFilePath => App.BassFolder + "\\ToolsPostion.json";
     [DllImport("shcore.dll", SetLastError = true)]
     private static extern int SetProcessDpiAwareness(int dpiAwareness);
@@ -29,6 +31,7 @@ public partial class App : ClientApplication
         Directory.CreateDirectory(BassFolder);
         Directory.CreateDirectory(RecordFolder);
         Directory.CreateDirectory(WrallpaperFolder);
+        Directory.CreateDirectory(ScreenCaptures);
         GameContextFactory.GameBassPath = BassFolder;
         Instance.InitService();
         this.InitializeComponent();
@@ -41,24 +44,25 @@ public partial class App : ClientApplication
         object sender,
         Microsoft.UI.Xaml.UnhandledExceptionEventArgs e
     )
-    { 
-        //try
-        //{
-        //    Instance.Service.GetService<ITipShow>().ShowMessage(e.Message, Symbol.Clear);
-        //    Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(e.Message);
-        //}
-        //catch (Exception ex)
-        //{
-        //    Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(ex.Message);
-        //}
-        //finally
-        //{
-        //    e.Handled = true;
-        //}
+    {
+        try
+        {
+            Instance.Service.GetService<ITipShow>().ShowMessage(e.Message, Symbol.Clear);
+            Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(e.Message);
+        }
+        catch (Exception ex)
+        {
+            Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(ex.Message);
+        }
+        finally
+        {
+            e.Handled = true;
+        }
     }
 
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
+        Instance.Service.GetService<IScreenCaptureService>().Register();
     }
 }
