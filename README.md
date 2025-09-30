@@ -1,5 +1,5 @@
 <div align="center">
-   <h1>鸣潮增强型启动器</h1>
+   <h1>Haiyu</h1>
    <img align="center" height="400" src="img/home.png" alt="Main" style="zoom:80%;" data-align="center">
    <br/>
    <br/>
@@ -13,27 +13,37 @@
 
 <div align="center">
 
-<h4> 此程序编写目的是为了增强鸣潮游戏体验而编写 </h4>
+<h4> 此程序编写目的是为了提升库洛PC游戏体验</h4>
 
 </div>
 
-##### 公告
+### 公告
 
-1.2.7 Official Version 已更新
 
-##### 下载
+### 下载
 
 进入到<a href="https://github.com/BlameTwo/WutheringWavesTool/releases">Release</a>页面下载最新版本进行安装。
 
-##### 其他引用
+<br>
+
+[<img src="https://get.microsoft.com/images/zh-cn%20dark.svg" width="200"/>](https://apps.microsoft.com/detail/9p70bt6bvwfh?hl=zh-CN&gl=CN)
+
+### 其他引用
 
 [WindowsAppSdk](https://github.com/microsoft/WindowsAppSDK)
+<br>
 [DevWinUI](https://github.com/ghost1372/DevWinUI)
+<br>
 [CommunityToolkit](https://github.com/CommunityToolkit)
+<br>
 [WinUIEx](https://github.com/dotMorten/WinUIEx)
+<br>
 [H.NotifyIcon.WinUI](https://github.com/HavenDV/H.NotifyIcon)
+<br>
 [Win2D](https://github.com/microsoft/Win2D)
+<br>
 
 鸣谢
 [扑克](https://github.com/Poker-sang)
+<br>
 [ghost1372](https://github.com/ghost1372)
