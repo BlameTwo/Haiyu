@@ -26,6 +26,7 @@
 进入到<a href="https://github.com/BlameTwo/WutheringWavesTool/releases">Release</a>页面下载最新版本进行安装。
 
 ##### 其他引用
+
 [WindowsAppSdk](https://github.com/microsoft/WindowsAppSDK)
 [DevWinUI](https://github.com/ghost1372/DevWinUI)
 [CommunityToolkit](https://github.com/CommunityToolkit)
@@ -36,3 +37,5 @@
 鸣谢
 [扑克](https://github.com/Poker-sang)
 [ghost1372](https://github.com/ghost1372)
+
+
