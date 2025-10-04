@@ -5,12 +5,16 @@ public partial class AvailableColor : ObservableObject
     [ObservableProperty]
     public partial SolidColorBrush Color { get; set; }
 
-    public AvailableColor(SolidColorBrush color, string name)
+    public AvailableColor(SolidColorBrush color, string name,bool isStone = false)
     {
         Color = color;
         Name = name;
+        IsStone = isStone;
     }
 
     [ObservableProperty]
     public partial string Name { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsStone { get; set; }
 }

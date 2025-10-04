@@ -114,7 +114,6 @@
                 FontFamily="{StaticResource DefaultFont}"
                 FontSize="15"
                 Text="通用" />
-
             <ui:SettingsCard
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"

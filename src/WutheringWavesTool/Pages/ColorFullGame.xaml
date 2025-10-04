@@ -6,6 +6,7 @@
     xmlns:ani="using:CommunityToolkit.WinUI.Animations"
     xmlns:b="using:CommunityToolkit.WinUI.Behaviors"
     xmlns:behaviors="using:Haiyu.Behaviors"
+    xmlns:convert="using:Haiyu.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:enum="using:Haiyu.Models.Enums"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -15,7 +16,14 @@
     xmlns:ui="using:Haiyu.Controls"
     xmlns:ui1="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
-
+    <Page.Resources>
+        <!--  点染  -->
+        <convert:GameFullModeConverter x:Key="DotDyeingGameFullModeConverter" ParentMode="DotDyeing" />
+        <!--  染色  -->
+        <convert:GameFullModeConverter x:Key="DyeingGameFullModeConverter" ParentMode="Dyeing" />
+        <!--  游戏  -->
+        <convert:GameFullModeConverter x:Key="GameGameFullModeConverter" ParentMode="Game" />
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -26,67 +34,70 @@
             IsExtendsContentIntoTitleBar="True"
             TitleMode="Tall">
             <ui:TitleBar.Header>
-                <MenuBar Margin="5,5,0,0">
-                    <MenuBarItem Title="文件">
-                        <MenuFlyoutItem Text="新文件">
-                            <MenuFlyoutItem.Icon>
-                                <SymbolIcon Symbol="NewFolder" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutItem Text="打开">
-                            <MenuFlyoutItem.Icon>
-                                <SymbolIcon Symbol="OpenFile" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutItem Text="保存">
-                            <MenuFlyoutItem.Icon>
-                                <SymbolIcon Symbol="Save" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutItem Text="另存为">
-                            <MenuFlyoutItem.Icon>
-                                <SymbolIcon Symbol="SaveLocal" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Text="退出">
-                            <MenuFlyoutItem.Icon>
-                                <SymbolIcon Symbol="Clear" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                    </MenuBarItem>
-                    <MenuBarItem Title="生成棋盘">
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.Generator8X12Command}" Text="8X12(鸣潮)" />
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.Generator6X6Command}" Text="6X6" />
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.Generator10X10Command}" Text="10X10" />
-                    </MenuBarItem>
-                    <MenuBarItem Title="编辑">
-                        <RadioMenuFlyoutItem
-                            Command="{x:Bind ViewModel.SetGameModeCommand}"
-                            GroupName="GameMode"
-                            Text="点染模式">
-                            <RadioMenuFlyoutItem.CommandParameter>
-                                <enum:GameMode>DotDyeing</enum:GameMode>
-                            </RadioMenuFlyoutItem.CommandParameter>
-                        </RadioMenuFlyoutItem>
-                        <RadioMenuFlyoutItem
-                            Command="{x:Bind ViewModel.SetGameModeCommand}"
-                            GroupName="GameMode"
-                            Text="染色模式">
-                            <RadioMenuFlyoutItem.CommandParameter>
-                                <enum:GameMode>Dyeing</enum:GameMode>
-                            </RadioMenuFlyoutItem.CommandParameter>
-                        </RadioMenuFlyoutItem>
-                        <RadioMenuFlyoutItem
-                            Command="{x:Bind ViewModel.SetGameModeCommand}"
-                            GroupName="GameMode"
-                            Text="游戏模式">
-                            <RadioMenuFlyoutItem.CommandParameter>
-                                <enum:GameMode>Game</enum:GameMode>
-                            </RadioMenuFlyoutItem.CommandParameter>
-                        </RadioMenuFlyoutItem>
-                    </MenuBarItem>
-                </MenuBar>
+                <StackPanel Orientation="Horizontal">
+
+                    <MenuBar Margin="5,5,0,0">
+                        <MenuBarItem Title="文件">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.NewFileCommand}" Text="新文件">
+                                <MenuFlyoutItem.Icon>
+                                    <SymbolIcon Symbol="NewFolder" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.OpenGameCommand}" Text="打开">
+                                <MenuFlyoutItem.Icon>
+                                    <SymbolIcon Symbol="OpenFile" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.SaveGameCommand}" Text="保存">
+                                <MenuFlyoutItem.Icon>
+                                    <SymbolIcon Symbol="Save" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+
+                            <MenuFlyoutSeparator />
+                            <MenuFlyoutItem Text="退出">
+                                <MenuFlyoutItem.Icon>
+                                    <SymbolIcon Symbol="Clear" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuBarItem>
+                        <MenuBarItem Title="生成棋盘">
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.Generator8X12Command}" Text="8X12" />
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.Generator6X6Command}" Text="6X6" />
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.Generator10X10Command}" Text="10X10" />
+                        </MenuBarItem>
+                        <MenuBarItem Title="编辑">
+                            <RadioMenuFlyoutItem
+                                Command="{x:Bind ViewModel.SetGameModeCommand}"
+                                GroupName="GameMode"
+                                IsChecked="{x:Bind ViewModel.Mode, Mode=OneWay, Converter={StaticResource DotDyeingGameFullModeConverter}}"
+                                Text="点染模式">
+                                <RadioMenuFlyoutItem.CommandParameter>
+                                    <enum:GameMode>DotDyeing</enum:GameMode>
+                                </RadioMenuFlyoutItem.CommandParameter>
+                            </RadioMenuFlyoutItem>
+                            <RadioMenuFlyoutItem
+                                Command="{x:Bind ViewModel.SetGameModeCommand}"
+                                GroupName="GameMode"
+                                IsChecked="{x:Bind ViewModel.Mode, Mode=OneWay, Converter={StaticResource DyeingGameFullModeConverter}}"
+                                Text="染色模式">
+                                <RadioMenuFlyoutItem.CommandParameter>
+                                    <enum:GameMode>Dyeing</enum:GameMode>
+                                </RadioMenuFlyoutItem.CommandParameter>
+                            </RadioMenuFlyoutItem>
+                            <RadioMenuFlyoutItem
+                                Command="{x:Bind ViewModel.SetGameModeCommand}"
+                                GroupName="GameMode"
+                                IsChecked="{x:Bind ViewModel.Mode, Mode=OneWay, Converter={StaticResource GameGameFullModeConverter}}"
+                                Text="游戏模式">
+                                <RadioMenuFlyoutItem.CommandParameter>
+                                    <enum:GameMode>Game</enum:GameMode>
+                                </RadioMenuFlyoutItem.CommandParameter>
+                            </RadioMenuFlyoutItem>
+                        </MenuBarItem>
+                    </MenuBar>
+
+                </StackPanel>
             </ui:TitleBar.Header>
         </ui:TitleBar>
         <Grid Grid.Row="1" Margin="5">
@@ -104,13 +115,10 @@
                     CornerRadius="5">
                     <ItemsView
                         IsItemInvokedEnabled="True"
+                        ItemInvoked="ItemsView_ItemInvoked"
                         ItemsSource="{x:Bind ViewModel.GameGrid, Mode=OneWay}"
                         SelectionMode="None">
-                        <i:Interaction.Behaviors>
-                            <i:EventTriggerBehavior EventName="ItemInvoked">
-                                <i:InvokeCommandAction Command="{x:Bind ViewModel.CellClickedCommand}" />
-                            </i:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
+
                         <ItemsView.ItemTransitionProvider>
                             <LinedFlowLayoutItemCollectionTransitionProvider />
                         </ItemsView.ItemTransitionProvider>
@@ -127,49 +135,17 @@
                                         BorderBrush="Transparent"
                                         BorderThickness="2"
                                         CornerRadius="10">
-
-                                        <!--<i:Interaction.Behaviors>
-                                            <i:EventTriggerBehavior EventName="PointerEntered">
-                                                <i:ControlStoryboardAction>
-                                                    <i:ControlStoryboardAction.Storyboard>
-                                                        <Storyboard Storyboard.TargetName="grid">
-                                                            <ColorAnimation
-                                                                EnableDependentAnimation="True"
-                                                                Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
-                                                                To="{Binding Source={StaticResource AccentAAFillColorDefaultBrush}, Path=Color}"
-                                                                Duration="0:0:0.2" />
-                                                        </Storyboard>
-                                                    </i:ControlStoryboardAction.Storyboard>
-                                                </i:ControlStoryboardAction>
-                                            </i:EventTriggerBehavior>
-                                            <i:EventTriggerBehavior EventName="PointerExited">
-                                                <i:ControlStoryboardAction>
-                                                    <i:ControlStoryboardAction.Storyboard>
-                                                        <Storyboard Storyboard.TargetName="grid">
-                                                            <ColorAnimation
-                                                                EnableDependentAnimation="True"
-                                                                Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
-                                                                To="Transparent"
-                                                                Duration="0:0:0.2" />
-                                                        </Storyboard>
-                                                    </i:ControlStoryboardAction.Storyboard>
-                                                </i:ControlStoryboardAction>
-                                            </i:EventTriggerBehavior>
-                                        </i:Interaction.Behaviors>-->
-
                                         <Grid.BackgroundTransition>
                                             <BrushTransition />
                                         </Grid.BackgroundTransition>
-
-                                        <TextBlock
+                                        <FontIcon
+                                            HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
-                                            FontSize="12"
-                                            HorizontalTextAlignment="Center">
-                                            <Run Text="行" />
-                                            <Run Text="{x:Bind Row, Mode=OneWay}" />
-                                            <Run Text="列" />
-                                            <Run Text="{x:Bind Column, Mode=OneWay}" />
-                                        </TextBlock>
+                                            FontFamily="Segoe Fluent Icons"
+                                            FontSize="20"
+                                            Foreground="White"
+                                            Glyph="&#xE72E;"
+                                            Visibility="{x:Bind IsStone, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
                                         <Grid.Transitions>
                                             <TransitionCollection>
                                                 <RepositionThemeTransition />
@@ -187,42 +163,96 @@
                         </ItemsView.Layout>
                     </ItemsView>
                 </Border>
-
             </Viewbox>
-            <ui1:Segmented
+            <StackPanel
                 Grid.Column="1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                ItemsSource="{x:Bind ViewModel.AvailableColors, Mode=OneWay}"
-                SelectedItem="{x:Bind ViewModel.SelectAvailableColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectionMode="Single">
-                <ui1:Segmented.ItemTemplate>
-                    <DataTemplate x:DataType="model:AvailableColor">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Border
-                                Width="40"
-                                Height="40"
-                                Background="{x:Bind Color, Mode=OneWay}"
-                                CornerRadius="5" />
-                            <!--<TextBlock
-                                Grid.Column="1"
-                                Margin="5,0,0,0"
-                                Text="{x:Bind Name, Mode=OneWay}" />-->
-                        </Grid>
-                    </DataTemplate>
-                </ui1:Segmented.ItemTemplate>
-                <ui1:Segmented.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ui1:Segmented.ItemsPanel>
-            </ui1:Segmented>
+                Margin="15,0,0,0"
+                Orientation="Vertical">
+                <TextBlock
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="18"
+                    Text="基础信息" />
+                <TextBox
+                    Margin="0,5,0,0"
+                    PlaceholderText="题目名称"
+                    Text="{x:Bind ViewModel.GameName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <NumberBox
+                    Margin="0,5,0,0"
+                    PlaceholderText="题目步数"
+                    SpinButtonPlacementMode="Compact"
+                    Value="{x:Bind ViewModel.GameSetup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock
+                    Margin="0,10,0,0"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="18"
+                    Text="色块" />
+                <ui1:Segmented
+                    Grid.Row="1"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    ItemsSource="{x:Bind ViewModel.AvailableColors, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectAvailableColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    SelectionMode="Single">
+                    <ui1:Segmented.ItemTemplate>
+                        <DataTemplate x:DataType="model:AvailableColor">
+                            <Grid Padding="0,10" ToolTipService.ToolTip="{x:Bind Name}">
+                                <Border
+                                    Width="30"
+                                    Height="30"
+                                    Background="{x:Bind Color, Mode=OneWay}"
+                                    CornerRadius="5" />
+                                <FontIcon
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Segoe Fluent Icons"
+                                    FontSize="20"
+                                    Foreground="White"
+                                    Glyph="&#xE72E;"
+                                    Visibility="{x:Bind IsStone, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ui1:Segmented.ItemTemplate>
+                    <ui1:Segmented.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ui1:Segmented.ItemsPanel>
+                </ui1:Segmented>
+                <TextBlock
+                    Margin="0,10,0,0"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="18"
+                    Text="操作" />
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        HorizontalAlignment="Stretch"
+                        Command="{x:Bind ViewModel.ClearBoardCommand}"
+                        Content="清空画板" />
+                    <Button
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        Command="{x:Bind ViewModel.FullBlackColorCommand}"
+                        Content="填充空白" />
+                </Grid>
+                <TextBlock
+                    Margin="0,10,0,0"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="18"
+                    Text="保存导出" />
+                <Grid>
+                    <Button
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Stretch"
+                        Command="{x:Bind ViewModel.SaveGameCommand}"
+                        Content="保存到文件中" />
+                </Grid>
+            </StackPanel>
         </Grid>
-
-
     </Grid>
 </Page>

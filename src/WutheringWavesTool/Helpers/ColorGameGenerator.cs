@@ -18,7 +18,7 @@ public static class ColorGameGenerator
                     R = 0,
                     G = 0,
                     B = 0,
-                    CurrentColor = new SolidColorBrush(Colors.Black),
+                    CurrentColor = new SolidColorBrush(Colors.Gray),
                     Row = row,
                     Column = col
                 });

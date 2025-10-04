@@ -25,4 +25,9 @@ public sealed partial class ColorFullGame : Page,IWindowPage
     {
         this.title.Window = window;
     }
+
+    private async void ItemsView_ItemInvoked(ItemsView sender, ItemsViewItemInvokedEventArgs args)
+    {
+        await ViewModel.CellClicked(args);
+    }
 }
