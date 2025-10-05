@@ -36,6 +36,13 @@ partial class ColorFullViewModel
         this.GameGrid = ColorGameGenerator.GenerateColorGame(8,12).ToObservableCollection();
     }
 
+    [RelayCommand]
+    void GeneratorCuston()
+    {
+        GameGrid.Clear();
+        GameColumsSize = (int)this.BuildMaxColumn;
+        this.GameGrid = ColorGameGenerator.GenerateColorGame((int)BuildMaxRow, (int)BuildMaxColumn).ToObservableCollection();
+    }
 
     [RelayCommand]
     public async Task CellClicked(ItemsViewItemInvokedEventArgs cell)

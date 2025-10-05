@@ -64,7 +64,7 @@ public sealed partial class ColorFullViewModel : ViewModelBase
                 if (neighbor != null && (neighbor.CurrentColor as SolidColorBrush)?.Color == oldColor && !neighbor.IsStone)
                     queue.Enqueue((nr, nc));
             }
-            await Task.Delay(20);
+            await Task.Delay(10);
         }
         CheckWinCondition();
     }

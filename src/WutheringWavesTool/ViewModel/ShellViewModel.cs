@@ -90,6 +90,10 @@ public sealed partial class ShellViewModel : ViewModelBase
     void OpenColorGame()
     {
         var result = this.ViewFactorys.ShowColorGame();
+        result.Manager.MaxHeight = 600;
+        result.Manager.MaxWidth = 1000;
+        result.Manager.Height = 600;
+        result.Manager.Width = 1000;
         result.Activate();
     }
 

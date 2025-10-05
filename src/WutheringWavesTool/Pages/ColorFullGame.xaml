@@ -98,17 +98,19 @@
         </ui:TitleBar>
         <Grid Grid.Row="1" Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
+                <ColumnDefinition Width="550" />
+                <ColumnDefinition Width="420" />
             </Grid.ColumnDefinitions>
-            <Viewbox Margin="15,0,0,0">
-                <Border
-                    Padding="15"
-                    HorizontalAlignment="Left"
-                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource AccentAAFillColorDefaultBrush}"
-                    BorderThickness="2"
-                    CornerRadius="5">
+            <Border
+                Padding="15"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource AccentAAFillColorDefaultBrush}"
+                BorderThickness="2"
+                CornerRadius="5">
+                <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center">
+
                     <ItemsView
                         IsItemInvokedEnabled="True"
                         ItemInvoked="ItemsView_ItemInvoked"
@@ -158,11 +160,12 @@
                                 MinRowSpacing="5" />
                         </ItemsView.Layout>
                     </ItemsView>
-                </Border>
-            </Viewbox>
+                </Viewbox>
+            </Border>
             <StackPanel
                 Grid.Column="1"
                 Margin="15,0,0,0"
+                HorizontalAlignment="Stretch"
                 Orientation="Vertical">
                 <TextBlock
                     FontFamily="{ThemeResource DefaultFont}"
@@ -182,18 +185,27 @@
                     <TextBlock VerticalAlignment="Center" Text="行" />
                     <TextBlock
                         Grid.Column="2"
+                        Margin="5,0,0,0"
                         VerticalAlignment="Center"
                         Text="列" />
-                    <TextBox Grid.Column="1" />
-                    <TextBox Grid.Column="3" />
+                    <NumberBox
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        Value="{x:Bind ViewModel.BuildMaxRow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <NumberBox
+                        Grid.Column="3"
+                        Margin="5,0,0,0"
+                        Value="{x:Bind ViewModel.BuildMaxColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Button
                         Grid.Row="1"
                         Grid.ColumnSpan="4"
                         Margin="0,10,0,0"
-                        HorizontalAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        Command="{x:Bind ViewModel.GeneratorCustonCommand}"
                         Content="生成" />
                 </Grid>
                 <TextBlock
+                    Margin="0,5,0,0"
                     FontFamily="{ThemeResource DefaultFont}"
                     FontSize="18"
                     Text="基础信息" />

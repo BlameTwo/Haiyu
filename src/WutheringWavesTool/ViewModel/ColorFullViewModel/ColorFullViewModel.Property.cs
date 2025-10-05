@@ -12,6 +12,13 @@ partial class ColorFullViewModel
     public partial int GameColumsSize { get; set; } = 0;
 
     [ObservableProperty]
+    public partial double BuildMaxRow { get; set; } = 0;
+
+
+    [ObservableProperty]
+    public partial double BuildMaxColumn { get; set; } = 0;
+
+    [ObservableProperty]
     public partial string State { get; set; }
 
     [ObservableProperty]
