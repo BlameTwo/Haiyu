@@ -129,6 +129,24 @@
                     "https://prod-alicdn-gamestarter.kurogame.com/launcher/launcher/50015_LWdk9D2Ep9mpJmqBZZkcPBU2YNraEWBQ/G143/index.json",
                 Language = "en",
             };
+
+        /// <summary>
+        /// 战双台服
+        /// </summary>
+        public static GameAPIConfig TWBGRConfig
+            => new GameAPIConfig()
+            {
+                AppId = "50016",
+                GameID = "G279",
+                AppKey = "i2n5NLmdCAmOGP3J1tJOlWKNSMQuyWL7",
+                GameIdentity = "Haru",
+                GameExeName = "PGR.exe",
+                ConfigUrl =
+                    "https://prod-alicdn-gamestarter.kurogame.com/launcher/game/G279/50016_i2n5NLmdCAmOGP3J1tJOlWKNSMQuyWL7/index.json",
+                LauncherConfigUrl =
+                    "https://prod-alicdn-gamestarter.kurogame.com/launcher/launcher/50016_i2n5NLmdCAmOGP3J1tJOlWKNSMQuyWL7/G279/index.json",
+                Language = "zh-Hant",
+            };
         #endregion
     }
 

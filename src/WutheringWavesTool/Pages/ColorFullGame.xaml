@@ -17,11 +17,8 @@
     xmlns:ui1="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <Page.Resources>
-        <!--  点染  -->
         <convert:GameFullModeConverter x:Key="DotDyeingGameFullModeConverter" ParentMode="DotDyeing" />
-        <!--  染色  -->
         <convert:GameFullModeConverter x:Key="DyeingGameFullModeConverter" ParentMode="Dyeing" />
-        <!--  游戏  -->
         <convert:GameFullModeConverter x:Key="GameGameFullModeConverter" ParentMode="Game" />
     </Page.Resources>
     <Grid>
@@ -35,7 +32,6 @@
             TitleMode="Tall">
             <ui:TitleBar.Header>
                 <StackPanel Orientation="Horizontal">
-
                     <MenuBar Margin="5,5,0,0">
                         <MenuBarItem Title="文件">
                             <MenuFlyoutItem Command="{x:Bind ViewModel.NewFileCommand}" Text="新文件">
@@ -168,6 +164,35 @@
                 Grid.Column="1"
                 Margin="15,0,0,0"
                 Orientation="Vertical">
+                <TextBlock
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="18"
+                    Text="生成" />
+                <Grid Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center" Text="行" />
+                    <TextBlock
+                        Grid.Column="2"
+                        VerticalAlignment="Center"
+                        Text="列" />
+                    <TextBox Grid.Column="1" />
+                    <TextBox Grid.Column="3" />
+                    <Button
+                        Grid.Row="1"
+                        Grid.ColumnSpan="4"
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Center"
+                        Content="生成" />
+                </Grid>
                 <TextBlock
                     FontFamily="{ThemeResource DefaultFont}"
                     FontSize="18"

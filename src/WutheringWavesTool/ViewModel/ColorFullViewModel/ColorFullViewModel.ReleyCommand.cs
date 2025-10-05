@@ -62,7 +62,7 @@ partial class ColorFullViewModel
                 }
                 if (cell != null && !value.CurrentColor.Color.Equals(SelectAvailableColor.Color))
                 {
-                    await FloodFill(value.Row, value.Column, value.CurrentColor.Color, SelectAvailableColor.Color.Color);
+                    await FloodFill(value.Row, value.Column, SelectAvailableColor.Color.Color);
                     CheckWinCondition();
                 }
             }

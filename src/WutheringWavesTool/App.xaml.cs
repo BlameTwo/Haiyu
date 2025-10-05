@@ -2,6 +2,7 @@
 
 using Waves.Core.Services;
 using Haiyu.Helpers;
+using System.Text;
 
 namespace Haiyu;
 
@@ -37,7 +38,10 @@ public partial class App : ClientApplication
         this.InitializeComponent();
         var id = DeviceNumGenerator.GenerateId();
         Directory.CreateDirectory(AppSettings.CloudFolderPath);
+        //var result2 = KRHelper.Xor(Convert.FromBase64String(File.ReadAllText(@"C:\Program Files\Punishing Gray Raven\2.2.2.0\Assets\KRApp.conf")), 99);
+        //var str = Encoding.UTF8.GetString(result2);
     }
+
 
 
     private void App_UnhandledException(

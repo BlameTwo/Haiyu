@@ -145,6 +145,7 @@
                                             VerticalAlignment="Center"
                                             Content="国际服"
                                             IsChecked="{x:Bind ViewModel.ShowPGRGlobalGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox VerticalAlignment="Center" Content="台服" />
                                     </StackPanel>
                                 </Grid>
                             </Flyout>
@@ -399,6 +400,7 @@
                 <NavigationView.MenuItems>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.MainGameViewModel"
+                        Content="鸣潮（官服）"
                         ToolTipService.ToolTip="鸣潮（官服）"
                         Visibility="{x:Bind ViewModel.ShowWavesMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <i:Interaction.Behaviors>
@@ -410,6 +412,7 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GlobalGameViewModel"
+                        Content="鸣潮（国际服）"
                         ToolTipService.ToolTip="鸣潮（国际服）"
                         Visibility="{x:Bind ViewModel.ShowWavesGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
@@ -422,6 +425,7 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.BiliBiliGameViewModel"
+                        Content="鸣潮（B服）"
                         ToolTipService.ToolTip="鸣潮（B服）"
                         Visibility="{x:Bind ViewModel.ShowWavesBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
@@ -434,6 +438,7 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.MainPGRViewModel"
+                        Content="战双帕弥什（官方）"
                         ToolTipService.ToolTip="战双帕弥什（官方）"
                         Visibility="{x:Bind ViewModel.ShowPGRMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <i:Interaction.Behaviors>
@@ -445,6 +450,7 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.BiliBiliPGRGameViewModel"
+                        Content="战双帕弥什（B服）"
                         ToolTipService.ToolTip="战双帕弥什（B服）"
                         Visibility="{x:Bind ViewModel.ShowPGRBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <i:Interaction.Behaviors>
@@ -456,6 +462,7 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GlobalPGRViewModel"
+                        Content="战双帕弥什（国际服）"
                         ToolTipService.ToolTip="战双帕弥什（国际服）"
                         Visibility="{x:Bind ViewModel.ShowPGRGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <i:Interaction.Behaviors>
