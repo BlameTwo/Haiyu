@@ -7,7 +7,7 @@ namespace Haiyu.Models.ColorGames;
 public class ColorInfo
 {
     [JsonPropertyName("gameMode")]
-    public GameMode GameMode { get; set; }
+    public ColorGameEditMode GameMode { get; set; }
 
     [JsonPropertyName("cells")]
     public List<ColorCell> Cells { get; set; }
@@ -20,6 +20,9 @@ public class ColorInfo
 
     [JsonPropertyName("maxColumns")]
     public int MaxColumns { get; set; }
+
+    [JsonPropertyName("GameObjective")]
+    public string GameObjective { get; set; }
 
     [JsonPropertyName("gamefile")]
     public string GameFile { get; set; }

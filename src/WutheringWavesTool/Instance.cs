@@ -83,6 +83,7 @@ public static class Instance
             .AddTransient<IPageService, PageService>()
             .AddTransient<IPickersService, PickersService>()
             .AddSingleton<ITipShow, TipShow>()
+            .AddKeyedTransient<ITipShow,PageTipShow>("Cache")
             #endregion
             #region Base
             .AddSingleton<IAppContext<App>, AppContext<App>>()

@@ -19,9 +19,8 @@
     <Page.Resources>
         <convert:GameFullModeConverter x:Key="DotDyeingGameFullModeConverter" ParentMode="DotDyeing" />
         <convert:GameFullModeConverter x:Key="DyeingGameFullModeConverter" ParentMode="Dyeing" />
-        <convert:GameFullModeConverter x:Key="GameGameFullModeConverter" ParentMode="Game" />
     </Page.Resources>
-    <Grid>
+    <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
@@ -30,64 +29,91 @@
             x:Name="title"
             IsExtendsContentIntoTitleBar="True"
             TitleMode="Tall">
+            <ui:TitleBar.Title>
+                <TextBlock
+                    Margin="15,7,0,0"
+                    VerticalAlignment="Center"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    Text="溢彩画编辑器" />
+            </ui:TitleBar.Title>
             <ui:TitleBar.Header>
                 <StackPanel Orientation="Horizontal">
-                    <MenuBar Margin="5,5,0,0">
-                        <MenuBarItem Title="文件">
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.NewFileCommand}" Text="新文件">
+
+                    <MenuBar
+                        Margin="5,5,0,0"
+                        FontFamily="{ThemeResource DefaultFont}"
+                        FontSize="12">
+                        <MenuBarItem
+                            Title="文件"
+                            FontFamily="{ThemeResource DefaultFont}"
+                            FontSize="12">
+                            <MenuFlyoutItem
+                                Command="{x:Bind ViewModel.NewFileCommand}"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="12"
+                                Text="新文件">
                                 <MenuFlyoutItem.Icon>
                                     <SymbolIcon Symbol="NewFolder" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.OpenGameCommand}" Text="打开">
+                            <MenuFlyoutItem
+                                Command="{x:Bind ViewModel.OpenGameCommand}"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="12"
+                                Text="打开">
                                 <MenuFlyoutItem.Icon>
                                     <SymbolIcon Symbol="OpenFile" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.SaveGameCommand}" Text="保存">
+                            <MenuFlyoutItem
+                                Command="{x:Bind ViewModel.SaveGameCommand}"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="12"
+                                Text="保存">
                                 <MenuFlyoutItem.Icon>
                                     <SymbolIcon Symbol="Save" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
 
-                            <MenuFlyoutSeparator />
-                            <MenuFlyoutItem Text="退出">
-                                <MenuFlyoutItem.Icon>
-                                    <SymbolIcon Symbol="Clear" />
-                                </MenuFlyoutItem.Icon>
-                            </MenuFlyoutItem>
                         </MenuBarItem>
                         <MenuBarItem Title="生成棋盘">
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.Generator8X12Command}" Text="8X12" />
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.Generator6X6Command}" Text="6X6" />
-                            <MenuFlyoutItem Command="{x:Bind ViewModel.Generator10X10Command}" Text="10X10" />
+                            <MenuFlyoutItem
+                                Command="{x:Bind ViewModel.Generator8X12Command}"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="12"
+                                Text="8X12" />
+                            <MenuFlyoutItem
+                                Command="{x:Bind ViewModel.Generator6X6Command}"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="12"
+                                Text="6X6" />
+                            <MenuFlyoutItem
+                                Command="{x:Bind ViewModel.Generator10X10Command}"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="12"
+                                Text="10X10" />
                         </MenuBarItem>
-                        <MenuBarItem Title="编辑">
+                        <MenuBarItem Title="染色切换">
                             <RadioMenuFlyoutItem
                                 Command="{x:Bind ViewModel.SetGameModeCommand}"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="12"
                                 GroupName="GameMode"
                                 IsChecked="{x:Bind ViewModel.Mode, Mode=OneWay, Converter={StaticResource DotDyeingGameFullModeConverter}}"
                                 Text="点染模式">
                                 <RadioMenuFlyoutItem.CommandParameter>
-                                    <enum:GameMode>DotDyeing</enum:GameMode>
+                                    <enum:ColorGameEditMode>DotDyeing</enum:ColorGameEditMode>
                                 </RadioMenuFlyoutItem.CommandParameter>
                             </RadioMenuFlyoutItem>
                             <RadioMenuFlyoutItem
                                 Command="{x:Bind ViewModel.SetGameModeCommand}"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="12"
                                 GroupName="GameMode"
                                 IsChecked="{x:Bind ViewModel.Mode, Mode=OneWay, Converter={StaticResource DyeingGameFullModeConverter}}"
                                 Text="染色模式">
                                 <RadioMenuFlyoutItem.CommandParameter>
-                                    <enum:GameMode>Dyeing</enum:GameMode>
-                                </RadioMenuFlyoutItem.CommandParameter>
-                            </RadioMenuFlyoutItem>
-                            <RadioMenuFlyoutItem
-                                Command="{x:Bind ViewModel.SetGameModeCommand}"
-                                GroupName="GameMode"
-                                IsChecked="{x:Bind ViewModel.Mode, Mode=OneWay, Converter={StaticResource GameGameFullModeConverter}}"
-                                Text="游戏模式">
-                                <RadioMenuFlyoutItem.CommandParameter>
-                                    <enum:GameMode>Game</enum:GameMode>
+                                    <enum:ColorGameEditMode>Dyeing</enum:ColorGameEditMode>
                                 </RadioMenuFlyoutItem.CommandParameter>
                             </RadioMenuFlyoutItem>
                         </MenuBarItem>
@@ -110,13 +136,11 @@
                 BorderThickness="2"
                 CornerRadius="5">
                 <Viewbox HorizontalAlignment="Center" VerticalAlignment="Center">
-
                     <ItemsView
                         IsItemInvokedEnabled="True"
                         ItemInvoked="ItemsView_ItemInvoked"
                         ItemsSource="{x:Bind ViewModel.GameGrid, Mode=OneWay}"
                         SelectionMode="None">
-
                         <ItemsView.ItemTransitionProvider>
                             <LinedFlowLayoutItemCollectionTransitionProvider />
                         </ItemsView.ItemTransitionProvider>
@@ -222,7 +246,7 @@
                     Margin="0,10,0,0"
                     FontFamily="{ThemeResource DefaultFont}"
                     FontSize="18"
-                    Text="色块" />
+                    Text="操作" />
                 <ui1:Segmented
                     Grid.Row="1"
                     Margin="0,10,0,0"
@@ -235,8 +259,68 @@
                         <DataTemplate x:DataType="model:AvailableColor">
                             <Grid Padding="0,10" ToolTipService.ToolTip="{x:Bind Name}">
                                 <Border
-                                    Width="30"
-                                    Height="30"
+                                    Width="35"
+                                    Height="35"
+                                    Background="{x:Bind Color, Mode=OneWay}"
+                                    CornerRadius="5" />
+                                <FontIcon
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Segoe Fluent Icons"
+                                    Foreground="White"
+                                    Glyph="&#xE72E;"
+                                    Visibility="{x:Bind IsStone, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ui1:Segmented.ItemTemplate>
+                    <ui1:Segmented.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ui1:Segmented.ItemsPanel>
+                </ui1:Segmented>
+
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        HorizontalAlignment="Stretch"
+                        Command="{x:Bind ViewModel.ClearBoardCommand}"
+                        Content="清空画板" />
+                    <Button
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        Command="{x:Bind ViewModel.FullBlackColorCommand}"
+                        Content="填充空白" />
+                    <Button
+                        Grid.Column="2"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        Command="{x:Bind ViewModel.ResetCommand}"
+                        Content="重置色块" />
+                </Grid>
+                <TextBlock
+                    Margin="0,10,0,0"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="18"
+                    Text="设置目标并导出" />
+                <ui1:Segmented
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    ItemsSource="{x:Bind ViewModel.ObjectiveColors, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectGameEndColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    SelectionMode="Single">
+                    <ui1:Segmented.ItemTemplate>
+                        <DataTemplate x:DataType="model:AvailableColor">
+                            <Grid Padding="0,10" ToolTipService.ToolTip="{x:Bind Name}">
+                                <Border
+                                    Width="35"
+                                    Height="35"
                                     Background="{x:Bind Color, Mode=OneWay}"
                                     CornerRadius="5" />
                                 <FontIcon
@@ -256,32 +340,6 @@
                         </ItemsPanelTemplate>
                     </ui1:Segmented.ItemsPanel>
                 </ui1:Segmented>
-                <TextBlock
-                    Margin="0,10,0,0"
-                    FontFamily="{ThemeResource DefaultFont}"
-                    FontSize="18"
-                    Text="操作" />
-                <Grid Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Button
-                        HorizontalAlignment="Stretch"
-                        Command="{x:Bind ViewModel.ClearBoardCommand}"
-                        Content="清空画板" />
-                    <Button
-                        Grid.Column="1"
-                        Margin="5,0,0,0"
-                        HorizontalAlignment="Stretch"
-                        Command="{x:Bind ViewModel.FullBlackColorCommand}"
-                        Content="填充空白" />
-                </Grid>
-                <TextBlock
-                    Margin="0,10,0,0"
-                    FontFamily="{ThemeResource DefaultFont}"
-                    FontSize="18"
-                    Text="保存导出" />
                 <Grid>
                     <Button
                         Margin="0,10,0,0"

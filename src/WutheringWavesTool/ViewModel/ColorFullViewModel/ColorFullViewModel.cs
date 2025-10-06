@@ -2,11 +2,10 @@
 
 public sealed partial class ColorFullViewModel : ViewModelBase
 {
-    public ColorFullViewModel(ITipShow tipShow, IPickersService pickersService)
+    public ColorFullViewModel([FromKeyedServices("Cache")]ITipShow tipShow, IPickersService pickersService)
     {
         TipShow = tipShow;
         PickersService = pickersService;
-        this.Mode = Models.Enums.GameMode.Game;
         NewFile();
     }
 
@@ -15,14 +14,13 @@ public sealed partial class ColorFullViewModel : ViewModelBase
 
     private void CheckWinCondition()
     {
-        if (GameGrid.Count > 0)
+        if (GameGrid.Count > 0 || this.SelectGameEndColor != null)
         {
             var isNotStone = GameGrid.Where(x => !x.IsStone);
             if (isNotStone.Any())
             {
-                var firstColor = isNotStone.First().CurrentColor.Color;
-                var result = isNotStone.All(x => AreColorsEqual(x.CurrentColor.Color, firstColor));
-                this.State = result ? "染色完成！" : "继续染色...";
+                var result = isNotStone.All(x => AreColorsEqual(x.CurrentColor.Color, this.SelectGameEndColor.Color.Color));
+                TipShow.ShowMessage($"染色结果:{result}", Symbol.Message);
             }
         }
     }

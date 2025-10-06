@@ -6,10 +6,10 @@ namespace Haiyu.Converter;
 
 public partial class GameFullModeConverter : IValueConverter
 {
-    public GameMode ParentMode { get; set; }
+    public ColorGameEditMode ParentMode { get; set; }
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if(value is GameMode mode)
+        if(value is ColorGameEditMode mode)
         {
             if (mode == ParentMode)
                 return true;
