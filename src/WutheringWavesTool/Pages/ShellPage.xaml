@@ -37,22 +37,22 @@
         <tb:TaskbarIcon
             ContextMenuMode="SecondWindow"
             IconSource="/Assets/appLogo.ico"
-            ToolTipText="鸣潮1.0">
+            ToolTipText="Haiyu">
             <tb:TaskbarIcon.ContextFlyout>
                 <MenuFlyout>
                     <MenuFlyoutItem
+                        x:Uid="NotifyIcon_First"
                         Command="{x:Bind ViewModel.ShowWindowCommand}"
-                        FontFamily="{ThemeResource DefaultFont}"
-                        Text="显示界面">
+                        FontFamily="{ThemeResource DefaultFont}">
                         <MenuFlyoutItem.Icon>
                             <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7FC;" />
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
                     <MenuFlyoutSeparator />
                     <MenuFlyoutItem
+                        x:Uid="NotifyIcon_Second"
                         Command="{x:Bind ViewModel.ExitWindowCommand}"
-                        FontFamily="{ThemeResource DefaultFont}"
-                        Text="退出程序">
+                        FontFamily="{ThemeResource DefaultFont}">
                         <MenuFlyoutItem.Icon>
                             <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF3B1;" />
                         </MenuFlyoutItem.Icon>
@@ -309,7 +309,7 @@
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
-                                <MenuFlyoutItem Text="开始游戏">
+                                <MenuFlyoutItem Command="{x:Bind ViewModel.OpenStartColorGameCommand}" Text="开始游戏">
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7FC;" />
                                     </MenuFlyoutItem.Icon>

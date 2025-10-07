@@ -34,6 +34,8 @@ public static class Instance
             .AddTransient<CloudGameViewModel>()
             .AddTransient<ColorFullGame>()
             .AddTransient<ColorFullViewModel>()
+            .AddTransient<StartColorFullGamePage>()
+            .AddTransient<StartColorFullGameViewModel>()
             .AddTransient<AnalysisRecordViewModel>()
             .AddTransient<AnalysisRecordPage>()
             #region GameContext

@@ -105,4 +105,7 @@ public class ViewFactorys : IViewFactorys
 
     public WindowModelBase ShowColorGame()
         =>ShowWindowBase<ColorFullGame>(null);
+
+    public WindowModelBase ShowStartColorGame()
+        =>ShowWindowBase<StartColorFullGamePage>(null);
 }

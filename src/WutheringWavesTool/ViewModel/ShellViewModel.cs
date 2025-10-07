@@ -98,6 +98,17 @@ public sealed partial class ShellViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    void OpenStartColorGame()
+    {
+        var result = this.ViewFactorys.ShowStartColorGame();
+        result.Manager.MaxHeight = 600;
+        result.Manager.MaxWidth = 1000;
+        result.Manager.Height = 600;
+        result.Manager.Width = 1000;
+        result.Activate();
+    }
+
+    [RelayCommand]
     void BackPage()
     {
         if (HomeNavigationService.CanGoBack)
