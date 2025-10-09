@@ -20,7 +20,7 @@ public class DiffDecompressManager
     public string NewFolder { get; }
     public string DiffFile { get; }
 
-    public async Task StartAsync(IProgress<(double, double)> progress)
+    public async Task<int> StartAsync(IProgress<(double, double)> progress)
     {
         try
         {
@@ -53,10 +53,12 @@ public class DiffDecompressManager
                 }
             }
             await _process.WaitForExitAsync();
+            return _process.ExitCode;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"发生异常: {ex.Message}");
+            return -10000;
         }
         finally
         {

@@ -361,7 +361,6 @@ public partial class GameContextBase
         _totalProgressTotal = 0;
         _totalVerifiedBytes = 0;
         _totalDownloadedBytes = 0;
-
         if (previous != null)
         {
             var cdnUrl =
@@ -396,10 +395,15 @@ public partial class GameContextBase
             _totalFileTotal = patchInfos.Count - 1;
             _totalProgressTotal = 0;
             _totalProgressSize = 0;
+            if(patch.PatchInfos!= null && patch.PatchInfos.Count > 0)
+            {
+                result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
+            }
             result = await Task.Run(() => UpdateGameToResources(folder + "\\Diff", patchInfos));
             if (!result)
             {
                 Logger.WriteInfo($"下载差异组文件失败，请联系开发者");
+                await SetNoneStatusAsync().ConfigureAwait(false);
                 return;
             }
             for (int i = 0; i < patchInfos.Count; i++)
@@ -453,7 +457,32 @@ public partial class GameContextBase
         #endregion
     }
 
+    private async Task<bool> DownloadPatcheToResource(string folder, PatchIndexGameResource patch)
+    {
+        var patchInfos = patch.PatchInfos.Where(x => x.Dest.EndsWith("krdiff")).ToList();
+        for (int i = 0; i < patchInfos.Count(); i++)
+        {
 
+            if (patchInfos[i].Dest.EndsWith("krdiff"))
+            {
+                var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
+                var filePath = BuildFilePath(folder, patchInfos[i]);
+                string? krdiffPath = "";
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+                krdiffPath = await DownloadFileByKrDiff(patchInfos[i].Dest, filePath);
+                if (krdiffPath == null)
+                {
+                    Logger.WriteError("下载差异文件取消或出现异常");
+                    return false;
+                }
+                await DecompressKrdiffFile(folder, filePath,i,patchInfos.Count);
+            }
+        }
+        return true;
+    }
 
     private async Task DecompressKrdiffFile(string folder, string? krdiffPath,int curent,int total)
     {
@@ -485,7 +514,8 @@ public partial class GameContextBase
                 )
                 .ConfigureAwait(false); 
         };
-        await manager.StartAsync(progress);
+        var result =  await manager.StartAsync(progress);
+        Logger.WriteInfo($"解压程序结果{result}");
     }
 
     private string BuildFilePath(string folder, PatchInfo item)

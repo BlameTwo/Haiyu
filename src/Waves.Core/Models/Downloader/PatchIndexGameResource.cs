@@ -52,6 +52,9 @@ public class PatchIndexGameResource : IndexGameResource
 
     [JsonPropertyName("applyTypes")]
     public List<string> ApplyTypes { get; set; }
+
+    [JsonPropertyName("patchInfos")]
+    public List<PatchInfo> PatchInfos { get; set; }
 }
 
 [JsonSerializable(typeof(PatchInfo))]
