@@ -34,6 +34,7 @@ partial class GameContextViewModelBase
                         this.BottomBarContent =
                             $"校验速度:{Math.Round(args.VerifySpeed / 1024 / 1024, 2)}MB,剩余：{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
                     }
+                    PauseStartEnable = true;
                 }
                 else if (args.Type == Waves.Core.Models.Enums.GameContextActionType.Download)
                 {
@@ -46,11 +47,13 @@ partial class GameContextViewModelBase
                         this.BottomBarContent =
                             $"下载速度:{Math.Round(args.DownloadSpeed / 1024 / 1024, 2)}MB，剩余：{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
                     }
+                    PauseStartEnable = true;
                 }
                 else if(args.Type == Waves.Core.Models.Enums.GameContextActionType.Decompress)
                 {
                     this.BottomBarContent =
-                            $"已解压:{Math.Round((double)args.CurrentSize / 1024 / 1024/1024, 2)}GB,剩余:{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
+                            $"[{args.CurrentDecompressCount}/{args.MaxDecompressValue}] 已解压:{Math.Round((double)args.CurrentSize / 1024 / 1024/1024, 2)}GB,剩余:{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
+                    PauseStartEnable = false;
                 }
                 ShowGameDownloadingBth();
             }
@@ -60,9 +63,11 @@ partial class GameContextViewModelBase
                 this.MaxProgressValue = args.FileTotal;
                 this.CurrentProgressValue = args.CurrentFile;
                 this.BottomBarContent = args.DeleteString;
+                PauseStartEnable = false;
             }
             if (args.Type == Waves.Core.Models.Enums.GameContextActionType.None)
             {
+                PauseStartEnable = true;
                 this.CurrentProgressValue = 0;
                 this.MaxProgressValue = 100;
                 var status = await this.GameContext.GetGameContextStatusAsync(this.CTS.Token);

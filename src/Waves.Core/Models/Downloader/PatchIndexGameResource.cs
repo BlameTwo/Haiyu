@@ -44,13 +44,14 @@ public class PatchResource
     public List<IndexChunkInfo> ChunkInfos { get; set; }
 }
 
+
 public class PatchIndexGameResource : IndexGameResource
 {
     [JsonPropertyName("deleteFiles")]
     public List<string> DeleteFiles { get; set; }
 
-    [JsonPropertyName("patchInfos")]
-    public List<PatchInfo> PatchInfos { get; set; }
+    [JsonPropertyName("applyTypes")]
+    public List<string> ApplyTypes { get; set; }
 }
 
 [JsonSerializable(typeof(PatchInfo))]

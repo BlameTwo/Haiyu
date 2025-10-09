@@ -19,6 +19,10 @@ public class GameContextOutputArgs
     public long CurrentSize { get; set; }
     public long TotalSize { get; set; }
 
+    public int CurrentDecompressCount { get; set; }
+
+    public int MaxDecompressValue { get; set; }
+
     public double DownloadSpeed { get; set; }
 
     public double VerifySpeed { get; set; }

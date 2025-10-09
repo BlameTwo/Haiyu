@@ -82,6 +82,9 @@ namespace Haiyu.ViewModel.GameViewModels
         }
 
         [ObservableProperty]
+        public partial bool PauseStartEnable { get; set; } = true;
+
+        [ObservableProperty]
         public partial string BottomBarContent { get; set; }
 
         /// <summary>

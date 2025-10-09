@@ -193,6 +193,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Command="{x:Bind ViewModel.PauseDownloadTaskCommand}"
+                    IsEnabled="{x:Bind ViewModel.PauseStartEnable, Mode=OneWay}"
                     Style="{ThemeResource TransparentButtonStyle}"
                     ToolTipService.ToolTip="暂停当前操作"
                     Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
@@ -212,6 +213,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Command="{x:Bind ViewModel.CancelDownloadTaskCommand}"
+                    IsEnabled="{x:Bind ViewModel.PauseStartEnable, Mode=OneWay}"
                     Style="{ThemeResource TransparentButtonStyle}"
                     ToolTipService.ToolTip="取消当前操作"
                     Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">

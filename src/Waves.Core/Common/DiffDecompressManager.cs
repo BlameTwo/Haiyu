@@ -36,7 +36,7 @@ public class DiffDecompressManager
                 RedirectStandardError = false,
                 RedirectStandardOutput = false,
                 UseShellExecute = false,
-                CreateNoWindow = false,
+                CreateNoWindow = true,
             };
             Process _process = new Process();
             _process = new Process { StartInfo = processStartInfo, EnableRaisingEvents = true };
@@ -53,7 +53,6 @@ public class DiffDecompressManager
                 }
             }
             await _process.WaitForExitAsync();
-            //File.Delete(DiffFile);
         }
         catch (Exception ex)
         {
