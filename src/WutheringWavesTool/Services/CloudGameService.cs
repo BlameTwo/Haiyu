@@ -269,6 +269,10 @@ public class CloudGameService : ICloudGameService
             var getToken = await GetAccessTokenAsync(accessToken.Data.Code);
 
             var endLogin = await GetTokenAsync(accessToken.Data, getToken.Data.AccessToken);
+            if(endLogin.Code == 305)
+            {
+                return (false, endLogin.Msg);
+            }
             this.RecordToken = endLogin.Data.Token;
             return (true, "成功");
         }

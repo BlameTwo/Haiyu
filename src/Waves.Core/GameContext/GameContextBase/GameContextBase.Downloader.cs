@@ -560,6 +560,8 @@ public partial class GameContextBase
                 if (resource.Resource[i].Dest.Contains("krdiff"))
                     continue;
                 Logger.WriteInfo($"开始处理更新文件{resource.Resource[i].Dest}");
+                if (resource.Resource[i].Dest.Contains("krpdiff"))
+                    continue;
                 if (_downloadCTS?.IsCancellationRequested ?? true)
                 {
                     this._downloadState.IsActive = false;
@@ -1162,6 +1164,11 @@ public partial class GameContextBase
                             .ConfigureAwait(false);
                         accumulatedBytes = 0;
                     }
+                    
+                }
+                catch(Exception ex)
+                {
+
                 }
                 finally
                 {

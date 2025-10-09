@@ -135,6 +135,11 @@ public partial class CloudGameViewModel : ViewModelBase
         this.LoadVisibility = Visibility.Collapsed;
         this.DataVisibility = Visibility.Visible;
         this.SelectRecordType = RecordNavigationItems[0];
+        if (!result.Item1)
+        {
+            TipShow.ShowMessage(result.Item2, Symbol.Clear);
+            return;
+        }
     }
 
 
