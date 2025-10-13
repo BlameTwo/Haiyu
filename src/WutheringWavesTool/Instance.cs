@@ -38,11 +38,13 @@ public static class Instance
             .AddTransient<StartColorFullGameViewModel>()
             .AddTransient<AnalysisRecordViewModel>()
             .AddTransient<AnalysisRecordPage>()
+            .AddTransient<HomeViewModel>()
             #region GameContext
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()
             .AddTransient<GlobalGameViewModel>()
             .AddTransient<MainPGRViewModel>()
+            .AddTransient<TwPGRGameViewModel>()
             .AddTransient<GlobalPGRViewModel>()
             .AddTransient<BiliBiliPGRGameViewModel>()
             #endregion
@@ -121,6 +123,8 @@ public static class Instance
             )
             .AddKeyedTransient<INavigationService, WebGameNavigationService>(
                 nameof(WebGameNavigationService)
+            ).AddKeyedTransient<INavigationService, GameWikiNavigationService>(
+                nameof(GameWikiNavigationService)
             )
             #endregion
             #region Plugin

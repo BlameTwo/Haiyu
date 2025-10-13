@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using Waves.Core;
 using Waves.Core.GameContext;
-using Waves.Core.GameContext.Contexts.Waves;
+using Waves.Core.Services;
 
 namespace Project.Test;
 
@@ -15,16 +15,12 @@ public class NewCoreTest
 
     public void InitService()
     {
-        GameContextFactory.GameBassPath = BassFolder;
-        Provider = new ServiceCollection().AddGameContext().BuildServiceProvider();
     }
 
     [TestMethod]
     public async Task Test1()
     {
-        InitService();
-        var mainGame = Provider!.GetRequiredKeyedService<IGameContext>(nameof(MainGameContext));
-        await mainGame.InitAsync();
-        var result = await mainGame.GetGameLauncherSourceAsync();
+        GameWikiClient client = new GameWikiClient();
+        var result =  await client.GetEventDataAsync(Waves.Api.Models.Enums.WikiType.Waves);
     }
 }

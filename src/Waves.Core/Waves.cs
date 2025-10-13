@@ -2,6 +2,7 @@
 using Waves.Core.Contracts;
 using Waves.Core.GameContext;
 using Waves.Core.GameContext.Contexts;
+using Waves.Core.GameContext.Contexts.PRG;
 using Waves.Core.Services;
 
 namespace Waves.Core;
@@ -65,6 +66,15 @@ public static class Waves
                 (provider, c) =>
                 {
                     var context = GameContextFactory.GetGlobalPGRGameContext();
+                    context.HttpClientService = provider.GetRequiredService<IHttpClientService>();
+                    return context;
+                }
+            )
+            .AddKeyedSingleton<IGameContext, TwPGRGameContext>(
+                nameof(TwPGRGameContext),
+                (provider, c) =>
+                {
+                    var context = GameContextFactory.GetTwWavesGameContext();
                     context.HttpClientService = provider.GetRequiredService<IHttpClientService>();
                     return context;
                 }

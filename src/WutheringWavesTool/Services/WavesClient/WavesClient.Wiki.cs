@@ -1,12 +1,12 @@
 ﻿using System.Net.Http.Json;
-using Waves.Api.Models.Wiki;
 using Haiyu.Helpers;
+using Waves.Api.Models.GameWikiiClient;
 
 namespace Haiyu.Services;
 
 partial class WavesClient
 {
-    public async Task<MainConfig> GetMainWikiAsync(CancellationToken token = default)
+    public async Task<WikiHomeModel> GetMainWikiAsync(CancellationToken token = default)
     {
         var header = new Dictionary<string, string>()
         {
@@ -23,6 +23,6 @@ partial class WavesClient
             token
         );
         var reponse = await HttpClientService.HttpClient.SendAsync(request,token);
-        return await reponse.Content.ReadFromJsonAsync(WikiContext.Default.MainConfig, token);
+        return await reponse.Content.ReadFromJsonAsync(WikiContext.Default.WikiHomeModel, token);
     }
 }

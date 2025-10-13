@@ -27,7 +27,7 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -312,13 +312,14 @@
                             <FontIcon
                                 Grid.RowSpan="2"
                                 FontFamily="Segoe Fluent Icons"
-                                FontSize="15"
+                                FontSize="20"
                                 Glyph="{x:Bind ViewModel.LauncherIcon, Mode=OneWay}" />
                             <TextBlock
                                 Grid.Column="1"
                                 Margin="15,0,0,0"
                                 VerticalAlignment="Center"
-                                FontSize="14"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="16"
                                 Text="{x:Bind ViewModel.LauncheContent, Mode=OneWay}" />
                             <TextBlock
                                 Grid.Row="1"

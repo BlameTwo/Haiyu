@@ -1,6 +1,6 @@
 ﻿using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
+using Waves.Api.Models.GameWikiiClient;
 using Waves.Api.Models.QRLogin;
-using Waves.Api.Models.Wiki;
 
 namespace WavesLauncher.Core.Contracts;
 
@@ -161,6 +161,6 @@ public interface IWavesClient
     public Task InitAsync();
 
     #region Wiki
-    public Task<MainConfig> GetMainWikiAsync(CancellationToken token = default);
+    public Task<WikiHomeModel> GetMainWikiAsync(CancellationToken token = default);
     #endregion
 }

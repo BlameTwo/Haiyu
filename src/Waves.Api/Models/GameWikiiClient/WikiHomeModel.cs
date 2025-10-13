@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Waves.Api.Models.Wiki
+namespace Waves.Api.Models.GameWikiiClient
 {
     public class Announcement
     {
@@ -179,7 +179,7 @@ namespace Waves.Api.Models.Wiki
         public int LinkType { get; set; }
 
         [JsonPropertyName("catalogueId")]
-        public int CatalogueId { get; set; }
+        public object CatalogueId { get; set; }
 
         [JsonPropertyName("entryId")]
         public string EntryId { get; set; }
@@ -230,7 +230,7 @@ namespace Waves.Api.Models.Wiki
         public string Title { get; set; }
     }
 
-    public class MainConfig
+    public class WikiHomeModel
     {
         [JsonPropertyName("code")]
         public int Code { get; set; }

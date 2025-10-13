@@ -201,6 +201,22 @@ public class AppSettings
         }
         set => Write(value.ToString());
     }
+
+    public static bool? ShowTwPGRGame
+    {
+        get
+        {
+            try
+            {
+                return Convert.ToBoolean(Read());
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        set => Write(value.ToString());
+    }
     #endregion
 
     internal static string? Read([CallerMemberName] string key = null)

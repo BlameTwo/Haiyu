@@ -22,6 +22,7 @@ public sealed partial class ShellPage : Page
         this.ViewModel.TipShow.Owner = this.panel;
         this.ViewModel.Image = this.image;
         this.ViewModel.AppContext.SetTitleControl(this.titlebar);
+        
     }
 
     private void HomeNavigationService_Navigated(object sender, NavigationEventArgs e)
@@ -33,6 +34,7 @@ public sealed partial class ShellPage : Page
             || e.SourcePageType == typeof(MainPGRGamePage)
             || e.SourcePageType == typeof(GlobalPGRGamePage)
             || e.SourcePageType == typeof(BiliBiliPGRGamePage)
+            || e.SourcePageType == typeof(TwPGRGamePage)
         )
         {
             To0.Start();

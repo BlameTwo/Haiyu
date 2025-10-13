@@ -1,5 +1,6 @@
 ﻿using Waves.Core.Contracts;
 using Waves.Core.GameContext.Contexts;
+using Waves.Core.GameContext.Contexts.PRG;
 using Waves.Core.Models;
 using Waves.Core.Services;
 
@@ -46,6 +47,13 @@ public static class GameContextFactory
         new GlobalPRGGameContext(GameAPIConfig.GlobalBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\GlokbalPGRConfig",
+            IsLimitSpeed = false,
+        };
+
+    internal static TwPGRGameContext GetTwWavesGameContext()=>
+        new TwPGRGameContext(GameAPIConfig.TWBGRConfig)
+        {
+            GamerConfigPath = GameContextFactory.GameBassPath + "\\TwPGRConfig",
             IsLimitSpeed = false,
         };
 }

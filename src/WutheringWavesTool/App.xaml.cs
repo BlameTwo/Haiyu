@@ -1,8 +1,12 @@
 ﻿
 
-using Waves.Core.Services;
 using Haiyu.Helpers;
+using Microsoft.UI.Xaml;
+using Microsoft.Windows.ApplicationModel.WindowsAppRuntime.DeploymentManagerCS;
+using Microsoft.Windows.AppLifecycle;
 using System.Text;
+using Waves.Core.Services;
+using Windows.ApplicationModel.Activation;
 
 namespace Haiyu;
 
@@ -22,27 +26,34 @@ public partial class App : ClientApplication
     private static extern int SetProcessDpiAwareness(int dpiAwareness);
 
     private const int PROCESS_PER_MONITOR_DPI_AWARE = 2;
+    private AppInstance mainInstance;
+
     public App()
     {
+        mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey("Haiyu_Main");
+        mainInstance.Activated += MainInstance_Activated;
         #region PE DPI Resource
         //SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         #endregion
-        var result = HardwareIdGenerator.GenerateUniqueId();
         this.UnhandledException += App_UnhandledException;
         Directory.CreateDirectory(BassFolder);
         Directory.CreateDirectory(RecordFolder);
         Directory.CreateDirectory(WrallpaperFolder);
         Directory.CreateDirectory(ScreenCaptures);
+        Directory.CreateDirectory(AppSettings.CloudFolderPath);
         GameContextFactory.GameBassPath = BassFolder;
         Instance.InitService();
         this.InitializeComponent();
-        var id = DeviceNumGenerator.GenerateId();
-        Directory.CreateDirectory(AppSettings.CloudFolderPath);
         //var result2 = KRHelper.Xor(Convert.FromBase64String(File.ReadAllText(@"C:\Program Files\Punishing Gray Raven\2.2.2.0\Assets\KRApp.conf")), 99);
         //var str = Encoding.UTF8.GetString(result2);
     }
 
-
+    private void MainInstance_Activated(object sender, AppActivationArguments e)
+    {
+        if (e.Kind == Microsoft.Windows.AppLifecycle.ExtendedActivationKind.File)
+        {
+        }
+    }
 
     private void App_UnhandledException(
         object sender,
@@ -66,6 +77,15 @@ public partial class App : ClientApplication
 
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
+        var mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey("Haiyu_Main");
+        if (!mainInstance.IsCurrent)
+        {
+            mainInstance.Activated -= MainInstance_Activated;
+            var activatedEventArgs = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().GetActivatedEventArgs();
+            await mainInstance.RedirectActivationToAsync(activatedEventArgs);
+            Process.GetCurrentProcess().Kill();
+            return;
+        }
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
         Instance.Service.GetService<IScreenCaptureService>().Register();
     }

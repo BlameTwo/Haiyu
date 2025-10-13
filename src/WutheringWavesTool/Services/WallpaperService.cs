@@ -46,34 +46,14 @@ public class WallpaperService : IWallpaperService
     {
         try
         {
-            var result = await ImageIOHelper.HexImageAsync(this.BaseFolder, path);
-            if (this.PletteEnable)
-            {
-                var color = await this.ColorPlette.GetThemeColorAsync(
-                    await result.Item2.GetImageDataAsync()
-                );
 
-                this.wallpaperPletteChangedDelegate?.Invoke(
-                    this,
-                    new PletteArgs(color.Item1.Value, color.Item2[0], color.Item2[1])
-                );
-            }
-            if (result.Item1 != null)
-            {
-                this.ImageHost.Source = result.Item1;
-                this.NowHexValue = result.Item3!;
-                return true;
-            }
-            else
-            {
-                TipShow.ShowMessage(result.Item2, Microsoft.UI.Xaml.Controls.Symbol.Pictures);
-                return false;
-            }
+            this.ImageHost.Source = new BitmapImage(new Uri(path));
+            return await Task.FromResult(true);
         }
         catch (Exception ex)
         {
             TipShow.ShowMessage($"图片路径或格式不合法,{ex.Message}", Symbol.Pictures);
-            return false;
+            return await Task.FromResult(true);
         }
     }
 

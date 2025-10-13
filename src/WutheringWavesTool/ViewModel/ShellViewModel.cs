@@ -249,8 +249,9 @@ public sealed partial class ShellViewModel : ViewModelBase
         this.ShowWavesMainGame = (bool)AppSettings.ShowWavesMainGame;
         this.ShowWavesGlobalGame = (bool)AppSettings.ShowWavesGlobalGame;
         this.ShowWavesBilibiliGame = (bool)AppSettings.ShowWavesBilibiliGame;
+        this.ShowTwPGRGame = (bool)AppSettings.ShowTwPGRGame;
         OpenMain();
-
+        this.AppContext.App.MainWindow.IsTitleBarVisible = false;
     }
 
     [RelayCommand]
@@ -340,9 +341,19 @@ public sealed partial class ShellViewModel : ViewModelBase
     [ObservableProperty]
     public partial bool? ShowPGRGlobalGame { get; set; }
 
+
+
     partial void OnShowPGRGlobalGameChanged(bool? value)
     {
         AppSettings.ShowPGRGlobalGame = value;
+    }
+
+    [ObservableProperty]
+    public partial bool? ShowTwPGRGame { get; set; }
+
+    partial void OnShowTwPGRGameChanged(bool? value)
+    {
+        AppSettings.ShowTwPGRGame = value;
     }
     #endregion
 }

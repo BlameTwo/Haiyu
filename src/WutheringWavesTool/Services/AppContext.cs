@@ -6,6 +6,7 @@ using WavesLauncher.Core.Contracts;
 using Windows.ApplicationModel.Contacts.DataProvider;
 using Haiyu.Services.DialogServices;
 using TitleBar = Haiyu.Controls.TitleBar;
+using Waves.Core.GameContext.Contexts.PRG;
 
 namespace Haiyu.Services;
 
@@ -52,6 +53,9 @@ public class AppContext<T> : IAppContext<T>
         await Instance
             .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalPRGGameContext))
             .InitAsync();
+        await Instance
+            .Service!.GetRequiredKeyedService<IGameContext>(nameof(TwPGRGameContext))
+            .InitAsync();
         this.App = app;
         var win = new MainWindow();
         var page = Instance.Service!.GetRequiredService<ShellPage>();
@@ -61,8 +65,8 @@ public class AppContext<T> : IAppContext<T>
         try
         {
             var scale = TitleBar.GetScaleAdjustment(win);
-            int targetDipWidth = 1100;
-            int targetDipHeight = 600;
+            int targetDipWidth = 1280;
+            int targetDipHeight = 720;
             var pixelWidth = (int)Math.Round(targetDipWidth * scale);
             var pixelHeight = (int)Math.Round(targetDipHeight * scale);
             win.AppWindow.Resize(

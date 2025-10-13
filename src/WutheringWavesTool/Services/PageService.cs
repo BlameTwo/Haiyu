@@ -12,11 +12,13 @@ public sealed partial class PageService : IPageService
         _pages = new();
         this.RegisterView<SettingPage, SettingViewModel>();
         this.RegisterView<CommunityPage, CommunityViewModel>();
+        this.RegisterView<HomePage, HomeViewModel>();
         #region GameContext
         this.RegisterView<MainGamePage, MainGameViewModel>();
         this.RegisterView<GlobalGamePage, GlobalGameViewModel>();
         this.RegisterView<BiliBiliGamePage, BiliBiliGameViewModel>();
         this.RegisterView<MainPGRGamePage, MainPGRViewModel>();
+        this.RegisterView<TwPGRGamePage, TwPGRGameViewModel>();
         this.RegisterView<BiliBiliPGRGamePage, BiliBiliPGRGameViewModel>();
         this.RegisterView<GlobalPGRGamePage, GlobalPGRViewModel>();
         this.RegisterView<StatisticsPage, StatisticsViewModel>();

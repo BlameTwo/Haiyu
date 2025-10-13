@@ -75,7 +75,7 @@
                     HorizontalAlignment="Left"
                     Orientation="Horizontal">
                     <Button
-                        Width="60"
+                        Width="70"
                         Margin="0,0,0,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
@@ -146,7 +146,10 @@
                                             VerticalAlignment="Center"
                                             Content="国际服"
                                             IsChecked="{x:Bind ViewModel.ShowPGRGlobalGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <CheckBox VerticalAlignment="Center" Content="台服" />
+                                        <CheckBox
+                                            VerticalAlignment="Center"
+                                            Content="台服"
+                                            IsChecked="{x:Bind ViewModel.ShowTwPGRGame, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
                                 </Grid>
                             </Flyout>
@@ -421,13 +424,21 @@
         <Grid x:Name="panel" Grid.Row="1">
             <NavigationView
                 x:Name="navigationView"
+                OpenPaneLength="70"
                 PaneDisplayMode="Left"
                 SelectedItem="{x:Bind ViewModel.SelectItem, Mode=OneWay}"
                 Style="{ThemeResource MainNavigationViewStyle}">
                 <NavigationView.MenuItems>
+                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.HomeViewModel" ToolTipService.ToolTip="首页">
+                        <i:Interaction.Behaviors>
+                            <sound:NavigationViewItemSoundBehavior />
+                        </i:Interaction.Behaviors>
+                        <NavigationViewItem.Icon>
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA8A;" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.MainGameViewModel"
-                        Content="鸣潮（官服）"
                         ToolTipService.ToolTip="鸣潮（官服）"
                         Visibility="{x:Bind ViewModel.ShowWavesMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <i:Interaction.Behaviors>
@@ -439,7 +450,6 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GlobalGameViewModel"
-                        Content="鸣潮（国际服）"
                         ToolTipService.ToolTip="鸣潮（国际服）"
                         Visibility="{x:Bind ViewModel.ShowWavesGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
@@ -452,7 +462,6 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.BiliBiliGameViewModel"
-                        Content="鸣潮（B服）"
                         ToolTipService.ToolTip="鸣潮（B服）"
                         Visibility="{x:Bind ViewModel.ShowWavesBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
@@ -465,7 +474,6 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.MainPGRViewModel"
-                        Content="战双帕弥什（官方）"
                         ToolTipService.ToolTip="战双帕弥什（官方）"
                         Visibility="{x:Bind ViewModel.ShowPGRMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <i:Interaction.Behaviors>
@@ -477,7 +485,6 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.BiliBiliPGRGameViewModel"
-                        Content="战双帕弥什（B服）"
                         ToolTipService.ToolTip="战双帕弥什（B服）"
                         Visibility="{x:Bind ViewModel.ShowPGRBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <i:Interaction.Behaviors>
@@ -489,9 +496,19 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GlobalPGRViewModel"
-                        Content="战双帕弥什（国际服）"
                         ToolTipService.ToolTip="战双帕弥什（国际服）"
                         Visibility="{x:Bind ViewModel.ShowPGRGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <i:Interaction.Behaviors>
+                            <sound:NavigationViewItemSoundBehavior />
+                        </i:Interaction.Behaviors>
+                        <NavigationViewItem.Icon>
+                            <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                    <NavigationViewItem
+                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.TwPGRGameViewModel"
+                        ToolTipService.ToolTip="战双帕弥什（台服）"
+                        Visibility="{x:Bind ViewModel.ShowTwPGRGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
                         </i:Interaction.Behaviors>
@@ -521,6 +538,7 @@
                 </NavigationView.MenuItems>
                 <NavigationView.PaneFooter>
                     <Button
+                        Width="60"
                         Padding="15"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"

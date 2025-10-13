@@ -2,6 +2,7 @@
 using Waves.Api.Models;
 using Waves.Api.Models.Launcher;
 using Waves.Core.GameContext.Contexts;
+using Waves.Core.GameContext.Contexts.PRG;
 using Waves.Core.Models;
 using Waves.Core.Models.Downloader;
 
@@ -16,7 +17,7 @@ partial class GameContextBase
         var url = "";
         try
         {
-            if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext))
+            if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext) || this.ContextName == nameof(TwPGRGameContext))
             {
                 url =
                     $"{GameAPIConfig.BaseAddress[1]}/launcher/game/{Config.GameID}/{Config.AppId}_{Config.AppKey}/index.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
@@ -90,7 +91,7 @@ partial class GameContextBase
         string url = "";
         try
         {
-            if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext))
+            if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext) || this.ContextName == nameof(TwPGRGameContext))
             {
                 url =
                     $"{GameAPIConfig.BaseAddress[1]}/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/information/{this.Config.Language}.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
@@ -119,7 +120,7 @@ partial class GameContextBase
     public async Task<LIndex?> GetDefaultLauncherValue(CancellationToken token = default) 
     {
         string url = "";
-        if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext))
+        if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext)||this.ContextName == nameof(TwPGRGameContext))
         {
 
             url = $"{GameAPIConfig.BaseAddress[1]}/launcher/launcher/{this.Config.AppId}_{this.Config.AppKey}/{this.Config.GameID}/index.json";
@@ -140,8 +141,8 @@ partial class GameContextBase
 
     public async Task<LauncherBackgroundData?> GetLauncherBackgroundDataAsync(string backgroundCode,CancellationToken token = default)
     {
-        var address = ""; 
-        if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext))
+        var address = "";
+        if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext) || this.ContextName == nameof(TwPGRGameContext))
         {
 
             address = $"{GameAPIConfig.BaseAddress[1]}";

@@ -28,14 +28,15 @@ namespace Waves.Core.GameContext
                 );
                 Process ps = new();
                 ps.EnableRaisingEvents = true;
-                ProcessStartInfo info =
-                    new(gameFolder + "\\" + this.Config.GameExeName)
-                    {
-                        Arguments = "Client -dx12",
-                        WorkingDirectory = gameFolder,
-                        UseShellExecute = true,
-                        Verb = "runas",
-                    };
+                ProcessStartInfo info = new(gameFolder + "\\" + this.Config.GameExeName)
+                {
+                    //Arguments = "Client -dx12",
+                    Arguments = "Client -dx12",
+                    WorkingDirectory = gameFolder,
+                    UseShellExecute = true,
+                    Verb = "runas",
+                };
+
                 this._gameProcess = ps;
                 _gameProcess.Exited += Ps_Exited;
                 _gameProcess.StartInfo = info;
@@ -48,27 +49,28 @@ namespace Waves.Core.GameContext
                 this._isStarting = false;
                 Logger.WriteError($"游戏启动错误{ex.Message}");
             }
-            this.gameContextOutputDelegate?.Invoke(
-                    this,
-                    new GameContextOutputArgs() { Type = GameContextActionType.None }
-                )
+            if (gameContextOutputDelegate == null)
+                return;
+            await gameContextOutputDelegate
+                .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
                 .ConfigureAwait(false);
         }
 
-        private void Ps_Exited(object? sender, EventArgs e)
+        private async void Ps_Exited(object? sender, EventArgs e)
         {
             if (_gameProcess != null)
             {
+                Logger.WriteInfo($"游戏退出代码{_gameProcess.ExitCode}");
                 _gameProcess.Exited -= Ps_Exited;
                 this._isStarting = false;
                 _gameProcess.Dispose();
                 _gameProcess = null;
                 _playGameTime = DateTime.MinValue;
             }
-            this.gameContextOutputDelegate?.Invoke(
-                    this,
-                    new GameContextOutputArgs() { Type = GameContextActionType.None }
-                )
+            if (gameContextOutputDelegate == null)
+                return;
+            await gameContextOutputDelegate
+                .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
                 .ConfigureAwait(false);
         }
 
