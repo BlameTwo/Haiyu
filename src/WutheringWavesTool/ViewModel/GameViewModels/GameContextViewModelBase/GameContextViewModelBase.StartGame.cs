@@ -19,7 +19,7 @@ partial class GameContextViewModelBase
         }
         if (_bthType == 5)
         {
-            await GameContext.StopGameAsync();
+            //await GameContext.StopGameAsync();
         }
     }
 }

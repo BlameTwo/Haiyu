@@ -87,6 +87,11 @@ namespace Haiyu.ViewModel.GameViewModels
         [ObservableProperty]
         public partial string BottomBarContent { get; set; }
 
+
+
+        [ObservableProperty]
+        public partial bool EnableStartGameBth { get; set; } = false;
+
         /// <summary>
         /// 按钮类型,1为安装游戏,2为下载游戏,3为开始游戏,4为准备更新,5为游戏中
         /// </summary>
@@ -158,6 +163,7 @@ namespace Haiyu.ViewModel.GameViewModels
                 BottomBarContent = "游戏有更新，请点击右侧按钮进行更新";
                 LauncheContent = "更新游戏";
                 DisplayVersion = version;
+                EnableStartGameBth = true;
                 LauncherIcon = "\uE898";
             }
             else
@@ -168,7 +174,8 @@ namespace Haiyu.ViewModel.GameViewModels
                     this.CurrentProgressValue = 0;
                     this.MaxProgressValue = 0;
                     BottomBarContent = "";
-                    LauncheContent = "终止游戏";
+                    LauncheContent = "游戏中";
+                    EnableStartGameBth = false;
                     DisplayVersion = version;
                     LauncherIcon = "\uE71A";
                 }
@@ -179,6 +186,7 @@ namespace Haiyu.ViewModel.GameViewModels
                     this.MaxProgressValue = 0;
                     BottomBarContent = "游戏准备就绪";
                     LauncheContent = "进入游戏";
+                    EnableStartGameBth = true;
                     DisplayVersion = version;
                     LauncherIcon = "\uE7FC";
                 }

@@ -2,7 +2,6 @@
 
 using Haiyu.Helpers;
 using Microsoft.UI.Xaml;
-using Microsoft.Windows.ApplicationModel.WindowsAppRuntime.DeploymentManagerCS;
 using Microsoft.Windows.AppLifecycle;
 using System.Text;
 using Waves.Core.Services;

@@ -266,6 +266,7 @@
                     Orientation="Horizontal"
                     Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
                     <Button
+                        IsEnabled="{x:Bind ViewModel.EnableStartGameBth,Mode=OneWay}"
                         Background="{ThemeResource SystemFillColorSuccessBrush}"
                         BorderThickness="0"
                         Command="{x:Bind ViewModel.UpdateGameCommand}"

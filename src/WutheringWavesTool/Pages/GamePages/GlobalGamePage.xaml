@@ -269,7 +269,8 @@
                         BorderThickness="0"
                         Command="{x:Bind ViewModel.UpdateGameCommand}"
                         CornerRadius="4"
-                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}">
+                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                        IsEnabled="{x:Bind ViewModel.EnableStartGameBth, Mode=OneWay}">
                         <Button.BorderBrush>
                             <SolidColorBrush Color="{x:Bind ViewModel.StressShadowColor, Mode=OneWay}" />
                         </Button.BorderBrush>

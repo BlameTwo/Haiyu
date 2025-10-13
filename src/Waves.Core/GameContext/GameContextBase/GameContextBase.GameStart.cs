@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using CommunityToolkit.Mvvm.Input;
+using Waves.Core.Common;
 using Waves.Core.Models;
 using Waves.Core.Models.Enums;
 
@@ -14,34 +16,39 @@ namespace Waves.Core.GameContext
     {
         Process? _gameProcess = null;
         private bool _isStarting;
+        private int gameId;
+        private string gameFile;
         private DateTime _playGameTime = DateTime.MinValue;
+        private System.Timers.Timer? gameRunTimer;
+        private uint ppid;
 
         public async Task StartGameAsync()
         {
             try
             {
-                string gameProgram = GameLocalConfig.GetConfig(
-                    GameLocalSettingName.GameLauncherBassProgram
-                );
                 string gameFolder = GameLocalConfig.GetConfig(
                     GameLocalSettingName.GameLauncherBassFolder
                 );
                 Process ps = new();
                 ps.EnableRaisingEvents = true;
+                _gameProcess?.Exited += Ps_Exited;
                 ProcessStartInfo info = new(gameFolder + "\\" + this.Config.GameExeName)
                 {
-                    //Arguments = "Client -dx12",
                     Arguments = "Client -dx12",
                     WorkingDirectory = gameFolder,
-                    UseShellExecute = true,
                     Verb = "runas",
+                    UseShellExecute = true,
                 };
-
                 this._gameProcess = ps;
-                _gameProcess.Exited += Ps_Exited;
                 _gameProcess.StartInfo = info;
                 _gameProcess.Start();
                 this._isStarting = true;
+                this.gameId = _gameProcess.Id;
+                this.gameFile = info.FileName;
+                gameRunTimer = new System.Timers.Timer();
+                gameRunTimer.Interval = 1000;
+                gameRunTimer.Elapsed += Time_Elapsed;
+                gameRunTimer.Start();
                 Logger.WriteInfo("正在启动游戏……");
             }
             catch (Exception ex)
@@ -56,12 +63,36 @@ namespace Waves.Core.GameContext
                 .ConfigureAwait(false);
         }
 
+        private async void Time_Elapsed(object? sender, ElapsedEventArgs e)
+        {
+            try
+            {
+                ProcessScan.CheckGameAliveWithWin32(
+                    Path.GetFileName(gameFile),
+                    (uint)this.gameId,
+                    out bool contained,
+                    out uint ppid
+                );
+                if (contained)
+                {
+                    this.ppid = ppid;
+                }
+                else
+                {
+                    Ps_Exited(this, EventArgs.Empty);
+                }
+            }
+            catch (Exception ex) { }
+        }
+
         private async void Ps_Exited(object? sender, EventArgs e)
         {
             if (_gameProcess != null)
             {
                 Logger.WriteInfo($"游戏退出代码{_gameProcess.ExitCode}");
                 _gameProcess.Exited -= Ps_Exited;
+                gameRunTimer?.Stop();
+                gameRunTimer?.Dispose();
                 this._isStarting = false;
                 _gameProcess.Dispose();
                 _gameProcess = null;
@@ -89,10 +120,13 @@ namespace Waves.Core.GameContext
             {
                 return;
             }
+            Process.GetProcessById((int)ppid).Kill();
             _gameProcess?.Kill(true);
-            if (_gameProcess != null)
-                await _gameProcess.WaitForExitAsync();
             Logger.WriteInfo("退出游戏………………");
+            this._isStarting = false;
+            await gameContextOutputDelegate
+                .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
+                .ConfigureAwait(false);
         }
     }
 }

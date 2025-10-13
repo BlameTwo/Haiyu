@@ -32,7 +32,6 @@
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<DefaultLanguage>zh-Hans</DefaultLanguage>
 		<!--Win32 PE-->
-
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="AppPackages\**" />
