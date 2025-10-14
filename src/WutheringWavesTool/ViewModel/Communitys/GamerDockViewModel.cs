@@ -29,7 +29,7 @@ public partial class GamerDockViewModel : ViewModelBase, IDisposable
     private async Task RefreshDataAsync(GameRoilDataItem item)
     {
         this.GameRoil = item;
-        var calabash = await TryInvokeAsync(WavesClient.GetGamerCalabashDataAsync(GameRoil));
+        var calabash = await TryInvokeAsync(async()=>await WavesClient.GetGamerCalabashDataAsync(GameRoil));
         if (calabash.Item1 == -2 || calabash.Item1 == -1)
         {
             TipShow.ShowMessage("未请求到数据坞信息", Microsoft.UI.Xaml.Controls.Symbol.Clear);

@@ -76,7 +76,7 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
             TipShow.ShowMessage("玩家数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
             return;
         }
-        var data = await TryInvokeAsync(WavesClient.GetGamerExploreIndexDataAsync(
+        var data = await TryInvokeAsync(async()=>await WavesClient.GetGamerExploreIndexDataAsync(
             this._roilData,
             this.CTS.Token
         ));

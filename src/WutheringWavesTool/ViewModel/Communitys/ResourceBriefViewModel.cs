@@ -79,7 +79,7 @@ public partial class ResourceBriefViewModel:ViewModelBase,IDisposable
         if(value == null) return;
         if (SelectHeaderName == "版本")
         {
-            var data = await TryInvokeAsync( WavesClient.GetVersionBrefItemAsync(this.Item.RoleId, this.Item.ServerId, value.Index.ToString(), this.CTS.Token));
+            var data = await TryInvokeAsync(async()=> await WavesClient.GetVersionBrefItemAsync(this.Item.RoleId, this.Item.ServerId, value.Index.ToString(), this.CTS.Token));
             if(data.Item1 != 0 ||data.Item2.Code != 200)
             {
                 TipShow.ShowMessage(data.Item2.Msg??"数据拉取错误", Symbol.Clear);
@@ -114,10 +114,11 @@ public partial class ResourceBriefViewModel:ViewModelBase,IDisposable
     
     private async Task RefreshDataAsync()
     {
-        var cache = await TryInvokeAsync( WavesClient.GetBriefHeaderAsync(this.CTS.Token));
+        var cache = await TryInvokeAsync(async()=>await WavesClient.GetBriefHeaderAsync(this.CTS.Token));
         if(cache.Item1 != 0||cache.Item2.Code != 200)
         {
             TipShow.ShowMessage("拉取数据失败", Symbol.Clear);
+            return;
         }
         this.BrieWeek = cache.Item2.Data.Weeks;
         this.BrieVersion = cache.Item2.Data.Versions;

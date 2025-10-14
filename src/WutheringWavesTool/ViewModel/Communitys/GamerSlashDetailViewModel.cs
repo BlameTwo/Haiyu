@@ -57,7 +57,7 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
 
     async Task RefreshData()
     {
-        var result = await TryInvokeAsync(WavesClient.GetGamerSlashDetailAsync(this.Roil, this.CTS.Token));
+        var result = await TryInvokeAsync(async () => await WavesClient.GetGamerSlashDetailAsync(this.Roil, this.CTS.Token));
         if (result.Item1 != 0 || result.Item2.DifficultyList == null)
         {
             TipShow.ShowMessage("角色数据请求错误", Symbol.Clear);

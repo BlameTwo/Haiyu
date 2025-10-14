@@ -12,8 +12,15 @@ public partial class WavesWikiViewModel : WikiViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
-        var result = await this.GameWikiClient.GetEventDataAsync(WikiType.Waves, this.CTS.Token);
-        Sides = Format(result);
+        var result = await TryInvokeAsync(async()=> await this.GameWikiClient.GetEventDataAsync(WikiType.Waves, this.CTS.Token));
+        if(result.Item1 == 0)
+        {
+            Sides = Format(result.Item2);
+        }
+        else
+        {
+            TipShow.ShowMessage($"获取数据失败，请检查网络,{result.Item3}", Symbol.Clear);
+        }
     }
 
     public ObservableCollection<SideEventDataWrapper> Format(IEnumerable<SideEventData> result)
@@ -27,8 +34,8 @@ public partial class WavesWikiViewModel : WikiViewModelBase
                 ImageUrl = item.ContentUrl,
                 StartTime = item.CountDown.DateRange[0],
                 EndTime = item.CountDown.DateRange[1],
-                TotalSpan = (DateTime.Parse(item.CountDown.DateRange[1]) - DateTime.Now).ToString(),
             };
+            var spanResult = (DateTime.Parse(item.CountDown.DateRange[1]) - DateTime.Now);
             value.Cali();
             wrappers.Add(value);
         }

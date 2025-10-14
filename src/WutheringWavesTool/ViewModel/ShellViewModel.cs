@@ -80,7 +80,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     void OpenMain()
     {
-        this.HomeNavigationService.NavigationTo<MainGameViewModel>(
+        this.HomeNavigationService.NavigationTo<HomeViewModel>(
             null,
             new DrillInNavigationTransitionInfo()
         );
@@ -251,7 +251,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         this.ShowWavesBilibiliGame = (bool)AppSettings.ShowWavesBilibiliGame;
         this.ShowTwPGRGame = (bool)AppSettings.ShowTwPGRGame;
         OpenMain();
-        this.AppContext.App.MainWindow.IsTitleBarVisible = false;
     }
 
     [RelayCommand]

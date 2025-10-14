@@ -31,7 +31,7 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
     [RelayCommand]
     async Task LoadedAsync()
     {
-        var index = await TryInvokeAsync(WavesClient.GetGamerTowerIndexDataAsync(this.RoilData, this.CTS.Token));
+        var index = await TryInvokeAsync(async () => await WavesClient.GetGamerTowerIndexDataAsync(this.RoilData, this.CTS.Token));
         if (index.Item1 != 0 || index.Item2.DifficultyList == null)
         {
             this.TipShow.ShowMessage("拉取数据失败", Symbol.Clear);

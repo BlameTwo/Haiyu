@@ -22,21 +22,25 @@ public partial class ViewModelBase : ObservableRecipient
     /// <typeparam name="T">任务结果</typeparam>
     /// <param name="task">任务本体</param>
     /// <returns>检查结果</returns>
-    public async Task<(int,T?,string?)> TryInvokeAsync<T>(Task<T?> task)
-        where T:class
+    public async Task<(int Code, T? Result, string? Message)> TryInvokeAsync<T>(
+    Func<Task<T?>> taskFactory)
+    where T : class
     {
         try
         {
-            var result = await task;
-            return (0, result, "");
+            var result = await taskFactory();
+            return (0, result, null);
         }
-        catch (OperationCanceledException OperationCanceledException)
+        catch (OperationCanceledException)
         {
-            return (-1, null,"用户取消操作");
+            return (-1, null, "用户取消操作");
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not StackOverflowException
+                                && ex is not OutOfMemoryException)
         {
-            return (-2, null, ex.Message);
+            return (-2, null, ex.Message ?? "操作失败");
         }
     }
+
+
 }

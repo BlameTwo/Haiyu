@@ -13,7 +13,7 @@ public sealed partial class CloudConfigManager
         this.Path = savePath;
     }
 
-    public async Task<ObservableCollection<LoginData>> GetUsersAsync()
+    public async Task<ObservableCollection<LoginData>> GetUsersAsync(CancellationToken token = default)
     {
         ObservableCollection<LoginData> logins = new ObservableCollection<LoginData>();
         foreach (var item in Directory.GetFiles(this.Path, "*.json"))
@@ -21,7 +21,7 @@ public sealed partial class CloudConfigManager
             try
             {
                 var result = JsonSerializer.Deserialize(
-                    await File.ReadAllTextAsync(item),
+                    await File.ReadAllTextAsync(item,token),
                     CloundContext.Default.LoginData
                 );
                 logins.Add(result);

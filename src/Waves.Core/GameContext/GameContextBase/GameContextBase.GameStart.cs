@@ -102,7 +102,7 @@ namespace Waves.Core.GameContext
             _gameProcess?.Dispose();
             _gameProcess = null;
             _isStarting = false;
-            Logger.WriteInfo($"游戏已退出，游戏运行时长:{GetGameTime().ToString("G")}");
+            Logger.WriteInfo($"游戏已退出，游戏运行时长:{GetGameTime():G}");
             // 异步通知
             if (gameContextOutputDelegate != null)
             {

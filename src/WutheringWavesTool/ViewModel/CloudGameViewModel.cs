@@ -101,7 +101,7 @@ public partial class CloudGameViewModel : ViewModelBase
     [RelayCommand]
     public async Task Loaded()
     {
-        var users = await TryInvokeAsync(CloudGameService.ConfigManager.GetUsersAsync());
+        var users = await TryInvokeAsync(async()=>await CloudGameService.ConfigManager.GetUsersAsync(this.CTS.Token));
         if (users.Item1 != 0 || users.Item2.Count == 0)
         {
             TipShow.ShowMessage("获取本地用户失败", Symbol.Clear);
@@ -147,7 +147,7 @@ public partial class CloudGameViewModel : ViewModelBase
     {
         if (value == null || SelectedUser == null)
             return;
-        var url = await TryInvokeAsync(CloudGameService.GetRecordAsync());
+        var url = await TryInvokeAsync(async()=>await CloudGameService.GetRecordAsync(this.CTS.Token));
         if (url.Item2.Code == 315)
         {
             TipShow.ShowMessage("登陆状态失效，请直接重新添加账号", Symbol.Clear);
@@ -160,10 +160,10 @@ public partial class CloudGameViewModel : ViewModelBase
             return;
         }
         var resource = await TryInvokeAsync(
-            CloudGameService.GetGameRecordResource(
+            async()=>await CloudGameService.GetGameRecordResource(
                 url.Item2.Data.RecordId,
                 url.Item2.Data.PlayerId.ToString(),
-                value.Id
+                value.Id,this.CTS.Token
             )
         );
         this.cacheItems = resource.Item2.Data;
