@@ -1,10 +1,12 @@
 ﻿using Haiyu.Models.Dialogs;
+using Haiyu.Pages.GameWikis;
 using Haiyu.Pages.Record;
 using Haiyu.Plugin;
 using Haiyu.Services.DialogServices;
 using Haiyu.Services.Navigations.NavigationViewServices;
 using Haiyu.ViewModel;
 using Haiyu.ViewModel.GameViewModels;
+using Haiyu.ViewModel.WikiViewModels;
 using Waves.Core.Services;
 using Windows.Gaming.Input;
 
@@ -47,8 +49,11 @@ public static class Instance
             .AddTransient<TwPGRGameViewModel>()
             .AddTransient<GlobalPGRViewModel>()
             .AddTransient<BiliBiliPGRGameViewModel>()
-            #endregion
-            #region Community
+        #endregion
+        #region Wiki
+            .AddTransient<WavesWikiViewModel>()
+        #endregion
+        #region Community
             .AddTransient<GamerSignPage>()
             .AddTransient<GamerSignViewModel>()
             .AddTransient<GamerRoilsDetilyViewModel>()
@@ -94,6 +99,7 @@ public static class Instance
             .AddSingleton<IWavesClient, WavesClient>()
             .AddSingleton<ICloudGameService, CloudGameService>()
             .AddSingleton<IScreenCaptureService,ScreenCaptureService>()
+            .AddSingleton<IGameWikiClient,GameWikiClient>()
             .AddTransient<IViewFactorys, ViewFactorys>()
             .AddSingleton<CloudConfigManager>(
                 (s) =>

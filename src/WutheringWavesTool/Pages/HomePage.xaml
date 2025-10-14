@@ -25,7 +25,7 @@
             HorizontalAlignment="Center"
             ItemsSource="{x:Bind ViewModel.Tabs}"
             SelectedItem="{x:Bind ViewModel.SelectTab, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Grid>
+        <Grid Grid.Row="1">
             <Frame x:Name="frame" />
         </Grid>
     </Grid>

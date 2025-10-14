@@ -3,9 +3,76 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Haiyu.Pages.GameWikis"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="using:Haiyu.Controls"
+    xmlns:wikiModel="using:Haiyu.Models.Wrapper"
     mc:Ignorable="d">
-
-    <Grid />
+    <i:Interaction.Behaviors>
+        <i:EventTriggerBehavior EventName="Loaded">
+            <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </i:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+    <Grid>
+        <ScrollViewer
+            VerticalAlignment="Top"
+            HorizontalScrollBarVisibility="Visible"
+            HorizontalScrollMode="Enabled"
+            VerticalScrollMode="Disabled">
+            <ItemsControl ItemsSource="{x:Bind ViewModel.Sides, Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="wikiModel:SideEventDataWrapper">
+                        <ItemContainer>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <ui:ImageEx
+                                    Width="120"
+                                    Height="120"
+                                    CornerRadius="5"
+                                    Source="{x:Bind ImageUrl}"
+                                    Stretch="Uniform" />
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Text="{x:Bind Title}" />
+                                    <TextBlock Grid.Row="1">
+                                        <Run Text="活动时间" />
+                                        <Run Text="{x:Bind StartTime}" />
+                                        <Run Text="~" />
+                                        <Run Text="{x:Bind EndTime}" />
+                                    </TextBlock>
+                                    <TextBlock Grid.Row="2">
+                                        <Run Text="剩余时间" />
+                                        <Run Text="{x:Bind TotalSpan}" />
+                                    </TextBlock>
+                                </Grid>
+                                <ProgressBar
+                                    Grid.Row="1"
+                                    Grid.ColumnSpan="2"
+                                    HorizontalAlignment="Stretch"
+                                    Maximum="{x:Bind MaxProgress}"
+                                    Value="{x:Bind CurrentProgress}" />
+                            </Grid>
+                        </ItemContainer>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
 </Page>

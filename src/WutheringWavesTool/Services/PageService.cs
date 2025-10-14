@@ -1,5 +1,7 @@
 ﻿using Haiyu.Pages.GamePages;
+using Haiyu.Pages.GameWikis;
 using Haiyu.ViewModel.GameViewModels;
+using Haiyu.ViewModel.WikiViewModels;
 
 namespace Haiyu.Services;
 
@@ -35,6 +37,9 @@ public sealed partial class PageService : IPageService
 
         this.RegisterView<RecordItemPage, RecordItemViewModel>();
         this.RegisterView<TestPage, TestViewModel>();
+        #region Wiki
+        this.RegisterView<WavesWikiPage, WavesWikiViewModel>();
+        #endregion
     }
 
     public Type GetPage(string key)

@@ -1,4 +1,7 @@
-﻿namespace Haiyu.ViewModel;
+﻿using Haiyu.Pages.GameWikis;
+using Haiyu.ViewModel.WikiViewModels;
+
+namespace Haiyu.ViewModel;
 
 public partial class HomeViewModel : ViewModelBase
 {
@@ -36,9 +39,9 @@ public partial class HomeViewModel : ViewModelBase
         switch (value)
         {
             case "战双帕弥什":
-
                 break;
             case "鸣潮":
+                this.NavigationService.NavigationTo<WavesWikiViewModel>(null, new EntranceNavigationTransitionInfo());
                 break;
         }
     }

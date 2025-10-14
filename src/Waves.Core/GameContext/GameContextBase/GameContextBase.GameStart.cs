@@ -19,7 +19,7 @@ namespace Waves.Core.GameContext
         private int gameId;
         private string gameFile;
         private DateTime _playGameTime = DateTime.MinValue;
-        private System.Timers.Timer? gameRunTimer;
+        private System.Threading.Timer? gameRunTimer;
         private uint ppid;
 
         public async Task StartGameAsync()
@@ -30,8 +30,6 @@ namespace Waves.Core.GameContext
                     GameLocalSettingName.GameLauncherBassFolder
                 );
                 Process ps = new();
-                ps.EnableRaisingEvents = true;
-                _gameProcess?.Exited += Ps_Exited;
                 ProcessStartInfo info = new(gameFolder + "\\" + this.Config.GameExeName)
                 {
                     Arguments = "Client -dx12",
@@ -45,10 +43,12 @@ namespace Waves.Core.GameContext
                 this._isStarting = true;
                 this.gameId = _gameProcess.Id;
                 this.gameFile = info.FileName;
-                gameRunTimer = new System.Timers.Timer();
-                gameRunTimer.Interval = 1000;
-                gameRunTimer.Elapsed += Time_Elapsed;
-                gameRunTimer.Start();
+                gameRunTimer = new System.Threading.Timer(
+                    callback: async _ => await CheckGameStatusAsync(),
+                    state: null,
+                    dueTime: 3000,
+                    period: 3000
+                );
                 Logger.WriteInfo("正在启动游戏……");
             }
             catch (Exception ex)
@@ -63,46 +63,52 @@ namespace Waves.Core.GameContext
                 .ConfigureAwait(false);
         }
 
-        private async void Time_Elapsed(object? sender, ElapsedEventArgs e)
+        private async Task CheckGameStatusAsync()
         {
             try
             {
-                ProcessScan.CheckGameAliveWithWin32(
-                    Path.GetFileName(gameFile),
-                    (uint)this.gameId,
-                    out bool contained,
-                    out uint ppid
-                );
-                if (contained)
+
+                var result = await Task.Run(() =>
                 {
-                    this.ppid = ppid;
+                    ProcessScan.CheckGameAliveWithWin32(
+                        Path.GetFileName(gameFile),
+                        (uint)this.gameId,
+                        out bool contained,
+                        out uint ppid,
+                        out var filepath
+                    );
+                    return (contained, ppid);
+                });
+
+                if (!result.contained)
+                {
+                    await OnGameExited();
                 }
                 else
                 {
-                    Ps_Exited(this, EventArgs.Empty);
+                    this.ppid = result.ppid;
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                Logger.WriteError($"检查游戏状态失败: {ex.Message}");
+            }
         }
 
-        private async void Ps_Exited(object? sender, EventArgs e)
+        private async Task OnGameExited()
         {
-            if (_gameProcess != null)
+            // 清理资源
+            gameRunTimer?.Dispose();
+            _gameProcess?.Dispose();
+            _gameProcess = null;
+            _isStarting = false;
+            Logger.WriteInfo($"游戏已退出，游戏运行时长:{GetGameTime().ToString("G")}");
+            // 异步通知
+            if (gameContextOutputDelegate != null)
             {
-                Logger.WriteInfo($"游戏退出代码{_gameProcess.ExitCode}");
-                _gameProcess.Exited -= Ps_Exited;
-                gameRunTimer?.Stop();
-                gameRunTimer?.Dispose();
-                this._isStarting = false;
-                _gameProcess.Dispose();
-                _gameProcess = null;
-                _playGameTime = DateTime.MinValue;
+                await gameContextOutputDelegate.Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
+                    .ConfigureAwait(false);
             }
-            if (gameContextOutputDelegate == null)
-                return;
-            await gameContextOutputDelegate
-                .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
-                .ConfigureAwait(false);
         }
 
         public TimeSpan GetGameTime()
@@ -114,6 +120,7 @@ namespace Waves.Core.GameContext
             return DateTime.Now - _playGameTime;
         }
 
+        [Obsolete("该方法已过时，由于非管理员权限设置，无法进行关闭进程")]
         public async Task StopGameAsync()
         {
             if (!this._isStarting && _gameProcess == null)

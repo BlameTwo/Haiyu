@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Waves.Core.Common;
 
@@ -41,10 +42,11 @@ public static class ProcessScan
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool CloseHandle(IntPtr hObject);
 
-    public static bool CheckGameAliveWithWin32(string exeName, uint pid, out bool contained, out uint ppid)
+    public static bool CheckGameAliveWithWin32(string exeName, uint pid, out bool contained, out uint ppid,out string filePath)
     {
         contained = false;
         ppid = 0u;
+        filePath = "";
         IntPtr hSnapshot = IntPtr.Zero;
         try
         {
@@ -65,8 +67,10 @@ public static class ProcessScan
 
             do
             {
+                filePath = GetProcessPath(lppe.th32ProcessID) ?? "";
+                Debug.WriteLine($"{lppe.th32ProcessID}\t{lppe.szExeFile}\t{filePath}");
                 Debug.WriteLine(lppe.szExeFile);
-                if (pid == lppe.th32ProcessID)
+                if(lppe.szExeFile == exeName && pid == lppe.th32ProcessID)
                 {
                     contained = true;
                     ppid = lppe.th32ParentProcessID;
@@ -84,4 +88,39 @@ public static class ProcessScan
                 CloseHandle(hSnapshot);
         }
     }
+
+    public static string GetProcessPath(uint processId)
+    {
+        IntPtr hProcess = IntPtr.Zero;
+        try
+        {
+            hProcess = OpenProcess(ProcessAccessFlags.QueryLimitedInformation, false, processId);
+            if (hProcess == IntPtr.Zero)
+                return null;
+            StringBuilder pathBuilder = new StringBuilder(260);
+            uint result = GetModuleFileNameEx(hProcess, IntPtr.Zero, pathBuilder, pathBuilder.Capacity);
+            if (result > 0)
+                return pathBuilder.ToString();
+            return null;
+        }
+        finally
+        {
+            if (hProcess != IntPtr.Zero)
+                CloseHandle(hProcess);
+        }
+    }
+
+
+    [Flags]
+    public enum ProcessAccessFlags : uint
+    {
+        QueryLimitedInformation = 0x00001000
+    }
+
+    // 新增：获取进程的可执行文件路径
+    [DllImport("psapi.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    public static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, StringBuilder lpFilename, int nSize);
+
+    [DllImport("kernel32.dll", SetLastError = true)]
+    public static extern IntPtr OpenProcess(ProcessAccessFlags dwDesiredAccess, bool bInheritHandle, uint dwProcessId);
 }
