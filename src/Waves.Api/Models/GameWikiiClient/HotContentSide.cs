@@ -54,7 +54,7 @@ public class Repeat
     public List<DataRanges> DataRanges { get; set; }
 }
 
-public class SideEventData
+public class HotContentSide
 {
     [JsonPropertyName("linkConfig")]
     public SideEventLinkConfig LinkConfig { get; set; }

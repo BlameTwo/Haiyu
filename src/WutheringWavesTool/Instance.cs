@@ -8,7 +8,6 @@ using Haiyu.ViewModel;
 using Haiyu.ViewModel.GameViewModels;
 using Haiyu.ViewModel.WikiViewModels;
 using Waves.Core.Services;
-using Windows.Gaming.Input;
 
 namespace Haiyu;
 

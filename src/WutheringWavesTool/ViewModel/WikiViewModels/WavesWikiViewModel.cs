@@ -1,4 +1,5 @@
-﻿using Waves.Api.Models.GameWikiiClient;
+﻿using Haiyu.Models.Wrapper.Wiki;
+using Waves.Api.Models.GameWikiiClient;
 
 namespace Haiyu.ViewModel.WikiViewModels;
 
@@ -7,13 +8,14 @@ public partial class WavesWikiViewModel : WikiViewModelBase
     public WavesWikiViewModel() { }
 
     [ObservableProperty]
-    public partial ObservableCollection<SideEventDataWrapper> Sides { get; set; }
+    public partial ObservableCollection<HotContentSideWrapper> Sides { get; set; }
 
     [RelayCommand]
     async Task Loaded()
     {
         var result = await TryInvokeAsync(async()=> await this.GameWikiClient.GetEventDataAsync(WikiType.Waves, this.CTS.Token));
-        if(result.Item1 == 0)
+        var result2 = await TryInvokeAsync(async () => await this.GameWikiClient.GetEventTabDataAsync(WikiType.Waves, this.CTS.Token));
+        if (result.Item1 == 0)
         {
             Sides = Format(result.Item2);
         }
@@ -23,12 +25,12 @@ public partial class WavesWikiViewModel : WikiViewModelBase
         }
     }
 
-    public ObservableCollection<SideEventDataWrapper> Format(IEnumerable<SideEventData> result)
+    public ObservableCollection<HotContentSideWrapper> Format(IEnumerable<HotContentSide> result)
     {
-        ObservableCollection<SideEventDataWrapper> wrappers = new();
+        ObservableCollection<HotContentSideWrapper> wrappers = new();
         foreach (var item in result)
         {
-            var value = new SideEventDataWrapper()
+            var value = new HotContentSideWrapper()
             {
                 Title = item.Title,
                 ImageUrl = item.ContentUrl,

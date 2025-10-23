@@ -280,6 +280,7 @@ namespace Haiyu.ViewModel.GameViewModels
         async Task DeleteGameResource()
         {
             await GameContext.DeleteResourceAsync();
+            await this.GameContext_GameContextOutput(this, new GameContextOutputArgs() { Type = Waves.Core.Models.Enums.GameContextActionType.None });
         }
 
         private void ShowGameDownloadingBth()

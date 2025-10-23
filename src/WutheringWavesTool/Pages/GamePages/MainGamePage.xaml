@@ -41,7 +41,7 @@
             Grid.ColumnSpan="2"
             Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="col1" />
+                <ColumnDefinition x:Name="col1" Width="400" />
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>

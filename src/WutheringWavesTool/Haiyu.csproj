@@ -267,7 +267,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Common\Plugins\" />
-	  <Folder Include="Models\Wrapper\Wiki\" />
 	</ItemGroup>
 
 	<!--

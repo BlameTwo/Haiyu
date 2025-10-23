@@ -1,6 +1,6 @@
-﻿namespace Haiyu.Models.Wrapper
+﻿namespace Haiyu.Models.Wrapper.Wiki
 {
-    public partial class SideEventDataWrapper:ObservableObject
+    public partial class HotContentSideWrapper:ObservableObject
     {
         [ObservableProperty]
         public partial string ImageUrl { get; set; }

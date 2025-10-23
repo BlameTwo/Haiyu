@@ -10,8 +10,12 @@ using Waves.Api.Models.GameWikiiClient;
 namespace Waves.Api.Models
 {
     [JsonSerializable(typeof(WikiHomeModel))]
-    [JsonSerializable(typeof(SideEventData))]
-    [JsonSerializable(typeof(List<SideEventData>))]
+    [JsonSerializable(typeof(HotContentSide))]
+    [JsonSerializable(typeof(List<HotContentSide>))]
+    [JsonSerializable(typeof(List<EventContentSide>))]
+    [JsonSerializable(typeof(EventContentSide))]
+    [JsonSerializable(typeof(EventSideTab))]
+    [JsonSerializable(typeof(EventSideImage))]
     public partial class WikiContext:JsonSerializerContext
     {
     }

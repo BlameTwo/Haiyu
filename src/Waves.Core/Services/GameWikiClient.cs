@@ -9,9 +9,12 @@ using Waves.Core.Contracts;
 
 namespace Waves.Core.Services;
 
-public sealed partial class GameWikiClient:IGameWikiClient
+public sealed partial class GameWikiClient : IGameWikiClient
 {
-    public async Task<WikiHomeModel?> GetHomePageAsync(WikiType type, CancellationToken token  = default)
+    public async Task<WikiHomeModel?> GetHomePageAsync(
+        WikiType type,
+        CancellationToken token = default
+    )
     {
         try
         {
@@ -21,8 +24,11 @@ public sealed partial class GameWikiClient:IGameWikiClient
                 request.RequestUri = new Uri("https://api.kurobbs.com/wiki/core/homepage/getPage");
                 request.Headers.Add("wiki_type", ((int)type).ToString());
                 request.Method = HttpMethod.Post;
-                var response = await client.SendAsync(request,token);
-                var model = await response.Content.ReadFromJsonAsync<WikiHomeModel>(WikiContext.Default.WikiHomeModel,token);
+                var response = await client.SendAsync(request, token);
+                var model = await response.Content.ReadFromJsonAsync<WikiHomeModel>(
+                    WikiContext.Default.WikiHomeModel,
+                    token
+                );
                 return model;
             }
         }
@@ -30,25 +36,58 @@ public sealed partial class GameWikiClient:IGameWikiClient
         {
             return null;
         }
-        
     }
 
     /// <summary>
     /// 获得活动事件数据
     /// </summary>
     /// <returns></returns>
-    public async Task<List<SideEventData?>> GetEventDataAsync(WikiType type,CancellationToken token = default)
+    public async Task<List<HotContentSide?>> GetEventDataAsync(
+        WikiType type,
+        CancellationToken token = default
+    )
     {
         try
         {
-            var model = await GetHomePageAsync(type,token);
-            if (model == null) return null;
-            var dataString = model.Data.ContentJson.SideModules.Where(x => x.Type == "hot-content-side").FirstOrDefault();
+            var model = await GetHomePageAsync(type, token);
+            if (model == null)
+                return null;
+            var dataString = model
+                .Data.ContentJson.SideModules.Where(x => x.Type == "hot-content-side")
+                .FirstOrDefault();
             if (dataString == null)
                 return null;
             if (dataString.Content is JsonElement element)
             {
-                var result = element.Deserialize(WikiContext.Default.ListSideEventData);
+                var result = element.Deserialize(WikiContext.Default.ListHotContentSide);
+                return result;
+            }
+            return null;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    public async Task<EventContentSide?> GetEventTabDataAsync(
+        WikiType type,
+        CancellationToken token = default
+    )
+    {
+        try
+        {
+            var model = await GetHomePageAsync(type, token);
+            if (model == null)
+                return null;
+            var dataString = model
+                .Data.ContentJson.SideModules.Where(x => x.Type == "events-side")
+                .FirstOrDefault();
+            if (dataString == null)
+                return null;
+            if (dataString.Content is JsonElement element)
+            {
+                var result = element.Deserialize(WikiContext.Default.EventContentSide);
                 return result;
             }
             return null;
