@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="Haiyu.Pages.GamePages.GlobalPGRGamePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -23,26 +23,30 @@
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
         </i:EventTriggerBehavior>
     </i:Interaction.Behaviors>
+
     <Grid x:Name="backGrid" Margin="-1,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition Height="60" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <!--  下载游戏  -->
-        <Grid
-            Grid.Row="2"
-            Grid.ColumnSpan="2"
-            Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
+        <Grid Grid.Row="2" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition x:Name="col1" />
+                <ColumnDefinition x:Name="col1" Width="400" />
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Grid.Transitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition FromHorizontalOffset="-20" FromVerticalOffset="-20" />
+                    <RepositionThemeTransition />
+                </TransitionCollection>
+            </Grid.Transitions>
             <ProgressBar
                 Grid.ColumnSpan="3"
                 MinHeight="5"
@@ -52,353 +56,364 @@
                 Maximum="{x:Bind ViewModel.MaxProgressValue, Mode=OneWay}"
                 Style="{ThemeResource FillHeightProgressBar}"
                 Value="{x:Bind ViewModel.CurrentProgressValue, Mode=OneWay}" />
-            <Grid Margin="5,0,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
-                    <Button
-                        Width="40"
-                        Height="40"
-                        Padding="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        CornerRadius="5"
-                        Style="{ThemeResource TransparentButtonStyle}">
-                        <i:Interaction.Behaviors>
-                            <sound:ControlSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <FontIcon
-                            FontFamily="Segoe UI Emoji"
-                            FontSize="15"
-                            Glyph="&#x1F914;" />
-                        <Button.Flyout>
-                            <Flyout ShouldConstrainToRootBounds="False">
-                                <Grid Width="400">
-                                    <RichTextBlock
-                                        FontFamily="{ThemeResource DefaultFont}"
-                                        LineHeight="20"
-                                        LineStackingStrategy="BlockLineHeight"
-                                        TextWrapping="Wrap">
-                                        <Paragraph>
-                                            <Run
-                                                FontSize="14"
-                                                FontWeight="SemiBold"
-                                                Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                                Text="使用注意事项" />
-
-                                            <LineBreak />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="• 增量更新机制" />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="   - 剩余时间计算排除合并操作耗时，仅供参考" />
-
-                                            <LineBreak />
-                                            <LineBreak />
-
-                                            <Run FontSize="12" Text="• 暂停与网络恢复" />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="   - 暂停期间断网将会退出下载状态" />
-
-                                            <LineBreak />
-                                            <LineBreak />
-
-                                            <Run FontSize="12" Text="• 进度持久化" />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="   - 意外退出需重新校验，建议保持程序前台运行" />
-
-                                            <LineBreak />
-                                            <LineBreak />
-
-                                            <Run FontSize="12" Text="• 硬件兼容性" />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="   - 机械硬盘校验效率约为SSD的1/3～1/5" />
-                                        </Paragraph>
-                                    </RichTextBlock>
-                                </Grid>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                    <Button
-                        Width="40"
-                        Height="40"
-                        Margin="5,0,0,0"
-                        Padding="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        CornerRadius="5"
-                        Style="{ThemeResource TransparentButtonStyle}">
-                        <i:Interaction.Behaviors>
-                            <sound:ControlSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="16"
-                            Glyph="&#xF8B0;" />
-                        <Button.Flyout>
-                            <Flyout>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox
-                                        Width="120"
-                                        VerticalAlignment="Center"
-                                        PlaceholderText="下载限速(mb/s)"
-                                        Text="{x:Bind ViewModel.DownloadSpeedValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        ToolTipService.ToolTip="默认为0，意为不限速" />
-                                    <Button
-                                        Grid.Column="1"
-                                        Margin="5,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Command="{x:Bind ViewModel.SetDownloadSpeedCommand}"
-                                        Style="{ThemeResource AccentButtonStyle}">
-                                        <FontIcon
-                                            FontFamily="Segoe Fluent Icons"
-                                            FontSize="15"
-                                            Glyph="&#xE8FB;" />
-                                    </Button>
-                                </Grid>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                </StackPanel>
-                <TextBlock
-                    Grid.Column="1"
-                    Margin="5,0,0,0"
-                    VerticalAlignment="Center"
-                    FontFamily="{ThemeResource DefaultFont}"
-                    Text="{x:Bind ViewModel.BottomBarContent, Mode=OneWay}" />
-            </Grid>
-
-            <StackPanel
+            <Grid
+                Grid.Row="1"
                 Grid.Column="2"
-                Margin="0,0,0,0"
+                Margin="0,0,5,5"
+                Padding="5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                Orientation="Horizontal">
-                <Button
-                    Width="40"
-                    Height="40"
-                    Padding="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Command="{x:Bind ViewModel.PauseDownloadTaskCommand}"
-                    IsEnabled="{x:Bind ViewModel.PauseStartEnable, Mode=OneWay}"
-                    Style="{ThemeResource TransparentButtonStyle}"
-                    ToolTipService.ToolTip="暂停当前操作"
-                    Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
-                    <i:Interaction.Behaviors>
-                        <sound:ControlSoundBehavior />
-                    </i:Interaction.Behaviors>
-                    <FontIcon
-                        FontFamily="Segoe Fluent Icons"
-                        FontSize="15"
-                        Glyph="{x:Bind ViewModel.PauseIcon, Mode=OneWay}" />
-                </Button>
-                <Button
-                    Width="40"
-                    Height="40"
-                    Padding="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Command="{x:Bind ViewModel.CancelDownloadTaskCommand}"
-                    Style="{ThemeResource TransparentButtonStyle}"
-                    ToolTipService.ToolTip="取消当前操作"
-                    Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
-                    <i:Interaction.Behaviors>
-                        <sound:ControlSoundBehavior />
-                    </i:Interaction.Behaviors>
-                    <FontIcon
-                        FontFamily="Segoe Fluent Icons"
-                        FontSize="15"
-                        Glyph="&#xE71A;" />
-                </Button>
-                <StackPanel Orientation="Horizontal">
-                    <Button
-                        Height="40"
-                        Margin="0,0,5,0"
-                        Padding="10"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Command="{x:Bind ViewModel.ShowSelectInstallFolderCommand}"
-                        Style="{ThemeResource TransparentButtonStyle}"
-                        ToolTipService.ToolTip="选择下载路径"
-                        Visibility="{x:Bind ViewModel.GameInstallBthVisibility, Mode=OneWay}">
-                        <i:Interaction.Behaviors>
-                            <sound:ControlSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="15"
-                            Glyph="&#xE896;" />
-                    </Button>
+                CornerRadius="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ChildrenTransitions>
+                    <TransitionCollection>
+                        <RepositionThemeTransition />
+                    </TransitionCollection>
+                </Grid.ChildrenTransitions>
+
+                <Border
+                    Margin="5,0,5,-1"
+                    Padding="5"
+                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                    CornerRadius="5 5  0 0">
+
                     <TextBlock
-                        VerticalAlignment="Center"
-                        FontWeight="Bold"
-                        Text="/"
-                        Visibility="{x:Bind ViewModel.GameInputFolderBthVisibility, Mode=OneWay}" />
-                    <Button
-                        Height="40"
                         Margin="5,0,0,0"
-                        Padding="10"
+                        FontSize="10"
+                        Text="{x:Bind ViewModel.BottomBarContent, Mode=OneWay}"
+                        TextAlignment="Center" />
+                </Border>
+                <Grid
+                    Grid.Row="1"
+                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                    CornerRadius="5">
+                    <Grid.ChildrenTransitions>
+                        <TransitionCollection>
+                            <RepositionThemeTransition />
+                        </TransitionCollection>
+                    </Grid.ChildrenTransitions>
+                    <StackPanel
+                        Margin="3"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Command="{x:Bind ViewModel.ShowSelectGameFolderCommand}"
-                        Style="{ThemeResource TransparentButtonStyle}"
-                        ToolTipService.ToolTip="定位游戏位置"
-                        Visibility="{x:Bind ViewModel.GameInputFolderBthVisibility, Mode=OneWay}">
-                        <i:Interaction.Behaviors>
-                            <sound:ControlSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="15"
-                            Glyph="&#xE8D5;" />
-                    </Button>
-
-                </StackPanel>
-                <StackPanel
-                    Margin="3"
-                    HorizontalAlignment="Right"
-                    Orientation="Horizontal"
-                    Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
-                    <Button
-                        Background="{ThemeResource SystemFillColorSuccessBrush}"
-                        BorderThickness="0"
-                        Command="{x:Bind ViewModel.UpdateGameCommand}"
-                        CornerRadius="4"
-                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                        IsEnabled="{x:Bind ViewModel.EnableStartGameBth, Mode=OneWay}">
-                        <Button.BorderBrush>
-                            <SolidColorBrush Color="{x:Bind ViewModel.StressShadowColor, Mode=OneWay}" />
-                        </Button.BorderBrush>
-                        <ani:Explicit.Animations>
-                            <ani:AnimationSet x:Name="ShadowEnterAnimation">
-                                <ani:BlurRadiusDropShadowAnimation To="12" />
-                            </ani:AnimationSet>
-                            <ani:AnimationSet x:Name="ShadowExitAnimation">
-                                <ani:BlurRadiusDropShadowAnimation To="0" />
-                            </ani:AnimationSet>
-                        </ani:Explicit.Animations>
-
-                        <ui:Effects.Shadow>
-                            <media:AttachedCardShadow
-                                BlurRadius="0"
-                                Opacity="1"
-                                Offset="0"
-                                Color="{x:Bind ViewModel.StressShadowColor, Mode=OneWay}" />
-                        </ui:Effects.Shadow>
-                        <i:Interaction.Behaviors>
-                            <sound:ButtonSoundBehavior />
-                            <i:EventTriggerBehavior EventName="PointerEntered">
-                                <b:StartAnimationAction Animation="{x:Bind ShadowEnterAnimation}" />
-                            </i:EventTriggerBehavior>
-                            <i:EventTriggerBehavior EventName="PointerExited">
-                                <b:StartAnimationAction Animation="{x:Bind ShadowExitAnimation}" />
-                            </i:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
+                        Orientation="Horizontal"
+                        Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
+                        <Button
+                            Width="40"
+                            Height="40"
+                            Margin="5,0,0,0"
+                            Padding="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{x:Bind ViewModel.PauseDownloadTaskCommand}"
+                            IsEnabled="{x:Bind ViewModel.PauseStartEnable, Mode=OneWay}"
+                            Style="{ThemeResource TransparentButtonStyle}"
+                            ToolTipService.ToolTip="暂停当前操作">
+                            <i:Interaction.Behaviors>
+                                <sound:ControlSoundBehavior />
+                            </i:Interaction.Behaviors>
                             <FontIcon
-                                Grid.RowSpan="2"
                                 FontFamily="Segoe Fluent Icons"
-                                FontSize="20"
-                                Glyph="{x:Bind ViewModel.LauncherIcon, Mode=OneWay}" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="15,0,0,0"
-                                VerticalAlignment="Center"
-                                FontFamily="{ThemeResource DefaultFont}"
-                                FontSize="16"
-                                Text="{x:Bind ViewModel.LauncheContent, Mode=OneWay}" />
-                            <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Margin="15,0,0,0"
-                                VerticalAlignment="Center"
-                                FontSize="10"
-                                Text="{x:Bind ViewModel.DisplayVersion, Mode=OneWay}" />
-                        </Grid>
+                                FontSize="15"
+                                Glyph="{x:Bind ViewModel.PauseIcon, Mode=OneWay}" />
+                        </Button>
+                        <Button
+                            Width="40"
+                            Height="40"
+                            Padding="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{x:Bind ViewModel.CancelDownloadTaskCommand}"
+                            IsEnabled="{x:Bind ViewModel.PauseStartEnable, Mode=OneWay}"
+                            Style="{ThemeResource TransparentButtonStyle}"
+                            ToolTipService.ToolTip="取消当前操作">
+                            <i:Interaction.Behaviors>
+                                <sound:ControlSoundBehavior />
+                            </i:Interaction.Behaviors>
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="15"
+                                Glyph="&#xE71A;" />
+                        </Button>
+                        <Button
+                            Width="40"
+                            Height="40"
+                            Margin="0,-3,0,0"
+                            Padding="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            CornerRadius="5"
+                            Style="{ThemeResource TransparentButtonStyle}">
+                            <i:Interaction.Behaviors>
+                                <sound:ControlSoundBehavior />
+                            </i:Interaction.Behaviors>
+                            <FontIcon
+                                FontFamily="Segoe UI Emoji"
+                                FontSize="15"
+                                Glyph="&#x1F914;" />
+                            <Button.Flyout>
+                                <Flyout ShouldConstrainToRootBounds="False">
+                                    <Grid Width="400">
+                                        <RichTextBlock
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            LineHeight="20"
+                                            LineStackingStrategy="BlockLineHeight"
+                                            TextWrapping="Wrap">
+                                            <Paragraph>
+                                                <Run
+                                                    FontSize="14"
+                                                    FontWeight="SemiBold"
+                                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                                    Text="使用注意事项" />
 
-                    </Button>
-                    <Button
-                        Margin="3,0,0,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
-                        BorderThickness="0">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
-                        <ani:Explicit.Animations>
-                            <ani:AnimationSet x:Name="MoreShadowEnterAnimation">
-                                <ani:BlurRadiusDropShadowAnimation To="12" />
-                            </ani:AnimationSet>
-                            <ani:AnimationSet x:Name="MoreShadowExitAnimation">
-                                <ani:BlurRadiusDropShadowAnimation To="0" />
-                            </ani:AnimationSet>
-                        </ani:Explicit.Animations>
-                        <ui:Effects.Shadow>
-                            <media:AttachedCardShadow
-                                BlurRadius="0"
-                                Opacity="1"
-                                Offset="0"
-                                Color="{ThemeResource SystemAccentColor}" />
-                        </ui:Effects.Shadow>
-                        <i:Interaction.Behaviors>
-                            <sound:ButtonSoundBehavior />
-                            <i:EventTriggerBehavior EventName="PointerEntered">
-                                <b:StartAnimationAction Animation="{x:Bind MoreShadowEnterAnimation}" />
-                            </i:EventTriggerBehavior>
-                            <i:EventTriggerBehavior EventName="PointerExited">
-                                <b:StartAnimationAction Animation="{x:Bind MoreShadowExitAnimation}" />
-                            </i:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
-                        <Button.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem
-                                    Command="{x:Bind ViewModel.RepirGameCommand}"
-                                    Text="修复游戏"
-                                    ToolTipService.ToolTip="此选项等同于下载，启动器会下载服务器资源进行自动覆盖（包含Mod资源）">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                                <MenuFlyoutSeparator />
-                                <MenuFlyoutItem Command="{x:Bind ViewModel.ShowGameResourceCommand}" Text="游戏资源管理">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEF19;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                                <MenuFlyoutSeparator />
-                                <MenuFlyoutItem
-                                    Command="{x:Bind ViewModel.DeleteGameResourceCommand}"
-                                    Text="卸载游戏"
-                                    ToolTipService.ToolTip="此选项将直接删除游戏文件夹">
-                                    <MenuFlyoutItem.Icon>
-                                        <SymbolIcon Symbol="Clear" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                            </MenuFlyout>
-                        </Button.Flyout>
-                    </Button>
-                </StackPanel>
-            </StackPanel>
+                                                <LineBreak />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="• 增量更新机制" />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="   - 剩余时间计算排除合并操作耗时，仅供参考" />
+
+                                                <LineBreak />
+                                                <LineBreak />
+
+                                                <Run FontSize="12" Text="• 暂停与网络恢复" />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="   - 暂停期间断网将会退出下载状态" />
+
+                                                <LineBreak />
+                                                <LineBreak />
+
+                                                <Run FontSize="12" Text="• 进度持久化" />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="   - 意外退出需重新校验，建议保持程序前台运行" />
+
+                                                <LineBreak />
+                                                <LineBreak />
+
+                                                <Run FontSize="12" Text="• 硬件兼容性" />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="   - 机械硬盘校验效率约为SSD的1/3～1/5" />
+                                            </Paragraph>
+                                        </RichTextBlock>
+                                    </Grid>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button
+                            Width="40"
+                            Height="40"
+                            Margin="5,0,0,0"
+                            Padding="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            CornerRadius="5"
+                            Style="{ThemeResource TransparentButtonStyle}">
+                            <i:Interaction.Behaviors>
+                                <sound:ControlSoundBehavior />
+                            </i:Interaction.Behaviors>
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="16"
+                                Glyph="&#xF8B0;" />
+                            <Button.Flyout>
+                                <Flyout>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox
+                                            Width="120"
+                                            VerticalAlignment="Center"
+                                            PlaceholderText="下载限速(mb/s)"
+                                            Text="{x:Bind ViewModel.DownloadSpeedValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            ToolTipService.ToolTip="默认为0，意为不限速" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Command="{x:Bind ViewModel.SetDownloadSpeedCommand}"
+                                            Style="{ThemeResource AccentButtonStyle}">
+                                            <FontIcon
+                                                FontFamily="Segoe Fluent Icons"
+                                                FontSize="15"
+                                                Glyph="&#xE8FB;" />
+                                        </Button>
+                                    </Grid>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            Width="40"
+                            Height="40"
+                            Margin="0,0,5,0"
+                            Padding="10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{x:Bind ViewModel.ShowSelectInstallFolderCommand}"
+                            Style="{ThemeResource TransparentButtonStyle}"
+                            ToolTipService.ToolTip="选择下载路径"
+                            Visibility="{x:Bind ViewModel.GameInstallBthVisibility, Mode=OneWay}">
+                            <i:Interaction.Behaviors>
+                                <sound:ControlSoundBehavior />
+                            </i:Interaction.Behaviors>
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="15"
+                                Glyph="&#xE896;" />
+                        </Button>
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontWeight="Bold"
+                            Text="/"
+                            Visibility="{x:Bind ViewModel.GameInputFolderBthVisibility, Mode=OneWay}" />
+                        <Button
+                            Width="40"
+                            Height="40"
+                            Margin="5,0,0,0"
+                            Padding="10"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{x:Bind ViewModel.ShowSelectGameFolderCommand}"
+                            Style="{ThemeResource TransparentButtonStyle}"
+                            ToolTipService.ToolTip="定位游戏位置"
+                            Visibility="{x:Bind ViewModel.GameInputFolderBthVisibility, Mode=OneWay}">
+                            <i:Interaction.Behaviors>
+                                <sound:ControlSoundBehavior />
+                            </i:Interaction.Behaviors>
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="15"
+                                Glyph="&#xE8D5;" />
+                        </Button>
+
+                    </StackPanel>
+                    <StackPanel
+                        Margin="3"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
+                        <Button
+                            property:CursorProperty.CursorName="{x:Bind ViewModel.CursorName}"
+                            property:CursorProperty.CursorType="Link"
+                            BorderThickness="0"
+                            Command="{x:Bind ViewModel.UpdateGameCommand}"
+                            CornerRadius="4"
+                            Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                            IsEnabled="{x:Bind ViewModel.EnableStartGameBth, Mode=OneWay}"
+                            Style="{ThemeResource AccentButtonStyle}">
+                            <Button.BorderBrush>
+                                <SolidColorBrush Color="{x:Bind ViewModel.StressShadowColor, Mode=OneWay}" />
+                            </Button.BorderBrush>
+
+
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <FontIcon
+                                    Grid.RowSpan="2"
+                                    FontFamily="Segoe Fluent Icons"
+                                    FontSize="20"
+                                    Glyph="{x:Bind ViewModel.LauncherIcon, Mode=OneWay}" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontFamily="{ThemeResource DefaultFont}"
+                                    FontSize="16"
+                                    Text="{x:Bind ViewModel.LauncheContent, Mode=OneWay}" />
+                                <TextBlock
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    FontSize="10"
+                                    Text="{x:Bind ViewModel.DisplayVersion, Mode=OneWay}" />
+                            </Grid>
+
+                        </Button>
+                        <Button
+                            Margin="3,0,0,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                            BorderThickness="0"
+                            IsEnabled="{x:Bind ViewModel.EnableStartGameBth, Mode=OneWay}">
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
+                            <ani:Explicit.Animations>
+                                <ani:AnimationSet x:Name="MoreShadowEnterAnimation">
+                                    <ani:BlurRadiusDropShadowAnimation To="12" />
+                                </ani:AnimationSet>
+                                <ani:AnimationSet x:Name="MoreShadowExitAnimation">
+                                    <ani:BlurRadiusDropShadowAnimation To="0" />
+                                </ani:AnimationSet>
+                            </ani:Explicit.Animations>
+                            <ui:Effects.Shadow>
+                                <media:AttachedCardShadow
+                                    BlurRadius="0"
+                                    Opacity="1"
+                                    Offset="0"
+                                    Color="{ThemeResource SystemAccentColor}" />
+                            </ui:Effects.Shadow>
+                            <i:Interaction.Behaviors>
+                                <sound:ButtonSoundBehavior />
+                                <i:EventTriggerBehavior EventName="PointerEntered">
+                                    <b:StartAnimationAction Animation="{x:Bind MoreShadowEnterAnimation}" />
+                                </i:EventTriggerBehavior>
+                                <i:EventTriggerBehavior EventName="PointerExited">
+                                    <b:StartAnimationAction Animation="{x:Bind MoreShadowExitAnimation}" />
+                                </i:EventTriggerBehavior>
+                            </i:Interaction.Behaviors>
+                            <Button.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.RepirGameCommand}"
+                                        Text="修复游戏"
+                                        ToolTipService.ToolTip="此选项等同于下载，启动器会下载服务器资源进行自动覆盖（包含Mod资源）">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem Command="{x:Bind ViewModel.ShowGameResourceCommand}" Text="游戏资源管理">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEF19;" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.DeleteGameResourceCommand}"
+                                        Text="卸载游戏"
+                                        ToolTipService.ToolTip="此选项将直接删除游戏文件夹">
+                                        <MenuFlyoutItem.Icon>
+                                            <SymbolIcon Symbol="Clear" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Grid>
         </Grid>
         <!--  下载结束  -->
         <Grid
             x:Name="leftControl"
             Grid.Row="0"
-            Grid.RowSpan="2"
+            Grid.RowSpan="3"
             Width="350"
             Height="300"
             Margin="10"
@@ -497,6 +512,10 @@
                             Padding="5,0,5,2"
                             FontSize="13"
                             IsSelected="True"
+                            Text="活动" />
+                        <SelectorBarItem
+                            Padding="5,0,5,2"
+                            FontSize="13"
                             Text="公告" />
                         <SelectorBarItem
                             Padding="5,0,5,2"
@@ -526,7 +545,7 @@
             </Grid>
             <Button
                 Grid.Column="1"
-                Width="35"
+                Width="40"
                 Margin="-5,0,0,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"

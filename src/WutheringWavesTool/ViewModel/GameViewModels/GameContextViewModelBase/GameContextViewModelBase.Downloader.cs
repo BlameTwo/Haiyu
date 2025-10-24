@@ -128,6 +128,7 @@ partial class GameContextViewModelBase
     [RelayCommand]
     async Task CancelDownloadTask()
     {
+        Logger.WriteInfo($"取消当前操作");
         await GameContext.StopDownloadAsync();
         var status = await GameContext.GetGameContextStatusAsync();
         if (!status.IsLauncher)
@@ -157,6 +158,7 @@ partial class GameContextViewModelBase
     [RelayCommand]
     async Task SetDownloadSpeedAsync()
     {
+        Logger.WriteInfo($"设置下载限速");
         if (int.TryParse(DownloadSpeedValue, out var result))
         {
             await GameContext.SetSpeedLimitAsync(result * 1024 * 1024);

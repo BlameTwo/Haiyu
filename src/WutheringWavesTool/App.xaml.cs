@@ -39,6 +39,7 @@ public partial class App : ClientApplication
         Directory.CreateDirectory(RecordFolder);
         Directory.CreateDirectory(WrallpaperFolder);
         Directory.CreateDirectory(ScreenCaptures);
+        Directory.CreateDirectory(Path.GetDirectoryName(AppSettings.LogPath));
         Directory.CreateDirectory(AppSettings.CloudFolderPath);
         GameContextFactory.GameBassPath = BassFolder;
         Instance.InitService();
@@ -87,5 +88,6 @@ public partial class App : ClientApplication
         }
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
         Instance.Service.GetService<IScreenCaptureService>().Register();
+        Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
     }
 }

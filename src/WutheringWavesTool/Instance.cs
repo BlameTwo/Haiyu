@@ -1,4 +1,5 @@
-﻿using Haiyu.Models.Dialogs;
+﻿using Haiyu.Contracts;
+using Haiyu.Models.Dialogs;
 using Haiyu.Pages.GameWikis;
 using Haiyu.Pages.Record;
 using Haiyu.Plugin;

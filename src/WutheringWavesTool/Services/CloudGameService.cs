@@ -1,8 +1,6 @@
-﻿using System.Net.Http.Json;
-using Waves.Api.Models.CloudGame;
+﻿using Waves.Api.Models.CloudGame;
 using Haiyu.Helpers;
-using ZXing.Aztec.Internal;
-using ZXing.QrCode.Internal;
+using Haiyu.Contracts;
 
 namespace Haiyu.Services;
 
@@ -24,41 +22,25 @@ public class CloudGameService : ICloudGameService
 
     public Dictionary<string, string> GetClientData()
     {
-        var oldQuery = new Dictionary<string, string>()
+        var query = new Dictionary<string, string>
         {
             { "redirect_uri", "1" },
             { "__e__", "1" },
             { "pack_mark", "1" },
             { "projectId", "G152" },
             { "productId", "A1493" },
-            { "platform", "h5" },
-            { "channellId", "211" },
+            { "channelId", "211" },
             { "deviceNum", HardwareIdGenerator.GenerateUniqueId() },
             { "version", "2.1.2" },
             { "sdkVersion", "2.1.2" },
             { "response_type", "code" },
-            { "pkm", "com.kurogame.mingchao" },
-            { "clientId", "vvkewnskrxxwfo0yi61cy24l" },
+            { "client_id", "vvkewnskrxxwfo0yi61cy24l" },
+            { "deviceModel", "Chrome" },
+            { "os", "Windows" },
+            { "pkg", "com.kurogame.mingchao" },
             { "client_secret", "g9ej0i1jf3y68wchb0ncm266" },
+            { "platform", "h5" }
         };
-        var query = new Dictionary<string, string>();
-
-        query.Add("redirect_uri", "1");
-        query.Add("__e__", "1");
-        query.Add("pack_mark", "1");
-        query.Add("projectId", "G152");
-        query.Add("productId", "A1493");
-        query.Add("channelId", "211");
-        query.Add("deviceNum", HardwareIdGenerator.GenerateUniqueId());
-        query.Add("version", "2.1.2");
-        query.Add("sdkVersion", "2.1.2");
-        query.Add("response_type", "code");
-        query.Add("client_id", "vvkewnskrxxwfo0yi61cy24l");
-        query.Add("deviceModel", "Chrome");
-        query.Add("os", "Windows");
-        query.Add("pkg", "com.kurogame.mingchao");
-        query.Add("client_secret", "g9ej0i1jf3y68wchb0ncm266");
-        query.Add("platform", "h5");
         return query;
     }
 

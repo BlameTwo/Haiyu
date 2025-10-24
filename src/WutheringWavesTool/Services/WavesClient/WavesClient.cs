@@ -1,7 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Waves.Api.Models.QRLogin;
-using Windows.System.Profile;
 using Haiyu.Helpers;
+using Waves.Api.Models.QRLogin;
+using Waves.Core.Services;
+using Windows.System.Profile;
 using ZXing.Aztec.Internal;
 
 namespace Haiyu.Services;
@@ -13,13 +14,18 @@ public sealed partial class WavesClient : IWavesClient
     public long Id => long.Parse(AppSettings.TokenId ?? "0");
 
     public IHttpClientService HttpClientService { get; }
+    public LoggerService LoggerService { get; }
     public GameRoilDataWrapper CurrentRoil { get; set; }
     public string? BAT { get; private set; }
     public string Ip { get; private set; }
 
-    public WavesClient(IHttpClientService httpClientService)
+    public WavesClient(
+        IHttpClientService httpClientService,
+        [FromKeyedServices("AppLog")] LoggerService loggerService
+    )
     {
         HttpClientService = httpClientService;
+        LoggerService = loggerService;
         HttpClientService.BuildClient();
     }
 
@@ -348,7 +354,6 @@ public sealed partial class WavesClient : IWavesClient
         );
     }
 
-
     public async Task<QRLoginResult?> QRLoginAsync(
         string qrText,
         string verifyCode,
@@ -366,7 +371,7 @@ public sealed partial class WavesClient : IWavesClient
             {
                 { "autoLogin", "true" },
                 { "qrCode", qrText },
-                {"id",id },
+                { "id", id },
                 { "verifyCode", verifyCode },
             },
             true

@@ -25,6 +25,7 @@
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
         </i:EventTriggerBehavior>
     </i:Interaction.Behaviors>
+
     <Grid x:Name="backGrid" Margin="-1,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -45,7 +46,7 @@
             <Grid.Transitions>
                 <TransitionCollection>
                     <EntranceThemeTransition FromHorizontalOffset="-20" FromVerticalOffset="-20" />
-
+                    <RepositionThemeTransition />
                 </TransitionCollection>
             </Grid.Transitions>
             <ProgressBar
@@ -57,123 +58,6 @@
                 Maximum="{x:Bind ViewModel.MaxProgressValue, Mode=OneWay}"
                 Style="{ThemeResource FillHeightProgressBar}"
                 Value="{x:Bind ViewModel.CurrentProgressValue, Mode=OneWay}" />
-            <Grid Margin="5,0,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" Visibility="{x:Bind ViewModel.GameDownloadingBthVisibility, Mode=OneWay}">
-                    <Button
-                        Width="40"
-                        Height="40"
-                        Padding="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        CornerRadius="5"
-                        Style="{ThemeResource TransparentButtonStyle}">
-                        <i:Interaction.Behaviors>
-                            <sound:ControlSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <FontIcon
-                            FontFamily="Segoe UI Emoji"
-                            FontSize="15"
-                            Glyph="&#x1F914;" />
-                        <Button.Flyout>
-                            <Flyout ShouldConstrainToRootBounds="False">
-                                <Grid Width="400">
-                                    <RichTextBlock
-                                        FontFamily="{ThemeResource DefaultFont}"
-                                        LineHeight="20"
-                                        LineStackingStrategy="BlockLineHeight"
-                                        TextWrapping="Wrap">
-                                        <Paragraph>
-                                            <Run
-                                                FontSize="14"
-                                                FontWeight="SemiBold"
-                                                Foreground="{ThemeResource TextFillColorPrimaryBrush}"
-                                                Text="使用注意事项" />
-
-                                            <LineBreak />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="• 增量更新机制" />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="   - 剩余时间计算排除合并操作耗时，仅供参考" />
-
-                                            <LineBreak />
-                                            <LineBreak />
-
-                                            <Run FontSize="12" Text="• 暂停与网络恢复" />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="   - 暂停期间断网将会退出下载状态" />
-
-                                            <LineBreak />
-                                            <LineBreak />
-
-                                            <Run FontSize="12" Text="• 进度持久化" />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="   - 意外退出需重新校验，建议保持程序前台运行" />
-
-                                            <LineBreak />
-                                            <LineBreak />
-
-                                            <Run FontSize="12" Text="• 硬件兼容性" />
-                                            <LineBreak />
-                                            <Run FontSize="12" Text="   - 机械硬盘校验效率约为SSD的1/3～1/5" />
-                                        </Paragraph>
-                                    </RichTextBlock>
-                                </Grid>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                    <Button
-                        Width="40"
-                        Height="40"
-                        Margin="5,0,0,0"
-                        Padding="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        CornerRadius="5"
-                        Style="{ThemeResource TransparentButtonStyle}">
-                        <i:Interaction.Behaviors>
-                            <sound:ControlSoundBehavior />
-                        </i:Interaction.Behaviors>
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="16"
-                            Glyph="&#xF8B0;" />
-                        <Button.Flyout>
-                            <Flyout>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition Width="auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBox
-                                        Width="120"
-                                        VerticalAlignment="Center"
-                                        PlaceholderText="下载限速(mb/s)"
-                                        Text="{x:Bind ViewModel.DownloadSpeedValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        ToolTipService.ToolTip="默认为0，意为不限速" />
-                                    <Button
-                                        Grid.Column="1"
-                                        Margin="5,0,0,0"
-                                        VerticalAlignment="Center"
-                                        Command="{x:Bind ViewModel.SetDownloadSpeedCommand}"
-                                        Style="{ThemeResource AccentButtonStyle}">
-                                        <FontIcon
-                                            FontFamily="Segoe Fluent Icons"
-                                            FontSize="15"
-                                            Glyph="&#xE8FB;" />
-                                    </Button>
-                                </Grid>
-                            </Flyout>
-                        </Button.Flyout>
-                    </Button>
-                </StackPanel>
-
-
-            </Grid>
-
             <Grid
                 Grid.Row="1"
                 Grid.Column="2"
@@ -255,8 +139,118 @@
                                 FontSize="15"
                                 Glyph="&#xE71A;" />
                         </Button>
+                        <Button
+                            Width="40"
+                            Height="40"
+                            Margin="0,-3,0,0"
+                            Padding="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            CornerRadius="5"
+                            Style="{ThemeResource TransparentButtonStyle}">
+                            <i:Interaction.Behaviors>
+                                <sound:ControlSoundBehavior />
+                            </i:Interaction.Behaviors>
+                            <FontIcon
+                                FontFamily="Segoe UI Emoji"
+                                FontSize="15"
+                                Glyph="&#x1F914;" />
+                            <Button.Flyout>
+                                <Flyout ShouldConstrainToRootBounds="False">
+                                    <Grid Width="400">
+                                        <RichTextBlock
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            LineHeight="20"
+                                            LineStackingStrategy="BlockLineHeight"
+                                            TextWrapping="Wrap">
+                                            <Paragraph>
+                                                <Run
+                                                    FontSize="14"
+                                                    FontWeight="SemiBold"
+                                                    Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                                                    Text="使用注意事项" />
+
+                                                <LineBreak />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="• 增量更新机制" />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="   - 剩余时间计算排除合并操作耗时，仅供参考" />
+
+                                                <LineBreak />
+                                                <LineBreak />
+
+                                                <Run FontSize="12" Text="• 暂停与网络恢复" />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="   - 暂停期间断网将会退出下载状态" />
+
+                                                <LineBreak />
+                                                <LineBreak />
+
+                                                <Run FontSize="12" Text="• 进度持久化" />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="   - 意外退出需重新校验，建议保持程序前台运行" />
+
+                                                <LineBreak />
+                                                <LineBreak />
+
+                                                <Run FontSize="12" Text="• 硬件兼容性" />
+                                                <LineBreak />
+                                                <Run FontSize="12" Text="   - 机械硬盘校验效率约为SSD的1/3～1/5" />
+                                            </Paragraph>
+                                        </RichTextBlock>
+                                    </Grid>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
+                        <Button
+                            Width="40"
+                            Height="40"
+                            Margin="5,0,0,0"
+                            Padding="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            CornerRadius="5"
+                            Style="{ThemeResource TransparentButtonStyle}">
+                            <i:Interaction.Behaviors>
+                                <sound:ControlSoundBehavior />
+                            </i:Interaction.Behaviors>
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="16"
+                                Glyph="&#xF8B0;" />
+                            <Button.Flyout>
+                                <Flyout>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox
+                                            Width="120"
+                                            VerticalAlignment="Center"
+                                            PlaceholderText="下载限速(mb/s)"
+                                            Text="{x:Bind ViewModel.DownloadSpeedValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            ToolTipService.ToolTip="默认为0，意为不限速" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Command="{x:Bind ViewModel.SetDownloadSpeedCommand}"
+                                            Style="{ThemeResource AccentButtonStyle}">
+                                            <FontIcon
+                                                FontFamily="Segoe Fluent Icons"
+                                                FontSize="15"
+                                                Glyph="&#xE8FB;" />
+                                        </Button>
+                                    </Grid>
+                                </Flyout>
+                            </Button.Flyout>
+                        </Button>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel
+                        Margin="5"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
                         <Button
                             Width="40"
                             Height="40"
@@ -284,7 +278,7 @@
                         <Button
                             Width="40"
                             Height="40"
-                            Margin="5,0,5,0"
+                            Margin="5,0,0,0"
                             Padding="10"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -553,7 +547,7 @@
             </Grid>
             <Button
                 Grid.Column="1"
-                Width="35"
+                Width="40"
                 Margin="-5,0,0,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"

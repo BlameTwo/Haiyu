@@ -1,9 +1,12 @@
 ﻿
 
+using Waves.Core.Services;
+
 namespace Haiyu.ViewModel.GameViewModels
 {
     public abstract partial class GameContextViewModelBase : ViewModelBase, IDisposable
     {
+        public LoggerService Logger { get; }
         public IGameContext GameContext { get; }
         public IDialogManager DialogManager { get; }
         public IAppContext<App> AppContext { get; }
@@ -15,8 +18,10 @@ namespace Haiyu.ViewModel.GameViewModels
             IDialogManager dialogManager,
             IAppContext<App> appContext,
             ITipShow tipShow
+            
         )
         {
+            this.Logger = Instance.Service.GetKeyedService<LoggerService>("AppLog");
             GameContext = gameContext;
             DialogManager = dialogManager;
             AppContext = appContext;
@@ -106,10 +111,12 @@ namespace Haiyu.ViewModel.GameViewModels
                 var status = await this.GameContext.GetGameContextStatusAsync(this.CTS.Token);
                 if (!status.IsGameExists && !status.IsGameInstalled)
                 {
+                    Logger.WriteInfo("未找到游戏文件，显示下载按钮");
                     ShowSelectInstallBth();
                 }
                 if (status.IsGameExists && !status.IsGameInstalled && !status.IsLauncher)
                 {
+                    Logger.WriteInfo("游戏文件存在，但不能启动，显示继续按钮");
                     ShowGameDownloadBth();
                 }
                 else if (!status.IsAction && status.IsGameExists && status.IsGameInstalled)
@@ -160,6 +167,7 @@ namespace Haiyu.ViewModel.GameViewModels
                 _bthType = 4;
                 this.CurrentProgressValue = 0;
                 this.MaxProgressValue = 0;
+                Logger.WriteInfo("游戏版本有更新");
                 BottomBarContent = "游戏有更新";
                 LauncheContent = "更新游戏";
                 DisplayVersion = version;
@@ -205,6 +213,7 @@ namespace Haiyu.ViewModel.GameViewModels
                 {
                     return;
                 }
+                Logger.WriteInfo($"选择游戏安装路径：{result.InstallFolder},即将进入通知核心进行下载");
                 await this.GameContext.StartDownloadTaskAsync(
                     result.InstallFolder,
                     result.Launcher
@@ -212,6 +221,7 @@ namespace Haiyu.ViewModel.GameViewModels
             }
             else
             {
+                Logger.WriteInfo($"继续更新触发");
                 var launcher = await GameContext.GetGameLauncherSourceAsync(this.CTS.Token);
                 await this.GameContext.StartDownloadTaskAsync(
                     GameContext.GameLocalConfig.GetConfig(
@@ -234,6 +244,7 @@ namespace Haiyu.ViewModel.GameViewModels
                 {
                     return;
                 }
+                Logger.WriteInfo($"选择游戏安文件：{result.InstallFolder}");
                 await this.GameContext.StartDownloadTaskAsync(
                     result.InstallFolder,
                     result.Launcher
@@ -241,6 +252,7 @@ namespace Haiyu.ViewModel.GameViewModels
             }
             else
             {
+                Logger.WriteInfo($"继续进行下载");
                 var launcher = await GameContext.GetGameLauncherSourceAsync(this.CTS.Token);
                 await this.GameContext.StartDownloadTaskAsync(
                     GameContext.GameLocalConfig.GetConfig(
@@ -261,12 +273,13 @@ namespace Haiyu.ViewModel.GameViewModels
             GameInstallBthVisibility = Visibility.Visible;
             GameDownloadingBthVisibility = Visibility.Collapsed;
             GameLauncherBthVisibility = Visibility.Collapsed;
-            BottomBarContent = "游戏文件不存在，请找到窗口右下角选择游戏下载路径或定位游戏";
+            BottomBarContent = "游戏文件不存在";
         }
 
         [RelayCommand]
         async Task RepirGame()
         {
+            Logger.WriteInfo($"开始尝试修复游戏文件");
             await GameContext.RepirGameAsync();
         }
 
@@ -279,12 +292,14 @@ namespace Haiyu.ViewModel.GameViewModels
         [RelayCommand]
         async Task DeleteGameResource()
         {
+            Logger.WriteInfo($"删除游戏文件");
             await GameContext.DeleteResourceAsync();
             await this.GameContext_GameContextOutput(this, new GameContextOutputArgs() { Type = Waves.Core.Models.Enums.GameContextActionType.None });
         }
 
         private void ShowGameDownloadingBth()
         {
+            Logger.WriteInfo($"游戏正在下载中");
             _bthType = 2;
             if (GameDownloadingBthVisibility == Visibility.Visible)
                 return;

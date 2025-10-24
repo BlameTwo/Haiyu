@@ -8,7 +8,7 @@
     xmlns:local="using:Haiyu"
     xmlns:property="using:Haiyu.Controls.Propertys"
     xmlns:tool="using:Haiyu.Common"
-    RequestedTheme="Dark">
+    RequestedTheme="Light">
     <tool:ClientApplication.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

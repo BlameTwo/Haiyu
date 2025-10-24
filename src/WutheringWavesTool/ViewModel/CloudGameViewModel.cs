@@ -3,6 +3,7 @@ using System.Globalization;
 using Waves.Api.Models.CloudGame;
 using Windows.Devices.Bluetooth.Advertisement;
 using Haiyu.Services.DialogServices;
+using Haiyu.Contracts;
 
 namespace Haiyu.ViewModel;
 

@@ -65,8 +65,8 @@ public class AppContext<T> : IAppContext<T>
         try
         {
             var scale = TitleBar.GetScaleAdjustment(win);
-            int targetDipWidth = 1100;
-            int targetDipHeight = 620;
+            int targetDipWidth = 1150;
+            int targetDipHeight = 650;
             var pixelWidth = (int)Math.Round(targetDipWidth * scale);
             var pixelHeight = (int)Math.Round(targetDipHeight * scale);
             win.AppWindow.Resize(

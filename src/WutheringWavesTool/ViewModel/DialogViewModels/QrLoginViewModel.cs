@@ -65,6 +65,7 @@ public partial class QrLoginViewModel : DialogViewModelBase
                     _canvasDevice,
                     frame.Surface);
                 await FillSurfaceWithBitmap(canvasBitmap);
+                Logger.WriteInfo("开始读取屏幕帧");
             }
 
             catch (Exception e) when (_canvasDevice.IsDeviceLost(e.HResult))
@@ -91,7 +92,7 @@ public partial class QrLoginViewModel : DialogViewModelBase
             var result2 = reader.decode(binaryBitmap);
             if (result2 == null)
                 return;
-           if(result2.Text != null)
+            if(result2.Text != null)
             {
                 this.QRResult = result2.Text;
                 var result =  await WavesClient.PostQrValueAsync(QRResult, CTS.Token);
@@ -120,6 +121,11 @@ public partial class QrLoginViewModel : DialogViewModelBase
                     TipMessage = result.Msg;
                 }
             }
+            else
+            {
+
+                Logger.WriteInfo("屏幕帧读取二维码失败，正在截取下一帧");
+            }
 
         }
         catch (Exception ex)
@@ -134,7 +140,7 @@ public partial class QrLoginViewModel : DialogViewModelBase
     public partial string TipMessage { get; set; }
 
     [ObservableProperty]
-    public partial string QRResult { get; set; } = "选择游戏窗口（需要露出二维码）";
+    public partial string QRResult { get; set; } = "选择游戏窗口（需要露出游戏二维码）";
 
     [ObservableProperty]
     public partial string VerifyCode { get; set; } = "";
@@ -199,13 +205,12 @@ public partial class QrLoginViewModel : DialogViewModelBase
         else if(result.Code == 200)
         {
             TipMessage = "登陆成功";
+
+            Logger.WriteInfo($"扫码登陆成功，结果{result.Data}");
         }
         this.Result = new QRScanResult(true);
         await Task.Delay(1000);
         this.Close();
     }
-
-
-    
 }
 

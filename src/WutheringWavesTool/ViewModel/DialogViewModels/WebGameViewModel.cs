@@ -1,4 +1,5 @@
-﻿using Haiyu.Services.DialogServices;
+﻿using Haiyu.Contracts;
+using Haiyu.Services.DialogServices;
 
 namespace Haiyu.ViewModel.DialogViewModels;
 
