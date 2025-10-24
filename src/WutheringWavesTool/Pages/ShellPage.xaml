@@ -424,7 +424,7 @@
         <Grid x:Name="panel" Grid.Row="1">
             <NavigationView
                 x:Name="navigationView"
-                OpenPaneLength="70"
+                OpenPaneLength="60"
                 PaneDisplayMode="Left"
                 SelectedItem="{x:Bind ViewModel.SelectItem, Mode=OneWay}"
                 Style="{ThemeResource MainNavigationViewStyle}">

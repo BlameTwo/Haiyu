@@ -129,7 +129,7 @@
             </ui:SettingsCard>
             <ui:SettingsCard
                 Margin="0,5,0,0"
-                Description="v1.2.9 preview1"
+                Description="v1.2.9 preview2"
                 Header="版本">
                 <ui:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE794;" />

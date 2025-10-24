@@ -160,7 +160,7 @@ namespace Haiyu.ViewModel.GameViewModels
                 _bthType = 4;
                 this.CurrentProgressValue = 0;
                 this.MaxProgressValue = 0;
-                BottomBarContent = "游戏有更新，请点击右侧按钮进行更新";
+                BottomBarContent = "游戏有更新";
                 LauncheContent = "更新游戏";
                 DisplayVersion = version;
                 EnableStartGameBth = true;
@@ -173,8 +173,8 @@ namespace Haiyu.ViewModel.GameViewModels
                     _bthType = 5;
                     this.CurrentProgressValue = 0;
                     this.MaxProgressValue = 0;
-                    BottomBarContent = "";
-                    LauncheContent = "游戏中";
+                    BottomBarContent = "游戏正在进行";
+                    LauncheContent = "正在运行";
                     EnableStartGameBth = false;
                     DisplayVersion = version;
                     LauncherIcon = "\uE71A";
