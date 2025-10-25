@@ -31,62 +31,58 @@
                 <ItemsControl ItemsSource="{x:Bind ViewModel.Sides, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="wikiModel:HotContentSideWrapper">
-                            <Grid
-                                Margin="5"
-                                Padding="5"
-                                Background="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
-                                BorderBrush="{ThemeResource SolidBackgroundFillColorSecondaryBrush}"
-                                BorderThickness="2"
-                                CornerRadius="5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition />
-                                    <RowDefinition Height="auto" />
-                                </Grid.RowDefinitions>
-                                <ui:ImageEx
-                                    Width="120"
-                                    Height="120"
-                                    CornerRadius="5"
-                                    Source="{x:Bind ImageUrl}"
-                                    Stretch="Uniform" />
-                                <Grid Grid.Column="1" Margin="8,0,0,0">
+                            <ui:DraggableCardControl Margin="5" CornerRadius="5">
+                                <Grid Padding="5" BorderThickness="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
                                         <RowDefinition />
+                                        <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
-                                    <TextBlock
-                                        FontFamily="{ThemeResource DefaultFont}"
-                                        FontSize="17"
-                                        Text="{x:Bind Title}" />
-                                    <TextBlock
+                                    <ui:ImageEx
+                                        Width="120"
+                                        Height="120"
+                                        CornerRadius="5"
+                                        Source="{x:Bind ImageUrl}"
+                                        Stretch="Uniform" />
+                                    <Grid Grid.Column="1" Margin="8,0,0,0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="17"
+                                            Text="{x:Bind Title}" />
+                                        <TextBlock
+                                            Grid.Row="1"
+                                            Margin="0,10,0,0"
+                                            FontSize="15"
+                                            Text="{x:Bind StartTime}" />
+                                        <TextBlock
+                                            Grid.Row="2"
+                                            Margin="0,10,0,0"
+                                            FontSize="15"
+                                            Text="{x:Bind EndTime}" />
+                                        <TextBlock Grid.Row="3" VerticalAlignment="Bottom">
+                                            <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind Message, Mode=OneWay}" />
+                                            <Run Text="剩余" />
+                                            <Run Text="{x:Bind TotalSpan}" />
+                                        </TextBlock>
+                                    </Grid>
+                                    <ProgressBar
                                         Grid.Row="1"
-                                        Margin="0,10,0,0"
-                                        FontSize="15"
-                                        Text="{x:Bind StartTime}" />
-                                    <TextBlock
-                                        Grid.Row="2"
-                                        Margin="0,10,0,0"
-                                        FontSize="15"
-                                        Text="{x:Bind EndTime}" />
-                                    <TextBlock Grid.Row="3" VerticalAlignment="Bottom">
-                                        <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind Message, Mode=OneWay}" />
-                                        <Run Text="剩余" />
-                                        <Run Text="{x:Bind TotalSpan}" />
-                                    </TextBlock>
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,5,0,0"
+                                        HorizontalAlignment="Stretch"
+                                        Maximum="{x:Bind MaxProgress, Mode=OneWay}"
+                                        Value="{x:Bind CurrentProgress, Mode=OneWay}" />
                                 </Grid>
-                                <ProgressBar
-                                    Grid.Row="1"
-                                    Grid.ColumnSpan="2"
-                                    Margin="0,5,0,0"
-                                    HorizontalAlignment="Stretch"
-                                    Maximum="{x:Bind MaxProgress, Mode=OneWay}"
-                                    Value="{x:Bind CurrentProgress, Mode=OneWay}" />
-                            </Grid>
+                            </ui:DraggableCardControl>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                     <ItemsControl.ItemsPanel>

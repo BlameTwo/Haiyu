@@ -1,191 +1,125 @@
-﻿using System.Numerics;
+﻿using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
+using System.Numerics;
 using CommunityToolkit.WinUI.Animations;
 
 namespace Haiyu.Behaviors;
 
 public sealed class ControlOffsetButtonAnimationBehaviors : Behavior<Button>
 {
+    private Vector3 _initialOffset; // 记录初始位置
+
     protected override void OnAttached()
     {
+        base.OnAttached();
         this.AssociatedObject.Click += AssociatedObject_Click;
         this.AssociatedObject.Loaded += AssociatedObject_Loaded;
-        base.OnAttached();
     }
 
     private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
     {
-        if (this.IsOpen)
+        // 记录初始位置
+        _initialOffset = Owner?.ActualOffset ?? default;
+
+        // 初始化按钮图标
+        if (IsOpen)
         {
-            this.AssociatedObject.Content = CloseIcon;
+            AssociatedObject.Content = CloseIcon;
         }
         else
         {
-            this.AssociatedObject.Content = OpenIcon;
+            AssociatedObject.Content = OpenIcon;
         }
-        this.OpenOffset = this.Owner.ActualOffset;
     }
 
     protected override void OnDetaching()
     {
-        this.AssociatedObject.Click -= AssociatedObject_Click;
         base.OnDetaching();
+        this.AssociatedObject.Click -= AssociatedObject_Click;
+        this.AssociatedObject.Loaded -= AssociatedObject_Loaded;
     }
 
     public bool IsOpen
     {
-        get { return (bool)GetValue(IsOpenProperty); }
-        set { SetValue(IsOpenProperty, value); }
+        get => (bool)GetValue(IsOpenProperty);
+        set => SetValue(IsOpenProperty, value);
     }
 
     public static readonly DependencyProperty IsOpenProperty = DependencyProperty.Register(
-        "IsOpen",
+        nameof(IsOpen),
         typeof(bool),
         typeof(ControlOffsetButtonAnimationBehaviors),
-        new PropertyMetadata(true, OnIsOpenCallBack)
+        new PropertyMetadata(true, (s, e) =>
+        {
+            if (s is ControlOffsetButtonAnimationBehaviors b)
+            {
+                b.AnimateToggle();
+            }
+        })
     );
-
-    public Vector3? OpenOffset { get; set; }
-
-    private static void OnIsOpenCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is ControlOffsetButtonAnimationBehaviors b)
-        {
-            b.Update();
-        }
-    }
-
-    private void Update()
-    {
-        if (Owner == null || OpenOffset == null)
-            return;
-        if (this.IsOpen)
-        {
-            AnimationSet sets = new();
-            sets.Add(
-                new OffsetAnimation()
-                {
-                    To = $"{OpenOffset.Value.X},{OpenOffset.Value.Y},{OpenOffset.Value.Z}",
-                    EasingMode = EasingMode.EaseInOut,
-                    EasingType = EasingType.Cubic,
-                    Duration = this.Duration,
-                }
-            );
-            this.AssociatedObject.Content = CloseIcon;
-            sets.Start(this.Owner);
-        }
-        else
-        {
-            if (Orientation == Orientation.Horizontal)
-            {
-                AnimationSet sets = new();
-                sets.Add(
-                    new OffsetAnimation()
-                    {
-                        To =
-                            $"{Owner.ActualOffset.X - Owner.ActualWidth + this.AssociatedObject.ActualWidth - Offset},{Owner.ActualOffset.Y},{Owner.ActualOffset.Z}",
-                        EasingMode = EasingMode.EaseInOut,
-                        EasingType = EasingType.Cubic,
-                        Duration = this.Duration,
-                    }
-                );
-                sets.Start(this.Owner);
-            }
-            else
-            {
-                AnimationSet sets = new();
-                sets.Add(
-                    new OffsetAnimation()
-                    {
-                        To =
-                            $"{Owner.ActualOffset.X},{Owner.ActualOffset.Y - Owner.ActualHeight + -this.AssociatedObject.ActualWidth - Offset},{Owner.ActualOffset.Z}",
-                        EasingMode = EasingMode.EaseInOut,
-                        EasingType = EasingType.Cubic,
-                        Duration = this.Duration,
-                    }
-                );
-                sets.Start(this.Owner);
-            }
-
-            this.AssociatedObject.Content = OpenIcon;
-        }
-    }
 
     public FrameworkElement Owner
     {
-        get { return (FrameworkElement)GetValue(OwnerProperty); }
-        set { SetValue(OwnerProperty, value); }
+        get => (FrameworkElement)GetValue(OwnerProperty);
+        set => SetValue(OwnerProperty, value);
     }
-
-    public double Offset
-    {
-        get { return (double)GetValue(OffsetProperty); }
-        set { SetValue(OffsetProperty, value); }
-    }
-
-    public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
-        "Offset",
-        typeof(double),
-        typeof(ControlOffsetButtonAnimationBehaviors),
-        new PropertyMetadata(
-            0.0,
-            (s, e) =>
-            {
-                if (s is ControlOffsetButtonAnimationBehaviors b)
-                {
-                    b.Update();
-                }
-            }
-        )
-    );
 
     public static readonly DependencyProperty OwnerProperty = DependencyProperty.Register(
-        "Owner",
+        nameof(Owner),
         typeof(FrameworkElement),
         typeof(ControlOffsetButtonAnimationBehaviors),
         new PropertyMetadata(null)
     );
 
-    public TimeSpan Duration
+    public double Offset
     {
-        get { return (TimeSpan)GetValue(DurationProperty); }
-        set { SetValue(DurationProperty, value); }
+        get => (double)GetValue(OffsetProperty);
+        set => SetValue(OffsetProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for Duration.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty DurationProperty = DependencyProperty.Register(
-        "Duration",
-        typeof(TimeSpan),
+    public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register(
+        nameof(Offset),
+        typeof(double),
         typeof(ControlOffsetButtonAnimationBehaviors),
-        new PropertyMetadata(TimeSpan.FromSeconds(0.3))
+        new PropertyMetadata(0.0)
     );
 
     public Orientation Orientation
     {
-        get { return (Orientation)GetValue(OrientationProperty); }
-        set { SetValue(OrientationProperty, value); }
+        get => (Orientation)GetValue(OrientationProperty);
+        set => SetValue(OrientationProperty, value);
     }
 
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        "Orientation",
+        nameof(Orientation),
         typeof(Orientation),
         typeof(ControlOffsetButtonAnimationBehaviors),
         new PropertyMetadata(Orientation.Horizontal)
     );
 
-    private void AssociatedObject_Click(object sender, RoutedEventArgs e)
+    public TimeSpan Duration
     {
-        this.IsOpen = !IsOpen;
+        get => (TimeSpan)GetValue(DurationProperty);
+        set => SetValue(DurationProperty, value);
     }
+
+    public static readonly DependencyProperty DurationProperty = DependencyProperty.Register(
+        nameof(Duration),
+        typeof(TimeSpan),
+        typeof(ControlOffsetButtonAnimationBehaviors),
+        new PropertyMetadata(TimeSpan.FromSeconds(0.3))
+    );
 
     public FontIcon OpenIcon
     {
-        get { return (FontIcon)GetValue(OpenIconProperty); }
-        set { SetValue(OpenIconProperty, value); }
+        get => (FontIcon)GetValue(OpenIconProperty);
+        set => SetValue(OpenIconProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for OpenIcon.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty OpenIconProperty = DependencyProperty.Register(
-        "OpenIcon",
+        nameof(OpenIcon),
         typeof(FontIcon),
         typeof(ControlOffsetButtonAnimationBehaviors),
         new PropertyMetadata(null)
@@ -193,15 +127,73 @@ public sealed class ControlOffsetButtonAnimationBehaviors : Behavior<Button>
 
     public FontIcon CloseIcon
     {
-        get { return (FontIcon)GetValue(CloseIconProperty); }
-        set { SetValue(CloseIconProperty, value); }
+        get => (FontIcon)GetValue(CloseIconProperty);
+        set => SetValue(CloseIconProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for CloseIcon.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty CloseIconProperty = DependencyProperty.Register(
-        "CloseIcon",
+        nameof(CloseIcon),
         typeof(FontIcon),
         typeof(ControlOffsetButtonAnimationBehaviors),
         new PropertyMetadata(null)
     );
+
+    private void AssociatedObject_Click(object sender, RoutedEventArgs e)
+    {
+        IsOpen = !IsOpen;
+    }
+
+    private void AnimateToggle()
+    {
+        if (Owner == null)
+        {
+            return;
+        }
+
+        AnimationSet animationSet = new();
+        var easingConfig = new AnimationSet();
+
+        if (IsOpen)
+        {
+            // 打开：还原到初始位置
+            animationSet.Add(
+                new OffsetAnimation
+                {
+                    To = $"{_initialOffset.X},{_initialOffset.Y},{_initialOffset.Z}",
+                    Duration = Duration,
+                    EasingType = EasingType.Cubic
+                }
+            );
+            AssociatedObject.Content = CloseIcon;
+        }
+        else
+        {
+            // 关闭：动态计算偏移位置
+            Vector3 targetOffset;
+            if (Orientation == Orientation.Horizontal)
+            {
+                // 水平方向：向左偏移（收起）
+                double offsetX = Owner.ActualOffset.X - Owner.ActualWidth + AssociatedObject.ActualWidth - Offset;
+                targetOffset = new Vector3((float)offsetX, (float)_initialOffset.Y, (float)_initialOffset.Z);
+            }
+            else
+            {
+                // 垂直方向：向上偏移（收起）
+                double offsetY = Owner.ActualOffset.Y - Owner.ActualHeight + AssociatedObject.ActualHeight - Offset;
+                targetOffset = new Vector3((float)_initialOffset.X, (float)offsetY, (float)_initialOffset.Z);
+            }
+
+            animationSet.Add(
+                new OffsetAnimation
+                {
+                    To = $"{targetOffset.X},{targetOffset.Y},{targetOffset.Z}",
+                    Duration = Duration,
+                    EasingType = EasingType.Cubic
+                }
+            );
+            AssociatedObject.Content = OpenIcon;
+        }
+
+        animationSet.Start(Owner);
+    }
 }

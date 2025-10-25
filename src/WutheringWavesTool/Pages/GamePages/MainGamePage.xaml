@@ -61,7 +61,7 @@
             <Grid
                 Grid.Row="1"
                 Grid.Column="2"
-                Margin="0,0,5,5"
+                Margin="0,0,7,7"
                 Padding="5"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
@@ -77,14 +77,15 @@
                 </Grid.ChildrenTransitions>
 
                 <Border
-                    Margin="5,0,5,-1"
+                    Margin="10,0,10,-1"
                     Padding="5"
                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                     CornerRadius="5 5  0 0">
 
                     <TextBlock
-                        Margin="5,0,0,0"
-                        FontSize="10"
+                        Margin="5,5,5,5"
+                        FontFamily="{ThemeResource DefaultFont}"
+                        FontSize="14"
                         Text="{x:Bind ViewModel.BottomBarContent, Mode=OneWay}"
                         TextAlignment="Center" />
                 </Border>
@@ -302,6 +303,11 @@
                         Orientation="Horizontal"
                         Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
                         <Button
+                            Width="140"
+                            Height="60"
+                            Padding="0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
                             property:CursorProperty.CursorName="{x:Bind ViewModel.CursorName}"
                             property:CursorProperty.CursorType="Link"
                             BorderThickness="0"
@@ -328,14 +334,14 @@
                                 <FontIcon
                                     Grid.RowSpan="2"
                                     FontFamily="Segoe Fluent Icons"
-                                    FontSize="20"
+                                    FontSize="25"
                                     Glyph="{x:Bind ViewModel.LauncherIcon, Mode=OneWay}" />
                                 <TextBlock
                                     Grid.Column="1"
-                                    Margin="15,0,0,0"
+                                    Margin="10,0,0,0"
                                     VerticalAlignment="Center"
                                     FontFamily="{ThemeResource DefaultFont}"
-                                    FontSize="16"
+                                    FontSize="15"
                                     Text="{x:Bind ViewModel.LauncheContent, Mode=OneWay}" />
                                 <TextBlock
                                     Grid.Row="1"
@@ -348,37 +354,18 @@
 
                         </Button>
                         <Button
+                            Width="60"
                             Margin="3,0,0,0"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                             BorderThickness="0"
                             IsEnabled="{x:Bind ViewModel.EnableStartGameBth, Mode=OneWay}">
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
-                            <ani:Explicit.Animations>
-                                <ani:AnimationSet x:Name="MoreShadowEnterAnimation">
-                                    <ani:BlurRadiusDropShadowAnimation To="12" />
-                                </ani:AnimationSet>
-                                <ani:AnimationSet x:Name="MoreShadowExitAnimation">
-                                    <ani:BlurRadiusDropShadowAnimation To="0" />
-                                </ani:AnimationSet>
-                            </ani:Explicit.Animations>
-                            <ui:Effects.Shadow>
-                                <media:AttachedCardShadow
-                                    BlurRadius="0"
-                                    Opacity="1"
-                                    Offset="0"
-                                    Color="{ThemeResource SystemAccentColor}" />
-                            </ui:Effects.Shadow>
-                            <i:Interaction.Behaviors>
-                                <sound:ButtonSoundBehavior />
-                                <i:EventTriggerBehavior EventName="PointerEntered">
-                                    <b:StartAnimationAction Animation="{x:Bind MoreShadowEnterAnimation}" />
-                                </i:EventTriggerBehavior>
-                                <i:EventTriggerBehavior EventName="PointerExited">
-                                    <b:StartAnimationAction Animation="{x:Bind MoreShadowExitAnimation}" />
-                                </i:EventTriggerBehavior>
-                            </i:Interaction.Behaviors>
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="18"
+                                Glyph="&#xEC7A;" />
+
                             <Button.Flyout>
                                 <MenuFlyout Placement="Bottom">
                                     <MenuFlyoutItem

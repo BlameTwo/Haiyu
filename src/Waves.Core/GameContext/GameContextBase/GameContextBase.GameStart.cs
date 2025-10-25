@@ -67,7 +67,6 @@ namespace Waves.Core.GameContext
         {
             try
             {
-
                 var result = await Task.Run(() =>
                 {
                     ProcessScan.CheckGameAliveWithWin32(

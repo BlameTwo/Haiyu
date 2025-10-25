@@ -350,30 +350,7 @@
                             BorderThickness="0"
                             IsEnabled="{x:Bind ViewModel.EnableStartGameBth, Mode=OneWay}">
                             <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
-                            <ani:Explicit.Animations>
-                                <ani:AnimationSet x:Name="MoreShadowEnterAnimation">
-                                    <ani:BlurRadiusDropShadowAnimation To="12" />
-                                </ani:AnimationSet>
-                                <ani:AnimationSet x:Name="MoreShadowExitAnimation">
-                                    <ani:BlurRadiusDropShadowAnimation To="0" />
-                                </ani:AnimationSet>
-                            </ani:Explicit.Animations>
-                            <ui:Effects.Shadow>
-                                <media:AttachedCardShadow
-                                    BlurRadius="0"
-                                    Opacity="1"
-                                    Offset="0"
-                                    Color="{ThemeResource SystemAccentColor}" />
-                            </ui:Effects.Shadow>
-                            <i:Interaction.Behaviors>
-                                <sound:ButtonSoundBehavior />
-                                <i:EventTriggerBehavior EventName="PointerEntered">
-                                    <b:StartAnimationAction Animation="{x:Bind MoreShadowEnterAnimation}" />
-                                </i:EventTriggerBehavior>
-                                <i:EventTriggerBehavior EventName="PointerExited">
-                                    <b:StartAnimationAction Animation="{x:Bind MoreShadowExitAnimation}" />
-                                </i:EventTriggerBehavior>
-                            </i:Interaction.Behaviors>
+
                             <Button.Flyout>
                                 <MenuFlyout Placement="Bottom">
                                     <MenuFlyoutItem

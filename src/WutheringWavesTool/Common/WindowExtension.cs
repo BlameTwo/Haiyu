@@ -1,21 +1,33 @@
 ﻿namespace Haiyu.Common;
 
-public static class WindowExtension
+public static partial class WindowExtension
 {
     public enum CreateType
     {
         Subtitle,
     }
 
+    public const int GWL_STYLE = -16;
+    public const uint WS_CAPTION = 0x00C00000;
+    public const uint WS_MAXIMIZEBOX = 0x00010000;
+    public const uint WS_MINIMIZEBOX = 0x00020000;
+    public const uint WS_OVERLAPPED = 0x00000000;
+
+    public const uint WS_OVERLAPPEDWINDOW = (
+        WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME | WS_MINIMIZEBOX | WS_MAXIMIZEBOX
+    );
+
+    public const uint WS_SYSMENU = 0x00080000;
+    public const uint WS_THICKFRAME = 0x00040000;
+
     public const uint WS_EX_LAYERED = 0x80000;
     public const uint WS_EX_TRANSPARENT = 0x20;
-    public const int GWL_STYLE = -16;
     public const int GWL_EXSTYLE = -20;
     public const int LWA_ALPHA = 0;
 
     public const int GWL_HWNDPARENT = (-8);
 
-    public static Window CreateTransparentWindow(Window win, CreateType type)
+    public static  Window CreateTransparentWindow(Window win, CreateType type)
     {
         var window = new Window();
         var dpi = GetScaleAdjustment(win);
@@ -33,6 +45,23 @@ public static class WindowExtension
         }
         window.Activate();
         return window;
+    }
+
+
+    [LibraryImport("user32.dll", SetLastError = true)]
+    public static partial long GetWindowLongA(nint hWnd, int nIndex);
+
+    [LibraryImport("user32.dll")]
+    public static partial int SetWindowLongA(nint hWnd, int nIndex, long dwNewLong);
+
+    public static void SetLayerWindow(this Window window)
+    {
+        var hWnd = (nint)window.AppWindow.Id.Value;
+        var exStyle = GetWindowLongA(hWnd, GWL_EXSTYLE);
+        if ((exStyle & WS_EX_LAYERED) is 0)
+            _ = SetWindowLongA(hWnd, GWL_EXSTYLE, exStyle | WS_EX_LAYERED);
+        var style = GetWindowLongA(hWnd, GWL_STYLE);
+        _ = SetWindowLongA(hWnd, GWL_STYLE, style & ~WS_OVERLAPPEDWINDOW);
     }
 
     public static double GetScaleAdjustment(Window window)
@@ -75,22 +104,22 @@ public static class WindowExtension
         SetLayeredWindowAttributes(hWnd, 0, 100, LWA_ALPHA);
     }
 
-    [DllImport("Shcore.dll", SetLastError = true)]
-    public static extern int GetDpiForMonitor(
+    [LibraryImport("Shcore.dll", SetLastError = true)]
+    public static partial int GetDpiForMonitor(
         nint hmonitor,
         Monitor_DPI_Type dpiType,
         out uint dpiX,
         out uint dpiY
     );
 
-    [DllImport("user32.dll")]
-    public static extern int SetWindowLong(nint hWnd, int nIndex, uint dwNewLong);
+    [LibraryImport("user32.dll")]
+    public static partial int SetWindowLong(nint hWnd, int nIndex, uint dwNewLong);
 
-    [DllImport("user32", EntryPoint = "GetWindowLong")]
-    public static extern uint GetWindowLong(nint hwnd, int nIndex);
+    [LibraryImport("user32", EntryPoint = "GetWindowLong")]
+    public static partial uint GetWindowLong(nint hwnd, int nIndex);
 
-    [DllImport("user32", EntryPoint = "SetLayeredWindowAttributes")]
-    public static extern int SetLayeredWindowAttributes(
+    [LibraryImport("user32", EntryPoint = "SetLayeredWindowAttributes")]
+    public static partial int SetLayeredWindowAttributes(
         nint hwnd,
         int crKey,
         int bAlpha,
@@ -220,5 +249,124 @@ public static partial class LayerWindowHelper
         var exStyle = GetWindowLongA(hWnd, GWL_EXSTYLE);
         if ((exStyle & WS_EX_LAYERED) is 0)
             _ = SetWindowLongA(hWnd, GWL_EXSTYLE, exStyle | WS_EX_LAYERED);
+    }
+
+}
+
+
+public static class NativeWindowHelper
+{
+    private const int WM_NCLBUTTONDBLCLK = 0x00A3; // Non-client left button double-click
+    private const int WM_SYSCOMMAND = 0x0112; // System command message
+    private const int SC_MAXIMIZE = 0xF030; // Maximize command
+    private const int WM_SIZE = 0x0005; // Resize message
+    private const int SIZE_MAXIMIZED = 2; // Maximized size
+    private const int GWLP_WNDPROC = -4;
+
+    // Static field to hold the delegate, preventing it from being garbage-collected
+    private static WndProcDelegate _currentWndProcDelegate;
+
+    // Delegate for the new window procedure
+    private delegate IntPtr WndProcDelegate(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+    public static void ForceDisableMaximize(Window window)
+    {
+        var hwnd = WindowNative.GetWindowHandle(window);
+
+        if (hwnd == IntPtr.Zero)
+        {
+            System.Diagnostics.Debug.WriteLine("Invalid window handle. Cannot hook window procedure.");
+            return;
+        }
+
+        // Store the original WndProc and assign the new one
+        IntPtr originalWndProc = GetWindowLongPtr(hwnd, GWLP_WNDPROC);
+        if (originalWndProc == IntPtr.Zero)
+        {
+            System.Diagnostics.Debug.WriteLine("Failed to retrieve the original WndProc.");
+            return;
+        }
+
+        _currentWndProcDelegate = (wndHwnd, msg, wParam, lParam) =>
+        {
+            // Suppress double-click maximize
+            if (msg == WM_NCLBUTTONDBLCLK)
+            {
+                System.Diagnostics.Debug.WriteLine("Double-click maximize suppressed.");
+                return IntPtr.Zero;
+            }
+
+            // Suppress system maximize command (e.g., via keyboard shortcuts or title bar menu)
+            if (msg == WM_SYSCOMMAND && wParam.ToInt32() == SC_MAXIMIZE)
+            {
+                System.Diagnostics.Debug.WriteLine("Maximize via system command suppressed.");
+                return IntPtr.Zero;
+            }
+
+
+            try
+            {
+                // Ensure parameters are valid before calling originalWndProc
+                if (wndHwnd != IntPtr.Zero && originalWndProc != IntPtr.Zero)
+                {
+                    return CallWindowProc(originalWndProc, wndHwnd, msg, wParam, lParam);
+                }
+                else
+                {
+                    System.Diagnostics.Debug.WriteLine("Invalid parameters in WndProc call.");
+                    return IntPtr.Zero;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions to avoid crashing
+                System.Diagnostics.Debug.WriteLine($"Error in WndProc: {ex.Message}");
+                return IntPtr.Zero;
+            }
+        };
+
+        try
+        {
+            // Hook the new WndProc
+            IntPtr result = SetWindowLongPtr(hwnd, GWLP_WNDPROC, Marshal.GetFunctionPointerForDelegate(_currentWndProcDelegate));
+            if (result == IntPtr.Zero)
+            {
+                System.Diagnostics.Debug.WriteLine($"Failed to set new WndProc. Error: {Marshal.GetLastWin32Error()}");
+            }
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Error hooking window procedure: {ex.Message}");
+            return;
+        }
+
+        // Prevent garbage collection of the delegate (redundant but safe)
+        GC.KeepAlive(_currentWndProcDelegate);
+    }
+
+    // Win32 API declarations
+    [DllImport("user32.dll", SetLastError = true)]
+    private static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+    [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr", SetLastError = true)]
+    private static extern IntPtr GetWindowLongPtr64(IntPtr hWnd, int nIndex);
+
+    [DllImport("user32.dll", EntryPoint = "GetWindowLong", SetLastError = true)]
+    private static extern IntPtr GetWindowLong32(IntPtr hWnd, int nIndex);
+
+    [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr", SetLastError = true)]
+    private static extern IntPtr SetWindowLongPtr64(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+    [DllImport("user32.dll", EntryPoint = "SetWindowLong", SetLastError = true)]
+    private static extern IntPtr SetWindowLong32(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+    private static IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex)
+    {
+        return IntPtr.Size == 8 ? GetWindowLongPtr64(hWnd, nIndex) : GetWindowLong32(hWnd, nIndex);
+    }
+
+    private static IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
+    {
+        return IntPtr.Size == 8 ? SetWindowLongPtr64(hWnd, nIndex, dwNewLong) : SetWindowLong32(hWnd, nIndex, dwNewLong);
     }
 }
