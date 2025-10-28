@@ -93,6 +93,8 @@ public abstract class DialogManager : IDialogManager
     public async Task<CloseWindowResult> ShowCloseWindowResult() =>
         await GetDialogResultAsync<CloseDialog, CloseWindowResult>(null);
 
+
+
     public async Task<QRScanResult> GetQRLoginResultAsync() => await GetDialogResultAsync<QRLoginDialog, QRScanResult>(null);
 
 
@@ -111,4 +113,6 @@ public abstract class DialogManager : IDialogManager
     }
 
     public async Task ShowWebGameDialogAsync() => await ShowDialogAsync<WebGameLogin>();
+
+    public async Task ShowGameLauncherChacheDialogAsync(GameLauncherCacheArgs args) => await ShowDialogAsync<GameLauncherCacheManager>(args);
 }

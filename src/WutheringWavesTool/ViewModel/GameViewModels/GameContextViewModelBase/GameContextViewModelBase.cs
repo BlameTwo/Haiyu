@@ -1,5 +1,6 @@
 ﻿
 
+using Haiyu.Models.Dialogs;
 using Waves.Core.Services;
 
 namespace Haiyu.ViewModel.GameViewModels
@@ -192,7 +193,23 @@ namespace Haiyu.ViewModel.GameViewModels
                     _bthType = 3;
                     this.CurrentProgressValue = 0;
                     this.MaxProgressValue = 0;
-                    BottomBarContent = "游戏准备就绪";
+                    var totalTime = GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameRunTotalTime);
+                    if(totalTime == null)
+                    {
+                        BottomBarContent = "游戏准备就绪";
+                    }
+                    else
+                    {
+                        if(int.TryParse(totalTime,out var timeResult))
+                        {
+                            var tt = TimeSpan.FromSeconds(timeResult);
+                            BottomBarContent = "已游玩" + ($"{tt.Days}天{tt.Hours}小时{tt.Minutes}分钟");;
+                        }
+                        else
+                        {
+                            BottomBarContent = "游戏准备就绪";
+                        }
+                    }
                     LauncheContent = "进入游戏";
                     EnableStartGameBth = true;
                     DisplayVersion = version;
@@ -297,6 +314,22 @@ namespace Haiyu.ViewModel.GameViewModels
             await this.GameContext_GameContextOutput(this, new GameContextOutputArgs() { Type = Waves.Core.Models.Enums.GameContextActionType.None });
         }
 
+        [RelayCommand]
+        async Task ShowGameLauncherCache()
+        {
+            var data = await this.GameContext.GetLocalGameOAuthAsync(this.CTS.Token);
+            if(data == null)
+            {
+                TipShow.ShowMessage("不存在任何登陆信息，请登陆游戏后再次查看", Symbol.Clear);
+                return;
+            }
+
+            await DialogManager.ShowGameLauncherChacheDialogAsync(new GameLauncherCacheArgs()
+            {
+                 Datas = data,
+                  GameContextName = this.GameContext.ContextName
+            });
+        }
         private void ShowGameDownloadingBth()
         {
             Logger.WriteInfo($"游戏正在下载中");

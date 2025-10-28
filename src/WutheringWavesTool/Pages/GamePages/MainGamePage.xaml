@@ -382,6 +382,14 @@
                                             <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEF19;" />
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.ShowGameLauncherCacheCommand}"
+                                        Text="游戏登陆管理"
+                                        ToolTipService.ToolTip="只包含已经登陆游戏的所有账号信息">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE912;" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem
                                         Command="{x:Bind ViewModel.DeleteGameResourceCommand}"

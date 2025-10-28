@@ -1,10 +1,12 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.Input;
+using System;
 using System.Diagnostics;
 using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
-using CommunityToolkit.Mvvm.Input;
+using System.Text.Json;
 using Waves.Api.Models;
+using Waves.Api.Models.Launcher;
 using Waves.Core.Common;
 using Waves.Core.Contracts;
 using Waves.Core.Models;
@@ -164,5 +166,30 @@ public abstract partial class GameContextBase : IGameContext
     public void UpdateLogCore(CoreLogOption coreLogOption)
     {
         this.Logger.Option = coreLogOption;
+    }
+
+    public async Task<List<KRSDKLauncherCache>?> GetLocalGameOAuthAsync(CancellationToken token)
+    {
+        try
+        {
+            if (this.Config.PKGId == null)
+            {
+                return null;
+            }
+            var roming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var gameLocal = Path.Combine(roming, $"KR_{this.Config.GameID}");
+            var gameLaunche = Path.Combine(gameLocal, $"{this.Config.PKGId}\\KRSDKUserLauncherCache.json");
+            if (Directory.Exists(gameLocal) && File.Exists(gameLaunche))
+            {
+                var fileStr = await File.ReadAllTextAsync(gameLaunche,token);
+                var model = JsonSerializer.Deserialize(fileStr, LauncherConfig.Default.ListKRSDKLauncherCache);
+                return model;
+            }
+            return null;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 }

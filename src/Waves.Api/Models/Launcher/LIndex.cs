@@ -17,6 +17,8 @@ namespace Waves.Api.Models.Launcher;
 [JsonSerializable(typeof(ResourcesGray))]
 [JsonSerializable(typeof(LIndex))]
 [JsonSerializable(typeof(LauncherBackgroundData))]
+[JsonSerializable(typeof(KRSDKLauncherCache))]
+[JsonSerializable(typeof(List<KRSDKLauncherCache>))]
 public partial class LauncherConfig:JsonSerializerContext
 {
 

@@ -19,7 +19,7 @@ namespace Waves.Core.GameContext
         private int gameId;
         private string gameFile;
         private DateTime _playGameTime = DateTime.MinValue;
-        private System.Threading.Timer? gameRunTimer;
+        private System.Timers.Timer? gameRunTimer;
         private uint ppid;
 
         public async Task StartGameAsync()
@@ -43,12 +43,11 @@ namespace Waves.Core.GameContext
                 this._isStarting = true;
                 this.gameId = _gameProcess.Id;
                 this.gameFile = info.FileName;
-                gameRunTimer = new System.Threading.Timer(
-                    callback: async _ => await CheckGameStatusAsync(),
-                    state: null,
-                    dueTime: 3000,
-                    period: 3000
-                );
+                this._playGameTime = DateTime.Now;
+                gameRunTimer = new System.Timers.Timer();
+                gameRunTimer.Elapsed += GameRunTimer_Elapsed;
+                gameRunTimer.Interval = 3000;
+                gameRunTimer.Start();
                 Logger.WriteInfo("正在启动游戏……");
             }
             catch (Exception ex)
@@ -63,7 +62,7 @@ namespace Waves.Core.GameContext
                 .ConfigureAwait(false);
         }
 
-        private async Task CheckGameStatusAsync()
+        private async void GameRunTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
             try
             {
@@ -81,6 +80,10 @@ namespace Waves.Core.GameContext
 
                 if (!result.contained)
                 {
+                    gameRunTimer?.Elapsed -= GameRunTimer_Elapsed;
+                    gameRunTimer?.Dispose();
+                    gameRunTimer = null;
+                    Logger.WriteInfo("游戏退出");
                     await OnGameExited();
                 }
                 else
@@ -101,11 +104,21 @@ namespace Waves.Core.GameContext
             _gameProcess?.Dispose();
             _gameProcess = null;
             _isStarting = false;
-            Logger.WriteInfo($"游戏已退出，游戏运行时长:{GetGameTime():G}");
+            var realRunTime = GetGameTime();
+            Logger.WriteInfo($"游戏已退出，游戏运行时长:{realRunTime:G}");
+            var runGameTime = this.GameLocalConfig.GetConfig(GameLocalSettingName.GameRunTotalTime);
+            double runTime = 0.0;
+            if (runGameTime != null)
+                runTime = int.Parse(runGameTime);
+            await this.GameLocalConfig.SaveConfigAsync(
+                GameLocalSettingName.GameRunTotalTime,
+                (runTime += Convert.ToInt32(realRunTime.TotalSeconds)).ToString()
+            );
             // 异步通知
             if (gameContextOutputDelegate != null)
             {
-                await gameContextOutputDelegate.Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
+                await gameContextOutputDelegate
+                    .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
                     .ConfigureAwait(false);
             }
         }

@@ -22,4 +22,6 @@ public interface IDialogManager
 
     public Task<ContentDialogResult> ShowMessageDialog(string header,string content,string closeText);
     Task ShowWebGameDialogAsync();
+
+    Task ShowGameLauncherChacheDialogAsync(GameLauncherCacheArgs args);
 }

@@ -64,7 +64,6 @@
                                     Padding="5,2"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                                     Canvas.ZIndex="2"
                                     CornerRadius="5">
                                     <Viewbox Height="15">
@@ -81,7 +80,6 @@
                                     Margin="3,3,0,0"
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Top"
-                                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                                     Canvas.ZIndex="2"
                                     CornerRadius="5">
                                     <Image

@@ -6,6 +6,9 @@ using Waves.Core.Models.Downloader;
 
 namespace Waves.Core.GameContext;
 
+/// <summary>
+/// 游戏核心管理
+/// </summary>
 public interface IGameContext
 {
     public IHttpClientService HttpClientService { get; set; }
@@ -78,6 +81,13 @@ public interface IGameContext
     /// <param name="bytesPerSecond"></param>
     /// <returns></returns>
     Task SetSpeedLimitAsync(long bytesPerSecond);
+
+    /// <summary>
+    /// 获得游戏登陆的OAuth的代码
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    Task<List<KRSDKLauncherCache>?> GetLocalGameOAuthAsync(CancellationToken token);
 
     Task StartGameAsync();
     Task UpdateGameAsync();

@@ -14,6 +14,7 @@
 
         public string GameID { get; set; }
 
+        public string? PKGId { get; set;  }
         public string AppId { get; set; }
 
         public string AppKey { get; set; }
@@ -42,6 +43,7 @@
                 LauncherConfigUrl =
                     "https://prod-cn-alicdn-gamestarter.kurogame.com/launcher/launcher/10003_Y8xXrXk65DqFHEDgApn3cpK5lfczpFx5/G152/index.json",
                 Language = "zh-Hans",
+                PKGId = "A1381"
             };
 
         public static GameAPIConfig GlobalConfig =>
@@ -51,6 +53,7 @@
                 GameID = "G153",
                 AppKey = "obOHXFrFanqsaIEOmuKroCcbZkQRBC7c",
                 GameIdentity = "Aki",
+                PKGId = "A1730",
                 GameExeName = "Wuthering Waves.exe",
                 ConfigUrl =
                     "https://prod-alicdn-gamestarter.kurogame.com/launcher/game/G153/50004_obOHXFrFanqsaIEOmuKroCcbZkQRBC7c/index.json",
@@ -66,6 +69,7 @@
                 GameID = "G152",
                 AppKey = "j5GWFuUFlb8N31Wi2uS3ZAVHcb7ZGN7y",
                 GameIdentity = "Aki",
+                PKGId = "A1421",
                 GameExeName = "Wuthering Waves.exe",
                 ConfigUrl =
                     "https://prod-cn-alicdn-gamestarter.kurogame.com/launcher/game/G152/10004_j5GWFuUFlb8N31Wi2uS3ZAVHcb7ZGN7y/index.json",
@@ -123,6 +127,7 @@
                 AppKey = "LWdk9D2Ep9mpJmqBZZkcPBU2YNraEWBQ",
                 GameIdentity = "Haru",
                 GameExeName = "PGR.exe",
+                PKGId=null,
                 ConfigUrl =
                     "https://prod-alicdn-gamestarter.kurogame.com/launcher/game/G143/50015_LWdk9D2Ep9mpJmqBZZkcPBU2YNraEWBQ/index.json",
                 LauncherConfigUrl =

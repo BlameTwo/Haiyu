@@ -178,6 +178,7 @@
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
+                    CornerRadius="5"
                     Visibility="{x:Bind ViewModel.GamerRoilViewModel.WeaponVisibility, Mode=OneWay}">
                     <Grid.Transitions>
                         <TransitionCollection>
@@ -335,7 +336,8 @@
                                     <Grid
                                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                        BorderThickness="1">
+                                        BorderThickness="1"
+                                        CornerRadius="5">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
                                             <RowDefinition />
@@ -449,7 +451,8 @@
                                         Padding="10"
                                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                        BorderThickness="1">
+                                        BorderThickness="1"
+                                        CornerRadius="5">
 
                                         <StackPanel
                                             Grid.Row="1"
@@ -508,7 +511,8 @@
                                     Padding="10"
                                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1">
+                                    BorderThickness="1"
+                                    CornerRadius="5">
                                     <i:Interaction.Behaviors>
                                         <i:DataTriggerBehavior
                                             Binding="{Binding Unlocked, Mode=OneWay}"

@@ -40,7 +40,6 @@ public sealed partial class MainGameViewModel : GameContextViewModelBase
         this.Notice = starter.Guidance.Notice;
         this.News = starter.Guidance.News;
         this.Activity = starter.Guidance.Activity;
-
         TabLoad = true;
     }
 

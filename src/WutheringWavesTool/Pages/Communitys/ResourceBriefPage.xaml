@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="Haiyu.Pages.Communitys.ResourceBriefPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -62,7 +62,7 @@
                     HorizontalAlignment="Center"
                     FontFamily="{ThemeResource DefaultFont}"
                     FontSize="18"
-                    Text="星声统计" />
+                    Text="贝币统计" />
                 <ItemsRepeater
                     Grid.Row="1"
                     Margin="0,10,0,0"
@@ -113,7 +113,7 @@
                     HorizontalAlignment="Center"
                     FontFamily="{ThemeResource DefaultFont}"
                     FontSize="18"
-                    Text="贝币统计" />
+                    Text="星声统计" />
                 <ItemsRepeater
                     Grid.Row="1"
                     Margin="0,10,0,0"

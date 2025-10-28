@@ -75,6 +75,8 @@ public static class Instance
             #region Dialog
             .AddTransient<LoginDialog>()
             .AddTransient<LoginGameViewModel>()
+            .AddTransient<GameLauncherCacheManager>()
+            .AddTransient<GameLauncherCacheViewModel>()
             .AddTransient<WebGameLogin>()
             .AddTransient<WebGameViewModel>()
             .AddTransient<BindGameDataDialog>()

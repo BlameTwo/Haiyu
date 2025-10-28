@@ -78,13 +78,13 @@ public sealed partial class GamerRoilViewModel : ViewModelBase, IDisposable
 
     #region Visibility
     [ObservableProperty]
-    public partial Visibility WeaponVisibility { get; set; }
+    public partial Visibility WeaponVisibility { get; set; } = Visibility.Visible;
 
     [ObservableProperty]
-    public partial Visibility ChainVisibility { get; set; }
+    public partial Visibility ChainVisibility { get; set; } = Visibility.Collapsed;
 
     [ObservableProperty]
-    public partial Visibility PhantomDataVisibility { get; set; }
+    public partial Visibility PhantomDataVisibility { get; set; } = Visibility.Collapsed;
     #endregion
 
     #region Phantom

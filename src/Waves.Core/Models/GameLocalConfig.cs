@@ -33,6 +33,8 @@ public class GameLocalSettingName
     /// </summary>
     public const string IsDx11 = nameof(IsDx11);
 
+    public const string GameRunTotalTime = nameof(GameRunTotalTime);
+
     /// <summary>
     /// 预下载路径
     /// </summary>
