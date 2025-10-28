@@ -86,6 +86,7 @@ public partial class App : ClientApplication
             Process.GetCurrentProcess().Kill();
             return;
         }
+        
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
         Instance.Service.GetService<IScreenCaptureService>().Register();
         Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");

@@ -1,8 +1,11 @@
-﻿using H.NotifyIcon;
-using Waves.Core.Common;
-using Windows.Graphics.DirectX.Direct3D11;
+﻿using Astronomical;
+using H.NotifyIcon;
+using Haiyu.Models.Enums;
 using Haiyu.Services.DialogServices;
 using Haiyu.ViewModel.GameViewModels;
+using Waves.Core.Common;
+using Windows.Devices.Geolocation;
+using Windows.Graphics.DirectX.Direct3D11;
 
 namespace Haiyu.ViewModel;
 
@@ -30,6 +33,21 @@ public sealed partial class ShellViewModel : ViewModelBase
         WavesClient = wavesClient;
         RegisterMessanger();
     }
+
+    #region 时间
+    [ObservableProperty]
+    public partial string MoonIcon { get; set; }
+
+    [ObservableProperty]
+    public partial string MoonState { get; set; }
+
+    [ObservableProperty]
+    public partial string StartTime { get; set; }
+
+    [ObservableProperty]
+    public partial string EndTime { get; set; }
+    #endregion
+
 
     public INavigationService HomeNavigationService { get; }
     public INavigationViewService HomeNavigationViewService { get; }
@@ -224,6 +242,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
+
         var network = await NetworkCheck.PingAsync(GameAPIConfig.BaseAddress[0]);
         if (network == null || network.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
@@ -251,6 +270,19 @@ public sealed partial class ShellViewModel : ViewModelBase
         this.ShowWavesBilibiliGame = (bool)AppSettings.ShowWavesBilibiliGame;
         this.ShowTwPGRGame = (bool)AppSettings.ShowTwPGRGame;
         OpenMain();
+
+        var accessStatus = await Geolocator.RequestAccessAsync();
+        if(accessStatus == GeolocationAccessStatus.Allowed)
+        {
+            var geolocator = new Geolocator { DesiredAccuracyInMeters = 0 };
+            var position = await geolocator.GetGeopositionAsync();
+            var moonValue = MoonPhaseCalculator.CalculateMoonPhase(DateTime.Now);
+            this.MoonIcon = MoonPhaseCalculator.DeterminePhaseIcon(moonValue);
+            this.MoonState = MoonPhaseCalculator.DeterminePhaseName(moonValue);
+            var sunTime = SunriseSunsetCalculator.GetSunTime(DateTime.Now,position.Coordinate.Longitude, position.Coordinate.Latitude);
+            this.StartTime = sunTime.SunriseTime.ToString("HH:MM:ss");
+            this.EndTime = sunTime.SunsetTime.ToString("HH:MM:ss");
+        }
     }
 
     [RelayCommand]

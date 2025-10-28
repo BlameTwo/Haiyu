@@ -8,6 +8,9 @@
     <Platform Name="x86" />
   </Configurations>
   <Folder Name="/Extensions/">
+    <Project Path="Astronomical/Astronomical.csproj" Id="1130a43f-a182-4633-b1ab-f68a92fdc860">
+      <BuildType Solution="All|*" Project="Debug" />
+    </Project>
     <Project Path="Extensions/CursorResource/CursorResource.vcxproj" Id="8ce44d37-8b39-4eda-9774-a70c11f04518">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
