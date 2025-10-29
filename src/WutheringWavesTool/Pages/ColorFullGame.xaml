@@ -163,7 +163,7 @@
                                         <FontIcon
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Center"
-                                            FontFamily="Segoe Fluent Icons"
+                                            FontFamily="{ThemeResource FluentIcon}"
                                             FontSize="20"
                                             Foreground="White"
                                             Glyph="&#xE72E;"
@@ -266,7 +266,7 @@
                                 <FontIcon
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    FontFamily="Segoe Fluent Icons"
+                                    FontFamily="{ThemeResource FluentIcon}"
                                     Foreground="White"
                                     Glyph="&#xE72E;"
                                     Visibility="{x:Bind IsStone, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}" />
@@ -326,7 +326,7 @@
                                 <FontIcon
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    FontFamily="Segoe Fluent Icons"
+                                    FontFamily="{ThemeResource FluentIcon}"
                                     FontSize="20"
                                     Foreground="White"
                                     Glyph="&#xE72E;"

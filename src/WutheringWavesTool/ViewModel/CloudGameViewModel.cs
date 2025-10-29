@@ -168,7 +168,7 @@ public partial class CloudGameViewModel : ViewModelBase
             )
         );
         this.cacheItems = resource.Item2.Data;
-        this.PageSize = 8;
+        this.PageSize = 9;
         this.CurrentPage = 1;
         UpdatePageCount();
         LoadPageItems();

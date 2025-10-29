@@ -47,7 +47,7 @@
                                 Grid.Column="1"
                                 Margin="12,0,0,0"
                                 VerticalAlignment="Center"
-                                FontFamily="Segoe Fluent Icons"
+                                FontFamily="{ThemeResource FluentIcon}"
                                 FontSize="16"
                                 Text="{TemplateBinding Icon,
                                                        Converter={StaticResource FontIconConverter}}" />

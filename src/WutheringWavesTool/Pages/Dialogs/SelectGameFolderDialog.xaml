@@ -36,7 +36,7 @@
                 Command="{x:Bind ViewModel.SelectGameProgramCommand}"
                 Style="{ThemeResource TransparentButtonStyle}"
                 ToolTipService.ToolTip="选择主程序">
-                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8E5;" />
+                <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8E5;" />
             </Button>
         </Grid>
         <TextBlock

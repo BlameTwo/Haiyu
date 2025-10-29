@@ -33,7 +33,7 @@
             CornerRadius="50"
             Style="{ThemeResource TransparentButtonStyle}"
             ToolTipService.ToolTip="关闭">
-            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE894;" />
+            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE894;" />
         </Button>
         <TextBlock
             HorizontalAlignment="Left"

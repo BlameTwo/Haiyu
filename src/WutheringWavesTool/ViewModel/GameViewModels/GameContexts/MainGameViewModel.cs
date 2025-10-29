@@ -47,7 +47,7 @@ public sealed partial class MainGameViewModel : GameContextViewModelBase
     async Task CardLoaded()
     {
         await Task.Delay(500);
-        IsOpen = false;
+        IsOpen = true;
     }
 
     internal void SelectTab(string text)

@@ -28,7 +28,7 @@
             CornerRadius="50"
             Style="{ThemeResource TransparentButtonStyle}">
             <FontIcon
-                FontFamily="Segoe Fluent Icons"
+                FontFamily="{ThemeResource FluentIcon}"
                 FontSize="12"
                 Glyph="&#xE653;" />
         </Button>
@@ -60,10 +60,11 @@
                                 Grid.Column="1"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
+                                ToolTipService.ToolTip="复制游戏登陆码"
                                 Command="{x:Bind CopyOAuthCodeCommand}"
                                 Style="{ThemeResource TransparentButtonStyle}">
                                 <FontIcon
-                                    FontFamily="Segoe Fluent Icons"
+                                    FontFamily="{ThemeResource FluentIcon}"
                                     FontSize="15"
                                     Glyph="&#xE8C8;" />
                             </Button>

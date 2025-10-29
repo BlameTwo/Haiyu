@@ -75,14 +75,15 @@
                 </Grid.ChildrenTransitions>
 
                 <Border
-                    Margin="5,0,5,-1"
+                    Margin="10,0,10,-1"
                     Padding="5"
                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                     CornerRadius="5 5  0 0">
 
                     <TextBlock
                         Margin="5,0,0,0"
-                        FontSize="10"
+                        FontSize="14"
+                        FontFamily="{ThemeResource DefaultFont}"
                         Text="{x:Bind ViewModel.BottomBarContent, Mode=OneWay}"
                         TextAlignment="Center" />
                 </Border>
@@ -115,7 +116,7 @@
                                 <sound:ControlSoundBehavior />
                             </i:Interaction.Behaviors>
                             <FontIcon
-                                FontFamily="Segoe Fluent Icons"
+                                FontFamily="{ThemeResource FluentIcon}"
                                 FontSize="15"
                                 Glyph="{x:Bind ViewModel.PauseIcon, Mode=OneWay}" />
                         </Button>
@@ -133,7 +134,7 @@
                                 <sound:ControlSoundBehavior />
                             </i:Interaction.Behaviors>
                             <FontIcon
-                                FontFamily="Segoe Fluent Icons"
+                                FontFamily="{ThemeResource FluentIcon}"
                                 FontSize="15"
                                 Glyph="&#xE71A;" />
                         </Button>
@@ -213,7 +214,7 @@
                                 <sound:ControlSoundBehavior />
                             </i:Interaction.Behaviors>
                             <FontIcon
-                                FontFamily="Segoe Fluent Icons"
+                                FontFamily="{ThemeResource FluentIcon}"
                                 FontSize="16"
                                 Glyph="&#xF8B0;" />
                             <Button.Flyout>
@@ -236,7 +237,7 @@
                                             Command="{x:Bind ViewModel.SetDownloadSpeedCommand}"
                                             Style="{ThemeResource AccentButtonStyle}">
                                             <FontIcon
-                                                FontFamily="Segoe Fluent Icons"
+                                                FontFamily="{ThemeResource FluentIcon}"
                                                 FontSize="15"
                                                 Glyph="&#xE8FB;" />
                                         </Button>
@@ -264,7 +265,7 @@
                                 <sound:ControlSoundBehavior />
                             </i:Interaction.Behaviors>
                             <FontIcon
-                                FontFamily="Segoe Fluent Icons"
+                                FontFamily="{ThemeResource FluentIcon}"
                                 FontSize="15"
                                 Glyph="&#xE896;" />
                         </Button>
@@ -288,7 +289,7 @@
                                 <sound:ControlSoundBehavior />
                             </i:Interaction.Behaviors>
                             <FontIcon
-                                FontFamily="Segoe Fluent Icons"
+                                FontFamily="{ThemeResource FluentIcon}"
                                 FontSize="15"
                                 Glyph="&#xE8D5;" />
                         </Button>
@@ -325,7 +326,7 @@
                                 </Grid.RowDefinitions>
                                 <FontIcon
                                     Grid.RowSpan="2"
-                                    FontFamily="Segoe Fluent Icons"
+                                    FontFamily="{ThemeResource FluentIcon}"
                                     FontSize="20"
                                     Glyph="{x:Bind ViewModel.LauncherIcon, Mode=OneWay}" />
                                 <TextBlock
@@ -352,7 +353,7 @@
                             Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                             BorderThickness="0"
                             IsEnabled="{x:Bind ViewModel.EnableStartGameBth, Mode=OneWay}">
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
+                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE712;" />
 
                             <Button.Flyout>
                                 <MenuFlyout Placement="Bottom">
@@ -361,13 +362,13 @@
                                         Text="修复游戏"
                                         ToolTipService.ToolTip="此选项等同于下载，启动器会下载服务器资源进行自动覆盖（包含Mod资源）">
                                         <MenuFlyoutItem.Icon>
-                                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" />
+                                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xEC7A;" />
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem Command="{x:Bind ViewModel.ShowGameResourceCommand}" Text="游戏资源管理">
                                         <MenuFlyoutItem.Icon>
-                                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEF19;" />
+                                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xEF19;" />
                                         </MenuFlyoutItem.Icon>
                                     </MenuFlyoutItem>
                                     <MenuFlyoutSeparator />

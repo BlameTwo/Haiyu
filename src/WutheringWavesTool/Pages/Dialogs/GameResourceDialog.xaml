@@ -41,7 +41,7 @@
                 CornerRadius="35"
                 Style="{ThemeResource TransparentButtonStyle}">
                 <FontIcon
-                    FontFamily="Segoe Fluent Icons"
+                    FontFamily="{ThemeResource FluentIcon}"
                     FontSize="15"
                     Glyph="&#xE894;" />
             </Button>
@@ -60,7 +60,7 @@
                 <ui:SettingsExpander.Items>
                     <ui:SettingsCard Header="{x:Bind ViewModel.Dlss.DisplayName, Mode=OneWay}">
                         <ui:SettingsCard.HeaderIcon>
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8AA;" />
+                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8AA;" />
                         </ui:SettingsCard.HeaderIcon>
                         <ui:SettingsCard.Description>
                             <TextBlock>
@@ -71,7 +71,7 @@
                     </ui:SettingsCard>
                     <ui:SettingsCard Grid.Row="4" Header="{x:Bind ViewModel.DlssG.DisplayName, Mode=OneWay}">
                         <ui:SettingsCard.HeaderIcon>
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8AA;" />
+                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8AA;" />
                         </ui:SettingsCard.HeaderIcon>
                         <ui:SettingsCard.Description>
                             <TextBlock>
@@ -82,7 +82,7 @@
                     </ui:SettingsCard>
                     <ui:SettingsCard Grid.Row="5" Header="{x:Bind ViewModel.Xess.DisplayName, Mode=OneWay}">
                         <ui:SettingsCard.HeaderIcon>
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8AA;" />
+                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8AA;" />
                         </ui:SettingsCard.HeaderIcon>
                         <ui:SettingsCard.Description>
                             <TextBlock>

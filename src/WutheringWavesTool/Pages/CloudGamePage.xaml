@@ -125,7 +125,7 @@
                     Style="{ThemeResource TransparentButtonStyle}"
                     ToolTipService.ToolTip="添加账号">
                     <FontIcon
-                        FontFamily="Segoe Fluent Icons"
+                        FontFamily="{ThemeResource FluentIcon}"
                         FontSize="13.5"
                         Glyph="&#xE8FA;" />
                 </Button>
@@ -134,13 +134,13 @@
                     Style="{ThemeResource TransparentButtonStyle}"
                     ToolTipService.ToolTip="刷新会话">
                     <FontIcon
-                        FontFamily="Segoe Fluent Icons"
+                        FontFamily="{ThemeResource FluentIcon}"
                         FontSize="13.5"
                         Glyph="&#xE72C;" />
                 </Button>
                 <Button Style="{ThemeResource TransparentButtonStyle}" ToolTipService.ToolTip="云工具为云鸣潮账户数据">
                     <FontIcon
-                        FontFamily="Segoe Fluent Icons"
+                        FontFamily="{ThemeResource FluentIcon}"
                         FontSize="13.5"
                         Glyph="&#xE7BA;" />
                 </Button>
@@ -159,9 +159,9 @@
                     ToolTipService.ToolTip="分析面板">
                     <FontIcon
                         VerticalAlignment="Center"
-                        FontFamily="Segoe Fluent Icons"
+                        FontFamily="{ThemeResource FluentIcon}"
                         FontSize="13.5"
-                        Glyph="&#xE659;" />
+                        Glyph="&#xEC43;" />
                 </Button>
             </StackPanel>
 
@@ -248,7 +248,7 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
                     <Button Command="{x:Bind ViewModel.PrevPageCommand}" Style="{ThemeResource TransparentButtonStyle}">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76B;" />
+                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE76B;" />
                     </Button>
                     <TextBlock
                         Margin="10,0,0,0"
@@ -263,7 +263,7 @@
                         Margin="10,0,0,0"
                         Command="{x:Bind ViewModel.NextPageCommand}"
                         Style="{ThemeResource TransparentButtonStyle}">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76C;" />
+                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE76C;" />
                     </Button>
 
                 </StackPanel>

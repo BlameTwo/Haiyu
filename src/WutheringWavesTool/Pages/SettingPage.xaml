@@ -121,7 +121,7 @@
                 Description="更改选项需要重启生效"
                 Header="元素鼠标指针">
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7C9;" />
+                    <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE7C9;" />
                 </ui:SettingsCard.HeaderIcon>
                 <ui:SettingsCard.Content>
                     <ComboBox ItemsSource="{x:Bind ViewModel.Cursors, Mode=OneTime}" SelectedItem="{x:Bind ViewModel.SelectCursorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -129,10 +129,10 @@
             </ui:SettingsCard>
             <ui:SettingsCard
                 Margin="0,5,0,0"
-                Description="v1.2.9 preview2"
+                Description="v1.2.11"
                 Header="版本">
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE794;" />
+                    <FontIcon FontFamily="{ThemeResource Emoji}" Glyph="&#x1F5DD;" />
                 </ui:SettingsCard.HeaderIcon>
                 <ui:SettingsCard.Content>
                     <Button Command="{x:Bind ViewModel.UpdateVersionCommand}" Content="检查更新" />
@@ -145,7 +145,7 @@
                     OffContent=""
                     OnContent="" />
                 <ui:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEE71;" />
+                    <FontIcon FontFamily="{ThemeResource Emoji}" Glyph="&#x1F5BC;" />
                 </ui:SettingsExpander.HeaderIcon>
                 <ui:SettingsExpander.Items>
                     <ui:SettingsCard
@@ -193,7 +193,7 @@
                 Header="关闭按钮"
                 IsClickEnabled="False">
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB51;" />
+                    <FontIcon FontFamily="{ThemeResource Emoji}" Glyph="&#x1F615;" />
                 </ui:SettingsCard.HeaderIcon>
                 <ui:SettingsCard.Content>
                     <ComboBox SelectedIndex="{x:Bind ViewModel.SelectCloseIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -214,12 +214,12 @@
                 IsClickEnabled="True">
                 <ui:SettingsCard.ActionIcon>
                     <FontIcon
-                        FontFamily="Segoe Fluent Icons"
+                        FontFamily="{ThemeResource FluentIcon}"
                         FontSize="15"
                         Glyph="&#xE8C8;" />
                 </ui:SettingsCard.ActionIcon>
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE631;" />
+                    <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE631;" />
                 </ui:SettingsCard.HeaderIcon>
             </ui:SettingsCard>
 
@@ -230,12 +230,12 @@
                 IsClickEnabled="True">
                 <ui:SettingsCard.ActionIcon>
                     <FontIcon
-                        FontFamily="Segoe Fluent Icons"
+                        FontFamily="{ThemeResource FluentIcon}"
                         FontSize="15"
                         Glyph="&#xE8C8;" />
                 </ui:SettingsCard.ActionIcon>
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE631;" />
+                    <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE631;" />
                 </ui:SettingsCard.HeaderIcon>
             </ui:SettingsCard>
             <ui:SettingsExpander
@@ -244,7 +244,7 @@
                 HorizontalContentAlignment="Stretch"
                 ItemsSource="{x:Bind ViewModel.GamerData, Mode=OneWay}">
                 <ui:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" />
+                    <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xEC7A;" />
                 </ui:SettingsExpander.HeaderIcon>
                 <ui:SettingsExpander.Header>
                     <TextBlock VerticalAlignment="Center" Text="账号管理" />
@@ -271,7 +271,7 @@
                                 Style="{ThemeResource TransparentButtonStyle}"
                                 ToolTipService.ToolTip="复制账号ID">
                                 <FontIcon
-                                    FontFamily="Segoe Fluent Icons"
+                                    FontFamily="{ThemeResource FluentIcon}"
                                     FontSize="15"
                                     Glyph="&#xE8C8;" />
                             </Button>

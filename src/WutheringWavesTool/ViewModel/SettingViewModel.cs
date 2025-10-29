@@ -2,6 +2,7 @@
 using Haiyu.Helpers;
 using Haiyu.Services.DialogServices;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Security.Credentials.UI;
 
 namespace Haiyu.ViewModel;
 
@@ -77,6 +78,12 @@ public sealed partial class SettingViewModel : ViewModelBase
     [RelayCommand]
     async Task CopyToken()
     {
+        var result = await UserConsentVerifier.RequestVerificationAsync("复制授权码需要系统用户密码");
+        if(result != UserConsentVerificationResult.Verified)
+        {
+            TipShow.ShowMessage("系统用户验证失败！", Symbol.Clear);
+            return;
+        }
         if (await WavesClient.IsLoginAsync())
         {
             DataPackage package = new();
