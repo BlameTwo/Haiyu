@@ -412,30 +412,6 @@
                             FontFamily="{ThemeResource FluentIcon}"
                             FontSize="12"
                             Glyph="&#xE654;" />
-                        <wui:Effects.Shadow>
-                            <media:AttachedCardShadow
-                                BlurRadius="0"
-                                CornerRadius="5"
-                                Opacity="0.8"
-                                Offset="0"
-                                Color="{ThemeResource SystemAccentColor}" />
-                        </wui:Effects.Shadow>
-                        <ani:Explicit.Animations>
-                            <ani:AnimationSet x:Name="ShadowEnterAnimation2">
-                                <ani:BlurRadiusDropShadowAnimation To="10" />
-                            </ani:AnimationSet>
-                            <ani:AnimationSet x:Name="ShadowExitAnimation2">
-                                <ani:BlurRadiusDropShadowAnimation To="0" />
-                            </ani:AnimationSet>
-                        </ani:Explicit.Animations>
-                        <i:Interaction.Behaviors>
-                            <i:EventTriggerBehavior EventName="PointerEntered">
-                                <b:StartAnimationAction Animation="{x:Bind ShadowEnterAnimation2}" />
-                            </i:EventTriggerBehavior>
-                            <i:EventTriggerBehavior EventName="PointerExited">
-                                <b:StartAnimationAction Animation="{x:Bind ShadowExitAnimation2}" />
-                            </i:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
                     </Button>
                     <Button
                         Width="40"
@@ -593,7 +569,7 @@
                 </NavigationView.MenuItems>
                 <NavigationView.PaneFooter>
                     <Button
-                        Width="60"
+                        Width="50"
                         Padding="15"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"

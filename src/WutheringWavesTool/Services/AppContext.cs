@@ -2,8 +2,6 @@
 using H.NotifyIcon;
 using Microsoft.UI.Dispatching;
 using Waves.Core.Services;
-using WavesLauncher.Core.Contracts;
-using Windows.ApplicationModel.Contacts.DataProvider;
 using Haiyu.Services.DialogServices;
 using TitleBar = Haiyu.Controls.TitleBar;
 using Waves.Core.GameContext.Contexts.PRG;
@@ -16,12 +14,14 @@ public class AppContext<T> : IAppContext<T>
     public AppContext(
         IWavesClient wavesClient,
         IWallpaperService wallpaperService,
-        [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager
+        [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
+        [FromKeyedServices("AppLog")] LoggerService loggerService
     )
     {
         WavesClient = wavesClient;
         WallpaperService = wallpaperService;
         DialogManager = dialogManager;
+        LoggerService = loggerService;
         WallpaperService.WallpaperPletteChanged += WallpaperService_WallpaperPletteChanged;
     }
 
@@ -32,70 +32,81 @@ public class AppContext<T> : IAppContext<T>
     public IWavesClient WavesClient { get; }
     public IWallpaperService WallpaperService { get; }
     public IDialogManager DialogManager { get; }
+    public LoggerService LoggerService { get; }
+
     public async Task LauncherAsync(T app)
     {
-        await Instance.GetService<IWavesClient>().InitAsync();
-        await Instance
-            .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainGameContext))
-            .InitAsync();
-        await Instance
-            .Service!.GetRequiredKeyedService<IGameContext>(nameof(BiliBiliGameContext))
-            .InitAsync();
-        await Instance
-            .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalGameContext))
-            .InitAsync();
-        await Instance
-            .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainPGRGameContext))
-            .InitAsync();
-        await Instance
-            .Service!.GetRequiredKeyedService<IGameContext>(nameof(BiliBiliPRGGameContext))
-            .InitAsync();
-        await Instance
-            .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalPRGGameContext))
-            .InitAsync();
-        await Instance
-            .Service!.GetRequiredKeyedService<IGameContext>(nameof(TwPGRGameContext))
-            .InitAsync();
-        this.App = app;
-        var win = new MainWindow();
-        var page = Instance.Service!.GetRequiredService<ShellPage>();
-        page.titlebar.Window = win;
-        win.Content = page;
-        win.Activate();
         try
         {
-            var scale = TitleBar.GetScaleAdjustment(win);
-            int targetDipWidth = 1150;
-            int targetDipHeight = 650;
-            var pixelWidth = (int)Math.Round(targetDipWidth * scale);
-            var pixelHeight = (int)Math.Round(targetDipHeight * scale);
-            win.AppWindow.Resize(
-                new Windows.Graphics.SizeInt32 { Width = pixelWidth, Height = pixelHeight }
-            );
-        }
-        catch
-        {
-            // Fallback to logical size if DPI detection fails
-            win.MaxWidth = 1100;
-            win.MaxHeight = 700;
-        }
-
-        win.IsResizable = false;
-        win.IsMaximizable = false;
-        this.App.MainWindow = win;
-        (win.AppWindow.Presenter as OverlappedPresenter)!.SetBorderAndTitleBar(true, false);
-        if (await WavesClient.IsLoginAsync())
-        {
-            var gamers = await WavesClient.GetWavesGamerAsync();
-            if (gamers != null && gamers.Success)
+            await Instance.GetService<IWavesClient>().InitAsync();
+            await Instance
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainGameContext))
+                .InitAsync();
+            await Instance
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(BiliBiliGameContext))
+                .InitAsync();
+            await Instance
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalGameContext))
+                .InitAsync();
+            await Instance
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainPGRGameContext))
+                .InitAsync();
+            await Instance
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(BiliBiliPRGGameContext))
+                .InitAsync();
+            await Instance
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalPRGGameContext))
+                .InitAsync();
+            await Instance
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(TwPGRGameContext))
+                .InitAsync();
+            this.App = app;
+            var win = new MainWindow();
+            var page = Instance.Service!.GetRequiredService<ShellPage>();
+            page.titlebar.Window = win;
+            win.Content = page;
+            win.Activate();
+            try
             {
-                foreach (var item in gamers.Data)
+                var scale = TitleBar.GetScaleAdjustment(win);
+                int targetDipWidth = 1150;
+                int targetDipHeight = 650;
+                var pixelWidth = (int)Math.Round(targetDipWidth * scale);
+                var pixelHeight = (int)Math.Round(targetDipHeight * scale);
+                win.AppWindow.Resize(
+                    new Windows.Graphics.SizeInt32 { Width = pixelWidth, Height = pixelHeight }
+                );
+            }
+            catch
+            {
+                // Fallback to logical size if DPI detection fails
+                win.MaxWidth = 1100;
+                win.MaxHeight = 700;
+            }
+
+            win.IsResizable = false;
+            win.IsMaximizable = false;
+            this.App.MainWindow = win;
+            (win.AppWindow.Presenter as OverlappedPresenter)!.SetBorderAndTitleBar(true, false);
+            if (await WavesClient.IsLoginAsync())
+            {
+                var gamers = await WavesClient.GetWavesGamerAsync();
+                if (gamers != null && gamers.Success)
                 {
-                    var data = await WavesClient.RefreshGamerDataAsync(item);
+                    foreach (var item in gamers.Data)
+                    {
+                        var data = await WavesClient.RefreshGamerDataAsync(item);
+                    }
                 }
             }
+            this.App.MainWindow.AppWindow.Closing += AppWindow_Closing;
         }
-        this.App.MainWindow.AppWindow.Closing += AppWindow_Closing;
+        catch (Exception ex)
+        {
+            LoggerService.WriteError(ex.Message);
+            Process.GetCurrentProcess().Kill();
+        }
+       
     }
 
     private void AppWindow_Closing(
@@ -104,15 +115,6 @@ public class AppContext<T> : IAppContext<T>
     )
     {
         args.Cancel = true;
-        var mainContext = Instance.Service!.GetRequiredKeyedService<IGameContext>(
-            nameof(MainGameContext)
-        );
-        //var biliContext = Instance.Service!.GetRequiredKeyedService<IGameContext>(
-        //    nameof(BilibiliGameContext)
-        //);
-        //var globalContext = Instance.Service!.GetRequiredKeyedService<IGameContext>(
-        //    nameof(GlobalGameContext)
-        //);
         Process.GetCurrentProcess().Kill();
     }
 

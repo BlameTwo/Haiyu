@@ -8,29 +8,37 @@ namespace Haiyu.ViewModel;
 
 partial class SettingViewModel
 {
-    const int SW_SHOWNORMAL = 1;
+    [ObservableProperty]
+    public partial string WebViewVersion { get; set; }
 
-    [DllImport("shell32.dll", CharSet = CharSet.Auto)]
-    static extern IntPtr ShellExecute(
-        IntPtr hwnd,
-        string verb,
-        string file,
-        string parameters,
-        string directory,
-        int showCmd
-    );
+    [ObservableProperty]
+    public partial string WindowsAppSdkVersion { get; set; }
+
+    [ObservableProperty]
+    public partial string RunType { get; set; }
+
+    [ObservableProperty]
+    public partial string FrameworkType { get; set; }
+
+    void GetAllVersion()
+    {
+        WebViewVersion = CoreWebView2Environment.GetAvailableBrowserVersionString()??"未安装";
+        this.WindowsAppSdkVersion = $"{Microsoft.WindowsAppSDK.Release.Major}.{Microsoft.WindowsAppSDK.Release.Minor}.{Microsoft.WindowsAppSDK.Release.Patch} {Microsoft.WindowsAppSDK.Release.Channel}";
+        this.RunType = RuntimeFeature.IsDynamicCodeCompiled ? "JIT" : "AOT";
+        this.FrameworkType = RuntimeInformation.FrameworkDescription;
+    }
 
     [RelayCommand]
     void OpenConfigFolder()
     {
-        ShellExecute(IntPtr.Zero, "open", App.BassFolder, null, null, SW_SHOWNORMAL);
+        WindowExtension.ShellExecute(IntPtr.Zero, "open", App.BassFolder, null, null, WindowExtension.SW_SHOWNORMAL);
     }
-
 
     [RelayCommand]
     void OpenCaptureFolder()
     {
-
-        ShellExecute(IntPtr.Zero, "open", App.ScreenCaptures, null, null, SW_SHOWNORMAL);
+        WindowExtension.ShellExecute(IntPtr.Zero, "open", App.ScreenCaptures, null, null, WindowExtension.SW_SHOWNORMAL);
     }
+
+    
 }

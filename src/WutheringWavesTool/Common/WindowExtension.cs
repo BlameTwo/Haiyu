@@ -7,6 +7,18 @@ public static partial class WindowExtension
         Subtitle,
     }
 
+    public const int SW_SHOWNORMAL = 1;
+
+    [DllImport("shell32.dll", CharSet = CharSet.Auto)]
+    public static extern IntPtr ShellExecute(
+        IntPtr hwnd,
+        string verb,
+        string file,
+        string parameters,
+        string directory,
+        int showCmd
+    );
+
     public const int GWL_STYLE = -16;
     public const uint WS_CAPTION = 0x00C00000;
     public const uint WS_MAXIMIZEBOX = 0x00010000;
