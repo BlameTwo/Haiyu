@@ -23,8 +23,9 @@
 
 <br>
 
-<!--
 [<img src="https://get.microsoft.com/images/zh-cn%20dark.svg" width="200"/>](https://apps.microsoft.com/detail/9p70bt6bvwfh?hl=zh-CN&gl=CN)
+
+<!--
 
 -->
 
