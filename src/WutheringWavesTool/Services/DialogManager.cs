@@ -115,4 +115,19 @@ public abstract class DialogManager : IDialogManager
     public async Task ShowWebGameDialogAsync() => await ShowDialogAsync<WebGameLogin>();
 
     public async Task ShowGameLauncherChacheDialogAsync(GameLauncherCacheArgs args) => await ShowDialogAsync<GameLauncherCacheManager>(args);
+
+    public async Task<ContentDialogResult> ShowOKDialogAsync(string header, string content)
+    {
+        ContentDialog dialog = new ContentDialog();
+
+        // XamlRoot must be set in the case of a ContentDialog running in a Desktop app
+        dialog.XamlRoot = this.Root;
+        dialog.Title = header;
+        dialog.PrimaryButtonText = "确定";
+        dialog.DefaultButton = ContentDialogButton.None;
+        dialog.Content = content;
+
+        var result = await dialog.ShowAsync();
+        return result;
+    }
 }

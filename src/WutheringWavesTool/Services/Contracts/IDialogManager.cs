@@ -24,4 +24,6 @@ public interface IDialogManager
     Task ShowWebGameDialogAsync();
 
     Task ShowGameLauncherChacheDialogAsync(GameLauncherCacheArgs args);
+
+    Task<ContentDialogResult> ShowOKDialogAsync(string header,string content);
 }

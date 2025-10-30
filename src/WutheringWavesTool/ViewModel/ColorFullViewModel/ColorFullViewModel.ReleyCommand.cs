@@ -9,7 +9,10 @@ namespace Haiyu.ViewModel;
 
 partial class ColorFullViewModel
 {
+
     public string CurrentFile { get; private set; }
+    public IColorGameManager ColorGameManager { get; }
+    public IDialogManager DialogManager { get; }
 
     [RelayCommand]
     void Generator6X6()
@@ -50,8 +53,6 @@ partial class ColorFullViewModel
             return;
         if (cell.InvokedItem is ColorCell value)
         {
-            TipShow.ShowMessage($"选择格子{value.Row}:{value.Column}", Symbol.Message);
-
             if (this.Mode == Models.Enums.ColorGameEditMode.DotDyeing)
             {
                 value.IsStone = SelectAvailableColor.IsStone;
@@ -99,8 +100,44 @@ partial class ColorFullViewModel
     [RelayCommand]
     public async Task SaveGame()
     {
+        if (string.IsNullOrWhiteSpace(this.GameName))
+        {
+            await DialogManager.ShowOKDialogAsync("警告", $"输入不完整，请检查");
+            return;
+        }
+        foreach (var item in this.GameGrid)
+        {
+            item.SetSaveColor();
+        }
+        ColorInfo info = new ColorInfo();
+        info.MaxColumns = this.GameColumsSize;
+        info.Cells = this.GameGrid.ToList();
+        info.Setups = GameSetup;
+        info.GameMode = this.Mode;
+        info.GameFile = this.GameName;
+        info.GameObjective = this.SelectGameEndColor.ToString();
+        var result =  await ColorGameManager.SaveGameAsync(info,this.CurrentFile,this.CTS.Token);
+        if (result.Item1)
+        {
+            WindowExtension.ShellExecute(IntPtr.Zero, "open", App.ColorGameFolder, null, null, WindowExtension.SW_SHOWNORMAL);
+            await DialogManager.ShowOKDialogAsync("保存", $"保存成功");
+        }
+        else
+        {
+            await DialogManager.ShowOKDialogAsync("警告", result.Item2);
+        }
+    }
+
+    [RelayCommand]
+    public async Task SaveAsGame()
+    {
         try
         {
+            if (string.IsNullOrWhiteSpace(this.GameName))
+            {
+                await DialogManager.ShowOKDialogAsync("警告", $"输入不完整，请检查");
+                return;
+            }
             foreach (var item in this.GameGrid)
             {
                 item.SetSaveColor();
@@ -124,13 +161,12 @@ partial class ColorFullViewModel
             {
                 await fs.WriteAsync(JsonSerializer.Serialize(info, GameContext.Default.ColorInfo));
             }
-            TipShow.ShowMessage($"保存成功", Symbol.Message);
             this.CurrentFile = result.Path;
+            await DialogManager.ShowOKDialogAsync("保存",$"保存成功");
         }
         catch (Exception ex)
         {
-
-            TipShow.ShowMessage($"保存失败{ex.Message}", Symbol.Message);
+            await DialogManager.ShowOKDialogAsync("警告", $"保存失败{ex.Message}");
         }
     }
 
@@ -162,7 +198,7 @@ partial class ColorFullViewModel
         }
         catch (Exception ex)
         {
-            TipShow.ShowMessage("打开文件错误", Symbol.Clear);
+            await DialogManager.ShowOKDialogAsync("警告", $"打开文件错误");
         }
     }
 
@@ -172,7 +208,7 @@ partial class ColorFullViewModel
     {
         if (string.IsNullOrWhiteSpace(this.CurrentFile))
         {
-            TipShow.ShowMessage("请保存一个游戏文件或打开一个游戏文件", Symbol.Clear);
+            await DialogManager.ShowOKDialogAsync("警告", $"请保存一个游戏文件或打开一个游戏文件");
             return;
         }
         try
@@ -196,7 +232,7 @@ partial class ColorFullViewModel
         }
         catch (Exception ex)
         {
-            TipShow.ShowMessage("重置色块错误", Symbol.Clear);
+            await DialogManager.ShowOKDialogAsync("警告", $"重置色块错误");
         }
     }
 
@@ -208,13 +244,11 @@ partial class ColorFullViewModel
         this.GameSetup = 0;
         if (TipShow == null)
             return;
-        TipShow.ShowMessage($"重新绘制画布", Symbol.Message);
     }
     
     [RelayCommand]
     void SetGameMode(int mode)
     {
         this.Mode = (ColorGameEditMode)mode;
-        TipShow.ShowMessage($"选择操作模式:{mode}", Symbol.Message);
     }
 }

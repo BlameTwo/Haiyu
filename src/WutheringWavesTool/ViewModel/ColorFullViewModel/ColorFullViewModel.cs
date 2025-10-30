@@ -2,10 +2,13 @@
 
 public sealed partial class ColorFullViewModel : ViewModelBase
 {
-    public ColorFullViewModel([FromKeyedServices("Cache")]ITipShow tipShow, IPickersService pickersService)
+    public ColorFullViewModel([FromKeyedServices("Cache")]ITipShow tipShow, IPickersService pickersService, IColorGameManager colorGameManager, [FromKeyedServices("Cache")] IDialogManager dialogManager)
     {
         TipShow = tipShow;
         PickersService = pickersService;
+
+        ColorGameManager = colorGameManager;
+        DialogManager = dialogManager;
         NewFile();
     }
 

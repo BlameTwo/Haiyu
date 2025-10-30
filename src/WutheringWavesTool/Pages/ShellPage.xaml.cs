@@ -60,6 +60,8 @@ public sealed partial class ShellPage : Page
 
     private void ShellPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
+        this.notify.RegisterWin(Instance.GetService<IAppContext<App>>().App.MainWindow);
+        this.notify.CreateTrayIcon(AppDomain.CurrentDomain.BaseDirectory + "\\Assets\\appLogo.ico", "Haiyu");
         this.ViewModel.DialogManager.RegisterRoot(this.XamlRoot);
         this.ViewModel.AppContext.WallpaperService.RegisterImageHost(this.image);
     }

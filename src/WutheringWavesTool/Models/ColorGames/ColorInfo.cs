@@ -6,6 +6,7 @@ namespace Haiyu.Models.ColorGames;
 
 public class ColorInfo
 {
+
     [JsonPropertyName("gameMode")]
     public ColorGameEditMode GameMode { get; set; }
 

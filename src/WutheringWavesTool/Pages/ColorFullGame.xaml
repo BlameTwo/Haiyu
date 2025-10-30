@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="Haiyu.Pages.ColorFullGame"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -74,7 +74,15 @@
                                     <SymbolIcon Symbol="Save" />
                                 </MenuFlyoutItem.Icon>
                             </MenuFlyoutItem>
-
+                            <MenuFlyoutItem
+                                Command="{x:Bind ViewModel.SaveAsGameCommand}"
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="12"
+                                Text="另存为">
+                                <MenuFlyoutItem.Icon>
+                                    <SymbolIcon Symbol="Save" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
                         </MenuBarItem>
                         <MenuBarItem Title="生成棋盘">
                             <MenuFlyoutItem
@@ -345,7 +353,7 @@
                         Margin="0,10,0,0"
                         HorizontalAlignment="Stretch"
                         Command="{x:Bind ViewModel.SaveGameCommand}"
-                        Content="保存到文件中" />
+                        Content="保存" />
                 </Grid>
             </StackPanel>
         </Grid>

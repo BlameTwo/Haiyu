@@ -27,8 +27,7 @@
         <StackPanel HorizontalAlignment="Stretch">
             <StackPanel.ChildrenTransitions>
                 <TransitionCollection>
-                    <RepositionThemeTransition IsStaggeringEnabled="False" />
-                    <EntranceThemeTransition FromVerticalOffset="-50" />
+                    <EntranceThemeTransition FromVerticalOffset="50" IsStaggeringEnabled="True" />
                 </TransitionCollection>
             </StackPanel.ChildrenTransitions>
             <Grid Height="200">

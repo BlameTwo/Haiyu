@@ -41,7 +41,9 @@ public static class Instance
             .AddTransient<AnalysisRecordViewModel>()
             .AddTransient<AnalysisRecordPage>()
             .AddTransient<HomeViewModel>()
-            #region GameContext
+        #region ColorGame
+        #endregion
+        #region GameContext
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()
             .AddTransient<GlobalGameViewModel>()
@@ -95,8 +97,10 @@ public static class Instance
             .AddTransient<IPickersService, PickersService>()
             .AddSingleton<ITipShow, TipShow>()
             .AddKeyedTransient<ITipShow,PageTipShow>("Cache")
-            #endregion
-            #region Base
+            .AddKeyedTransient<IDialogManager,MainDialogService>("Cache")
+            .AddTransient<IColorGameManager,ColorGameManager>()
+        #endregion
+        #region Base
             .AddSingleton<IAppContext<App>, AppContext<App>>()
             .AddSingleton<IWavesClient, WavesClient>()
             .AddSingleton<ICloudGameService, CloudGameService>()

@@ -12,7 +12,6 @@ public interface IViewFactorys
     public WindowModelBase ShowRolesDataWindow(ShowRoleData detily);
 
     public WindowModelBase ShowPlayerRecordWindow();
-    public WindowModelBase ShowColorGame();
 
     public Window ShowAnalysisRecord(LoginData data);
     public TransparentWindow CreateTransperentWindow();
@@ -20,4 +19,5 @@ public interface IViewFactorys
     public bool ShowToolWindow();
 
     public WindowModelBase ShowStartColorGame();
+    public WindowModelBase ShowColorGame();
 }

@@ -1,5 +1,4 @@
-﻿using H.NotifyIcon;
-using Haiyu.Helpers;
+﻿using Haiyu.Helpers;
 using Haiyu.Services.DialogServices;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Security.Credentials.UI;

@@ -89,7 +89,7 @@
                                 </Border>
 
                                 <Border
-                                    Grid.RowSpan="3"
+                                    Grid.RowSpan="1"
                                     Margin="0,8,0,0"
                                     VerticalAlignment="Stretch"
                                     CornerRadius="5">
@@ -98,7 +98,7 @@
                                 <Border
                                     Grid.Row="1"
                                     Padding="5"
-                                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}">
+                                    Background="{ThemeResource SolidBackgroundFillColorBaseAltBrush}">
                                     <StackPanel VerticalAlignment="Center" Orientation="Vertical">
                                         <TextBlock
                                             Grid.Row="1 "
@@ -123,9 +123,7 @@
                         MinItemHeight="130"
                         MinItemWidth="100" />
                 </ItemsRepeater.Layout>
-                <ItemsRepeater.ItemTransitionProvider>
-                    <LinedFlowLayoutItemCollectionTransitionProvider />
-                </ItemsRepeater.ItemTransitionProvider>
+
             </ItemsRepeater>
         </ScrollView>
     </Grid>

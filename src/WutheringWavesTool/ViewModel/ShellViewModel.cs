@@ -1,8 +1,5 @@
 ﻿using Astronomical;
-using H.NotifyIcon;
-using Haiyu.Models.Enums;
 using Haiyu.Services.DialogServices;
-using Haiyu.ViewModel.GameViewModels;
 using Waves.Core.Common;
 using Windows.Devices.Geolocation;
 using Windows.Graphics.DirectX.Direct3D11;
@@ -32,6 +29,22 @@ public sealed partial class ShellViewModel : ViewModelBase
         ViewFactorys = viewFactorys;
         WavesClient = wavesClient;
         RegisterMessanger();
+        SystemMenu = new NotifyIconMenu()
+        {
+            Items = new List<NotifyIconMenuItem>()
+            {
+                new()
+                {
+                     Header="显示主界面",
+                     Command = this.ShowWindowCommand
+                }, 
+                new()
+                {
+                     Header="退出启动器",
+                     Command = this.ExitWindowCommand
+                }
+            }
+        };
     }
 
     #region 时间
@@ -48,6 +61,8 @@ public sealed partial class ShellViewModel : ViewModelBase
     public partial string EndTime { get; set; }
     #endregion
 
+    [ObservableProperty]
+    public partial NotifyIconMenu SystemMenu { get; set; }
 
     public INavigationService HomeNavigationService { get; }
     public INavigationViewService HomeNavigationViewService { get; }
@@ -148,7 +163,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     void ShowWindow()
     {
-        this.AppContext.App.MainWindow.Show(false);
+        this.AppContext.App.MainWindow.Show();
     }
 
     [RelayCommand]

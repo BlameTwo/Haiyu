@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.WinUI;
-using H.NotifyIcon;
 using Microsoft.UI.Dispatching;
 using Waves.Core.Services;
 using Haiyu.Services.DialogServices;
@@ -189,7 +188,7 @@ public class AppContext<T> : IAppContext<T>
         }
         else if (close == "False")
         {
-            this.App.MainWindow.Hide(true);
+            this.App.MainWindow.Hide();
         }
         else
         {
@@ -200,7 +199,7 @@ public class AppContext<T> : IAppContext<T>
             }
             else
             {
-                this.App.MainWindow.Hide(true);
+                this.App.MainWindow.Hide();
             }
         }
     }

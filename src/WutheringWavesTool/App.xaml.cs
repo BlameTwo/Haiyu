@@ -20,6 +20,8 @@ public partial class App : ClientApplication
 
     public static string ScreenCaptures => BassFolder + "\\ScreenCaptures";
 
+    public static string ColorGameFolder => BassFolder + "\\ColorGameFolder";
+
     public string ToolsPosionFilePath => App.BassFolder + "\\ToolsPostion.json";
     [DllImport("shcore.dll", SetLastError = true)]
     private static extern int SetProcessDpiAwareness(int dpiAwareness);
@@ -37,6 +39,7 @@ public partial class App : ClientApplication
         this.UnhandledException += App_UnhandledException;
         Directory.CreateDirectory(BassFolder);
         Directory.CreateDirectory(RecordFolder);
+        Directory.CreateDirectory(ColorGameFolder);
         Directory.CreateDirectory(WrallpaperFolder);
         Directory.CreateDirectory(ScreenCaptures);
         Directory.CreateDirectory(Path.GetDirectoryName(AppSettings.LogPath));
