@@ -4,7 +4,6 @@
 		<TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>Haiyu</RootNamespace>
-		<!--<ApplicationManifest>app.manifest</ApplicationManifest>-->
 		<Platforms>x64</Platforms>
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
 		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
@@ -25,7 +24,7 @@
 		<GenerateTestArtifacts>False</GenerateTestArtifacts>
 		<AppxBundle>Always</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-
+		
 		<!--Win32 PE-->
 		<Win32Resource>Assets/Cursor/CursorResource.res</Win32Resource>
 		<NoWin32Manifest>True</NoWin32Manifest>

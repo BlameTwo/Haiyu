@@ -14,6 +14,9 @@
     <Project Path="Extensions/CursorResource/CursorResource.vcxproj" Id="8ce44d37-8b39-4eda-9774-a70c11f04518">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
+    <Project Path="Extensions/MemoryCleaner/MemoryCleaner.csproj" Id="3a89e5c0-1918-4ac2-a091-634d8e2c6673">
+      <BuildType Solution="All|*" Project="Debug" />
+    </Project>
     <Project Path="Haiyu.Plugin/Haiyu.Plugin.csproj" Id="1d4b3247-f5e2-4702-890e-976aa3752a89">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>

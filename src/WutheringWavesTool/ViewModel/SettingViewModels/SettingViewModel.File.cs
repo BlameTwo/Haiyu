@@ -23,7 +23,7 @@ partial class SettingViewModel
     void GetAllVersion()
     {
         WebViewVersion = CoreWebView2Environment.GetAvailableBrowserVersionString()??"未安装";
-        this.WindowsAppSdkVersion = $"{Microsoft.WindowsAppSDK.Release.Major}.{Microsoft.WindowsAppSDK.Release.Minor}.{Microsoft.WindowsAppSDK.Release.Patch} {Microsoft.WindowsAppSDK.Release.Channel}";
+        this.WindowsAppSdkVersion = $"1.8.251003001";
         this.RunType = RuntimeFeature.IsDynamicCodeCompiled ? "JIT" : "AOT";
         this.FrameworkType = RuntimeInformation.FrameworkDescription;
     }
