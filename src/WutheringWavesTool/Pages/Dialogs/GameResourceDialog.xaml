@@ -41,7 +41,7 @@
                 CornerRadius="35"
                 Style="{ThemeResource TransparentButtonStyle}">
                 <FontIcon
-                    FontFamily="{ThemeResource FluentIcon}"
+                    FontFamily="Segoe Fluent Icons"
                     FontSize="15"
                     Glyph="&#xE894;" />
             </Button>
@@ -49,6 +49,7 @@
                 Grid.Row="1"
                 Width="480"
                 Margin="0,5,0,0"
+                Command="{x:Bind ViewModel.OpenFolderCommand}"
                 Description="{x:Bind ViewModel.GameFilesSize, Mode=OneWay}"
                 Header="游戏资源大小"
                 IsClickEnabled="True" />
@@ -60,7 +61,7 @@
                 <ui:SettingsExpander.Items>
                     <ui:SettingsCard Header="{x:Bind ViewModel.Dlss.DisplayName, Mode=OneWay}">
                         <ui:SettingsCard.HeaderIcon>
-                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8AA;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8AA;" />
                         </ui:SettingsCard.HeaderIcon>
                         <ui:SettingsCard.Description>
                             <TextBlock>
@@ -71,7 +72,7 @@
                     </ui:SettingsCard>
                     <ui:SettingsCard Grid.Row="4" Header="{x:Bind ViewModel.DlssG.DisplayName, Mode=OneWay}">
                         <ui:SettingsCard.HeaderIcon>
-                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8AA;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8AA;" />
                         </ui:SettingsCard.HeaderIcon>
                         <ui:SettingsCard.Description>
                             <TextBlock>
@@ -82,7 +83,7 @@
                     </ui:SettingsCard>
                     <ui:SettingsCard Grid.Row="5" Header="{x:Bind ViewModel.Xess.DisplayName, Mode=OneWay}">
                         <ui:SettingsCard.HeaderIcon>
-                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8AA;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8AA;" />
                         </ui:SettingsCard.HeaderIcon>
                         <ui:SettingsCard.Description>
                             <TextBlock>

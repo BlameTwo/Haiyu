@@ -7,6 +7,7 @@
     xmlns:local="using:Haiyu.Pages.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:um="using:Waves.Api.Models.Launcher"
+    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
     CornerRadius="5"
     RequestedTheme="Dark"
     mc:Ignorable="d">
@@ -28,7 +29,7 @@
             CornerRadius="50"
             Style="{ThemeResource TransparentButtonStyle}">
             <FontIcon
-                FontFamily="{ThemeResource FluentIcon}"
+                FontFamily="Segoe Fluent Icons"
                 FontSize="12"
                 Glyph="&#xE653;" />
         </Button>
@@ -60,11 +61,11 @@
                                 Grid.Column="1"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                ToolTipService.ToolTip="复制游戏登陆码"
                                 Command="{x:Bind CopyOAuthCodeCommand}"
-                                Style="{ThemeResource TransparentButtonStyle}">
+                                Style="{ThemeResource TransparentButtonStyle}"
+                                ToolTipService.ToolTip="复制游戏登陆码">
                                 <FontIcon
-                                    FontFamily="{ThemeResource FluentIcon}"
+                                    FontFamily="Segoe Fluent Icons"
                                     FontSize="15"
                                     Glyph="&#xE8C8;" />
                             </Button>

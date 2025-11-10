@@ -23,7 +23,6 @@
         Padding="25"
         HorizontalScrollBarVisibility="Hidden"
         VerticalScrollBarVisibility="Hidden">
-
         <StackPanel HorizontalAlignment="Stretch">
             <StackPanel.ChildrenTransitions>
                 <TransitionCollection>
@@ -113,6 +112,22 @@
                 FontFamily="{StaticResource DefaultFont}"
                 FontSize="15"
                 Text="通用" />
+            <ui:SettingsExpander
+                Margin="0,5,0,0"
+                Description="简单诊断某些信息"
+                Header="诊断">
+                <ui:SettingsExpander.Items>
+                    <ui:SettingsCard Description="观察右侧内容是否为图标，来确定图标是否正常" Header="字体文件">
+                        <ui:SettingsCard.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA8C;" />
+                                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB05;" />
+                                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB56;" />
+                            </StackPanel>
+                        </ui:SettingsCard.Content>
+                    </ui:SettingsCard>
+                </ui:SettingsExpander.Items>
+            </ui:SettingsExpander>
             <ui:SettingsCard
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"
@@ -120,7 +135,7 @@
                 Description="更改选项需要重启生效"
                 Header="元素鼠标指针">
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource Emoji}" Glyph="&#x270C;" />
+                    <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x270C;" />
                 </ui:SettingsCard.HeaderIcon>
                 <ui:SettingsCard.Content>
                     <ComboBox ItemsSource="{x:Bind ViewModel.Cursors, Mode=OneTime}" SelectedItem="{x:Bind ViewModel.SelectCursorName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -131,7 +146,7 @@
                 Description="{ThemeResource AppVersion}"
                 Header="版本">
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource Emoji}" Glyph="&#x1F5DD;" />
+                    <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F5DD;" />
                 </ui:SettingsCard.HeaderIcon>
                 <ui:SettingsCard.Content>
                     <Button Command="{x:Bind ViewModel.UpdateVersionCommand}" Content="检查更新" />
@@ -144,7 +159,7 @@
                     OffContent=""
                     OnContent="" />
                 <ui:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource Emoji}" Glyph="&#x1F5BC;" />
+                    <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F5BC;" />
                 </ui:SettingsExpander.HeaderIcon>
                 <ui:SettingsExpander.Items>
                     <ui:SettingsCard
@@ -192,7 +207,7 @@
                 Header="关闭按钮"
                 IsClickEnabled="False">
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource Emoji}" Glyph="&#x1F615;" />
+                    <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F615;" />
                 </ui:SettingsCard.HeaderIcon>
                 <ui:SettingsCard.Content>
                     <ComboBox SelectedIndex="{x:Bind ViewModel.SelectCloseIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -213,12 +228,12 @@
                 IsClickEnabled="True">
                 <ui:SettingsCard.ActionIcon>
                     <FontIcon
-                        FontFamily="{ThemeResource FluentIcon}"
+                        FontFamily="Segoe Fluent Icons"
                         FontSize="15"
                         Glyph="&#xE8C8;" />
                 </ui:SettingsCard.ActionIcon>
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE631;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE631;" />
                 </ui:SettingsCard.HeaderIcon>
             </ui:SettingsCard>
 
@@ -229,12 +244,12 @@
                 IsClickEnabled="True">
                 <ui:SettingsCard.ActionIcon>
                     <FontIcon
-                        FontFamily="{ThemeResource FluentIcon}"
+                        FontFamily="Segoe Fluent Icons"
                         FontSize="15"
                         Glyph="&#xE8C8;" />
                 </ui:SettingsCard.ActionIcon>
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE631;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE631;" />
                 </ui:SettingsCard.HeaderIcon>
             </ui:SettingsCard>
             <ui:SettingsExpander
@@ -243,7 +258,7 @@
                 HorizontalContentAlignment="Stretch"
                 ItemsSource="{x:Bind ViewModel.GamerData, Mode=OneWay}">
                 <ui:SettingsExpander.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xEC7A;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEC7A;" />
                 </ui:SettingsExpander.HeaderIcon>
                 <ui:SettingsExpander.Header>
                     <TextBlock VerticalAlignment="Center" Text="账号管理" />
@@ -270,7 +285,7 @@
                                 Style="{ThemeResource TransparentButtonStyle}"
                                 ToolTipService.ToolTip="复制账号ID">
                                 <FontIcon
-                                    FontFamily="{ThemeResource FluentIcon}"
+                                    FontFamily="Segoe Fluent Icons"
                                     FontSize="15"
                                     Glyph="&#xE8C8;" />
                             </Button>
@@ -294,13 +309,12 @@
                 Header="配置文件夹"
                 IsClickEnabled="True">
                 <ui:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource Emoji}" Glyph="&#x1F4DA;" />
+                    <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F4DA;" />
                 </ui:SettingsCard.HeaderIcon>
                 <ui:SettingsCard.ActionIcon>
-                    <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE7AC;" />
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7AC;" />
                 </ui:SettingsCard.ActionIcon>
             </ui:SettingsCard>
-
             <ui:SettingsExpander Margin="0,5,0,0" Header="诊断环境">
                 <ui:SettingsExpander.Items>
                     <ui:SettingsCard Header="Web内核版本">

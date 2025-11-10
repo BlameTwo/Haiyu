@@ -21,7 +21,6 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
         <labs:Segmented
             HorizontalAlignment="Center"
             ItemsSource="{x:Bind ViewModel.Tabs}"

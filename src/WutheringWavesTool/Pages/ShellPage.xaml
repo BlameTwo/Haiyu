@@ -45,7 +45,7 @@
                         Command="{x:Bind ViewModel.ShowWindowCommand}"
                         FontFamily="{ThemeResource DefaultFont}">
                         <MenuFlyoutItem.Icon>
-                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE7FC;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7FC;" />
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
                     <MenuFlyoutSeparator />
@@ -54,7 +54,7 @@
                         Command="{x:Bind ViewModel.ExitWindowCommand}"
                         FontFamily="{ThemeResource DefaultFont}">
                         <MenuFlyoutItem.Icon>
-                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xF3B1;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF3B1;" />
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
                 </MenuFlyout>
@@ -164,7 +164,7 @@
                         ToolTipService.ToolTip="登录"
                         Visibility="{x:Bind ViewModel.LoginBthVisibility, Mode=OneWay}">
                         <FontIcon
-                            FontFamily="{ThemeResource FluentIcon}"
+                            FontFamily="Segoe Fluent Icons"
                             FontSize="14"
                             Glyph="&#xE631;" />
                     </Button>
@@ -227,7 +227,7 @@
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
                         Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
                         <FontIcon
-                            FontFamily="{ThemeResource FluentIcon}"
+                            FontFamily="Segoe Fluent Icons"
                             FontSize="18"
                             Glyph="&#xE72C;" />
                     </Button>
@@ -239,7 +239,7 @@
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
                         ToolTipService.ToolTip="工具箱"
                         Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
-                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE712;" />
+                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
                         <i:Interaction.Behaviors>
                             <sound:ButtonSoundBehavior />
                         </i:Interaction.Behaviors>
@@ -250,18 +250,18 @@
                                         <sound:ControlSoundBehavior />
                                     </i:Interaction.Behaviors>
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE929;" />
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE929;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutSeparator />
                                 <MenuFlyoutItem Command="{x:Bind ViewModel.OpenScreenCaptureCommand}" Text="扫描屏幕登录游戏">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xED14;" />
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xED14;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutItem Command="{x:Bind ViewModel.ShowDeviceInfoCommand}" Text="授权管理">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8CC;" />
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8CC;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutSeparator />
@@ -273,7 +273,7 @@
                                         <sound:ControlSoundBehavior />
                                     </i:Interaction.Behaviors>
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xF3B1;" />
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF3B1;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                             </MenuFlyout>
@@ -293,7 +293,7 @@
                         ToolTipService.ToolTip="看看今天的月相">
                         <FontIcon
                             Margin="0,-2,0,0"
-                            FontFamily="{ThemeResource Emoji}"
+                            FontFamily="Segoe UI Emoji"
                             Glyph="&#x1F31A;" />
                         <Button.Flyout>
                             <Flyout ShouldConstrainToRootBounds="True">
@@ -314,7 +314,7 @@
                                     <FontIcon
                                         Grid.ColumnSpan="2"
                                         HorizontalAlignment="Center"
-                                        FontFamily="{ThemeResource Emoji}"
+                                        FontFamily="Segoe UI Emoji"
                                         FontSize="40"
                                         Glyph="{x:Bind ViewModel.MoonIcon, Mode=OneWay}" />
                                     <TextBlock
@@ -372,30 +372,30 @@
                         ToolTipService.ToolTip="溢彩画（测试）"
                         Visibility="Visible">
                         <FontIcon
-                            FontFamily="{ThemeResource FluentIcon}"
+                            FontFamily="Segoe Fluent Icons"
                             FontSize="14"
                             Glyph="&#xF354;" />
                         <Button.Flyout>
                             <MenuFlyout Placement="Bottom">
                                 <MenuFlyoutItem Text="导入关卡包">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8B5;" />
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B5;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutItem Text="导入单个关卡">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8B5;" />
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B5;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutSeparator />
                                 <MenuFlyoutItem Command="{x:Bind ViewModel.OpenColorGameCommand}" Text="编辑器">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE70F;" />
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE70F;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                                 <MenuFlyoutItem Command="{x:Bind ViewModel.OpenStartColorGameCommand}" Text="开始游戏">
                                     <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE7FC;" />
+                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7FC;" />
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
                             </MenuFlyout>
@@ -409,7 +409,7 @@
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
                         ToolTipService.ToolTip="最小化">
                         <FontIcon
-                            FontFamily="{ThemeResource FluentIcon}"
+                            FontFamily="Segoe Fluent Icons"
                             FontSize="12"
                             Glyph="&#xE654;" />
                     </Button>
@@ -423,7 +423,7 @@
                         ToolTipService.ToolTip="关闭">
 
                         <FontIcon
-                            FontFamily="{ThemeResource FluentIcon}"
+                            FontFamily="Segoe Fluent Icons"
                             FontSize="12"
                             Glyph="&#xE653;" />
                     </Button>
@@ -465,7 +465,7 @@
                             <sound:NavigationViewItemSoundBehavior />
                         </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
-                            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xEA8A;" />
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA8A;" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
                     <NavigationViewItem
@@ -555,7 +555,7 @@
                             <sound:NavigationViewItemSoundBehavior />
                         </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
-                            <FontIcon FontFamily="/Assets/Fonts/seguiemj.ttf#Segoe UI Emoji" Glyph="&#x1F4E6;" />
+                            <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F4E6;" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
                     <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CloudGameViewModel" Content="云工具">
@@ -582,7 +582,7 @@
                             <sound:ControlSoundBehavior />
                         </i:Interaction.Behaviors>
                         <FontIcon
-                            FontFamily="{ThemeResource FluentIcon}"
+                            FontFamily="Segoe Fluent Icons"
                             FontSize="14"
                             Glyph="&#xE713;" />
                     </Button>

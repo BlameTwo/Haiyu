@@ -82,7 +82,7 @@
                                     CornerRadius="5"
                                     Style="{ThemeResource DefaultAcrylicButtonStyle}">
                                     <FontIcon
-                                        FontFamily="{ThemeResource FluentIcon}"
+                                        FontFamily="Segoe Fluent Icons"
                                         FontSize="18"
                                         Glyph="&#xE76C;" />
                                     <Button.Flyout>

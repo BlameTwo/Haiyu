@@ -266,7 +266,7 @@ namespace Haiyu.ViewModel.GameViewModels
                 {
                     return;
                 }
-                Logger.WriteInfo($"选择游戏安文件：{result.InstallFolder}");
+                Logger.WriteInfo($"选择游戏安装文件：{result.InstallFolder}");
                 if (File.Exists(result.InstallFolder + $"//{this.GameContext.Config.GameExeName}"))
                 {
                     await this.GameContext.StartDownloadTaskAsync(

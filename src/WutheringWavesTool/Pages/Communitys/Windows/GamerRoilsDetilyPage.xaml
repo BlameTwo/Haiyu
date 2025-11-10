@@ -55,7 +55,7 @@
                     VerticalAlignment="Center"
                     Style="{ThemeResource TransparentButtonStyle}">
                     <FontIcon
-                        FontFamily="{ThemeResource FluentIcon}"
+                        FontFamily="Segoe Fluent Icons"
                         FontSize="15"
                         Glyph="&#xE700;" />
                 </Button>
@@ -569,7 +569,7 @@
                                         Visibility="{x:Bind Unlocked, Converter={StaticResource BoolToVisibilityConverter}}">
                                         <FontIcon
                                             Margin="2"
-                                            FontFamily="{ThemeResource FluentIcon}"
+                                            FontFamily="Segoe Fluent Icons"
                                             Foreground="{ThemeResource TextOnAccentFillColorSelectedTextBrush}"
                                             Glyph="&#xE8FB;" />
                                     </Border>

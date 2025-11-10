@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentDialog
     x:Class="Haiyu.Pages.Dialogs.QRLoginDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -33,7 +33,7 @@
             CornerRadius="50"
             Style="{ThemeResource TransparentButtonStyle}"
             ToolTipService.ToolTip="关闭">
-            <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE894;" />
+            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE894;" />
         </Button>
         <TextBlock
             HorizontalAlignment="Left"

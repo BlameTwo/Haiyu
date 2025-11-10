@@ -40,7 +40,7 @@
                 VerticalAlignment="Center"
                 Click="SelectFolder_Click"
                 Style="{ThemeResource TransparentButtonStyle}">
-                <FontIcon FontFamily="{ThemeResource FluentIcon}" Glyph="&#xE8B7;" />
+                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B7;" />
             </Button>
         </Grid>
         <Grid

@@ -154,7 +154,7 @@
                 Command="{x:Bind ViewModel.RefreshCommand}"
                 Style="{ThemeResource TransparentButtonStyle}">
                 <FontIcon
-                    FontFamily="{ThemeResource FluentIcon}"
+                    FontFamily="Segoe Fluent Icons"
                     FontSize="14"
                     Glyph="&#xE72C;" />
             </Button>

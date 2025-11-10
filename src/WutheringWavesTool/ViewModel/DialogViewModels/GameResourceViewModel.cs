@@ -1,4 +1,5 @@
 ﻿using Haiyu.Services.DialogServices;
+using System.Security.Cryptography;
 
 namespace Haiyu.ViewModel.DialogViewModels;
 
@@ -93,9 +94,15 @@ public sealed partial class GameResourceViewModel : DialogViewModelBase
             this.DeleteProdGameResourceEnable = false;
         }
 
-        //this.Dlss = await GameContext.GetLocalDLSSAsync();
-        //this.DlssG = await GameContext.GetLocalDLSSGenerateAsync();
-        //this.Xess = await GameContext.GetLocalXeSSGenerateAsync();
+        this.Dlss = await GameContext.GetLocalDLSSAsync();
+        this.DlssG = await GameContext.GetLocalDLSSGenerateAsync();
+        this.Xess = await GameContext.GetLocalXeSSGenerateAsync();
+    }
+
+    [RelayCommand]
+    void OpenFolder()
+    {
+        WindowExtension.ShellExecute(IntPtr.Zero,this.GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder),null,null,null, WindowExtension.SW_SHOWNORMAL);
     }
 
     [RelayCommand]

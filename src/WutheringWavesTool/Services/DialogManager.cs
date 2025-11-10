@@ -48,7 +48,10 @@ public abstract class DialogManager : IDialogManager
         where T : ContentDialog, IDialog
     {
         if (_dialog != null)
-            return ContentDialogResult.None;
+        {
+            _dialog.Hide();
+            _dialog = null;
+        }
         var dialog = Instance.Service.GetRequiredService<T>();
         dialog.XamlRoot = this.Root;
         dialog.SetData(data);

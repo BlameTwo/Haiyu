@@ -59,13 +59,13 @@
                 Orientation="Horizontal">
                 <ToggleButton Checked="ToggleButton_Checked" Unchecked="ToggleButton_Checked">
                     <FontIcon
-                        FontFamily="{ThemeResource FluentIcon}"
+                        FontFamily="Segoe Fluent Icons"
                         FontSize="12"
                         Glyph="&#xE718;" />
                 </ToggleButton>
                 <Button Margin="5,0,0,0" Click="Button_Click">
                     <FontIcon
-                        FontFamily="{ThemeResource FluentIcon}"
+                        FontFamily="Segoe Fluent Icons"
                         FontSize="12"
                         Glyph="&#xE653;" />
                 </Button>

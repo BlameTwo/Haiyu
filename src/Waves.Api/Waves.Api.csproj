@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+	 <PackageReference Include="MemoryPack" Version="1.21.4" />
   </ItemGroup>
 
 </Project>

@@ -41,7 +41,7 @@ public sealed partial class SelectGameFolderViewModel : DialogViewModelBase
         var exe = await PickersService.GetFileOpenPicker([".exe"]);
         if (exe == null)
             return;
-        if (!exe.Path.Contains("Wuthering Waves"))
+        if (!exe.Path.Contains(GameContext.Config.GameExeName))
         {
             TipMessage = "无效地址";
             return;

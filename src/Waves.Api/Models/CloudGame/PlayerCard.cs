@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using MemoryPack;
+using System.Text.Json.Serialization;
 
 namespace Waves.Api.Models.CloudGame;
 
@@ -35,7 +36,8 @@ public class PlayerReponse
     public List<Datum> Data { get; set; }
 }
 
-public class Datum
+[MemoryPackable]
+public partial class Datum
 {
     [JsonPropertyName("cardPoolType")]
     public string CardPoolType { get; set; }

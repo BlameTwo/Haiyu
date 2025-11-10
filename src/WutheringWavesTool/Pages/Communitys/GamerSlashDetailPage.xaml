@@ -104,7 +104,7 @@
                                             Text="{x:Bind Score}" />
                                         <Button Margin="5,0,0,0" Style="{ThemeResource TransparentButtonStyle}">
                                             <FontIcon
-                                                FontFamily="{ThemeResource FluentIcon}"
+                                                FontFamily="Segoe Fluent Icons"
                                                 FontSize="14"
                                                 Glyph="&#xE974;" />
                                             <Button.Flyout>
@@ -265,7 +265,7 @@
                                         Text="{x:Bind Score}" />
                                     <Button Margin="5,0,0,0" Style="{ThemeResource TransparentButtonStyle}">
                                         <FontIcon
-                                            FontFamily="{ThemeResource FluentIcon}"
+                                            FontFamily="Segoe Fluent Icons"
                                             FontSize="14"
                                             Glyph="&#xE974;" />
                                         <Button.Flyout>
