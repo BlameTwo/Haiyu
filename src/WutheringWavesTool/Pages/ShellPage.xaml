@@ -15,7 +15,6 @@
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:property="using:Haiyu.Controls.Propertys"
     xmlns:sound="using:Haiyu.Controls.Behaviors"
-    xmlns:tb="using:H.NotifyIcon"
     xmlns:ui="using:Haiyu.Controls"
     xmlns:wrapper="using:Haiyu.Models.Wrapper"
     xmlns:wui="using:CommunityToolkit.WinUI"

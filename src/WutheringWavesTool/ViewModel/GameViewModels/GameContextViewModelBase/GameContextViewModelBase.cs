@@ -1,6 +1,8 @@
 ﻿
 
 using Haiyu.Models.Dialogs;
+using Microsoft.Windows.AppNotifications;
+using Microsoft.Windows.AppNotifications.Builder;
 using Waves.Core.Services;
 
 namespace Haiyu.ViewModel.GameViewModels
@@ -174,6 +176,9 @@ namespace Haiyu.ViewModel.GameViewModels
                 DisplayVersion = version;
                 EnableStartGameBth = true;
                 LauncherIcon = "\uE898";
+                AppNotification notify = new AppNotificationBuilder()
+                    .AddText($"游戏有更新：{version}版本").BuildNotification();
+                AppNotificationManager.Default.Show(notify);
             }
             else
             {
@@ -262,10 +267,18 @@ namespace Haiyu.ViewModel.GameViewModels
                     return;
                 }
                 Logger.WriteInfo($"选择游戏安文件：{result.InstallFolder}");
-                await this.GameContext.StartDownloadTaskAsync(
-                    result.InstallFolder,
-                    result.Launcher
-                );
+                if (File.Exists(result.InstallFolder + $"//{this.GameContext.Config.GameExeName}"))
+                {
+                    await this.GameContext.StartDownloadTaskAsync(
+                        result.InstallFolder,
+                        result.Launcher
+                    );
+                }
+                else
+                {
+                    TipShow.ShowMessage("选择文件路径不合法，请重新选择", Symbol.Clear);
+                }
+                
             }
             else
             {

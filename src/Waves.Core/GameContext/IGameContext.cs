@@ -19,7 +19,7 @@ public interface IGameContext
     event GameContextProdOutputDelegate GameContextProdOutput;
     public string GamerConfigPath { get; internal set; }
     GameLocalConfig GameLocalConfig { get; }
-
+    public GameAPIConfig Config { get; }
     Task<FileVersion> GetLocalDLSSAsync();
     Task<FileVersion> GetLocalDLSSGenerateAsync();
     Task<FileVersion> GetLocalXeSSGenerateAsync();

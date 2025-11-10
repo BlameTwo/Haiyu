@@ -1,4 +1,6 @@
-﻿namespace Haiyu.ViewModel.GameViewModels;
+﻿using Microsoft.Windows.AppNotifications;
+
+namespace Haiyu.ViewModel.GameViewModels;
 
 partial class GameContextViewModelBase
 {
