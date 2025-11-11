@@ -137,10 +137,14 @@ public class WallpaperService : IWallpaperService
 
     public void SetMediaForUrl(WallpaperShowType type,string backgroundFile)
     {
-        if(type == WallpaperShowType.Video)
+        Media.ShowType = type;
+        if (type == WallpaperShowType.Video)
         {
-            Media.ShowType = type;
             Media.MediaSource = backgroundFile;
+        }
+        else if(type == WallpaperShowType.Image)
+        {
+            Media.ImageSource = backgroundFile;
         }
     }
 }

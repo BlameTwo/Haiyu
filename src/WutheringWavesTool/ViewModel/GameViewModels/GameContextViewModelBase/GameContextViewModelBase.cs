@@ -154,8 +154,15 @@ namespace Haiyu.ViewModel.GameViewModels
                     index.FunctionCode.Background,
                     this.CTS.Token
                 );
-                //WallpaperService.SetWallpaperForUrl(background.FirstFrameImage);
-                WallpaperService.SetMediaForUrl(Waves.Core.Models.Enums.WallpaperShowType.Video,background.BackgroundFile);
+                var wallpaperType = AppSettings.WallpaperType;
+                if(wallpaperType == "Video")
+                {
+                    WallpaperService.SetMediaForUrl(Waves.Core.Models.Enums.WallpaperShowType.Video, background.BackgroundFile);
+                }
+                else
+                {
+                    WallpaperService.SetMediaForUrl(Waves.Core.Models.Enums.WallpaperShowType.Image, background.FirstFrameImage);
+                }
                 this.VersionLogo = new BitmapImage(new(background.Slogan));
                 await LoadAfter();
             }

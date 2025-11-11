@@ -11,6 +11,7 @@
     xmlns:item="using:Haiyu.Models"
     xmlns:local="using:Haiyu.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uModel="using:Haiyu.ViewModel"
     xmlns:ui="using:CommunityToolkit.WinUI.Controls"
     xmlns:wui="using:Haiyu.Controls"
     mc:Ignorable="d">
@@ -113,6 +114,24 @@
                 FontSize="15"
                 Text="通用" />
 
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Header="游戏背景设置">
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B9;" />
+                </ui:SettingsCard.HeaderIcon>
+                <ui:SettingsCard.Content>
+                    <ComboBox ItemsSource="{x:Bind ViewModel.WallpaperTypes, Mode=OneWay}" SelectedItem="{x:Bind ViewModel.SelectWallpaperName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="uModel:WallpaperType">
+                                <TextBlock Text="{x:Bind Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </ui:SettingsCard.Content>
+            </ui:SettingsCard>
             <ui:SettingsCard
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"

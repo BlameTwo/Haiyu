@@ -55,6 +55,12 @@ public class AppSettings
         set => Write(value);
     }
 
+    public static string? WallpaperType
+    {
+        get => Read();
+        set => Write(value);
+    }
+
     public static string? AreaCounterPostion
     {
         get => Read();

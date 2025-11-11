@@ -27,4 +27,36 @@ partial class SettingViewModel
             SelectCursorName = Cursors.Find(x => x == OldCursorName);
         }
     }
+
+    [ObservableProperty]
+    public partial WallpaperType SelectWallpaperName { get; set; }
+
+    [ObservableProperty]
+    public partial List<WallpaperType> WallpaperTypes { get; set; } = [new("视频"), new("图片")];
+
+    partial void OnSelectWallpaperNameChanged(WallpaperType value)
+    {
+        if (value == null)
+            return;
+        if(value.Name == "视频")
+        {
+            AppSettings.WallpaperType = "Video";
+        }
+        else
+        {
+
+            AppSettings.WallpaperType = "Image";
+        }
+    }
+}
+
+
+public class WallpaperType
+{
+    public string Name { get; set; }
+
+    public WallpaperType(string name)
+    {
+        Name = name;
+    }
 }

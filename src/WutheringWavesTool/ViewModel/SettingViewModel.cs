@@ -71,6 +71,21 @@ public sealed partial class SettingViewModel : ViewModelBase
         }
         this.OldCursorName = AppSettings.SelectCursor ?? "默认";
         this.SelectCursorName = Cursors.Find(x => x == AppSettings.SelectCursor) ?? Cursors[0];
+        if(AppSettings.WallpaperType == null)
+        {
+            this.SelectWallpaperName = WallpaperTypes[0];
+        }
+        else
+        {
+            if(AppSettings.WallpaperType == "Video")
+            {
+                this.SelectWallpaperName = WallpaperTypes[0];
+            }
+            else
+            {
+                this.SelectWallpaperName = WallpaperTypes[1];
+            }
+        }
         this.InitCapture();
         GetAllVersion();
     }
@@ -78,8 +93,10 @@ public sealed partial class SettingViewModel : ViewModelBase
     [RelayCommand]
     async Task CopyToken()
     {
-        var result = await UserConsentVerifier.RequestVerificationAsync("复制授权码需要系统用户密码");
-        if(result != UserConsentVerificationResult.Verified)
+        var result = await UserConsentVerifier.RequestVerificationAsync(
+            "复制授权码需要系统用户密码"
+        );
+        if (result != UserConsentVerificationResult.Verified)
         {
             TipShow.ShowMessage("系统用户验证失败！", Symbol.Clear);
             return;

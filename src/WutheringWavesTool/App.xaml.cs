@@ -31,6 +31,10 @@ public partial class App : ClientApplication
 
     public App()
     {
+        if (AppSettings.WallpaperType == null)
+        {
+            AppSettings.WallpaperType = "Video";
+        }
         mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey("Haiyu_Main");
         mainInstance.Activated += MainInstance_Activated;
         #region PE DPI Resource

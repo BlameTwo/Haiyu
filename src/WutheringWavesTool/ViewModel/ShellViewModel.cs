@@ -257,7 +257,6 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
-
         var network = await NetworkCheck.PingAsync(GameAPIConfig.BaseAddress[0]);
         if (network == null || network.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
