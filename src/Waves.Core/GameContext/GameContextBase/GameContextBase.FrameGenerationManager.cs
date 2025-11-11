@@ -17,7 +17,7 @@ partial class GameContextBase
             .FirstOrDefault();
         if (file == null)
         {
-            return null;
+            return new FileVersion() { DisplayName = "Xess", Version = "未找到文件" };
         }
         FileVersionInfo fileinfo = FileVersionInfo.GetVersionInfo(file);
         return new FileVersion()
@@ -38,7 +38,7 @@ partial class GameContextBase
             .FirstOrDefault();
         if (file == null)
         {
-            return null;
+            return new FileVersion() { DisplayName = "Xess", Version = "未找到文件" };
         }
         FileVersionInfo fileinfo = FileVersionInfo.GetVersionInfo(file);
         return new FileVersion()
@@ -59,7 +59,7 @@ partial class GameContextBase
             .FirstOrDefault();
         if (file == null)
         {
-            return null;
+            return new FileVersion(){ DisplayName = "Xess", Version = "未找到文件"};
         }
         FileVersionInfo fileinfo = FileVersionInfo.GetVersionInfo(file);
         return new FileVersion()

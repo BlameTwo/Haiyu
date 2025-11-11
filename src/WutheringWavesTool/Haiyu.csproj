@@ -53,6 +53,7 @@
 		<None Remove="Assets\background.png" />
 		<None Remove="Assets\Fonts\gameIcon.ttf" />
 		<None Remove="Assets\Settingbackground.png" />
+		<None Remove="Controls\Styles\ApplicationBackgroundControl.xaml" />
 		<None Remove="Controls\Styles\Card.xaml" />
 		<None Remove="Pages\CloudGamePage.xaml" />
 		<None Remove="Pages\ColorFullGame.xaml" />
@@ -223,6 +224,9 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Controls\Styles\ApplicationBackgroundControl.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Pages\Dialogs\GameLauncherCacheManager.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>

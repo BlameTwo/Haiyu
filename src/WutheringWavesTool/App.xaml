@@ -8,7 +8,7 @@
     xmlns:local="using:Haiyu"
     xmlns:property="using:Haiyu.Controls.Propertys"
     xmlns:tool="using:Haiyu.Common"
-    RequestedTheme="Light">
+    RequestedTheme="Dark">
     <tool:ClientApplication.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -26,6 +26,7 @@
                 <ResourceDictionary Source="/Controls/Styles/Card.xaml" />
                 <ResourceDictionary Source="/Controls/Styles/ToolTipStyle.xaml" />
                 <ResourceDictionary Source="/Controls/Styles/ComboBoxStyle.xaml" />
+                <ResourceDictionary Source="/Controls/Styles/ApplicationBackgroundControl.xaml" />
                 <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.Controls.Segmented/SegmentedItem/SegmentedItem.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <x:String x:Key="AppVersion">1.2.12</x:String>

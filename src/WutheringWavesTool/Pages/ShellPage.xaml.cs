@@ -20,7 +20,7 @@ public sealed partial class ShellPage : Page
         this.ViewModel.HomeNavigationService.RegisterView(this.frame);
         this.ViewModel.HomeNavigationViewService.Register(this.navigationView);
         this.ViewModel.TipShow.Owner = this.panel;
-        this.ViewModel.Image = this.image;
+        //this.ViewModel.Image = this.image;
         this.ViewModel.AppContext.SetTitleControl(this.titlebar);
         
     }
@@ -63,7 +63,8 @@ public sealed partial class ShellPage : Page
         this.notify.RegisterWin(Instance.GetService<IAppContext<App>>().App.MainWindow);
         this.notify.CreateTrayIcon(AppDomain.CurrentDomain.BaseDirectory + "\\Assets\\appLogo.ico", "Haiyu");
         this.ViewModel.DialogManager.RegisterRoot(this.XamlRoot);
-        this.ViewModel.AppContext.WallpaperService.RegisterImageHost(this.image);
+        //this.ViewModel.AppContext.WallpaperService.RegisterImageHost(this.image);
+        this.ViewModel.AppContext.WallpaperService.RegisterMediaHost(mediaControl);
     }
 
     private void ComboBox_SizeChanged(object sender, SizeChangedEventArgs e)

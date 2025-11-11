@@ -145,7 +145,7 @@ public abstract partial class GameContextBase : IGameContext
         return status;
     }
 
-    public async Task DeleteResourceAsync()
+    public virtual async Task DeleteResourceAsync()
     {
         var folder = this.GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
@@ -168,7 +168,7 @@ public abstract partial class GameContextBase : IGameContext
         this.Logger.Option = coreLogOption;
     }
 
-    public async Task<List<KRSDKLauncherCache>?> GetLocalGameOAuthAsync(CancellationToken token)
+    public virtual async Task<List<KRSDKLauncherCache>?> GetLocalGameOAuthAsync(CancellationToken token)
     {
         try
         {

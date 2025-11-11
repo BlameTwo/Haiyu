@@ -3,6 +3,7 @@ using Waves.Api.Models.Launcher;
 using Waves.Core.Contracts;
 using Waves.Core.Models;
 using Waves.Core.Models.Downloader;
+using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext;
 
@@ -30,7 +31,7 @@ public interface IGameContext
     public Task RepirGameAsync();
 
     #region Launcher
-    Task<GameLauncherSource?> GetGameLauncherSourceAsync(CancellationToken token = default);
+    Task<GameLauncherSource?> GetGameLauncherSourceAsync(GameAPIConfig apiConfig = null,CancellationToken token = default);
 
     Task<GameLauncherStarter?> GetLauncherStarterAsync(CancellationToken token = default);
     #endregion
@@ -55,7 +56,7 @@ public interface IGameContext
     /// <param name="folder"></param>
     /// <param name="source"></param>
     /// <returns></returns>
-    Task StartDownloadTaskAsync(string folder, GameLauncherSource? source);
+    Task StartDownloadTaskAsync(string folder, GameLauncherSource? source,bool isDelete = false);
 
     /// <summary>
     /// 恢复任务

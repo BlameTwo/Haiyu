@@ -105,6 +105,7 @@ public abstract class DialogManager : IDialogManager
     {
         var dialog = new ContentDialog();
         dialog.XamlRoot = this.Root;
+        dialog.RequestedTheme = ElementTheme.Dark;
         dialog.Style = Application.Current.Resources["DefaultContentDialogStyle"] as Style;
         dialog.PrimaryButtonText = content;
         dialog.CloseButtonText = closeText;

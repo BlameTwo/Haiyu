@@ -1,6 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using Haiyu.Helpers;
+using Waves.Core.Models.Enums;
+using Windows.Media.Core;
+using Windows.Media.Playback;
 
 namespace Haiyu.Services;
 
@@ -70,6 +73,7 @@ public class WallpaperService : IWallpaperService
         }
     }
     public OctreeColorExtractor ColorPlette { get; private set; }
+    public ApplicationBackgroundControl Media { get; private set; }
 
     //public ImageColorPaletteHelper ColorPlette { get; private set; }
 
@@ -123,6 +127,20 @@ public class WallpaperService : IWallpaperService
                     };
                 }
             }
+        }
+    }
+
+    public void RegisterMediaHost(ApplicationBackgroundControl media)
+    {
+        this.Media = media;
+    }
+
+    public void SetMediaForUrl(WallpaperShowType type,string backgroundFile)
+    {
+        if(type == WallpaperShowType.Video)
+        {
+            Media.ShowType = type;
+            Media.MediaSource = backgroundFile;
         }
     }
 }

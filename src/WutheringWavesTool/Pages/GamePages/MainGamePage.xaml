@@ -75,13 +75,11 @@
                         <RepositionThemeTransition />
                     </TransitionCollection>
                 </Grid.ChildrenTransitions>
-
                 <Border
                     Margin="10,0,10,-1"
                     Padding="5"
                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
-                    CornerRadius="5 5  0 0">
-
+                    CornerRadius="5 5 0 0">
                     <TextBlock
                         Margin="5,0,0,0"
                         FontFamily="{ThemeResource DefaultFont}"
@@ -459,9 +457,9 @@
                                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                                     CornerRadius="0 5 0 0">
                                     <HyperlinkButton
+                                        Content="前往"
                                         FontSize="10"
-                                        NavigateUri="{x:Bind JumpUrl}"
-                                        Content="前往" />
+                                        NavigateUri="{x:Bind JumpUrl}" />
                                 </Border>
                             </Grid>
                         </DataTemplate>

@@ -1,4 +1,5 @@
 ﻿using Haiyu.Helpers;
+using Waves.Core.Models.Enums;
 
 namespace Haiyu.Services.Contracts;
 
@@ -17,4 +18,6 @@ public interface IWallpaperService
 
     public bool SetWallpaperForUrl(string uri);
     IAsyncEnumerable<WallpaperModel> GetFilesAsync(CancellationToken token = default);
+    void RegisterMediaHost(ApplicationBackgroundControl media);
+    void SetMediaForUrl(WallpaperShowType type, string backgroundFile);
 }

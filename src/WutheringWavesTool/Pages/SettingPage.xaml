@@ -112,22 +112,7 @@
                 FontFamily="{StaticResource DefaultFont}"
                 FontSize="15"
                 Text="通用" />
-            <ui:SettingsExpander
-                Margin="0,5,0,0"
-                Description="简单诊断某些信息"
-                Header="诊断">
-                <ui:SettingsExpander.Items>
-                    <ui:SettingsCard Description="观察右侧内容是否为图标，来确定图标是否正常" Header="字体文件">
-                        <ui:SettingsCard.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA8C;" />
-                                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB05;" />
-                                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB56;" />
-                            </StackPanel>
-                        </ui:SettingsCard.Content>
-                    </ui:SettingsCard>
-                </ui:SettingsExpander.Items>
-            </ui:SettingsExpander>
+
             <ui:SettingsCard
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"
@@ -317,6 +302,15 @@
             </ui:SettingsCard>
             <ui:SettingsExpander Margin="0,5,0,0" Header="诊断环境">
                 <ui:SettingsExpander.Items>
+                    <ui:SettingsCard Description="观察右侧内容是否为图标，来确定图标是否正常" Header="字体文件">
+                        <ui:SettingsCard.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA8C;" />
+                                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB05;" />
+                                <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEB56;" />
+                            </StackPanel>
+                        </ui:SettingsCard.Content>
+                    </ui:SettingsCard>
                     <ui:SettingsCard Header="Web内核版本">
                         <TextBlock Text="{x:Bind ViewModel.WebViewVersion, Mode=OneWay}" />
                     </ui:SettingsCard>

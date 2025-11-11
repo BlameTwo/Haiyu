@@ -22,7 +22,7 @@ namespace Waves.Core.GameContext
         private System.Timers.Timer? gameRunTimer;
         private uint ppid;
 
-        public async Task StartGameAsync()
+        public virtual async Task StartGameAsync()
         {
             try
             {

@@ -14,6 +14,9 @@
     <Project Path="Extensions/CursorResource/CursorResource.vcxproj" Id="8ce44d37-8b39-4eda-9774-a70c11f04518">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
+    <Project Path="Extensions/GameFileDiffTool/GameFileDiffTool.csproj" Id="7e92e004-3edc-46fe-83e9-402bdb530d81">
+      <BuildType Solution="All|*" Project="Debug" />
+    </Project>
     <Project Path="Extensions/MemoryCleaner/MemoryCleaner.csproj" Id="3a89e5c0-1918-4ac2-a091-634d8e2c6673">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>

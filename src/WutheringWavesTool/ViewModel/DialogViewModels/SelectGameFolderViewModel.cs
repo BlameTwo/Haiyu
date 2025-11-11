@@ -60,7 +60,7 @@ public sealed partial class SelectGameFolderViewModel : DialogViewModelBase
             return;
         }
 
-        Launcher = await this.GameContext.GetGameLauncherSourceAsync(this.CTS.Token);
+        Launcher = await this.GameContext.GetGameLauncherSourceAsync(null, this.CTS.Token);
         if (Launcher == null)
         {
             TipMessage = $"游戏数据拉取失败";

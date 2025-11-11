@@ -10,22 +10,23 @@ namespace Waves.Core.GameContext;
 
 partial class GameContextBase
 {
-    public async Task<GameLauncherSource?> GetGameLauncherSourceAsync(
+    public virtual async Task<GameLauncherSource?> GetGameLauncherSourceAsync(GameAPIConfig apiConfig = null,
         CancellationToken token = default
     )
     {
+        var cacheConfig = apiConfig ?? this.Config;
         var url = "";
         try
         {
             if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext) || this.ContextName == nameof(TwPGRGameContext))
             {
                 url =
-                    $"{GameAPIConfig.BaseAddress[1]}/launcher/game/{Config.GameID}/{Config.AppId}_{Config.AppKey}/index.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+                    $"{GameAPIConfig.BaseAddress[1]}/launcher/game/{cacheConfig.GameID}/{cacheConfig.AppId}_{cacheConfig.AppKey}/index.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
             }
             else
             {
                 url =
-                    $"{GameAPIConfig.BaseAddress[0]}/launcher/game/{Config.GameID}/{Config.AppId}_{Config.AppKey}/index.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+                    $"{GameAPIConfig.BaseAddress[0]}/launcher/game/{cacheConfig.GameID}/{cacheConfig.AppId}_{cacheConfig.AppKey}/index.json?_t={DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
             }
             var result = await HttpClientService.GameDownloadClient.GetAsync(url);
             var jsonStr = await result.Content.ReadAsStringAsync();
@@ -83,7 +84,7 @@ partial class GameContextBase
 
     }
 
-    public async Task<GameLauncherStarter?> GetLauncherStarterAsync(
+    public virtual async Task<GameLauncherStarter?> GetLauncherStarterAsync(
         CancellationToken token = default
     )
 
@@ -117,7 +118,7 @@ partial class GameContextBase
         }
     }
 
-    public async Task<LIndex?> GetDefaultLauncherValue(CancellationToken token = default) 
+    public virtual async Task<LIndex?> GetDefaultLauncherValue(CancellationToken token = default) 
     {
         string url = "";
         if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext)||this.ContextName == nameof(TwPGRGameContext))
@@ -139,7 +140,7 @@ partial class GameContextBase
     }
     
 
-    public async Task<LauncherBackgroundData?> GetLauncherBackgroundDataAsync(string backgroundCode,CancellationToken token = default)
+    public virtual async Task<LauncherBackgroundData?> GetLauncherBackgroundDataAsync(string backgroundCode,CancellationToken token = default)
     {
         var address = "";
         if (this.ContextName == nameof(GlobalGameContext) || this.ContextName == nameof(GlobalPRGGameContext) || this.ContextName == nameof(TwPGRGameContext))

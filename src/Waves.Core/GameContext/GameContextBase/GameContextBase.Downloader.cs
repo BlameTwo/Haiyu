@@ -47,7 +47,7 @@ public partial class GameContextBase
     private DownloadState? _downloadState;
     #endregion
     #region 公开方法
-    public async Task StartDownloadTaskAsync(string folder, GameLauncherSource source)
+    public async Task StartDownloadTaskAsync(string folder, GameLauncherSource source,bool isDelete = false)
     {
         if (source == null || string.IsNullOrWhiteSpace(folder))
             return;
@@ -57,7 +57,7 @@ public partial class GameContextBase
         _totalProgressTotal = 0;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.GameLauncherBassFolder, folder);
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
-        await GetGameResourceAsync(folder, source);
+        await GetGameResourceAsync(folder, source,isDelete);
     }
     #endregion
 
@@ -66,7 +66,7 @@ public partial class GameContextBase
     {
         _downloadCTS = new CancellationTokenSource();
         var folder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
-        var launcher = await this.GetGameLauncherSourceAsync(_downloadCTS.Token);
+        var launcher = await this.GetGameLauncherSourceAsync(null,_downloadCTS.Token);
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
@@ -74,7 +74,7 @@ public partial class GameContextBase
     }
 
     #region 核心下载逻辑
-    private async Task GetGameResourceAsync(string folder, GameLauncherSource source)
+    private async Task GetGameResourceAsync(string folder, GameLauncherSource source, bool isDelete)
     {
         try
         {
@@ -89,7 +89,7 @@ public partial class GameContextBase
 
             HttpClientService.BuildClient();
             await InitializeProgress(resource);
-            await Task.Run(() => StartDownloadAsync(folder, resource));
+            await Task.Run(() => StartDownloadAsync(folder, resource,isDelete));
             await DownloadComplate(source);
 
             await SetNoneStatusAsync().ConfigureAwait(false);
@@ -103,6 +103,8 @@ public partial class GameContextBase
 
     async Task DownloadComplate(GameLauncherSource source)
     {
+        if (_downloadState!.IsStop)
+            return;
         var currentVersion = GameLocalConfig.GetConfig(GameLocalSettingName.LocalGameVersion);
         var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
         if (string.IsNullOrWhiteSpace(currentVersion))
@@ -136,24 +138,28 @@ public partial class GameContextBase
             .ConfigureAwait(false);
     }
 
-    private async Task StartDownloadAsync(string folder, IndexGameResource resource)
+    private async Task StartDownloadAsync(string folder, IndexGameResource resource, bool isDelete)
     {
         _downloadState.IsActive = true;
-        var localFile = new DirectoryInfo(folder).GetFiles("*", SearchOption.AllDirectories);
-        var serverFileSet = new HashSet<string>(resource.Resource.Select(x => BuildFilePath(folder, x)));
-
-        var filesToDelete = localFile
-            .Where(file => !serverFileSet.Contains(file.FullName))
-            .ToList();
-
-        if (filesToDelete.Any())
+        if (isDelete)
         {
-            foreach (var file in filesToDelete)
+            Logger.WriteInfo("修复游戏，开始删除本地多余文件");
+            var localFile = new DirectoryInfo(folder).GetFiles("*", SearchOption.AllDirectories);
+            var serverFileSet = new HashSet<string>(resource.Resource.Select(x => BuildFilePath(folder, x)));
+
+            var filesToDelete = localFile
+                .Where(file => !serverFileSet.Contains(file.FullName))
+                .ToList();
+
+            if (filesToDelete.Any())
             {
-                File.Delete(file.FullName);
+                foreach (var file in filesToDelete)
+                {
+                    File.Delete(file.FullName);
+                }
+                var fileNames = filesToDelete.Select(f => Path.GetFileName(f.FullName));
+                Logger.WriteInfo($"删除：删除版本旧文件{string.Join(',', fileNames)}");
             }
-            var fileNames = filesToDelete.Select(f => Path.GetFileName(f.FullName));
-            Logger.WriteInfo($"删除：删除版本旧文件{string.Join(',', fileNames)}");
         }
         await UpdateFileProgress(GameContextActionType.Verify, 0);
         #region 下载逻辑
@@ -277,6 +283,7 @@ public partial class GameContextBase
             _downloadCTS.Dispose();
             _downloadCTS = null;
             _isDownload = false;
+            _downloadState.IsStop = true;
             await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");
             await SetNoneStatusAsync().ConfigureAwait(false);
             Logger.WriteError($"退出下载，错误{ex.Message}");
@@ -286,6 +293,7 @@ public partial class GameContextBase
         {
             _downloadState.IsActive = false;
             _downloadCTS.Dispose();
+            _downloadState.IsStop = true;
             _downloadCTS = null;
             _isDownload = false;
             await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");
@@ -1370,6 +1378,6 @@ public partial class GameContextBase
         Logger.WriteInfo("开始修复游戏");
         var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
         var launcher = await this.GetGameLauncherSourceAsync();
-        await Task.Run(async () => await StartDownloadTaskAsync(installFolder, launcher));
+        await Task.Run(async () => await StartDownloadTaskAsync(installFolder, launcher,true));
     }
 }

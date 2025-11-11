@@ -1,9 +1,8 @@
-﻿
-
-using Haiyu.Models.Dialogs;
+﻿using Haiyu.Models.Dialogs;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Waves.Core.Services;
+using Windows.ApplicationModel.Core;
 
 namespace Haiyu.ViewModel.GameViewModels
 {
@@ -21,7 +20,6 @@ namespace Haiyu.ViewModel.GameViewModels
             IDialogManager dialogManager,
             IAppContext<App> appContext,
             ITipShow tipShow
-            
         )
         {
             this.Logger = Instance.Service.GetKeyedService<LoggerService>("AppLog");
@@ -83,19 +81,13 @@ namespace Haiyu.ViewModel.GameViewModels
         #endregion
 
         [ObservableProperty]
-        public partial string PauseIcon 
-        { 
-            get; 
-            set; 
-        }
+        public partial string PauseIcon { get; set; }
 
         [ObservableProperty]
         public partial bool PauseStartEnable { get; set; } = true;
 
         [ObservableProperty]
         public partial string BottomBarContent { get; set; }
-
-
 
         [ObservableProperty]
         public partial bool EnableStartGameBth { get; set; } = false;
@@ -139,17 +131,31 @@ namespace Haiyu.ViewModel.GameViewModels
                     }
                     ShowGameDownloadingBth();
                 }
-                if (status.IsGameExists && status.IsGameInstalled && !status.IsPause && status.IsAction)
+                if (
+                    status.IsGameExists
+                    && status.IsGameInstalled
+                    && !status.IsPause
+                    && status.IsAction
+                )
                 {
                     this.PauseIcon = "\uE769";
                 }
-                if (status.IsGameExists && status.IsGameInstalled && status.IsPause && status.IsAction)
+                if (
+                    status.IsGameExists
+                    && status.IsGameInstalled
+                    && status.IsPause
+                    && status.IsAction
+                )
                 {
                     this.PauseIcon = "\uE768";
                 }
                 var index = await this.GameContext.GetDefaultLauncherValue(this.CTS.Token);
-                var background = await this.GameContext.GetLauncherBackgroundDataAsync(index.FunctionCode.Background, this.CTS.Token);
-                WallpaperService.SetWallpaperForUrl(background.FirstFrameImage);
+                var background = await this.GameContext.GetLauncherBackgroundDataAsync(
+                    index.FunctionCode.Background,
+                    this.CTS.Token
+                );
+                //WallpaperService.SetWallpaperForUrl(background.FirstFrameImage);
+                WallpaperService.SetMediaForUrl(Waves.Core.Models.Enums.WallpaperShowType.Video,background.BackgroundFile);
                 this.VersionLogo = new BitmapImage(new(background.Slogan));
                 await LoadAfter();
             }
@@ -177,7 +183,8 @@ namespace Haiyu.ViewModel.GameViewModels
                 EnableStartGameBth = true;
                 LauncherIcon = "\uE898";
                 AppNotification notify = new AppNotificationBuilder()
-                    .AddText($"游戏有更新：{version}版本").BuildNotification();
+                    .AddText($"游戏有更新：{version}版本")
+                    .BuildNotification();
                 AppNotificationManager.Default.Show(notify);
             }
             else
@@ -198,17 +205,21 @@ namespace Haiyu.ViewModel.GameViewModels
                     _bthType = 3;
                     this.CurrentProgressValue = 0;
                     this.MaxProgressValue = 0;
-                    var totalTime = GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameRunTotalTime);
-                    if(totalTime == null)
+                    var totalTime = GameContext.GameLocalConfig.GetConfig(
+                        GameLocalSettingName.GameRunTotalTime
+                    );
+                    if (totalTime == null)
                     {
                         BottomBarContent = "游戏准备就绪";
                     }
                     else
                     {
-                        if(int.TryParse(totalTime,out var timeResult))
+                        if (int.TryParse(totalTime, out var timeResult))
                         {
                             var tt = TimeSpan.FromSeconds(timeResult);
-                            BottomBarContent = "已游玩" + ($"{tt.Days}天{tt.Hours}小时{tt.Minutes}分钟");;
+                            BottomBarContent =
+                                "已游玩" + ($"{tt.Days}天{tt.Hours}小时{tt.Minutes}分钟");
+                            ;
                         }
                         else
                         {
@@ -235,7 +246,9 @@ namespace Haiyu.ViewModel.GameViewModels
                 {
                     return;
                 }
-                Logger.WriteInfo($"选择游戏安装路径：{result.InstallFolder},即将进入通知核心进行下载");
+                Logger.WriteInfo(
+                    $"选择游戏安装路径：{result.InstallFolder},即将进入通知核心进行下载"
+                );
                 await this.GameContext.StartDownloadTaskAsync(
                     result.InstallFolder,
                     result.Launcher
@@ -244,7 +257,7 @@ namespace Haiyu.ViewModel.GameViewModels
             else
             {
                 Logger.WriteInfo($"继续更新触发");
-                var launcher = await GameContext.GetGameLauncherSourceAsync(this.CTS.Token);
+                var launcher = await GameContext.GetGameLauncherSourceAsync(null, this.CTS.Token);
                 await this.GameContext.StartDownloadTaskAsync(
                     GameContext.GameLocalConfig.GetConfig(
                         GameLocalSettingName.GameLauncherBassFolder
@@ -278,12 +291,11 @@ namespace Haiyu.ViewModel.GameViewModels
                 {
                     TipShow.ShowMessage("选择文件路径不合法，请重新选择", Symbol.Clear);
                 }
-                
             }
             else
             {
                 Logger.WriteInfo($"继续进行下载");
-                var launcher = await GameContext.GetGameLauncherSourceAsync(this.CTS.Token);
+                var launcher = await GameContext.GetGameLauncherSourceAsync(null, this.CTS.Token);
                 await this.GameContext.StartDownloadTaskAsync(
                     GameContext.GameLocalConfig.GetConfig(
                         GameLocalSettingName.GameLauncherBassFolder
@@ -309,8 +321,23 @@ namespace Haiyu.ViewModel.GameViewModels
         [RelayCommand]
         async Task RepirGame()
         {
-            Logger.WriteInfo($"开始尝试修复游戏文件");
-            await GameContext.RepirGameAsync();
+            if (
+                (
+                    await DialogManager.ShowMessageDialog(
+                        "修复游戏会将游戏缓存全部删除，保持与服务器最新文件保持一致\r\n（包含画面设置、滤镜设置等内容)",
+                        "确认修复",
+                        "取消"
+                    )
+                ) == ContentDialogResult.Primary
+            )
+            {
+                Logger.WriteInfo($"开始尝试修复游戏文件");
+                await GameContext.RepirGameAsync();
+            }
+            else
+            {
+                Logger.WriteInfo($"取消修复文件");
+            }
         }
 
         [RelayCommand]
@@ -324,25 +351,34 @@ namespace Haiyu.ViewModel.GameViewModels
         {
             Logger.WriteInfo($"删除游戏文件");
             await GameContext.DeleteResourceAsync();
-            await this.GameContext_GameContextOutput(this, new GameContextOutputArgs() { Type = Waves.Core.Models.Enums.GameContextActionType.None });
+            await this.GameContext_GameContextOutput(
+                this,
+                new GameContextOutputArgs()
+                {
+                    Type = Waves.Core.Models.Enums.GameContextActionType.None,
+                }
+            );
         }
 
         [RelayCommand]
         async Task ShowGameLauncherCache()
         {
             var data = await this.GameContext.GetLocalGameOAuthAsync(this.CTS.Token);
-            if(data == null)
+            if (data == null)
             {
                 TipShow.ShowMessage("不存在任何登陆信息，请登陆游戏后再次查看", Symbol.Clear);
                 return;
             }
 
-            await DialogManager.ShowGameLauncherChacheDialogAsync(new GameLauncherCacheArgs()
-            {
-                 Datas = data,
-                  GameContextName = this.GameContext.ContextName
-            });
+            await DialogManager.ShowGameLauncherChacheDialogAsync(
+                new GameLauncherCacheArgs()
+                {
+                    Datas = data,
+                    GameContextName = this.GameContext.ContextName,
+                }
+            );
         }
+
         private void ShowGameDownloadingBth()
         {
             Logger.WriteInfo($"游戏正在下载中");

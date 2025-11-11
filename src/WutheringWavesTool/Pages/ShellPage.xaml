@@ -22,7 +22,6 @@
     property:CursorProperty.CursorType="Normal"
     RequestedTheme="Dark"
     mc:Ignorable="d">
-
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
@@ -34,32 +33,6 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <ui:NotifyIconWinUI x:Name="notify" ContextMenu="{x:Bind ViewModel.SystemMenu, Mode=OneWay}" />
-        <!--<tb:TaskbarIcon
-            ContextMenuMode="SecondWindow"
-            IconSource="/Assets/appLogo.ico"
-            ToolTipText="Haiyu">
-            <tb:TaskbarIcon.ContextFlyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem
-                        x:Uid="NotifyIcon_First"
-                        Command="{x:Bind ViewModel.ShowWindowCommand}"
-                        FontFamily="{ThemeResource DefaultFont}">
-                        <MenuFlyoutItem.Icon>
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7FC;" />
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
-                    <MenuFlyoutSeparator />
-                    <MenuFlyoutItem
-                        x:Uid="NotifyIcon_Second"
-                        Command="{x:Bind ViewModel.ExitWindowCommand}"
-                        FontFamily="{ThemeResource DefaultFont}">
-                        <MenuFlyoutItem.Icon>
-                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF3B1;" />
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
-                </MenuFlyout>
-            </tb:TaskbarIcon.ContextFlyout>
-        </tb:TaskbarIcon>-->
         <Border x:Name="titleback" Grid.RowSpan="1" />
         <ui:TitleBar
             x:Name="titlebar"
@@ -430,11 +403,12 @@
                 </StackPanel>
             </ui:TitleBar.Footer>
         </ui:TitleBar>
-        <ui:ImageEx
-            x:Name="image"
+
+        <ui:ApplicationBackgroundControl
+            x:Name="mediaControl"
             Grid.RowSpan="2"
-            Canvas.ZIndex="-1"
-            Stretch="UniformToFill">
+            Stretch="UniformToFill"
+            Style="{ThemeResource DefaultApplicationBackgroundControlStyle}">
             <ani:Explicit.Animations>
                 <ani:AnimationSet x:Name="To8" IsSequential="True">
                     <ani:OpacityAnimation
@@ -451,7 +425,7 @@
                         Duration="0:0:0.5" />
                 </ani:AnimationSet>
             </ani:Explicit.Animations>
-        </ui:ImageEx>
+        </ui:ApplicationBackgroundControl>
         <Grid x:Name="panel" Grid.Row="1">
             <NavigationView
                 x:Name="navigationView"
@@ -468,6 +442,7 @@
                             <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA8A;" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
+
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.MainGameViewModel"
                         ToolTipService.ToolTip="鸣潮（官服）"
@@ -483,7 +458,6 @@
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GlobalGameViewModel"
                         ToolTipService.ToolTip="鸣潮（国际服）"
                         Visibility="{x:Bind ViewModel.ShowWavesGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
                         </i:Interaction.Behaviors>

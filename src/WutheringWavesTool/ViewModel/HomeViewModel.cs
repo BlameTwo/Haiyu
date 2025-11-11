@@ -30,7 +30,6 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
-        await WallpaperService.SetWallpaperAsync("ms-appx:///Assets/background.png");
         this.SelectTab= Tabs.First();
     }
 
