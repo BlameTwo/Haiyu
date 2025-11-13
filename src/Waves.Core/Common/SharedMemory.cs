@@ -70,7 +70,6 @@ namespace Waves.Core.Common
             data = 0uL;
             try
             {
-                bool flag = false;
                 if (!(timeout.HasValue ? _mutex.WaitOne(timeout.Value) : _mutex.WaitOne()))
                 {
                     return false;

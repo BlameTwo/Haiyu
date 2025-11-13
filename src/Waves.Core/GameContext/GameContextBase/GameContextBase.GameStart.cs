@@ -143,6 +143,8 @@ namespace Waves.Core.GameContext
             _gameProcess?.Kill(true);
             Logger.WriteInfo("退出游戏………………");
             this._isStarting = false;
+            if (this.gameContextOutputDelegate == null)
+                return;
             await gameContextOutputDelegate
                 .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
                 .ConfigureAwait(false);

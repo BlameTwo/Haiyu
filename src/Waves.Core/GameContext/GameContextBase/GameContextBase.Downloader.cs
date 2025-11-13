@@ -44,10 +44,10 @@ public partial class GameContextBase
     public double VerifySpeed => _verifySpeed;
     #endregion
     #region DownloadStatus
-    private DownloadState? _downloadState;
+    private DownloadState _downloadState;
     #endregion
     #region 公开方法
-    public async Task StartDownloadTaskAsync(string folder, GameLauncherSource source,bool isDelete = false)
+    public async Task StartDownloadTaskAsync(string folder, GameLauncherSource? source,bool isDelete = false)
     {
         if (source == null || string.IsNullOrWhiteSpace(folder))
             return;
@@ -81,7 +81,6 @@ public partial class GameContextBase
             var resource = await GetGameResourceAsync(source.ResourceDefault);
             if (resource == null)
                 return;
-
             // 构建下载基础URL
             _downloadBaseUrl =
                 source.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
@@ -280,7 +279,7 @@ public partial class GameContextBase
         catch (IOException ex)
         {
             _downloadState.IsActive = false;
-            _downloadCTS.Dispose();
+            _downloadCTS?.Dispose();
             _downloadCTS = null;
             _isDownload = false;
             _downloadState.IsStop = true;
@@ -292,7 +291,7 @@ public partial class GameContextBase
         catch (OperationCanceledException operEx)
         {
             _downloadState.IsActive = false;
-            _downloadCTS.Dispose();
+            _downloadCTS?.Dispose();
             _downloadState.IsStop = true;
             _downloadCTS = null;
             _isDownload = false;
@@ -302,7 +301,7 @@ public partial class GameContextBase
             return;
         }
         #endregion
-        _downloadCTS.Dispose();
+        _downloadCTS?.Dispose();
         _downloadCTS = null;
         _isDownload = false;
         _downloadState.IsActive = false;
@@ -386,6 +385,12 @@ public partial class GameContextBase
         else
         {
             Logger.WriteInfo("本地资源与网络版本不匹配，请直接尝试修复游戏！");
+            await CancelDownloadAsync();
+            return;
+        }
+        if(patch == null)
+        {
+            Logger.WriteInfo("获得Patch文件失败！");
             await CancelDownloadAsync();
             return;
         }
@@ -498,7 +503,7 @@ public partial class GameContextBase
             return;
         DiffDecompressManager manager = new DiffDecompressManager(folder, folder, krdiffPath);
         IProgress<(double, double)> progress = new Progress<(double, double)>();
-        (progress as Progress<(double, double)>).ProgressChanged += async (s, e) =>
+        ((Progress<(double, double)>)progress).ProgressChanged += async (s, e) =>
         {
             if (gameContextOutputDelegate == null)
                 return;
@@ -529,7 +534,7 @@ public partial class GameContextBase
     private string BuildFilePath(string folder, PatchInfo item)
     {
         var path = Path.Combine(folder, item.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(Path.GetDirectoryName(path));
+        Directory.CreateDirectory(Path.GetDirectoryName(path)??throw new Exception($"文件{item.Dest}创建失败"));
         return path;
     }
 
@@ -661,6 +666,7 @@ public partial class GameContextBase
         }
         catch (Exception ex)
         {
+            Logger.WriteError(ex.Message);
             _downloadState.IsActive = false;
             await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "False");
             await SetNoneStatusAsync().ConfigureAwait(false);
@@ -736,7 +742,6 @@ public partial class GameContextBase
                 using (var md5 = MD5.Create())
                 {
                     long accumulatedBytes = 0L;
-                    bool isBreak = false;
                     while (remaining > 0 && isValid)
                     {
                         await this._downloadState.PauseToken.WaitIfPausedAsync();
@@ -772,7 +777,10 @@ public partial class GameContextBase
                                 accumulatedBytes = 0;
                             }
                         }
-                        catch (IOException ex) { }
+                        catch (IOException ex)
+                        {
+                            Logger.WriteError(ex.Message);
+                        }
                         finally
                         {
                             memoryPool.Return(buffer);
@@ -796,6 +804,7 @@ public partial class GameContextBase
             }
             catch (IOException ex)
             {
+                Logger.WriteError(ex.Message);
                 return false;
             }
             catch (OperationCanceledException)
@@ -824,10 +833,12 @@ public partial class GameContextBase
                 )
             )
             {
-                long accumulatedBytes = 0L;
                 bool isBreak = false;
+                long accumulatedBytes = 0L;
                 while (true)
                 {
+                    if (_downloadCTS == null)
+                        return false;
                     if (_downloadCTS.IsCancellationRequested)
                     {
                         throw new OperationCanceledException();
@@ -883,10 +894,12 @@ public partial class GameContextBase
         }
         catch (IOException ex)
         {
+            Logger.WriteError(ex.Message);
             return false;
         }
         catch (Exception ex)
         {
+            Logger.WriteError(ex.Message);
             return false;
         }
     }
@@ -977,6 +990,7 @@ public partial class GameContextBase
                 catch(Exception ex)
                 {
 
+                    Logger.WriteError(ex.Message);
                 }
                 finally
                 {
@@ -999,7 +1013,9 @@ public partial class GameContextBase
 
     public async Task SetNoneStatusAsync()
     {
-        await this.gameContextOutputDelegate?.Invoke(
+        if (this.gameContextOutputDelegate == null)
+            return;
+        await this.gameContextOutputDelegate.Invoke(
             this,
             new GameContextOutputArgs()
             {
@@ -1046,8 +1062,6 @@ public partial class GameContextBase
                     );
                     return;
                 }
-                long currentBytes = 0;
-                var url = "";
                 using var request = new HttpRequestMessage(
                     HttpMethod.Get,
                     _downloadBaseUrl.TrimEnd('/') + "/" + dest.TrimStart('/')
@@ -1258,7 +1272,10 @@ public partial class GameContextBase
                 }
             }
         }
-        catch (Exception ex) { }
+        catch (Exception ex)
+        {
+            Logger.WriteError(ex.Message);
+        }
     }
 
     private async Task UpdateFileProgress(
@@ -1349,7 +1366,7 @@ public partial class GameContextBase
     private string BuildFilePath(string folder, IndexResource file)
     {
         var path = Path.Combine(folder, file.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(Path.GetDirectoryName(path));
+        Directory.CreateDirectory(Path.GetDirectoryName(path) ?? throw new Exception($"文件{file.Dest}创建失败"));
         return path;
     }
 
@@ -1361,7 +1378,7 @@ public partial class GameContextBase
         this._downloadState = new DownloadState(resource);
         if (gameContextOutputDelegate == null)
             return;
-        await gameContextOutputDelegate?.Invoke(
+        await gameContextOutputDelegate.Invoke(
             this,
             new GameContextOutputArgs
             {
@@ -1378,6 +1395,11 @@ public partial class GameContextBase
         Logger.WriteInfo("开始修复游戏");
         var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
         var launcher = await this.GetGameLauncherSourceAsync();
+        if(launcher == null)
+        {
+            Logger.WriteInfo("无网络，无法拉取文件列表");
+            return;
+        }
         await Task.Run(async () => await StartDownloadTaskAsync(installFolder, launcher,true));
     }
 }

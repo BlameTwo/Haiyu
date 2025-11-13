@@ -44,6 +44,9 @@
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
   <Project Path="Project.Test/Project.Test.csproj">
     <BuildType Solution="All|Any CPU" Project="Release" />
     <BuildType Solution="All|x64" Project="Debug" />

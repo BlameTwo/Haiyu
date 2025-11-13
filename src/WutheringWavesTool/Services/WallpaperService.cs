@@ -146,5 +146,6 @@ public class WallpaperService : IWallpaperService
         {
             Media.ImageSource = backgroundFile;
         }
+        this.Media.UpdateMedia();
     }
 }

@@ -2,7 +2,12 @@
 
 public sealed partial class ColorFullViewModel : ViewModelBase
 {
-    public ColorFullViewModel([FromKeyedServices("Cache")]ITipShow tipShow, IPickersService pickersService, IColorGameManager colorGameManager, [FromKeyedServices("Cache")] IDialogManager dialogManager)
+    public ColorFullViewModel(
+        [FromKeyedServices("Cache")] ITipShow tipShow,
+        IPickersService pickersService,
+        IColorGameManager colorGameManager,
+        [FromKeyedServices("Cache")] IDialogManager dialogManager
+    )
     {
         TipShow = tipShow;
         PickersService = pickersService;
@@ -22,7 +27,9 @@ public sealed partial class ColorFullViewModel : ViewModelBase
             var isNotStone = GameGrid.Where(x => !x.IsStone);
             if (isNotStone.Any())
             {
-                var result = isNotStone.All(x => AreColorsEqual(x.CurrentColor.Color, this.SelectGameEndColor.Color.Color));
+                var result = isNotStone.All(x =>
+                    AreColorsEqual(x.CurrentColor.Color, this.SelectGameEndColor.Color.Color)
+                );
                 TipShow.ShowMessage($"染色结果:{result}", Symbol.Message);
             }
         }
@@ -54,7 +61,7 @@ public sealed partial class ColorFullViewModel : ViewModelBase
             if ((cell.CurrentColor as SolidColorBrush)?.Color != oldColor || cell.IsStone)
                 continue;
             cell.CurrentColor = new SolidColorBrush(this.SelectAvailableColor.Color.Color);
-            
+
             for (int i = 0; i < 4; i++)
             {
                 int nr = r + dr[i];
@@ -62,7 +69,11 @@ public sealed partial class ColorFullViewModel : ViewModelBase
                 if (nr < 0 || nc < 0 || nr >= GameColumsSize || nc >= GameColumsSize)
                     continue;
                 var neighbor = GameGrid.FirstOrDefault(x => x.Row == nr && x.Column == nc);
-                if (neighbor != null && (neighbor.CurrentColor as SolidColorBrush)?.Color == oldColor && !neighbor.IsStone)
+                if (
+                    neighbor != null
+                    && (neighbor.CurrentColor as SolidColorBrush)?.Color == oldColor
+                    && !neighbor.IsStone
+                )
                     queue.Enqueue((nr, nc));
             }
             await Task.Delay(10);
@@ -72,10 +83,9 @@ public sealed partial class ColorFullViewModel : ViewModelBase
 
     private bool AreColorsEqual(Color color1, Color color2)
     {
-        return color1.A == color2.A &&
-               color1.R == color2.R &&
-               color1.G == color2.G &&
-               color1.B == color2.B;
+        return color1.A == color2.A
+            && color1.R == color2.R
+            && color1.G == color2.G
+            && color1.B == color2.B;
     }
-
 }

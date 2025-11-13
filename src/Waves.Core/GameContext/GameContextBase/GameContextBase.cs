@@ -20,7 +20,7 @@ public abstract partial class GameContextBase : IGameContext
     #region _filed
 
     private bool isLimtSpeed;
-    private CancellationTokenSource? _downloadCTS;
+    private CancellationTokenSource _downloadCTS;
     private bool _isDownload;
     #endregion
 

@@ -1,5 +1,6 @@
 ﻿namespace Haiyu.ViewModel;
 
+#nullable enable
 public sealed partial class PlayerRecordViewModel : ViewModelBase, IDisposable
 {
     public IPlayerRecordContext PlayerRecordContext { get; }
@@ -323,7 +324,16 @@ public sealed partial class PlayerRecordViewModel : ViewModelBase, IDisposable
 
     private void CalculateRange()
     {
-        if (FiveGroup == null)
+        if (
+            FiveGroup == null
+            || Beginner == null
+            || BeginnerChoice == null
+            || GratitudeOrientation == null
+            || RoleActivity == null
+            || WeaponsActivity == null
+            || RoleResident == null
+            || WeaponsResident == null
+        )
             return;
         this.ActivityAvg = Math.Round(
             RecordHelper

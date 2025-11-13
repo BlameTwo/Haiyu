@@ -95,7 +95,6 @@ public static class ImageIOHelper
         List<(string, string)> hashTable = new();
         foreach (var item in items)
         {
-            string file = "";
             using (
                 var stream = new FileStream(
                     item.FullName,

@@ -43,7 +43,7 @@ partial class GameContextBase
         }
     }
 
-    public async Task<IndexGameResource> GetGameResourceAsync(
+    public async Task<IndexGameResource?> GetGameResourceAsync(
         ResourceDefault ResourceDefault,
         CancellationToken token = default
     )

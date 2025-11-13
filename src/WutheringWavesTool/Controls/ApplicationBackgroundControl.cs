@@ -65,7 +65,7 @@ public partial class ApplicationBackgroundControl : Control
             }
             else
             {
-                var MediaPlayer = new MediaPlayer() { IsLoopingEnabled = true };
+                var MediaPlayer = new MediaPlayer() { IsLoopingEnabled = true,AutoPlay = true };
                 MediaPlayer.MediaOpened += Player_MediaOpened;
                 var source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(MediaSource));
                 MediaPlayer.Source = source;
@@ -84,7 +84,6 @@ public partial class ApplicationBackgroundControl : Control
         {
             VisualStateManager.GoToState(this, "ShowMedia", false);
             await Task.Delay(500);
-            MediaControl.MediaPlayer.Play();
         });
     }
 
@@ -106,7 +105,7 @@ public partial class ApplicationBackgroundControl : Control
         DependencyPropertyChangedEventArgs e
     )
     {
-        (d as ApplicationBackgroundControl).UpdateMedia();
+        //(d as ApplicationBackgroundControl).UpdateMedia();
     }
 
     public WallpaperShowType ShowType

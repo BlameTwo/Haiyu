@@ -41,7 +41,7 @@ public interface IGameContext
     #endregion
 
     #region Downloader
-    Task<IndexGameResource> GetGameResourceAsync(
+    Task<IndexGameResource?> GetGameResourceAsync(
         ResourceDefault ResourceDefault,
         CancellationToken token = default
     );

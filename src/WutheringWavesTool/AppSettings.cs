@@ -48,7 +48,7 @@ public class AppSettings
         );
         File.WriteAllText(SettingsFilePath, json);
     }
-
+#nullable enable
     public static string? Token
     {
         get => Read();

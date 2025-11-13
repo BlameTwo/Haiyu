@@ -1,4 +1,5 @@
-﻿using MemoryPack;
+﻿
+using MemoryPack;
 using System.Text.Json.Serialization;
 
 namespace Waves.Api.Models.CloudGame;

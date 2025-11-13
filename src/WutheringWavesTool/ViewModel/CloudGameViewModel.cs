@@ -1,9 +1,10 @@
-﻿using LiveChartsCore.Defaults;
-using System.Globalization;
+﻿using System.Globalization;
+using Haiyu.Contracts;
+using Haiyu.Services.DialogServices;
+using LiveChartsCore.Defaults;
+using MemoryPack;
 using Waves.Api.Models.CloudGame;
 using Windows.Devices.Bluetooth.Advertisement;
-using Haiyu.Services.DialogServices;
-using Haiyu.Contracts;
 
 namespace Haiyu.ViewModel;
 
@@ -41,6 +42,7 @@ public partial class CloudGameViewModel : ViewModelBase
     public ITipShow TipShow { get; }
     public IDialogManager DialogManager { get; }
     public IViewFactorys ViewFactorys { get; }
+
     [ObservableProperty]
     public partial long PageSize { get; set; } = 1;
 
@@ -51,14 +53,12 @@ public partial class CloudGameViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<LoginData> Users { get; set; }
 
-
     [ObservableProperty]
-    public partial ObservableCollection<GameRecordNavigationItem> RecordNavigationItems { get; set; } = GameRecordNavigationItem.Default;
-       
+    public partial ObservableCollection<GameRecordNavigationItem> RecordNavigationItems { get; set; } =
+        GameRecordNavigationItem.Default;
 
     [ObservableProperty]
     public partial GameRecordNavigationItem SelectRecordType { get; set; }
-
 
     [ObservableProperty]
     public partial LoginData SelectedUser { get; set; }
@@ -71,7 +71,6 @@ public partial class CloudGameViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial Visibility NoLoginVisibility { get; set; } = Visibility.Collapsed;
-
 
     [ObservableProperty]
     public partial bool IsLoginUser { get; set; } = true;
@@ -102,7 +101,9 @@ public partial class CloudGameViewModel : ViewModelBase
     [RelayCommand]
     public async Task Loaded()
     {
-        var users = await TryInvokeAsync(async()=>await CloudGameService.ConfigManager.GetUsersAsync(this.CTS.Token));
+        var users = await TryInvokeAsync(async () =>
+            await CloudGameService.ConfigManager.GetUsersAsync(this.CTS.Token)
+        );
         if (users.Item1 != 0 || users.Item2.Count == 0)
         {
             TipShow.ShowMessage("获取本地用户失败", Symbol.Clear);
@@ -143,28 +144,29 @@ public partial class CloudGameViewModel : ViewModelBase
         }
     }
 
-
     async partial void OnSelectRecordTypeChanged(GameRecordNavigationItem value)
     {
         if (value == null || SelectedUser == null)
             return;
-        var url = await TryInvokeAsync(async()=>await CloudGameService.GetRecordAsync(this.CTS.Token));
+        var url = await TryInvokeAsync(async () =>
+            await CloudGameService.GetRecordAsync(this.CTS.Token)
+        );
         if (url.Item2.Code == 315)
         {
             TipShow.ShowMessage("登陆状态失效，请直接重新添加账号", Symbol.Clear);
             return;
         }
-        if(url.Item2.Code == 5)
+        if (url.Item2.Code == 5)
         {
-
             TipShow.ShowMessage("请求频繁，请稍等5s-10s", Symbol.Clear);
             return;
         }
-        var resource = await TryInvokeAsync(
-            async()=>await CloudGameService.GetGameRecordResource(
+        var resource = await TryInvokeAsync(async () =>
+            await CloudGameService.GetGameRecordResource(
                 url.Item2.Data.RecordId,
                 url.Item2.Data.PlayerId.ToString(),
-                value.Id,this.CTS.Token
+                value.Id,
+                this.CTS.Token
             )
         );
         this.cacheItems = resource.Item2.Data;
@@ -172,24 +174,51 @@ public partial class CloudGameViewModel : ViewModelBase
         this.CurrentPage = 1;
         UpdatePageCount();
         LoadPageItems();
-        var result = resource.Item2.Data
-            .GroupBy(item =>
+        var result = resource
+            .Item2.Data.GroupBy(item =>
             {
                 DateTime parsedDate;
-                if (DateTime.TryParseExact(item.Time, "yyyy-MM-dd HH:mm:ss",
-                                           CultureInfo.InvariantCulture,
-                                           DateTimeStyles.None,
-                                           out parsedDate))
+                if (
+                    DateTime.TryParseExact(
+                        item.Time,
+                        "yyyy-MM-dd HH:mm:ss",
+                        CultureInfo.InvariantCulture,
+                        DateTimeStyles.None,
+                        out parsedDate
+                    )
+                )
                 {
                     return parsedDate.Date;
                 }
                 return (DateTime?)null; // 无法解析的日期返回 null，不会参与分组
             })
             .Where(g => g.Key.HasValue) // 过滤掉无效日期
-            .ToDictionary(
-                g => g.Key.Value.ToString("yyyy-MM-dd"),
-                g => g.Count()
+            .ToDictionary(g => g.Key.Value.ToString("yyyy-MM-dd"), g => g.Count());
+        var memory = new MemoryPalyCard();
+        memory.UserName = SelectedUser.Username;
+        memory.Values = resource.Result.Data;
+        var pack = MemoryPackSerializer.Serialize<MemoryPalyCard>(
+            memory,
+            new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
+        );
+        var packed = MemoryPackSerializer.Deserialize<MemoryPalyCard>(
+            pack,
+            new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
+        );
+        if(packed == null)
+        {
+            TipShow.ShowMessage(
+                $"转存失败",
+                Symbol.Clear
             );
+        }
+        else
+        {
+            TipShow.ShowMessage(
+                $"AOT存储结果:二进制大小{pack.Length}，转回数据数量：{packed.Values.Count},名称:{packed.UserName}",
+                Symbol.Clear
+            );
+        }
     }
 
     // 更新总页数

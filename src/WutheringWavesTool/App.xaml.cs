@@ -31,6 +31,13 @@ public partial class App : ClientApplication
 
     public App()
     {
+        Directory.CreateDirectory(BassFolder);
+        Directory.CreateDirectory(RecordFolder);
+        Directory.CreateDirectory(ColorGameFolder);
+        Directory.CreateDirectory(WrallpaperFolder);
+        Directory.CreateDirectory(ScreenCaptures);
+        Directory.CreateDirectory(Path.GetDirectoryName(AppSettings.LogPath));
+        Directory.CreateDirectory(AppSettings.CloudFolderPath);
         if (AppSettings.WallpaperType == null)
         {
             AppSettings.WallpaperType = "Video";
@@ -41,18 +48,10 @@ public partial class App : ClientApplication
         //SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         #endregion
         this.UnhandledException += App_UnhandledException;
-        Directory.CreateDirectory(BassFolder);
-        Directory.CreateDirectory(RecordFolder);
-        Directory.CreateDirectory(ColorGameFolder);
-        Directory.CreateDirectory(WrallpaperFolder);
-        Directory.CreateDirectory(ScreenCaptures);
-        Directory.CreateDirectory(Path.GetDirectoryName(AppSettings.LogPath));
-        Directory.CreateDirectory(AppSettings.CloudFolderPath);
+        
         GameContextFactory.GameBassPath = BassFolder;
         Instance.InitService();
         this.InitializeComponent();
-        //var result2 = KRHelper.Xor(Convert.FromBase64String(File.ReadAllText(@"C:\Program Files\Punishing Gray Raven\2.2.2.0\Assets\KRApp.conf")), 99);
-        //var str = Encoding.UTF8.GetString(result2);
     }
 
     private void MainInstance_Activated(object sender, AppActivationArguments e)
