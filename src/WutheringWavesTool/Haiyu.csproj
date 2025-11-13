@@ -63,6 +63,7 @@
 		<None Remove="Pages\GamePages\BiliBiliPGRGamePage.xaml" />
 		<None Remove="Pages\GamePages\GlobalPGRGamePage.xaml" />
 		<None Remove="Pages\GamePages\TwPGRGamePage.xaml" />
+		<None Remove="Pages\GameWikis\PunishWikiPage.xaml" />
 		<None Remove="Pages\GameWikis\WavesWikiPage.xaml" />
 		<None Remove="Pages\HomePage.xaml" />
 		<None Remove="Pages\Record\AnalysisRecordPage.xaml" />
@@ -224,6 +225,9 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\GameWikis\PunishWikiPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Controls\Styles\ApplicationBackgroundControl.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
