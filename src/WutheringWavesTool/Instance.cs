@@ -54,6 +54,7 @@ public static class Instance
         #endregion
         #region Wiki
             .AddTransient<WavesWikiViewModel>()
+            .AddTransient<PunishWikiViewModel>()
         #endregion
         #region Community
             .AddTransient<GamerSignPage>()

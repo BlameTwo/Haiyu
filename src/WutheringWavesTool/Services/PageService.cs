@@ -39,6 +39,7 @@ public sealed partial class PageService : IPageService
         this.RegisterView<TestPage, TestViewModel>();
         #region Wiki
         this.RegisterView<WavesWikiPage, WavesWikiViewModel>();
+        this.RegisterView<PunishWikiPage, PunishWikiViewModel>();
         #endregion
     }
 

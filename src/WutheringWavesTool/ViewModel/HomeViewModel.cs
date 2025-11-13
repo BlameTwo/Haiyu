@@ -38,6 +38,7 @@ public partial class HomeViewModel : ViewModelBase
         switch (value)
         {
             case "战双帕弥什":
+                this.NavigationService.NavigationTo<PunishWikiViewModel>(null, new EntranceNavigationTransitionInfo());
                 break;
             case "鸣潮":
                 this.NavigationService.NavigationTo<WavesWikiViewModel>(null, new EntranceNavigationTransitionInfo());
