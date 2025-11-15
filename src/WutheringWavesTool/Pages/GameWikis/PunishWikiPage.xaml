@@ -44,7 +44,10 @@
                                      Height="120"
                                      CornerRadius="5"
                                      Source="{x:Bind ImageUrl}"
-                                     Stretch="Uniform" />
+                                     Stretch="UniformToFill"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                        />
                                     <Grid Grid.Column="1" Margin="8,0,0,0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
@@ -68,7 +71,7 @@
                                          Text="{x:Bind EndTime}" />
                                         <TextBlock Grid.Row="3" VerticalAlignment="Bottom">
                                          <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind Message, Mode=OneWay}" />
-                                         <Run Text="剩余" />
+                                         <Run Text="" />
                                          <Run Text="{x:Bind TotalSpan}" />
                                         </TextBlock>
                                     </Grid>

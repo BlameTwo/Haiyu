@@ -25,29 +25,48 @@
 
         public void Cali()
         {
+            const int LONG_CONTENT_TIME = 360;
+            DateTime now = DateTime.Now;
             DateTime start = DateTime.Parse(StartTime);
             DateTime end = DateTime.Parse(EndTime);
-            TimeSpan totalSpan = end - start;
-            this.MaxProgress = totalSpan.TotalSeconds > 0 ? totalSpan.TotalSeconds : 0;
 
-            TimeSpan elapsedSpan = DateTime.Now - start;
-            double elapsed = elapsedSpan.TotalSeconds;
-            if (elapsed < 0)
-            {
+            //活动剩余时间
+            TimeSpan _endCountdownTimeSpan = end - now;
+            //活动持续时间
+            TimeSpan _totalDurationTimeSpan = end - start;
+            //活动已完成时间
+            TimeSpan _overCountdownTimeSpace = now - start;
+
+
+            this.MaxProgress = _totalDurationTimeSpan.TotalSeconds;
+
+            double elapsed = _endCountdownTimeSpan.TotalSeconds;
+
+
+
+            if (elapsed <= 0){
+                Message = "已结束";
+                this.CurrentProgress = 0;
+                return;
+            }
+
+            if (elapsed > this.MaxProgress){
                 Message = "未开始";
                 this.CurrentProgress = 0;
+                return;
             }
-            else if (elapsed >= this.MaxProgress)
-            {
-                Message = "已结束";
-                this.CurrentProgress = this.MaxProgress;
+
+            if (_totalDurationTimeSpan.TotalDays >= LONG_CONTENT_TIME){
+                Message = "长期活动";
+                this.CurrentProgress = 0;
+                return;
             }
-            else
-            {
-                Message = "进行中";
-                this.CurrentProgress = elapsed;
-            }
-            TotalSpan = $"{elapsedSpan.Days}天{elapsedSpan.Hours}小时{elapsedSpan.Minutes}分";
+
+            Message = "进行中";
+            this.CurrentProgress = _overCountdownTimeSpace.TotalSeconds;
+            TotalSpan = $"剩余{_endCountdownTimeSpan.Days}天" +
+                        $"{_endCountdownTimeSpan.Hours}小时" +
+                        $"{_endCountdownTimeSpan.Minutes}分";
         }
     }
 }
