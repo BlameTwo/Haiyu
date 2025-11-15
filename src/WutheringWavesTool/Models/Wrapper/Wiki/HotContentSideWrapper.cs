@@ -46,7 +46,7 @@
 
             if (elapsed <= 0){
                 Message = "已结束";
-                this.CurrentProgress = 0;
+                this.CurrentProgress = this.MaxProgress;
                 return;
             }
 
