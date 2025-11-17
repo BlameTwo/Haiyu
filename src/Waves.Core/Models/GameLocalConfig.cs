@@ -101,7 +101,6 @@ public class GameLocalConfig
         await _fileLock.WaitAsync();
         try
         {
-            // 使用我们AOT友好的上下文进行序列化
             var jsonString = JsonSerializer.Serialize(_settings, typeof(Dictionary<string, string>), _jsonContext);
             await File.WriteAllTextAsync(SettingPath, jsonString);
         }
@@ -138,7 +137,6 @@ public class GameLocalConfig
     /// <returns></returns>
     public string GetConfig(string key)
     {
-        // 尝试从内存中的字典获取值
         if (_settings.TryGetValue(key, out string value))
         {
             return value;

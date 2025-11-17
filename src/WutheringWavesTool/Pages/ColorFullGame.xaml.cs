@@ -6,6 +6,7 @@ public sealed partial class ColorFullGame : Page,IWindowPage
     public ColorFullGame()
     {
         InitializeComponent();
+
         this.ViewModel = Instance.GetService<ColorFullViewModel>();
         this.ViewModel.TipShow.Owner = this.grid;
         this.Loaded += ColorFullGame_Loaded;

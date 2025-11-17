@@ -337,11 +337,9 @@ public static class RecordHelper
         if (cache.Time < localRecord.Item1.Time)
             return null;
 
-        // 对cache和localRecord的项进行排序，确保按Time升序排列
         var sortedCache = SortItemsByTime(cache);
         var sortedLocal = SortItemsByTime(localRecord.Item1);
 
-        // 合并记录，保留最新的记录（即cache）
         var mergedRecord = new RecordCacheDetily
         {
             Guid = cache.Guid,
@@ -444,7 +442,6 @@ public static class RecordHelper
                 {
                     result.Add(item1);
                     i++;
-                    // 如果不一致，接着往下对比
                     while (i < list1.Count && i < list2.Count && !AreItemsEqual(list1[i], list2[i]))
                     {
                         if (AreItemsEqual(list1[i], list2[i]))
