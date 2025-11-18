@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Windows.Graphics;
+﻿using Windows.Graphics;
 
 namespace Haiyu.Common;
 

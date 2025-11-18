@@ -1,6 +1,6 @@
 ﻿
-using Microsoft.UI.Input;
 using Haiyu.Helpers;
+using Microsoft.UI.Input;
 
 namespace Haiyu.Controls.Propertys;
 
@@ -18,18 +18,18 @@ public partial class CursorProperty
     }
 
     public static readonly DependencyProperty CursorCodeProperty =
-        DependencyProperty.RegisterAttached("CursorCode", typeof(int), typeof(CursorProperty), new PropertyMetadata(-1,OnCursorValueChanged));
+        DependencyProperty.RegisterAttached("CursorCode", typeof(int), typeof(CursorProperty), new PropertyMetadata(-1, OnCursorValueChanged));
 
     private static void OnCursorValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is UIElement element && e.NewValue is int value)
+        if (d is UIElement element && e.NewValue is int value)
         {
-            if(value == -1)
+            if (value == -1)
             {
                 return;
             }
             InputCursor customCursor = InputDesktopResourceCursor.CreateFromModule(@"Haiyu.exe", (uint)value);
-            
+
         }
     }
 
@@ -65,7 +65,7 @@ public partial class CursorProperty
 
     private static void OnCursorNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if(d is UIElement element)
+        if (d is UIElement element)
         {
             var name = CursorProperty.GetCursorName(element);
             var type = CursorProperty.GetCursorType(element);

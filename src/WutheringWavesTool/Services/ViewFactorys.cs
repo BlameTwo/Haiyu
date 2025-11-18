@@ -1,5 +1,4 @@
 ﻿using Waves.Api.Models.CloudGame;
-using Haiyu.Pages.Record;
 
 namespace Haiyu.Services;
 
@@ -14,7 +13,7 @@ public class ViewFactorys : IViewFactorys
 
     public GetGeetWindow CreateGeetWindow(GeetType type)
     {
-        var windw = new GetGeetWindow(WindowNative.GetWindowHandle(AppContext.App.MainWindow),type);
+        var windw = new GetGeetWindow(WindowNative.GetWindowHandle(AppContext.App.MainWindow), type);
         windw.Manager.MaxHeight = 510;
         windw.Manager.MaxWidth = 700;
         return windw;
@@ -28,7 +27,7 @@ public class ViewFactorys : IViewFactorys
     {
         var win = new WindowModelBase(WindowNative.GetWindowHandle(AppContext.App.MainWindow));
         var page = Instance.Service!.GetRequiredService<T>();
-        if(data != null)
+        if (data != null)
             page.SetData(data);
         page.SetWindow(win);
         win.Content = page;
@@ -90,7 +89,7 @@ public class ViewFactorys : IViewFactorys
     }
 
     public Window ShowAnalysisRecord(LoginData data)
-        
+
     {
         var win = ShowWindowBase<AnalysisRecordPage>(data);
         win.Manager.MaxHeight = 620;
@@ -104,9 +103,9 @@ public class ViewFactorys : IViewFactorys
     }
 
     public WindowModelBase ShowColorGame()
-        =>ShowWindowBase<ColorFullGame>(null);
+        => ShowWindowBase<ColorFullGame>(null);
 
     public WindowModelBase ShowStartColorGame()
-        =>ShowWindowBase<StartColorFullGamePage>(null);
+        => ShowWindowBase<StartColorFullGamePage>(null);
 
 }

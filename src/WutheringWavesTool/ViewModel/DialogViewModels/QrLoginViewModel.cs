@@ -1,11 +1,10 @@
 ﻿
-using Microsoft.Graphics.Canvas;
-using Waves.Api.Models.QRLogin;
-using Windows.Graphics;
-using Windows.Graphics.Capture;
 using Haiyu.Common.QR;
 using Haiyu.Models.Dialogs;
 using Haiyu.Services.DialogServices;
+using Microsoft.Graphics.Canvas;
+using Waves.Api.Models.QRLogin;
+using Windows.Graphics.Capture;
 using ZXing;
 using ZXing.Common;
 
@@ -13,7 +12,7 @@ namespace Haiyu.ViewModel.DialogViewModels;
 
 public partial class QrLoginViewModel : DialogViewModelBase
 {
-    public QrLoginViewModel([FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,IAppContext<App> appContext,IWavesClient wavesClient) : base(dialogManager)
+    public QrLoginViewModel([FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager, IAppContext<App> appContext, IWavesClient wavesClient) : base(dialogManager)
     {
         AppContext = appContext;
         WavesClient = wavesClient;
@@ -79,7 +78,7 @@ public partial class QrLoginViewModel : DialogViewModelBase
     {
         try
         {
-            
+
             var luminanceSource = new CanvasBitmapLuminanceSource(canvasBitmap);
 
             var binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
@@ -92,12 +91,12 @@ public partial class QrLoginViewModel : DialogViewModelBase
             var result2 = reader.decode(binaryBitmap);
             if (result2 == null)
                 return;
-            if(result2.Text != null)
+            if (result2.Text != null)
             {
                 this.QRResult = result2.Text;
-                var result =  await WavesClient.PostQrValueAsync(QRResult, CTS.Token);
-                if(result ==null) return;
-                if(result.Code == 200 && result.Success == true)
+                var result = await WavesClient.PostQrValueAsync(QRResult, CTS.Token);
+                if (result == null) return;
+                if (result.Code == 200 && result.Success == true)
                 {
                     TipMessage = "获取登陆信息成功";
                     this.ScreenMessage = "重新选择显示器扫码";
@@ -179,7 +178,7 @@ public partial class QrLoginViewModel : DialogViewModelBase
         if (_framePool != null)
         {
             _framePool?.FrameArrived -= _framePool_FrameArrived;
-            
+
             _session?.Dispose();
             _framePool?.Dispose();
         }
@@ -189,20 +188,20 @@ public partial class QrLoginViewModel : DialogViewModelBase
     [RelayCommand]
     async Task LoginAsync()
     {
-        var result = await  WavesClient.QRLoginAsync(QRResult, VerifyCode,this.SelectDatum.Id, CTS.Token);
+        var result = await WavesClient.QRLoginAsync(QRResult, VerifyCode, this.SelectDatum.Id, CTS.Token);
         if (result == null)
         {
             TipMessage = "登陆失败，请及时联系开发者";
             return;
         }
-        if(result.Code == 2240)
+        if (result.Code == 2240)
         {
             TipMessage = "该设备不安全，安全验证已经发送至手机";
             var result2 = await WavesClient.GetQrCodeAsync(QRResult);
             VerifyCodeVisibility = Visibility.Visible;
             return;
         }
-        else if(result.Code == 200)
+        else if (result.Code == 200)
         {
             TipMessage = "登陆成功";
 

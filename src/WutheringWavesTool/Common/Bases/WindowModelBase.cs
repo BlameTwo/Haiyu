@@ -1,8 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿namespace Haiyu.Common.Bases;
 
-namespace Haiyu.Common.Bases;
-
-public partial class WindowModelBase :Window
+public partial class WindowModelBase : Window
 {
     public AppWindow AppWindowApp;
 

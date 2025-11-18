@@ -1,10 +1,10 @@
 namespace Haiyu.Pages.Communitys;
 
-public sealed partial class ResourceBriefPage : Page,IPage
+public sealed partial class ResourceBriefPage : Page, IPage
 {
     public ResourceBriefPage()
     {
-        InitializeComponent(); 
+        InitializeComponent();
         this.ViewModel = Instance.Service.GetRequiredService<ResourceBriefViewModel>();
     }
 

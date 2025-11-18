@@ -1,5 +1,4 @@
-﻿using Haiyu.Pages.GameWikis;
-using Haiyu.ViewModel.WikiViewModels;
+﻿using Haiyu.ViewModel.WikiViewModels;
 
 namespace Haiyu.ViewModel;
 
@@ -30,7 +29,7 @@ public partial class HomeViewModel : ViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
-        this.SelectTab= Tabs.First();
+        this.SelectTab = Tabs.First();
     }
 
     partial void OnSelectTabChanged(string value)

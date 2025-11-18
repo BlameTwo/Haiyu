@@ -5,7 +5,7 @@ public sealed partial class InputRecordCardDialog : ContentDialog, IDialog
     public InputRecordCardDialog()
     {
         this.InitializeComponent();
-        
+
     }
 
     public InputRecordCardViewModel ViewModel { get; internal set; }

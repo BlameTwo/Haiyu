@@ -4,7 +4,8 @@ using Waves.Api.Models.GameWikiiClient;
 
 namespace Haiyu.ViewModel.WikiViewModels;
 
-    public partial class PunishWikiViewModel:WikiViewModelBase {
+public partial class PunishWikiViewModel : WikiViewModelBase
+{
     public PunishWikiViewModel() { }
 
     [ObservableProperty]

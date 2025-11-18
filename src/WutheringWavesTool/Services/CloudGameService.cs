@@ -1,6 +1,6 @@
-﻿using Waves.Api.Models.CloudGame;
+﻿using Haiyu.Contracts;
 using Haiyu.Helpers;
-using Haiyu.Contracts;
+using Waves.Api.Models.CloudGame;
 
 namespace Haiyu.Services;
 
@@ -161,7 +161,7 @@ public class CloudGameService : ICloudGameService
             var model = JsonSerializer.Deserialize(str, CloundContext.Default.EndLoginReponse);
             return model;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }
@@ -182,13 +182,13 @@ public class CloudGameService : ICloudGameService
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
         );
         message.Headers.Add("x-token", RecordToken);
-        var result = await HttpClientService.HttpClient.SendAsync(message,token);
+        var result = await HttpClientService.HttpClient.SendAsync(message, token);
         var str = await result.Content.ReadAsStringAsync(token);
         var model = JsonSerializer.Deserialize(str, CloundContext.Default.RecordModel);
         return model;
     }
 
-    public async Task<PlayerReponse> GetGameRecordResource(string recordId, string userId,int poolType,CancellationToken token = default)
+    public async Task<PlayerReponse> GetGameRecordResource(string recordId, string userId, int poolType, CancellationToken token = default)
     {
         RecardQuery query = new RecardQuery();
         query.CardPoolId = "5c13a63f85465e9fcc0f24d6efb15083";
@@ -207,7 +207,7 @@ public class CloudGameService : ICloudGameService
             "User-Agent",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36 Edg/139.0.0.0"
         );
-        var result = await HttpClientService.HttpClient.SendAsync(message,token);
+        var result = await HttpClientService.HttpClient.SendAsync(message, token);
         var str = await result.Content.ReadAsStringAsync(token);
         return JsonSerializer.Deserialize(str, PlayerCardRecordContext.Default.PlayerReponse);
     }
@@ -235,7 +235,7 @@ public class CloudGameService : ICloudGameService
         return message;
     }
 
-    public async Task<(bool,string)> OpenUserAsync(LoginData loginData,CancellationToken token = default)
+    public async Task<(bool, string)> OpenUserAsync(LoginData loginData, CancellationToken token = default)
     {
         try
         {
@@ -244,14 +244,14 @@ public class CloudGameService : ICloudGameService
                 loginData.Phone,
                 token
             );
-            if(accessToken.Code == 20001)
+            if (accessToken.Code == 20001)
             {
                 return (false, "登陆失效");
             }
             var getToken = await GetAccessTokenAsync(accessToken.Data.Code);
 
             var endLogin = await GetTokenAsync(accessToken.Data, getToken.Data.AccessToken);
-            if(endLogin.Code == 305)
+            if (endLogin.Code == 305)
             {
                 return (false, endLogin.Msg);
             }

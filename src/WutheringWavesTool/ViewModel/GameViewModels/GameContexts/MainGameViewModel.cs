@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Haiyu.Services.DialogServices;
+﻿using Haiyu.Services.DialogServices;
 
 namespace Haiyu.ViewModel.GameViewModels;
 

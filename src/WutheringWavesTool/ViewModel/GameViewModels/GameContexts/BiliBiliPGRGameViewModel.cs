@@ -2,7 +2,7 @@
 
 namespace Haiyu.ViewModel.GameViewModels
 {
-    public class BiliBiliPGRGameViewModel: GameContextViewModelBase
+    public class BiliBiliPGRGameViewModel : GameContextViewModelBase
     {
         public BiliBiliPGRGameViewModel(
             [FromKeyedServices(nameof(BiliBiliPRGGameContext))] IGameContext gameContext,

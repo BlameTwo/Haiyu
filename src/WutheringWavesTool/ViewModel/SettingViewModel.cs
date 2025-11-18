@@ -71,13 +71,13 @@ public sealed partial class SettingViewModel : ViewModelBase
         }
         this.OldCursorName = AppSettings.SelectCursor ?? "默认";
         this.SelectCursorName = Cursors.Find(x => x == AppSettings.SelectCursor) ?? Cursors[0];
-        if(AppSettings.WallpaperType == null)
+        if (AppSettings.WallpaperType == null)
         {
             this.SelectWallpaperName = WallpaperTypes[0];
         }
         else
         {
-            if(AppSettings.WallpaperType == "Video")
+            if (AppSettings.WallpaperType == "Video")
             {
                 this.SelectWallpaperName = WallpaperTypes[0];
             }

@@ -3,10 +3,10 @@
 /// <summary>
 /// 鼠标元素图标
 /// </summary>
-public enum CursorType:int
+public enum CursorType : int
 {
     None = -1,
-    Help =0,
+    Help = 0,
     Link = 1,
     Normal = 2,
     Text = 3,
@@ -16,7 +16,7 @@ public enum CursorType:int
 /// <summary>
 /// 图标元素
 /// </summary>
-public enum CursorName:int
+public enum CursorName : int
 {
     None = -1,
     ShouAnRen = 0,

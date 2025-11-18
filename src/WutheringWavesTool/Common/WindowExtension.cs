@@ -39,7 +39,7 @@ public static partial class WindowExtension
 
     public const int GWL_HWNDPARENT = (-8);
 
-    public static  Window CreateTransparentWindow(Window win, CreateType type)
+    public static Window CreateTransparentWindow(Window win, CreateType type)
     {
         var window = new Window();
         var dpi = GetScaleAdjustment(win);

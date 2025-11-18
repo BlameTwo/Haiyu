@@ -1,7 +1,4 @@
-﻿using Microsoft.UI.Xaml.Hosting;
-using Microsoft.UI.Xaml.Shapes;
-
-namespace Haiyu.Controls;
+﻿namespace Haiyu.Controls;
 
 public partial class LayerData : ObservableObject
 {
@@ -50,7 +47,6 @@ public sealed partial class LayeredProgressBar : Control
 
         // 计算有效最大值（防止数值溢出）
         double actualMax = Math.Max(validValues.Max(v => v.Value), MaxValue);
-        double baseOffset = 60;
         int offsetIndex = 1;
         double lastWidth = -1;
         for (int i = 0; i < validValues.Count; i++)

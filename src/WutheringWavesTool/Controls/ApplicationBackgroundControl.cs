@@ -65,7 +65,7 @@ public partial class ApplicationBackgroundControl : Control
             }
             else
             {
-                var MediaPlayer = new MediaPlayer() { IsLoopingEnabled = true,AutoPlay = true };
+                var MediaPlayer = new MediaPlayer() { IsLoopingEnabled = true, AutoPlay = true };
                 MediaPlayer.MediaOpened += Player_MediaOpened;
                 var source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(MediaSource));
                 MediaPlayer.Source = source;
@@ -79,8 +79,8 @@ public partial class ApplicationBackgroundControl : Control
 
     private void Player_MediaOpened(MediaPlayer sender, object args)
     {
-        
-        this.DispatcherQueue.TryEnqueue(async() =>
+
+        this.DispatcherQueue.TryEnqueue(async () =>
         {
             VisualStateManager.GoToState(this, "ShowMedia", false);
             await Task.Delay(500);

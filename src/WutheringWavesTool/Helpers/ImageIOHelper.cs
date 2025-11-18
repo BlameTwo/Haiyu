@@ -1,8 +1,5 @@
 ﻿using System.Buffers;
-using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Graphics.Imaging;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Haiyu.Helpers;
 

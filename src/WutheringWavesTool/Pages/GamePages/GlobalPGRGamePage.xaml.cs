@@ -5,7 +5,7 @@ using Haiyu.ViewModel.GameViewModels;
 
 namespace Haiyu.Pages.GamePages
 {
-    public sealed partial class GlobalPGRGamePage : Page,IPage
+    public sealed partial class GlobalPGRGamePage : Page, IPage
     {
         public GlobalPGRGamePage()
         {

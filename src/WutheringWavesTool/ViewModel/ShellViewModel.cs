@@ -37,7 +37,7 @@ public sealed partial class ShellViewModel : ViewModelBase
                 {
                      Header="显示主界面",
                      Command = this.ShowWindowCommand
-                }, 
+                },
                 new()
                 {
                      Header="退出启动器",
@@ -286,14 +286,14 @@ public sealed partial class ShellViewModel : ViewModelBase
         OpenMain();
 
         var accessStatus = await Geolocator.RequestAccessAsync();
-        if(accessStatus == GeolocationAccessStatus.Allowed)
+        if (accessStatus == GeolocationAccessStatus.Allowed)
         {
             var geolocator = new Geolocator { DesiredAccuracyInMeters = 0 };
             var position = await geolocator.GetGeopositionAsync();
             var moonValue = MoonPhaseCalculator.CalculateMoonPhase(DateTime.Now);
             this.MoonIcon = MoonPhaseCalculator.DeterminePhaseIcon(moonValue);
             this.MoonState = MoonPhaseCalculator.DeterminePhaseName(moonValue);
-            var sunTime = SunriseSunsetCalculator.GetSunTime(DateTime.Now,position.Coordinate.Longitude, position.Coordinate.Latitude);
+            var sunTime = SunriseSunsetCalculator.GetSunTime(DateTime.Now, position.Coordinate.Longitude, position.Coordinate.Latitude);
             this.StartTime = sunTime.SunriseTime.ToString("HH:MM:ss");
             this.EndTime = sunTime.SunsetTime.ToString("HH:MM:ss");
         }

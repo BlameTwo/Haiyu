@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Waves.Api.Models.CloudGame;
-using Waves.Api.Models.QRLogin;
+﻿using Waves.Api.Models.CloudGame;
 
 namespace Haiyu.Services;
 
@@ -21,7 +19,7 @@ public sealed partial class CloudConfigManager
             try
             {
                 var result = JsonSerializer.Deserialize(
-                    await File.ReadAllTextAsync(item,token),
+                    await File.ReadAllTextAsync(item, token),
                     CloundContext.Default.LoginData
                 );
                 logins.Add(result);

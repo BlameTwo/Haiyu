@@ -1,6 +1,6 @@
 namespace Haiyu.Pages.Dialogs;
 
-public sealed partial class WebGameLogin : ContentDialog,IDialog
+public sealed partial class WebGameLogin : ContentDialog, IDialog
 {
     public WebGameLogin()
     {

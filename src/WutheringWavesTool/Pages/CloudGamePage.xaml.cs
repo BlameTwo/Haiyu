@@ -1,8 +1,6 @@
-using LiveChartsCore.SkiaSharpView.SKCharts;
-
 namespace Haiyu.Pages;
 
-public sealed partial class CloudGamePage : Page,IPage
+public sealed partial class CloudGamePage : Page, IPage
 {
     public CloudGamePage()
     {

@@ -23,7 +23,7 @@ public partial class DataCenterExploreItem : ObservableObject
         }
         this.CountryName = item.Country.CountryName;
         this.CountryProgress = Convert.ToDouble(item.CountryProgress);
-        
+
         this.Icon = new(new(item.Country.HomePageIcon));
     }
 }

@@ -13,7 +13,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
-        var result = await TryInvokeAsync(async()=> await this.GameWikiClient.GetEventDataAsync(WikiType.Waves, this.CTS.Token));
+        var result = await TryInvokeAsync(async () => await this.GameWikiClient.GetEventDataAsync(WikiType.Waves, this.CTS.Token));
         var result2 = await TryInvokeAsync(async () => await this.GameWikiClient.GetEventTabDataAsync(WikiType.Waves, this.CTS.Token));
         if (result.Item1 == 0)
         {

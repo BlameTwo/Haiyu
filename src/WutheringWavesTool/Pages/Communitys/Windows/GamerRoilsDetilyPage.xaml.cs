@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.WinUI.Controls;
-using System.Threading.Tasks;
-using Windows.System;
 using Haiyu.Models.Wrapper.WindowRoils;
 
 namespace Haiyu.Pages.Communitys.Windows;

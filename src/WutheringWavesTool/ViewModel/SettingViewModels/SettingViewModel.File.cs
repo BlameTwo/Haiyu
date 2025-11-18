@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Haiyu.ViewModel;
+﻿namespace Haiyu.ViewModel;
 
 partial class SettingViewModel
 {
@@ -22,7 +16,7 @@ partial class SettingViewModel
 
     void GetAllVersion()
     {
-        WebViewVersion = CoreWebView2Environment.GetAvailableBrowserVersionString()??"未安装";
+        WebViewVersion = CoreWebView2Environment.GetAvailableBrowserVersionString() ?? "未安装";
         this.WindowsAppSdkVersion = $"1.8.251003001";
         this.RunType = RuntimeFeature.IsDynamicCodeCompiled ? "JIT" : "AOT";
         this.FrameworkType = RuntimeInformation.FrameworkDescription;
@@ -40,5 +34,5 @@ partial class SettingViewModel
         WindowExtension.ShellExecute(IntPtr.Zero, "open", App.ScreenCaptures, null, null, WindowExtension.SW_SHOWNORMAL);
     }
 
-    
+
 }

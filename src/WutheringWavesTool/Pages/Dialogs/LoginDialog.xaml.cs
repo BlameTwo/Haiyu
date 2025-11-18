@@ -6,7 +6,7 @@ public sealed partial class LoginDialog : ContentDialog, IDialog
     {
         this.InitializeComponent();
         this.ViewModel = Instance.Service.GetRequiredService<LoginGameViewModel>();
-        
+
     }
 
     public LoginGameViewModel ViewModel { get; }

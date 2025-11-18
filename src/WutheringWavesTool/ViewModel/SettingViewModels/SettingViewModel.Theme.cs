@@ -11,13 +11,13 @@ partial class SettingViewModel
     [ObservableProperty]
     public partial string SelectCursorName { get; set; }
 
-    public List<string> Cursors { get; set; } = ["默认","弗糯糯","卡提西亚","守岸人"];
+    public List<string> Cursors { get; set; } = ["默认", "弗糯糯", "卡提西亚", "守岸人"];
 
     async partial void OnSelectCursorNameChanging(string value)
     {
         if (value == OldCursorName)
             return;
-        if((await DialogManager.ShowMessageDialog("该选项需要重启","重启","取消")) == ContentDialogResult.Primary)
+        if ((await DialogManager.ShowMessageDialog("该选项需要重启", "重启", "取消")) == ContentDialogResult.Primary)
         {
             AppSettings.SelectCursor = value;
             AppRestartFailureReason restartError = AppInstance.Restart(null);
@@ -38,7 +38,7 @@ partial class SettingViewModel
     {
         if (value == null)
             return;
-        if(value.Name == "视频")
+        if (value.Name == "视频")
         {
             AppSettings.WallpaperType = "Video";
         }

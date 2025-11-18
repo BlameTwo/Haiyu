@@ -46,8 +46,8 @@ public sealed partial class GamerSignViewModel : ViewModelBase
 
     async Task RefreshSignHistoryAsync()
     {
-        var game = await TryInvokeAsync( async () => await WavesClient.GetWavesGamerAsync(this.CTS.Token));
-        if(game .Item1 != 0)
+        var game = await TryInvokeAsync(async () => await WavesClient.GetWavesGamerAsync(this.CTS.Token));
+        if (game.Item1 != 0)
         {
             return;
         }
@@ -99,8 +99,8 @@ public sealed partial class GamerSignViewModel : ViewModelBase
     [RelayCommand]
     async Task SignAsync()
     {
-        var result = await TryInvokeAsync(async()=>await WavesClient.SignInAsync(SignRoil.UserId.ToString(), SignRoil.RoleId,this.CTS.Token));
-        if(result.Item1 != 0)
+        var result = await TryInvokeAsync(async () => await WavesClient.SignInAsync(SignRoil.UserId.ToString(), SignRoil.RoleId, this.CTS.Token));
+        if (result.Item1 != 0)
         {
             return;
         }

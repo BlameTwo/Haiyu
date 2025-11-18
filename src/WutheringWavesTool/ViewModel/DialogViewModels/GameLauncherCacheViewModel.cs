@@ -17,7 +17,7 @@ public sealed partial class GameLauncherCacheViewModel : DialogViewModelBase
     public GameLauncherCacheViewModel(
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager
     )
-        : base(dialogManager) 
+        : base(dialogManager)
     {
         RegisterMessager();
     }
@@ -43,8 +43,8 @@ public sealed partial class GameLauncherCacheViewModel : DialogViewModelBase
 
     async Task VerifySystem(string oauthCode)
     {
-        var result =  await UserConsentVerifier.RequestVerificationAsync("复制游戏登陆码需要系统用户进行验证");
-        if(result == UserConsentVerificationResult.Verified)
+        var result = await UserConsentVerifier.RequestVerificationAsync("复制游戏登陆码需要系统用户进行验证");
+        if (result == UserConsentVerificationResult.Verified)
         {
             var oAuth = KrKeyHelper.Xor(oauthCode, 5);
             var package = new DataPackage();

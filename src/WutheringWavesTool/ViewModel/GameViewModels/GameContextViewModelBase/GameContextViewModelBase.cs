@@ -2,7 +2,6 @@
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
 using Waves.Core.Services;
-using Windows.ApplicationModel.Core;
 
 namespace Haiyu.ViewModel.GameViewModels
 {
@@ -155,7 +154,7 @@ namespace Haiyu.ViewModel.GameViewModels
                     this.CTS.Token
                 );
                 var wallpaperType = AppSettings.WallpaperType;
-                if(wallpaperType == "Video")
+                if (wallpaperType == "Video")
                 {
                     WallpaperService.SetMediaForUrl(Waves.Core.Models.Enums.WallpaperShowType.Video, background.BackgroundFile);
                 }

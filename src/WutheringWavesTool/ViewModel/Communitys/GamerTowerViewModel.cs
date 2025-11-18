@@ -4,7 +4,7 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
 {
     private bool disposedValue;
 
-    public GamerTowerViewModel(IWavesClient wavesClient,ITipShow tipShow)
+    public GamerTowerViewModel(IWavesClient wavesClient, ITipShow tipShow)
     {
         WavesClient = wavesClient;
         TipShow = tipShow;
@@ -58,7 +58,7 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
             if (disposing)
             {
                 WeakReferenceMessenger.Default.UnregisterAll(this);
-                if(this.Difficulties!= null)
+                if (this.Difficulties != null)
                 {
                     foreach (var item in this.Difficulties)
                     {

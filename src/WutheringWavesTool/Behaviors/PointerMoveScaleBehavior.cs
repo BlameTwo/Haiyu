@@ -1,9 +1,3 @@
-using System.Numerics;
-using CommunityToolkit.WinUI.Animations;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-
 namespace Haiyu.Behaviors;
 
 public sealed class PointerMoveScaleBehavior : Behavior<FrameworkElement>
@@ -36,11 +30,11 @@ public sealed class PointerMoveScaleBehavior : Behavior<FrameworkElement>
 
     private void AssociatedObject_PointerMoved(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
-        
+
     }
 
     private void AssociatedObject_PointerExited(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
-        
+
     }
 }

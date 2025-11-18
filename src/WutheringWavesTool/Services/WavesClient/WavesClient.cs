@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-using Haiyu.Helpers;
+﻿using Haiyu.Helpers;
 using Waves.Api.Models.QRLogin;
 using Waves.Core.Services;
 using Windows.System.Profile;
-using ZXing.Aztec.Internal;
 
 namespace Haiyu.Services;
 

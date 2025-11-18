@@ -96,7 +96,7 @@ public sealed partial class WebGameViewModel : DialogViewModelBase
             return;
         }
         var saveResult = await CloudGameService.ConfigManager.SaveUserAsync(result.Data);
-        WeakReferenceMessenger.Default.Send(new CloudLoginMessager(true,result.Data.Username));
+        WeakReferenceMessenger.Default.Send(new CloudLoginMessager(true, result.Data.Username));
         this.Close();
     }
 }

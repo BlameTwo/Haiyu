@@ -1,8 +1,7 @@
-﻿using System;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using System.Runtime.InteropServices;
 namespace Haiyu.Helpers;
+
 public class HardwareIdGenerator
 {
     // ==================== API 声明 ====================
@@ -74,7 +73,7 @@ public class HardwareIdGenerator
         try
         {
             string diskSerial = GetHardDiskSerial();
-            string cpuId = GetCpuId(); 
+            string cpuId = GetCpuId();
 
             string combined = $"{diskSerial}|{cpuId}";
 

@@ -1,13 +1,11 @@
-﻿using CommunityToolkit.WinUI.Helpers;
-
-namespace Haiyu.Models.ColorFullGame;
+﻿namespace Haiyu.Models.ColorFullGame;
 
 public partial class AvailableColor : ObservableObject
 {
     [ObservableProperty]
     public partial SolidColorBrush Color { get; set; }
 
-    public AvailableColor(SolidColorBrush color, string name,bool isStone = false)
+    public AvailableColor(SolidColorBrush color, string name, bool isStone = false)
     {
         Color = color;
         Name = name;
@@ -22,7 +20,7 @@ public partial class AvailableColor : ObservableObject
 
     public override string ToString()
     {
-        var result =  CommunityToolkit.WinUI.Helpers.ColorHelper.ToHex(this.Color.Color);
+        var result = CommunityToolkit.WinUI.Helpers.ColorHelper.ToHex(this.Color.Color);
         return result;
     }
 

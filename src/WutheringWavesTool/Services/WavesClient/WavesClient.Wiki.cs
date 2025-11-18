@@ -1,5 +1,5 @@
-﻿using System.Net.Http.Json;
-using Haiyu.Helpers;
+﻿using Haiyu.Helpers;
+using System.Net.Http.Json;
 using Waves.Api.Models.GameWikiiClient;
 
 namespace Haiyu.Services;
@@ -22,7 +22,7 @@ partial class WavesClient
             false,
             token
         );
-        var reponse = await HttpClientService.HttpClient.SendAsync(request,token);
+        var reponse = await HttpClientService.HttpClient.SendAsync(request, token);
         return await reponse.Content.ReadFromJsonAsync(WikiContext.Default.WikiHomeModel, token);
     }
 }

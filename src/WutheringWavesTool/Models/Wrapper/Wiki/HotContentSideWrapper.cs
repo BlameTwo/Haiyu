@@ -1,6 +1,6 @@
 ﻿namespace Haiyu.Models.Wrapper.Wiki
 {
-    public partial class HotContentSideWrapper:ObservableObject
+    public partial class HotContentSideWrapper : ObservableObject
     {
         [ObservableProperty]
         public partial string ImageUrl { get; set; }
@@ -44,19 +44,22 @@
 
 
 
-            if (elapsed <= 0){
+            if (elapsed <= 0)
+            {
                 Message = "已结束";
                 this.CurrentProgress = this.MaxProgress;
                 return;
             }
 
-            if (elapsed > this.MaxProgress){
+            if (elapsed > this.MaxProgress)
+            {
                 Message = "未开始";
                 this.CurrentProgress = 0;
                 return;
             }
 
-            if (_totalDurationTimeSpan.TotalDays >= LONG_CONTENT_TIME){
+            if (_totalDurationTimeSpan.TotalDays >= LONG_CONTENT_TIME)
+            {
                 Message = "长期活动";
                 this.CurrentProgress = 0;
                 return;

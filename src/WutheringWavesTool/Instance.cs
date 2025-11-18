@@ -1,11 +1,6 @@
 ﻿using Haiyu.Contracts;
-using Haiyu.Models.Dialogs;
-using Haiyu.Pages.GameWikis;
-using Haiyu.Pages.Record;
-using Haiyu.Plugin;
 using Haiyu.Services.DialogServices;
 using Haiyu.Services.Navigations.NavigationViewServices;
-using Haiyu.ViewModel;
 using Haiyu.ViewModel.GameViewModels;
 using Haiyu.ViewModel.WikiViewModels;
 using Waves.Core.Services;
@@ -19,7 +14,7 @@ public static class Instance
     public static void InitService()
     {
         Service = new ServiceCollection()
-            #region View and ViewModel
+        #region View and ViewModel
             .AddSingleton<ShellPage>()
             .AddSingleton<ShellViewModel>()
             .AddTransient<ToolPage>()
@@ -67,15 +62,15 @@ public static class Instance
             .AddTransient<GamerTowerViewModel>()
             .AddTransient<GamerSkinViewModel>()
             .AddTransient<GamerSlashDetailViewModel>()
-            #endregion
-            #region Record
+        #endregion
+        #region Record
             .AddTransient<RecordItemViewModel>()
-            #endregion
-            #region Roil
+        #endregion
+        #region Roil
             .AddTransient<GamerRoilsDetilyPage>()
             .AddTransient<GamerRoilViewModel>()
-            #endregion
-            #region Dialog
+        #endregion
+        #region Dialog
             .AddTransient<LoginDialog>()
             .AddTransient<LoginGameViewModel>()
             .AddTransient<GameLauncherCacheManager>()
@@ -91,22 +86,22 @@ public static class Instance
             .AddTransient<SelectDownloadGameViewModel>()
             .AddTransient<QRLoginDialog>()
             .AddTransient<QrLoginViewModel>()
-            #endregion
-            #endregion
-            #region Navigation
+        #endregion
+        #endregion
+        #region Navigation
             .AddTransient<IPageService, PageService>()
             .AddTransient<IPickersService, PickersService>()
             .AddSingleton<ITipShow, TipShow>()
-            .AddKeyedTransient<ITipShow,PageTipShow>("Cache")
-            .AddKeyedTransient<IDialogManager,MainDialogService>("Cache")
-            .AddTransient<IColorGameManager,ColorGameManager>()
+            .AddKeyedTransient<ITipShow, PageTipShow>("Cache")
+            .AddKeyedTransient<IDialogManager, MainDialogService>("Cache")
+            .AddTransient<IColorGameManager, ColorGameManager>()
         #endregion
         #region Base
             .AddSingleton<IAppContext<App>, AppContext<App>>()
             .AddSingleton<IWavesClient, WavesClient>()
             .AddSingleton<ICloudGameService, CloudGameService>()
-            .AddSingleton<IScreenCaptureService,ScreenCaptureService>()
-            .AddSingleton<IGameWikiClient,GameWikiClient>()
+            .AddSingleton<IScreenCaptureService, ScreenCaptureService>()
+            .AddSingleton<IGameWikiClient, GameWikiClient>()
             .AddTransient<IViewFactorys, ViewFactorys>()
             .AddSingleton<CloudConfigManager>(
                 (s) =>
@@ -123,8 +118,8 @@ public static class Instance
                     return service;
                 }
             )
-            #endregion
-            #region Navigation
+        #endregion
+        #region Navigation
             .AddKeyedSingleton<INavigationService, HomeNavigationService>(
                 nameof(HomeNavigationService)
             )
@@ -139,10 +134,10 @@ public static class Instance
             ).AddKeyedTransient<INavigationService, GameWikiNavigationService>(
                 nameof(GameWikiNavigationService)
             )
-            #endregion
-            #region Plugin
-            
-            #endregion
+        #endregion
+        #region Plugin
+
+        #endregion
             .AddKeyedSingleton<IDialogManager, MainDialogService>(nameof(MainDialogService))
             .AddKeyedSingleton<LoggerService>(
                 "AppLog",
@@ -153,7 +148,7 @@ public static class Instance
                     return logger;
                 }
             )
-            #region Record
+        #region Record
             .AddScoped<IDialogManager, ScopeDialogService>()
             .AddScoped<ITipShow, TipShow>()
             .AddKeyedScoped<IPlayerRecordContext, PlayerRecordContext>("PlayerRecord")
@@ -165,7 +160,7 @@ public static class Instance
             .AddKeyedScoped<INavigationService, GameRoilNavigationService>(
                 nameof(GameRoilNavigationService)
             )
-            #endregion
+        #endregion
             .AddGameContext()
             .BuildServiceProvider();
     }

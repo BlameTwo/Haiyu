@@ -142,7 +142,7 @@ public partial class NotifyIconWinUI : Control
     [DllImport("user32.dll")]
     public static extern bool PostMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
-    public void CreateTrayIcon(string ico,string tipMessage)
+    public void CreateTrayIcon(string ico, string tipMessage)
     {
         _iconHandle = LoadImage(
             IntPtr.Zero,

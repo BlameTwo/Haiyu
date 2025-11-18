@@ -1,6 +1,5 @@
-﻿using Windows.Graphics;
-using WinUIEx;
-using Haiyu.Models.Enums;
+﻿using Haiyu.Models.Enums;
+using Windows.Graphics;
 
 namespace Haiyu.Common;
 
@@ -124,7 +123,7 @@ public partial class TransparentWindow : WindowEx
             this.AppWindow.Move(new PointInt32(x, y));
             SetSize(new Size(200, 200));
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // 如果获取显示器信息失败，使用默认位置
             //var defaultPositions = GetDefaultPositions();

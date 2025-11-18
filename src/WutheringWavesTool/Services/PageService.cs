@@ -54,7 +54,7 @@ public sealed partial class PageService : IPageService
     }
 
     public void RegisterView<View, ViewModel>()
-        where View : Page,IPage
+        where View : Page, IPage
         where ViewModel : ObservableObject
     {
         var key = typeof(ViewModel).FullName;

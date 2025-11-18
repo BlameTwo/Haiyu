@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Linq;
-using Haiyu.Contracts;
+﻿using Haiyu.Contracts;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel;
 using Waves.Api.Models.CloudGame;

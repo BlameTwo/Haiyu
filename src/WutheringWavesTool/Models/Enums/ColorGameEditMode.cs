@@ -1,7 +1,7 @@
 ﻿namespace Haiyu.Models.Enums;
 
 
-public enum ColorGameEditMode:int
+public enum ColorGameEditMode : int
 {
     /// <summary>
     /// 点染

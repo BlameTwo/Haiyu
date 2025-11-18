@@ -1,8 +1,8 @@
 ﻿namespace Haiyu.Models.Messanger;
 
-public  class CloudLoginMessager
+public class CloudLoginMessager
 {
-    public CloudLoginMessager(bool refresh,string userName)
+    public CloudLoginMessager(bool refresh, string userName)
     {
         Refresh = refresh;
         UserName = userName;

@@ -33,7 +33,7 @@
         <DataTemplate x:Key="UninstallView">
             <view:UninstallView DataContext="{Binding}" />
         </DataTemplate>
-        <DataTemplate x:Key="UpdatteView">
+        <DataTemplate x:Key="UpdateView">
             <view:UpdateView DataContext="{Binding}" />
         </DataTemplate>
         <DataTemplate x:Key="RepairView">
@@ -44,7 +44,7 @@
             InstallTemplate="{StaticResource InstallView}"
             RepairTemplate="{StaticResource RepairView}"
             UninstallTemplate="{StaticResource UninstallView}"
-            UpdateTemplate="{StaticResource UpdatteView}" />
+            UpdateTemplate="{StaticResource UpdateView}" />
     </ui:FluentWindow.Resources>
     <ui:FluentWindow.SystemBackdrop>
         <sysback:MicaBackdrop />

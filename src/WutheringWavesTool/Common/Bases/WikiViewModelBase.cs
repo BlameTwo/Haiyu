@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Haiyu.Common.Bases;
 
-namespace Haiyu.Common.Bases;
-
-public partial class WikiViewModelBase:ViewModelBase
+public partial class WikiViewModelBase : ViewModelBase
 {
     public WikiViewModelBase()
     {

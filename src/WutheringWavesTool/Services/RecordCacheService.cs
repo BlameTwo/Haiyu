@@ -56,7 +56,7 @@ public sealed partial class RecordCacheService : IRecordCacheService
                         );
                         list.Add(json);
                     }
-                    catch (System.Exception ex)
+                    catch (System.Exception)
                     {
                         reader.Close();
                         continue;

@@ -1,9 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Haiyu.Helpers;
 using System.Security.Cryptography;
-using Haiyu.Helpers;
 using Waves.Core.Models.Enums;
-using Windows.Media.Core;
-using Windows.Media.Playback;
 
 namespace Haiyu.Services;
 
@@ -135,14 +132,14 @@ public class WallpaperService : IWallpaperService
         this.Media = media;
     }
 
-    public void SetMediaForUrl(WallpaperShowType type,string backgroundFile)
+    public void SetMediaForUrl(WallpaperShowType type, string backgroundFile)
     {
         Media.ShowType = type;
         if (type == WallpaperShowType.Video)
         {
             Media.MediaSource = backgroundFile;
         }
-        else if(type == WallpaperShowType.Image)
+        else if (type == WallpaperShowType.Image)
         {
             Media.ImageSource = backgroundFile;
         }

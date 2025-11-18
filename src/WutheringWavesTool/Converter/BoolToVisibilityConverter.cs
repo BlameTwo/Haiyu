@@ -21,13 +21,13 @@ public partial class BoolToVisibilityConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
     {
-        if(value == null) return Visibility.Collapsed;
-        if(value is Visibility v)
+        if (value == null) return Visibility.Collapsed;
+        if (value is Visibility v)
         {
             if (Reversal)
                 return v == Visibility.Visible ? false : true;
             else
-              return   v == Visibility.Visible ? true : false;
+                return v == Visibility.Visible ? true : false;
         }
         return false;
     }

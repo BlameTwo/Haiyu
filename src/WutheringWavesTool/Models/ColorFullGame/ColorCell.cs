@@ -2,7 +2,7 @@
 
 namespace Haiyu.Models.ColorFullGame;
 
-public partial class ColorCell:ObservableObject
+public partial class ColorCell : ObservableObject
 {
     [JsonPropertyName("row")]
     [ObservableProperty]

@@ -1,6 +1,4 @@
-﻿using System;
-using Haiyu.Models.ColorFullGame;
-using Haiyu.ViewModel;
+﻿using Haiyu.Models.ColorFullGame;
 
 namespace Haiyu.Helpers;
 

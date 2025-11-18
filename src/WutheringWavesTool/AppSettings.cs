@@ -104,8 +104,8 @@ public class AppSettings
 
     public static string? IsCapture
     {
-        get=>Read();
-        set=>Write(value);
+        get => Read();
+        set => Write(value);
     }
     #region 鸣潮
     public static bool? ShowWavesMainGame

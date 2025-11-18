@@ -1,6 +1,4 @@
-﻿using WinUIEx.Messaging;
-
-namespace Haiyu;
+﻿namespace Haiyu;
 
 public sealed partial class MainWindow : WinUIEx.WindowEx
 {
@@ -12,5 +10,5 @@ public sealed partial class MainWindow : WinUIEx.WindowEx
         NativeWindowHelper.ForceDisableMaximize(this);
     }
 
-    
+
 }

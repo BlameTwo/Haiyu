@@ -1,7 +1,7 @@
 ﻿
 namespace Haiyu.Pages;
 
-public sealed partial class ColorFullGame : Page,IWindowPage
+public sealed partial class ColorFullGame : Page, IWindowPage
 {
     public ColorFullGame()
     {

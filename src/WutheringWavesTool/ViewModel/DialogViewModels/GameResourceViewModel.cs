@@ -1,5 +1,4 @@
 ﻿using Haiyu.Services.DialogServices;
-using System.Security.Cryptography;
 
 namespace Haiyu.ViewModel.DialogViewModels;
 
@@ -44,7 +43,7 @@ public sealed partial class GameResourceViewModel : DialogViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
-        var result =  GameContext.GameLocalConfig.GetConfig(
+        var result = GameContext.GameLocalConfig.GetConfig(
             GameLocalSettingName.GameLauncherBassFolder
         );
         var prodFolder = GameContext.GameLocalConfig.GetConfig(
@@ -102,7 +101,7 @@ public sealed partial class GameResourceViewModel : DialogViewModelBase
     [RelayCommand]
     void OpenFolder()
     {
-        WindowExtension.ShellExecute(IntPtr.Zero,this.GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder),null,null,null, WindowExtension.SW_SHOWNORMAL);
+        WindowExtension.ShellExecute(IntPtr.Zero, this.GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder), null, null, null, WindowExtension.SW_SHOWNORMAL);
     }
 
     [RelayCommand]

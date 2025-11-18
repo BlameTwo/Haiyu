@@ -1,5 +1,4 @@
-﻿using System;
-using Haiyu.Models.Wrapper.CommunityWorld;
+﻿using Haiyu.Models.Wrapper.CommunityWorld;
 
 namespace Haiyu.ViewModel.Communitys;
 
@@ -76,11 +75,11 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
             TipShow.ShowMessage("玩家数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
             return;
         }
-        var data = await TryInvokeAsync(async()=>await WavesClient.GetGamerExploreIndexDataAsync(
+        var data = await TryInvokeAsync(async () => await WavesClient.GetGamerExploreIndexDataAsync(
             this._roilData,
             this.CTS.Token
         ));
-        if(data.Item1 != 0)
+        if (data.Item1 != 0)
         {
             TipShow.ShowMessage(data.Item3, Microsoft.UI.Xaml.Controls.Symbol.Clear);
             return;

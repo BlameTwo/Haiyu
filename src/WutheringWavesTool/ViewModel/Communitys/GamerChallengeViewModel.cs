@@ -40,7 +40,7 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
             Items.Clear();
         else
             Items = new();
-        var result = await TryInvokeAsync(async()=> await WavesClient.GetGamerChallengeDetails(
+        var result = await TryInvokeAsync(async () => await WavesClient.GetGamerChallengeDetails(
             this.RoilItem,
             value.CountryId,
             this.CTS.Token
@@ -76,8 +76,8 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
     [RelayCommand]
     async Task Loaded()
     {
-        var challData = await TryInvokeAsync(async()=>await WavesClient.GetGamerChallengeIndexDataAsync(RoilItem, this.CTS.Token));
-        if (challData.Item1 ==-1 || challData.Item1 == -2 || challData.Item2 == null || challData.Item2.ChallengeList == null)
+        var challData = await TryInvokeAsync(async () => await WavesClient.GetGamerChallengeIndexDataAsync(RoilItem, this.CTS.Token));
+        if (challData.Item1 == -1 || challData.Item1 == -2 || challData.Item2 == null || challData.Item2.ChallengeList == null)
         {
             TipShow.ShowMessage("拉取数据为空", Symbol.Clear);
             return;
@@ -97,7 +97,7 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
         WeakReferenceMessenger.Default.UnregisterAll(this);
         this.Countrys.RemoveAll();
         this.orginCountrys?.Clear();
-        if(Items != null)
+        if (Items != null)
         {
             foreach (var item in Items)
             {

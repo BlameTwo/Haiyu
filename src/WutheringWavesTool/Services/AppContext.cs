@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.WinUI;
-using Microsoft.UI.Dispatching;
-using Waves.Core.Services;
 using Haiyu.Services.DialogServices;
-using TitleBar = Haiyu.Controls.TitleBar;
+using Microsoft.UI.Dispatching;
 using Waves.Core.GameContext.Contexts.PRG;
+using Waves.Core.Services;
+using TitleBar = Haiyu.Controls.TitleBar;
 
 namespace Haiyu.Services;
 
@@ -105,7 +105,7 @@ public class AppContext<T> : IAppContext<T>
             LoggerService.WriteError(ex.Message);
             Process.GetCurrentProcess().Kill();
         }
-       
+
     }
 
     private void AppWindow_Closing(

@@ -26,7 +26,7 @@ partial class SettingViewModel
     partial void OnCaptureModifierKeyChanged(ModifierKey value)
     {
         AppSettings.CaptureModifierKey = value.Name;
-        var result =  ScreenCaptureService.Register();
+        var result = ScreenCaptureService.Register();
         this.TipShow.ShowMessage(result.Item2, Symbol.Read);
     }
 
@@ -39,11 +39,11 @@ partial class SettingViewModel
     partial void OnCaptureKeyChanged(Keys value)
     {
         AppSettings.CaptureKey = value.Name;
-        var result =  ScreenCaptureService.Register();
+        var result = ScreenCaptureService.Register();
         this.TipShow.ShowMessage(result.Item2, Symbol.Read);
     }
 
-    public void InitCapture() 
+    public void InitCapture()
     {
         this.IsOn = AppSettings.IsCapture == null ? true : Boolean.Parse(AppSettings.IsCapture);
         if (string.IsNullOrWhiteSpace(AppSettings.CaptureModifierKey) || string.IsNullOrWhiteSpace(AppSettings.CaptureKey))

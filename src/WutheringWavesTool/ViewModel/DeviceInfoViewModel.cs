@@ -29,7 +29,7 @@ public class GamerId
     };
 }
 
-public partial class DeviceInfoViewModel:ViewModelBase,IDisposable
+public partial class DeviceInfoViewModel : ViewModelBase, IDisposable
 {
     private bool disposedValue;
 
@@ -94,14 +94,14 @@ public partial class DeviceInfoViewModel:ViewModelBase,IDisposable
         var devices = await WavesClient.GetDeviceInfosAsync();
         if (devices != null)
             this.Devices = devices.Data.Where(x => x != null).ToObservableCollection();
-        
+
     }
 
     partial void OnSelectHeaderChanged(DeviceInfoDisplayHeader value)
     {
         if (value == null)
             return;
-        if(value.Tag == "PC")
+        if (value.Tag == "PC")
         {
             DeviceInfosVisibility = Visibility.Visible;
             GamerRoleVisibility = Visibility.Collapsed;
@@ -127,13 +127,13 @@ public partial class DeviceInfoViewModel:ViewModelBase,IDisposable
     {
         if (SelectUserServer == null || SelectGamer == null)
             return;
-        var result = await WavesClient.SendVerifyGameCode(SelectGamer.Id.ToString(), SelectUserServer.ServerId,this.BindRoleId,this.CTS.Token);
-        if(result == null)
+        var result = await WavesClient.SendVerifyGameCode(SelectGamer.Id.ToString(), SelectUserServer.ServerId, this.BindRoleId, this.CTS.Token);
+        if (result == null)
         {
             TipMessage = "验证失败!，库洛拒绝回答";
             return;
         }
-        if(result.Code == 200)
+        if (result.Code == 200)
         {
             TipMessage = "验证码发送成功";
         }
@@ -148,7 +148,7 @@ public partial class DeviceInfoViewModel:ViewModelBase,IDisposable
     {
         if (SelectUserServer == null || SelectGamer == null || string.IsNullOrWhiteSpace(VerifyCode))
             return;
-        var result = await WavesClient.BindGamer(SelectGamer.Id.ToString(), SelectUserServer.ServerId, this.BindRoleId,this.VerifyCode, this.CTS.Token);
+        var result = await WavesClient.BindGamer(SelectGamer.Id.ToString(), SelectUserServer.ServerId, this.BindRoleId, this.VerifyCode, this.CTS.Token);
         if (result == null)
         {
             TipMessage = "验证失败!，库洛拒绝回答";
@@ -156,7 +156,7 @@ public partial class DeviceInfoViewModel:ViewModelBase,IDisposable
         }
         if (result.Code == 200)
         {
-            if(result.Data != null && !string.IsNullOrWhiteSpace(result.Data.Token))
+            if (result.Data != null && !string.IsNullOrWhiteSpace(result.Data.Token))
             {
                 TipMessage = "当前游戏账号已经被绑定到其他库街区上，如果需要换绑请选择官方库街区进行换绑";
                 this.VerifyCode = "";

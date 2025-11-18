@@ -126,7 +126,7 @@ public class ImageColorPaletteHelper
 
             return ColorHelper.FromHsl(hsl.H, hsl.S, newL);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }

@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Windows.Web.AtomPub;
-using Haiyu.Helpers;
+﻿using Haiyu.Helpers;
 using Haiyu.Models.Wrapper.WindowRoils;
 
 namespace Haiyu.ViewModel.Communitys.WinViewModel;

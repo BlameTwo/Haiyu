@@ -1,6 +1,4 @@
-﻿using System.Text;
-using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
-using ZXing.Aztec.Internal;
+﻿using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
 
 namespace Haiyu.Services;
 
@@ -403,7 +401,7 @@ partial class WavesClient
                 CommunityContext.Default.GamerSlashDetailData
             );
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
@@ -416,7 +414,7 @@ partial class WavesClient
             var header = GetWebHeader(true);
             var content = new Dictionary<string, string>()
             {
-                
+
             };
             var request = await BuildRequestAsync(
                 "https://api.kurobbs.com/aki/resource/period/list",
@@ -427,32 +425,32 @@ partial class WavesClient
             );
             var result = await this.HttpClientService.HttpClient.SendAsync(request, token);
             var jsonStr = await result.Content.ReadAsStringAsync(token);
-            
+
             return JsonSerializer.Deserialize(
                 jsonStr,
                 CommunityContext.Default.BriefHeader
             );
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }
     }
 
-    public async Task<ResourceBrefItem> GetVersionBrefItemAsync(string roleId,string serverId,string versionId,CancellationToken token = default)
+    public async Task<ResourceBrefItem> GetVersionBrefItemAsync(string roleId, string serverId, string versionId, CancellationToken token = default)
     {
 
         return await GetBrefItemAsync("https://api.kurobbs.com/aki/resource/version", roleId, serverId, versionId, token);
     }
-    public async Task<ResourceBrefItem> GetWeekBrefItemAsync(string roleId,string serverId,string versionId,CancellationToken token = default)
+    public async Task<ResourceBrefItem> GetWeekBrefItemAsync(string roleId, string serverId, string versionId, CancellationToken token = default)
     {
         return await GetBrefItemAsync("https://api.kurobbs.com/aki/resource/week", roleId, serverId, versionId, token);
     }
-    public async Task<ResourceBrefItem> GetMonthBrefItemAsync(string roleId,string serverId,string versionId,CancellationToken token = default)
+    public async Task<ResourceBrefItem> GetMonthBrefItemAsync(string roleId, string serverId, string versionId, CancellationToken token = default)
     {
         return await GetBrefItemAsync("https://api.kurobbs.com/aki/resource/month", roleId, serverId, versionId, token);
     }
-    private async Task<ResourceBrefItem> GetBrefItemAsync(string url,string roleId, string serverId, string versionId, CancellationToken token = default)
+    private async Task<ResourceBrefItem> GetBrefItemAsync(string url, string roleId, string serverId, string versionId, CancellationToken token = default)
     {
         try
         {
@@ -478,7 +476,7 @@ partial class WavesClient
                 CommunityContext.Default.ResourceBrefItem
             );
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return null;
         }

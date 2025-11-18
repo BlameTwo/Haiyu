@@ -27,7 +27,7 @@ public class CursorHelper
         switch (name)
         {
             case CursorName.None:
-                SetCursor(element,GetDefault(type));
+                SetCursor(element, GetDefault(type));
                 break;
             case CursorName.ShouAnRen:
                 SetCursor(element, GetShouAnRen(type));
@@ -112,10 +112,10 @@ public class CursorHelper
         switch (type)
         {
             case CursorType.Help:
-                return InputCursor.CreateFromCoreCursor(new CoreCursor(CoreCursorType.Help,1));
+                return InputCursor.CreateFromCoreCursor(new CoreCursor(CoreCursorType.Help, 1));
             case CursorType.Link:
                 return InputCursor.CreateFromCoreCursor(new CoreCursor(CoreCursorType.Hand, 1));
-                
+
             case CursorType.Normal:
                 return InputCursor.CreateFromCoreCursor(new CoreCursor(CoreCursorType.Arrow, 1));
             case CursorType.Text:

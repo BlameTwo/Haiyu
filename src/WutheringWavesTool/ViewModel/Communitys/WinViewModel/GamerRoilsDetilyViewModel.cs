@@ -1,7 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Threading.Tasks;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Haiyu.Models.Wrapper.WindowRoils;
+﻿using Haiyu.Models.Wrapper.WindowRoils;
 
 namespace Haiyu.ViewModel.Communitys.WinViewModel;
 

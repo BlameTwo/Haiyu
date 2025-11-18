@@ -4,7 +4,7 @@ public sealed partial class GetGeetWindow : WindowModelBase
 {
     public GeetType Type { get; }
 
-    public GetGeetWindow(nint value, GeetType type) :base(value)
+    public GetGeetWindow(nint value, GeetType type) : base(value)
     {
         this.InitializeComponent();
         this.titleBar.Window = this;
@@ -41,7 +41,7 @@ public sealed partial class GetGeetWindow : WindowModelBase
         try
         {
             WeakReferenceMessenger.Default.Send<GeeSuccessMessanger>(
-                new(args.TryGetWebMessageAsString(),Type)
+                new(args.TryGetWebMessageAsString(), Type)
             );
             this.webView2.Close();
             this.Close();

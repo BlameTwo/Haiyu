@@ -1,5 +1,4 @@
 ﻿using Microsoft.Graphics.Canvas;
-using Windows.Graphics.Imaging;
 using ZXing;
 namespace Haiyu.Common.QR;
 

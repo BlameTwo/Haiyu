@@ -1,10 +1,8 @@
-using Haiyu;
 using Waves.Api.Models.CloudGame;
-using Haiyu.ViewModel;
 
 namespace Haiyu.Pages.Record;
 
-public sealed partial class AnalysisRecordPage : Page,IWindowPage
+public sealed partial class AnalysisRecordPage : Page, IWindowPage
 {
     public AnalysisRecordPage()
     {
@@ -20,7 +18,7 @@ public sealed partial class AnalysisRecordPage : Page,IWindowPage
 
     public void SetData(object value)
     {
-        if(value is LoginData data)
+        if (value is LoginData data)
         {
 
             this.ViewModel.LoginData = data;

@@ -1,6 +1,4 @@
-﻿using Microsoft.Windows.AppNotifications;
-
-namespace Haiyu.ViewModel.GameViewModels;
+﻿namespace Haiyu.ViewModel.GameViewModels;
 
 partial class GameContextViewModelBase
 {
@@ -51,10 +49,10 @@ partial class GameContextViewModelBase
                     }
                     PauseStartEnable = true;
                 }
-                else if(args.Type == Waves.Core.Models.Enums.GameContextActionType.Decompress)
+                else if (args.Type == Waves.Core.Models.Enums.GameContextActionType.Decompress)
                 {
                     this.BottomBarContent =
-                            $"[{args.CurrentDecompressCount}/{args.MaxDecompressValue}] 已解压:{Math.Round((double)args.CurrentSize / 1024 / 1024/1024, 2)}GB,剩余:{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
+                            $"[{args.CurrentDecompressCount}/{args.MaxDecompressValue}] 已解压:{Math.Round((double)args.CurrentSize / 1024 / 1024 / 1024, 2)}GB,剩余:{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
                     PauseStartEnable = false;
                 }
                 ShowGameDownloadingBth();

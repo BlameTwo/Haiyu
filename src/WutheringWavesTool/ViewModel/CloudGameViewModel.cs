@@ -1,10 +1,9 @@
-﻿using System.Globalization;
-using Haiyu.Contracts;
+﻿using Haiyu.Contracts;
 using Haiyu.Services.DialogServices;
 using LiveChartsCore.Defaults;
 using MemoryPack;
+using System.Globalization;
 using Waves.Api.Models.CloudGame;
-using Windows.Devices.Bluetooth.Advertisement;
 
 namespace Haiyu.ViewModel;
 
@@ -205,7 +204,7 @@ public partial class CloudGameViewModel : ViewModelBase
             pack,
             new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
         );
-        if(packed == null)
+        if (packed == null)
         {
             TipShow.ShowMessage(
                 $"转存失败",

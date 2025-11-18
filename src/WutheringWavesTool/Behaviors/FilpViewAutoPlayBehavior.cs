@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-
-namespace Haiyu.Behaviors;
+﻿namespace Haiyu.Behaviors;
 
 public sealed class FilpViewAutoPlayBehavior : Behavior<FlipView>
 {

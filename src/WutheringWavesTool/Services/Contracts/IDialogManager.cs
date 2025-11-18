@@ -16,14 +16,14 @@ public interface IDialogManager
 
     public Task<SelectDownloadFolderResult> ShowSelectGameFolderAsync(Type type);
     public Task<SelectDownloadFolderResult> ShowSelectDownloadFolderAsync(Type type);
-    public Task<CloseWindowResult> ShowCloseWindowResult(); 
-    public  Task<QRScanResult> GetQRLoginResultAsync();
+    public Task<CloseWindowResult> ShowCloseWindowResult();
+    public Task<QRScanResult> GetQRLoginResultAsync();
     public void CloseDialog();
 
-    public Task<ContentDialogResult> ShowMessageDialog(string header,string content,string closeText);
+    public Task<ContentDialogResult> ShowMessageDialog(string header, string content, string closeText);
     Task ShowWebGameDialogAsync();
 
     Task ShowGameLauncherChacheDialogAsync(GameLauncherCacheArgs args);
 
-    Task<ContentDialogResult> ShowOKDialogAsync(string header,string content);
+    Task<ContentDialogResult> ShowOKDialogAsync(string header, string content);
 }

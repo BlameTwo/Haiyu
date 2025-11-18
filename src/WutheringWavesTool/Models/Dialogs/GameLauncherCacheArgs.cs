@@ -6,5 +6,5 @@ public class GameLauncherCacheArgs
 {
     public string GameContextName { get; set; }
 
-    public List<KRSDKLauncherCache> Datas { get; set;  }
+    public List<KRSDKLauncherCache> Datas { get; set; }
 }

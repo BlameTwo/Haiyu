@@ -1,11 +1,10 @@
 ﻿using Haiyu.Plugin.Extensions;
-using System.Threading;
 using Windows.Graphics.Imaging;
 using WinUIEx.Messaging;
 
 namespace Haiyu.Services;
 
-public class ScreenCaptureService:IScreenCaptureService
+public class ScreenCaptureService : IScreenCaptureService
 {
     private WindowMessageMonitor? _monitor;
 
@@ -24,16 +23,17 @@ public class ScreenCaptureService:IScreenCaptureService
         Unregister();
         int? modifier = 0;
         int? key = 0;
-        if(string.IsNullOrWhiteSpace(AppSettings.CaptureModifierKey) || string.IsNullOrWhiteSpace(AppSettings.CaptureKey))
+        if (string.IsNullOrWhiteSpace(AppSettings.CaptureModifierKey) || string.IsNullOrWhiteSpace(AppSettings.CaptureKey))
         {
             modifier = ModifierKey.GetDefault().Where(x => x.Name == "Win").FirstOrDefault()?.Value;
             key = Keys.GetDefault().Where(x => x.Name == "F8").FirstOrDefault()?.Value;
-        }else
+        }
+        else
         {
             modifier = ModifierKey.GetDefault().Where(x => x.Name == AppSettings.CaptureModifierKey).FirstOrDefault()?.Value;
             key = Keys.GetDefault().Where(x => x.Name == AppSettings.CaptureKey).FirstOrDefault()?.Value;
         }
-        if(modifier == null || key == null)
+        if (modifier == null || key == null)
         {
             return (false, "热键失效！");
         }
@@ -43,7 +43,7 @@ public class ScreenCaptureService:IScreenCaptureService
                modifier.Value,
                key.Value
            );
-        return (false, $"快捷键注册"+ (success ? "成功" : "失败"));
+        return (false, $"快捷键注册" + (success ? "成功" : "失败"));
     }
 
     private void Monitor_WindowMessageReceived(object sender, WindowMessageEventArgs e)
@@ -68,7 +68,7 @@ public class ScreenCaptureService:IScreenCaptureService
             rawPixels,
             width,
             height,
-            App.ScreenCaptures+"\\"+DateTime.Now.ToString("yyyyMMddHHmmssff")+".png",
+            App.ScreenCaptures + "\\" + DateTime.Now.ToString("yyyyMMddHHmmssff") + ".png",
             BitmapEncoder.PngEncoderId
         );
     }

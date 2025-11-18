@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-
-namespace Haiyu.Helpers;
+﻿namespace Haiyu.Helpers;
 
 internal class NavItemIconHelper
 {

@@ -32,12 +32,12 @@ public interface ICloudGameService
         CancellationToken token = default
     );
     Task<RecordModel> GetRecordAsync(CancellationToken token = default);
-    Task<PlayerReponse> GetGameRecordResource(string recordId, string userId, int poolType,CancellationToken token = default);
+    Task<PlayerReponse> GetGameRecordResource(string recordId, string userId, int poolType, CancellationToken token = default);
     /// <summary>
     /// 创建连接会话
     /// </summary>
     /// <param name="loginData"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<(bool,string)> OpenUserAsync(LoginData loginData,CancellationToken token = default);
+    Task<(bool, string)> OpenUserAsync(LoginData loginData, CancellationToken token = default);
 }

@@ -2,7 +2,7 @@
 
 namespace Haiyu.Pages.Dialogs
 {
-    public sealed partial class GameLauncherCacheManager : ContentDialog,IDialog
+    public sealed partial class GameLauncherCacheManager : ContentDialog, IDialog
     {
         public GameLauncherCacheManager()
         {
@@ -14,7 +14,7 @@ namespace Haiyu.Pages.Dialogs
 
         public void SetData(object data)
         {
-            if(data is GameLauncherCacheArgs args)
+            if (data is GameLauncherCacheArgs args)
             {
                 ViewModel.SetData(args);
             }

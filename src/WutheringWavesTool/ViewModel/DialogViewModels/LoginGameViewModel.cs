@@ -54,7 +54,7 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
 
     private async void GeeSuccessMethod(object recipient, GeeSuccessMessanger message)
     {
-        if(message.Type == GeetType.Login)
+        if (message.Type == GeetType.Login)
         {
             this.GeetValue = message.Result;
             if (string.IsNullOrWhiteSpace(GeetValue))

@@ -19,7 +19,7 @@ partial class ColorFullViewModel
     {
         GameGrid.Clear();
         GameColumsSize = 6;
-        this.GameGrid = ColorGameGenerator.GenerateColorGame(6,6).ToObservableCollection();
+        this.GameGrid = ColorGameGenerator.GenerateColorGame(6, 6).ToObservableCollection();
     }
     [RelayCommand]
     void Generator10X10()
@@ -35,7 +35,7 @@ partial class ColorFullViewModel
     {
         GameGrid.Clear();
         GameColumsSize = 12;
-        this.GameGrid = ColorGameGenerator.GenerateColorGame(8,12).ToObservableCollection();
+        this.GameGrid = ColorGameGenerator.GenerateColorGame(8, 12).ToObservableCollection();
     }
 
     [RelayCommand]
@@ -60,7 +60,7 @@ partial class ColorFullViewModel
             }
             if (this.Mode == Models.Enums.ColorGameEditMode.Dyeing)
             {
-                if(this.SelectAvailableColor.IsStone == true || value.IsStone == true)
+                if (this.SelectAvailableColor.IsStone == true || value.IsStone == true)
                 {
                     State = "石头不可以进行染色，只能点染";
                     return;
@@ -79,7 +79,7 @@ partial class ColorFullViewModel
     {
         foreach (var item in this.GameGrid)
         {
-            if(item.CurrentColor.Color == Colors.Gray)
+            if (item.CurrentColor.Color == Colors.Gray)
             {
                 item.CurrentColor = this.SelectAvailableColor.Color;
                 item.IsStone = this.SelectAvailableColor.IsStone;
@@ -116,7 +116,7 @@ partial class ColorFullViewModel
         info.GameMode = this.Mode;
         info.GameFile = this.GameName;
         info.GameObjective = this.SelectGameEndColor.ToString();
-        var result =  await ColorGameManager.SaveGameAsync(info,this.CurrentFile,this.CTS.Token);
+        var result = await ColorGameManager.SaveGameAsync(info, this.CurrentFile, this.CTS.Token);
         if (result.Item1)
         {
             WindowExtension.ShellExecute(IntPtr.Zero, "open", App.ColorGameFolder, null, null, WindowExtension.SW_SHOWNORMAL);
@@ -162,7 +162,7 @@ partial class ColorFullViewModel
                 await fs.WriteAsync(JsonSerializer.Serialize(info, GameContext.Default.ColorInfo));
             }
             this.CurrentFile = result.Path;
-            await DialogManager.ShowOKDialogAsync("保存",$"保存成功");
+            await DialogManager.ShowOKDialogAsync("保存", $"保存成功");
         }
         catch (Exception ex)
         {
@@ -196,7 +196,7 @@ partial class ColorFullViewModel
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             await DialogManager.ShowOKDialogAsync("警告", $"打开文件错误");
         }
@@ -230,7 +230,7 @@ partial class ColorFullViewModel
                 }
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             await DialogManager.ShowOKDialogAsync("警告", $"重置色块错误");
         }
@@ -245,7 +245,7 @@ partial class ColorFullViewModel
         if (TipShow == null)
             return;
     }
-    
+
     [RelayCommand]
     void SetGameMode(int mode)
     {

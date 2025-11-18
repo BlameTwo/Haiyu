@@ -16,7 +16,7 @@ public partial class NavigationRoilsDetilyItem : ObservableObject, INavigationRo
         TypeImage = new BitmapImage(new(RoleHelper.SwitchType(roleData.AttributeId)));
         RoleIconUrl = new BitmapImage(new(roleData.RoleIconUrl));
         Item = item;
-        
+
     }
 
     [ObservableProperty]

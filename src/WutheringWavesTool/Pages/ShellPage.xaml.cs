@@ -1,10 +1,4 @@
-﻿using System.Threading.Tasks;
-using CommunityToolkit.WinUI.Behaviors;
-using Microsoft.UI.Input;
-using Waves.Core.Common;
-using Haiyu.Common;
-using Haiyu.Helpers;
-using Haiyu.Pages.GamePages;
+﻿using Haiyu.Pages.GamePages;
 
 namespace Haiyu.Pages;
 
@@ -22,7 +16,7 @@ public sealed partial class ShellPage : Page
         this.ViewModel.TipShow.Owner = this.panel;
         //this.ViewModel.Image = this.image;
         this.ViewModel.AppContext.SetTitleControl(this.titlebar);
-        
+
     }
 
     private void HomeNavigationService_Navigated(object sender, NavigationEventArgs e)

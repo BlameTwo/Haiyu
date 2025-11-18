@@ -6,7 +6,7 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
 {
     private bool disposedValue;
 
-    public GamerSlashDetailViewModel(IWavesClient wavesClient,ITipShow tipShow)
+    public GamerSlashDetailViewModel(IWavesClient wavesClient, ITipShow tipShow)
     {
         WavesClient = wavesClient;
         TipShow = tipShow;

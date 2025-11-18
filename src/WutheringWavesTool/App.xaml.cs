@@ -1,11 +1,5 @@
-﻿
-
-using Haiyu.Helpers;
-using Microsoft.UI.Xaml;
-using Microsoft.Windows.AppLifecycle;
-using System.Text;
+﻿using Microsoft.Windows.AppLifecycle;
 using Waves.Core.Services;
-using Windows.ApplicationModel.Activation;
 
 namespace Haiyu;
 
@@ -48,7 +42,7 @@ public partial class App : ClientApplication
         //SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         #endregion
         this.UnhandledException += App_UnhandledException;
-        
+
         GameContextFactory.GameBassPath = BassFolder;
         Instance.InitService();
         this.InitializeComponent();
@@ -92,7 +86,7 @@ public partial class App : ClientApplication
             Process.GetCurrentProcess().Kill();
             return;
         }
-        
+
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
         Instance.Service.GetService<IScreenCaptureService>().Register();
         Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
