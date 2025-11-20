@@ -1,12 +1,15 @@
 ﻿using System.Text.Json.Serialization;
 using CommunityToolkit.Mvvm.ComponentModel;
+using MemoryPack;
 using Waves.Api.Models.CloudGame;
 
 namespace Waves.Api.Models.Wrappers;
 
+[MemoryPackable]
 public partial class RecordCardItemWrapper : ObservableObject
 {
     [JsonConstructor]
+    [MemoryPackConstructor]
     public RecordCardItemWrapper() { }
 
     public RecordCardItemWrapper(Datum datum)

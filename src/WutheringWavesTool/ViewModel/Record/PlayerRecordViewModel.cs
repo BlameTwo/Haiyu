@@ -78,191 +78,191 @@ public sealed partial class PlayerRecordViewModel : ViewModelBase, IDisposable
     [RelayCommand]
     async Task ShowInputRecordAsync()
     {
-        var link = await PlayerRecordContext.ShowInputRecordAsync(null);
-        if (link == null)
-        {
-            return;
-        }
-        switch (link.Type)
-        {
-            case CreateRecordType.None:
-                break;
-            case CreateRecordType.Create:
-            case CreateRecordType.Update:
-                if (string.IsNullOrWhiteSpace(link.Link))
-                {
-                    this.PlayerRecordContext.TipShow.ShowMessage(
-                        "抽卡链接无效",
-                        Microsoft.UI.Xaml.Controls.Symbol.Clear
-                    );
-                    this.SelectType = null;
-                    this.IsLoadRecord = false;
-                    return;
-                }
-                var request = RecordHelper.GetRecorRequest(link.Link);
-                if (request == null)
-                {
-                    this.PlayerRecordContext.TipShow.ShowMessage(
-                        "抽卡链接无效",
-                        Microsoft.UI.Xaml.Controls.Symbol.Clear
-                    );
-                    this.SelectType = null;
-                    this.IsLoadRecord = false;
-                    return;
-                }
-                this.Request = request;
-                var items = await RecordHelper.GetRecordAsync(Request, CardPoolType.RoleActivity);
-                if (items == null)
-                {
-                    this.PlayerRecordContext.TipShow.ShowMessage(
-                        "抽卡链接过期",
-                        Microsoft.UI.Xaml.Controls.Symbol.Clear
-                    );
-                    this.SelectType = null;
-                    this.IsLoadRecord = false;
-                    return;
-                }
-                var localRecord = (
-                    await PlayerRecordContext.RecordCacheService.GetRecordCacheDetilyAndPathAsync()
-                )
-                    .Where(x => x.Item1?.Id == Request.PlayerId)
-                    .FirstOrDefault();
-                if (localRecord.Item1 == null)
-                {
-                    if (await WriteCacheAsync())
-                    {
-                        this.FiveGroup = await RecordHelper.GetFiveGroupAsync();
-                        this.AllRole = await RecordHelper.GetAllRoleAsync();
-                        this.AllWeapon = await RecordHelper.GetAllWeaponAsync();
-                        this.StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
-                        this.StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
-                        CalculateRange();
-                        this.IsLoadRecord = true;
-                        SelectType = CardPoolType.RoleActivity;
-                    }
-                    else
-                    {
-                        this.PlayerRecordContext.TipShow.ShowMessage(
-                            "写入抽卡缓存失败",
-                            Microsoft.UI.Xaml.Controls.Symbol.Clear
-                        );
-                        this.SelectType = null;
-                        this.IsLoadRecord = false;
-                    }
-                }
-                else
-                {
-                    this.FiveGroup = await RecordHelper.GetFiveGroupAsync();
-                    this.AllRole = await RecordHelper.GetAllRoleAsync();
-                    this.AllWeapon = await RecordHelper.GetAllWeaponAsync();
-                    this.StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
-                    this.StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
-                    if (await MergeRecordAsync(localRecord))
-                    {
-                        CalculateRange();
-                        this.IsLoadRecord = true;
-                        SelectType = CardPoolType.RoleActivity;
-                    }
-                }
-                break;
-            case CreateRecordType.SelectItemOpen:
-                if (link.Cache == null)
-                {
-                    this.IsLoadRecord = false;
-                    SelectType = null;
-                    return;
-                }
-                this.FiveGroup = await RecordHelper.GetFiveGroupAsync();
-                this.AllRole = await RecordHelper.GetAllRoleAsync();
-                this.AllWeapon = await RecordHelper.GetAllWeaponAsync();
-                this.StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
-                this.StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
-                RoleActivity = link.Cache.RoleActivityItems.ToList();
-                WeaponsActivity = link.Cache.WeaponsActivityItems.ToList();
-                WeaponsResident = link.Cache.WeaponsResidentItems.ToList();
-                RoleResident = link.Cache.RoleResidentItems.ToList();
-                Beginner = link.Cache.BeginnerItems.ToList();
-                BeginnerChoice = link.Cache.BeginnerChoiceItems.ToList();
-                GratitudeOrientation = link.Cache.GratitudeOrientationItems.ToList();
-                CalculateRange();
-                this.IsLoadRecord = true;
-                SelectType = CardPoolType.RoleActivity;
-                this.CreateTime = (DateTime.Now - link.Cache.Time).ToString("hh\\:mm\\:ss");
-                this.Id = link.Cache.Id;
-                break;
-        }
+        //var link = await PlayerRecordContext.ShowInputRecordAsync(null);
+        //if (link == null)
+        //{
+        //    return;
+        //}
+        //switch (link.Type)
+        //{
+        //    case CreateRecordType.None:
+        //        break;
+        //    case CreateRecordType.Create:
+        //    case CreateRecordType.Update:
+        //        if (string.IsNullOrWhiteSpace(link.Link))
+        //        {
+        //            this.PlayerRecordContext.TipShow.ShowMessage(
+        //                "抽卡链接无效",
+        //                Microsoft.UI.Xaml.Controls.Symbol.Clear
+        //            );
+        //            this.SelectType = null;
+        //            this.IsLoadRecord = false;
+        //            return;
+        //        }
+        //        var request = RecordHelper.GetRecorRequest(link.Link);
+        //        if (request == null)
+        //        {
+        //            this.PlayerRecordContext.TipShow.ShowMessage(
+        //                "抽卡链接无效",
+        //                Microsoft.UI.Xaml.Controls.Symbol.Clear
+        //            );
+        //            this.SelectType = null;
+        //            this.IsLoadRecord = false;
+        //            return;
+        //        }
+        //        this.Request = request;
+        //        var items = await RecordHelper.GetRecordAsync(Request, CardPoolType.RoleActivity);
+        //        if (items == null)
+        //        {
+        //            this.PlayerRecordContext.TipShow.ShowMessage(
+        //                "抽卡链接过期",
+        //                Microsoft.UI.Xaml.Controls.Symbol.Clear
+        //            );
+        //            this.SelectType = null;
+        //            this.IsLoadRecord = false;
+        //            return;
+        //        }
+        //        var localRecord = (
+        //            await PlayerRecordContext.RecordCacheService.GetRecordCacheDetilyAndPathAsync()
+        //        )
+        //            .Where(x => x.Item1?.Id == Request.PlayerId)
+        //            .FirstOrDefault();
+        //        if (localRecord.Item1 == null)
+        //        {
+        //            if (await WriteCacheAsync())
+        //            {
+        //                this.FiveGroup = await RecordHelper.GetFiveGroupAsync();
+        //                this.AllRole = await RecordHelper.GetAllRoleAsync();
+        //                this.AllWeapon = await RecordHelper.GetAllWeaponAsync();
+        //                this.StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
+        //                this.StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
+        //                CalculateRange();
+        //                this.IsLoadRecord = true;
+        //                SelectType = CardPoolType.RoleActivity;
+        //            }
+        //            else
+        //            {
+        //                this.PlayerRecordContext.TipShow.ShowMessage(
+        //                    "写入抽卡缓存失败",
+        //                    Microsoft.UI.Xaml.Controls.Symbol.Clear
+        //                );
+        //                this.SelectType = null;
+        //                this.IsLoadRecord = false;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            this.FiveGroup = await RecordHelper.GetFiveGroupAsync();
+        //            this.AllRole = await RecordHelper.GetAllRoleAsync();
+        //            this.AllWeapon = await RecordHelper.GetAllWeaponAsync();
+        //            this.StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
+        //            this.StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
+        //            if (await MergeRecordAsync(localRecord))
+        //            {
+        //                CalculateRange();
+        //                this.IsLoadRecord = true;
+        //                SelectType = CardPoolType.RoleActivity;
+        //            }
+        //        }
+        //        break;
+        //    case CreateRecordType.SelectItemOpen:
+        //        if (link.Cache == null)
+        //        {
+        //            this.IsLoadRecord = false;
+        //            SelectType = null;
+        //            return;
+        //        }
+        //        this.FiveGroup = await RecordHelper.GetFiveGroupAsync();
+        //        this.AllRole = await RecordHelper.GetAllRoleAsync();
+        //        this.AllWeapon = await RecordHelper.GetAllWeaponAsync();
+        //        this.StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
+        //        this.StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
+        //        RoleActivity = link.Cache.RoleActivityItems.ToList();
+        //        WeaponsActivity = link.Cache.WeaponsActivityItems.ToList();
+        //        WeaponsResident = link.Cache.WeaponsResidentItems.ToList();
+        //        RoleResident = link.Cache.RoleResidentItems.ToList();
+        //        Beginner = link.Cache.BeginnerItems.ToList();
+        //        BeginnerChoice = link.Cache.BeginnerChoiceItems.ToList();
+        //        GratitudeOrientation = link.Cache.GratitudeOrientationItems.ToList();
+        //        CalculateRange();
+        //        this.IsLoadRecord = true;
+        //        SelectType = CardPoolType.RoleActivity;
+        //        this.CreateTime = (DateTime.Now - link.Cache.Time).ToString("hh\\:mm\\:ss");
+        //        this.Id = link.Cache.Id;
+        //        break;
+        //}
     }
 
     private async Task<bool> MergeRecordAsync((RecordCacheDetily?, string?) localRecord)
     {
-        RoleActivity = await RecordHelper.GetRecordAsync(this.Request, CardPoolType.RoleActivity);
-        WeaponsActivity = await RecordHelper.GetRecordAsync(
-            this.Request,
-            CardPoolType.WeaponsActivity
-        );
-        RoleResident = await RecordHelper.GetRecordAsync(this.Request, CardPoolType.RoleResident);
-        WeaponsResident = await RecordHelper.GetRecordAsync(
-            this.Request,
-            CardPoolType.WeaponsResident
-        );
-        Beginner = await RecordHelper.GetRecordAsync(this.Request, CardPoolType.Beginner);
-        BeginnerChoice = await RecordHelper.GetRecordAsync(
-            this.Request,
-            CardPoolType.BeginnerChoice
-        );
-        GratitudeOrientation = await RecordHelper.GetRecordAsync(
-            this.Request,
-            CardPoolType.GratitudeOrientation
-        );
-        if (
-            RoleActivity == null
-            || WeaponsActivity == null
-            || RoleResident == null
-            || WeaponsResident == null
-            || Beginner == null
-            || BeginnerChoice == null
-            || GratitudeOrientation == null
-        )
-        {
-            this.PlayerRecordContext.TipShow.ShowMessage("数据拉取失败!", Symbol.Clear);
-            return false;
-        }
-        var guid = Guid.NewGuid();
-        var cache = new RecordCacheDetily()
-        {
-            Guid = guid.ToString(),
-            Name = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFFF")}",
-            Time = DateTime.Now,
-            Id = this.Request.PlayerId,
-            RoleActivityItems = RoleActivity,
-            RoleResidentItems = RoleResident,
-            WeaponsActivityItems = WeaponsActivity,
-            WeaponsResidentItems = WeaponsResident,
-            BeginnerItems = Beginner,
-            BeginnerChoiceItems = BeginnerChoice,
-            GratitudeOrientationItems = GratitudeOrientation,
-        };
-        var newCache = RecordHelper.MargeRecord(cache, localRecord);
-        if (newCache == null)
-        {
-            this.PlayerRecordContext.TipShow.ShowMessage("去重失败", Symbol.Clear);
-            return false;
-        }
-        else
-        {
-            RoleActivity = newCache.Item1!.RoleActivityItems.ToList();
-            WeaponsActivity = newCache.Item1!.WeaponsActivityItems.ToList();
-            RoleResident = newCache.Item1!.RoleResidentItems.ToList();
-            WeaponsResident = newCache.Item1!.WeaponsResidentItems.ToList();
-            Beginner = newCache.Item1!.BeginnerItems.ToList();
-            BeginnerChoice = newCache.Item1!.BeginnerChoiceItems.ToList();
-            GratitudeOrientation = newCache.Item1!.GratitudeOrientationItems.ToList();
-            File.Delete(newCache.Item2);
-            await this.PlayerRecordContext.RecordCacheService.CreateRecordAsync(newCache.Item1);
-            this.CreateTime = (DateTime.Now - newCache.Item1.Time).ToString("hh\\:mm\\:ss");
-            this.Id = newCache.Item1.Id;
-            this.PlayerRecordContext.TipShow.ShowMessage("合并抽卡成功", Symbol.Accept);
-        }
+        //RoleActivity = await RecordHelper.GetRecordAsync(this.Request, CardPoolType.RoleActivity);
+        //WeaponsActivity = await RecordHelper.GetRecordAsync(
+        //    this.Request,
+        //    CardPoolType.WeaponsActivity
+        //);
+        //RoleResident = await RecordHelper.GetRecordAsync(this.Request, CardPoolType.RoleResident);
+        //WeaponsResident = await RecordHelper.GetRecordAsync(
+        //    this.Request,
+        //    CardPoolType.WeaponsResident
+        //);
+        //Beginner = await RecordHelper.GetRecordAsync(this.Request, CardPoolType.Beginner);
+        //BeginnerChoice = await RecordHelper.GetRecordAsync(
+        //    this.Request,
+        //    CardPoolType.BeginnerChoice
+        //);
+        //GratitudeOrientation = await RecordHelper.GetRecordAsync(
+        //    this.Request,
+        //    CardPoolType.GratitudeOrientation
+        //);
+        //if (
+        //    RoleActivity == null
+        //    || WeaponsActivity == null
+        //    || RoleResident == null
+        //    || WeaponsResident == null
+        //    || Beginner == null
+        //    || BeginnerChoice == null
+        //    || GratitudeOrientation == null
+        //)
+        //{
+        //    this.PlayerRecordContext.TipShow.ShowMessage("数据拉取失败!", Symbol.Clear);
+        //    return false;
+        //}
+        //var guid = Guid.NewGuid();
+        //var cache = new RecordCacheDetily()
+        //{
+        //    Guid = guid.ToString(),
+        //    Name = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFFF")}",
+        //    Time = DateTime.Now,
+        //    Id = this.Request.PlayerId,
+        //    RoleActivityItems = RoleActivity,
+        //    RoleResidentItems = RoleResident,
+        //    WeaponsActivityItems = WeaponsActivity,
+        //    WeaponsResidentItems = WeaponsResident,
+        //    BeginnerItems = Beginner,
+        //    BeginnerChoiceItems = BeginnerChoice,
+        //    GratitudeOrientationItems = GratitudeOrientation,
+        //};
+        //var newCache = RecordHelper.MargeRecord(cache, localRecord);
+        //if (newCache == null)
+        //{
+        //    this.PlayerRecordContext.TipShow.ShowMessage("去重失败", Symbol.Clear);
+        //    return false;
+        //}
+        //else
+        //{
+        //    RoleActivity = newCache.Item1!.RoleActivityItems.ToList();
+        //    WeaponsActivity = newCache.Item1!.WeaponsActivityItems.ToList();
+        //    RoleResident = newCache.Item1!.RoleResidentItems.ToList();
+        //    WeaponsResident = newCache.Item1!.WeaponsResidentItems.ToList();
+        //    Beginner = newCache.Item1!.BeginnerItems.ToList();
+        //    BeginnerChoice = newCache.Item1!.BeginnerChoiceItems.ToList();
+        //    GratitudeOrientation = newCache.Item1!.GratitudeOrientationItems.ToList();
+        //    File.Delete(newCache.Item2);
+        //    await this.PlayerRecordContext.RecordCacheService.CreateRecordAsync(newCache.Item1);
+        //    this.CreateTime = (DateTime.Now - newCache.Item1.Time).ToString("hh\\:mm\\:ss");
+        //    this.Id = newCache.Item1.Id;
+        //    this.PlayerRecordContext.TipShow.ShowMessage("合并抽卡成功", Symbol.Accept);
+        //}
         return true;
     }
 
@@ -303,10 +303,10 @@ public sealed partial class PlayerRecordViewModel : ViewModelBase, IDisposable
         var guid = Guid.NewGuid();
         var cache = new RecordCacheDetily()
         {
-            Guid = guid.ToString(),
+            //Guid = guid.ToString(),
             Name = $"{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:FFFF")}",
             Time = DateTime.Now,
-            Id = this.Request.PlayerId,
+            //Id = this.Request.PlayerId,
             RoleActivityItems = RoleActivity,
             RoleResidentItems = RoleResident,
             WeaponsActivityItems = WeaponsActivity,
@@ -318,7 +318,7 @@ public sealed partial class PlayerRecordViewModel : ViewModelBase, IDisposable
         await this.PlayerRecordContext.RecordCacheService.CreateRecordAsync(cache);
 
         this.CreateTime = (DateTime.Now - cache.Time).ToString("hh\\:mm\\:ss");
-        this.Id = cache.Id;
+        //this.Id = cache.Id;
         return true;
     }
 

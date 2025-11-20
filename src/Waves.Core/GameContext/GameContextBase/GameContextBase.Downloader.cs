@@ -144,10 +144,13 @@ public partial class GameContextBase
         {
             Logger.WriteInfo("修复游戏，开始删除本地多余文件");
             var localFile = new DirectoryInfo(folder).GetFiles("*", SearchOption.AllDirectories);
-            var serverFileSet = new HashSet<string>(resource.Resource.Select(x => BuildFilePath(folder, x)));
+            var serverFileSet = new HashSet<string>(resource.Resource.Select(x => BuildFilePath(folder, x).ToLower()));
 
             var filesToDelete = localFile
-                .Where(file => !serverFileSet.Contains(file.FullName))
+                .Where(f =>
+                {
+                    return !serverFileSet.Contains(f.FullName.ToLower());
+                })
                 .ToList();
 
             if (filesToDelete.Any())
@@ -537,7 +540,12 @@ public partial class GameContextBase
         Directory.CreateDirectory(Path.GetDirectoryName(path)??throw new Exception($"文件{item.Dest}创建失败"));
         return path;
     }
-
+    private string BuildFilePath(string folder, string item)
+    {
+        var path = Path.Combine(folder, item.Replace('/', Path.DirectorySeparatorChar));
+        Directory.CreateDirectory(Path.GetDirectoryName(path) ?? throw new Exception($"文件{item}创建失败"));
+        return path;
+    }
     private async Task<bool> UpdateGameToResources(string folder, List<IndexResource> resource)
     {
         _downloadState.IsActive = true;

@@ -1,8 +1,10 @@
-﻿using Haiyu.Contracts;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using Haiyu.Contracts;
 using Haiyu.Services.DialogServices;
 using LiveChartsCore.Defaults;
 using MemoryPack;
-using System.Globalization;
 using Waves.Api.Models.CloudGame;
 
 namespace Haiyu.ViewModel;
@@ -77,19 +79,11 @@ public partial class CloudGameViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<DateTimePoint> AllPoints { get; set; } = new();
 
-    private long currentPage = 1;
-    public long CurrentPage
-    {
-        get => currentPage;
-        set => SetProperty(ref currentPage, value);
-    }
+    [ObservableProperty]
+    public partial long CurrentPage { get; set; }
 
-    private long totalPages = 1;
-    public long TotalPages
-    {
-        get => totalPages;
-        set => SetProperty(ref totalPages, value);
-    }
+    [ObservableProperty]
+    public partial long TotalPages { get; set; }
 
     partial void OnPageSizeChanged(long value)
     {
@@ -168,56 +162,16 @@ public partial class CloudGameViewModel : ViewModelBase
                 this.CTS.Token
             )
         );
+        if (resource.Result == null)
+        {
+            TipShow.ShowMessage("请求失败！", Symbol.Clear);
+            return;
+        }
         this.cacheItems = resource.Item2.Data;
         this.PageSize = 9;
         this.CurrentPage = 1;
         UpdatePageCount();
         LoadPageItems();
-        var result = resource
-            .Item2.Data.GroupBy(item =>
-            {
-                DateTime parsedDate;
-                if (
-                    DateTime.TryParseExact(
-                        item.Time,
-                        "yyyy-MM-dd HH:mm:ss",
-                        CultureInfo.InvariantCulture,
-                        DateTimeStyles.None,
-                        out parsedDate
-                    )
-                )
-                {
-                    return parsedDate.Date;
-                }
-                return (DateTime?)null; // 无法解析的日期返回 null，不会参与分组
-            })
-            .Where(g => g.Key.HasValue) // 过滤掉无效日期
-            .ToDictionary(g => g.Key.Value.ToString("yyyy-MM-dd"), g => g.Count());
-        var memory = new MemoryPalyCard();
-        memory.UserName = SelectedUser.Username;
-        memory.Values = resource.Result.Data;
-        var pack = MemoryPackSerializer.Serialize<MemoryPalyCard>(
-            memory,
-            new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
-        );
-        var packed = MemoryPackSerializer.Deserialize<MemoryPalyCard>(
-            pack,
-            new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
-        );
-        if (packed == null)
-        {
-            TipShow.ShowMessage(
-                $"转存失败",
-                Symbol.Clear
-            );
-        }
-        else
-        {
-            TipShow.ShowMessage(
-                $"AOT存储结果:二进制大小{pack.Length}，转回数据数量：{packed.Values.Count},名称:{packed.UserName}",
-                Symbol.Clear
-            );
-        }
     }
 
     // 更新总页数
@@ -245,7 +199,6 @@ public partial class CloudGameViewModel : ViewModelBase
         var start = (pageIdx - 1) * pageSize;
         if (start >= cacheItems.Count)
             return;
-
         var page = cacheItems.Skip(start).Take(pageSize);
         foreach (var item in page)
             ResourceItems.Add(item);
@@ -282,5 +235,68 @@ public partial class CloudGameViewModel : ViewModelBase
     public async Task ShowAdd()
     {
         await DialogManager.ShowWebGameDialogAsync();
+    }
+
+    [RelayCommand]
+    public async Task SavePlayCardData()
+    {
+        this.LoadVisibility = Visibility.Visible;
+        this.DataVisibility = Visibility.Collapsed;
+        this.IsLoginUser = true;
+        var FiveGroup = await RecordHelper.GetFiveGroupAsync();
+        var AllRole = await RecordHelper.GetAllRoleAsync();
+        var AllWeapon = await RecordHelper.GetAllWeaponAsync();
+        var StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
+        var StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
+        var url = await TryInvokeAsync(async () =>
+            await CloudGameService.GetRecordAsync(this.CTS.Token)
+        );
+        #region 读取抽卡记录
+        Dictionary<int, IList<RecordCardItemWrapper>> @param =
+            new Dictionary<int, IList<RecordCardItemWrapper>>();
+        for (int i = 1; i < 10; i++)
+        {
+            var player1 = await TryInvokeAsync(async () =>
+                await CloudGameService.GetGameRecordResource(
+                    url.Item2.Data.RecordId,
+                    url.Item2.Data.PlayerId.ToString(),
+                    i,
+                    this.CTS.Token
+                )
+            );
+            if (player1.Result == null)
+            {
+                TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
+                return;
+            }
+            var WeaponsActivity = player1
+                .Result.Data.Select(x => new RecordCardItemWrapper(x))
+                .ToList();
+            param.Add(i, WeaponsActivity);
+        }
+        #endregion
+        this.LoadVisibility = Visibility.Collapsed;
+        this.DataVisibility = Visibility.Visible;
+        this.IsLoginUser = false;
+        var cache = new RecordCacheDetily()
+        {
+            Name = this.SelectedUser.Username,
+            Time = DateTime.Now,
+            RoleActivityItems = param[1],
+            WeaponsActivityItems = param[2],
+            RoleResidentItems = param[3],
+            WeaponsResidentItems = param[4],
+            BeginnerItems = param[5],
+            BeginnerChoiceItems = param[6],
+            GratitudeOrientationItems = param[7],
+            RoleJourneyItems = param[8],
+            WeaponJourneyItems = param[9]
+        };
+        //二进制化
+        var datas =  MemoryPackSerializer.Serialize<RecordCacheDetily>(
+            cache,
+            new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
+        );
+        await RecordHelper.MargeRecordAsync(App.RecordFolder,cache)!;
     }
 }

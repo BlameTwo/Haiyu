@@ -39,7 +39,7 @@ public partial class App : ClientApplication
         mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey("Haiyu_Main");
         mainInstance.Activated += MainInstance_Activated;
         #region PE DPI Resource
-        //SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
+        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         #endregion
         this.UnhandledException += App_UnhandledException;
 

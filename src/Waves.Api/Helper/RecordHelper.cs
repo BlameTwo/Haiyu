@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
+using MemoryPack;
 using Waves.Api.Models;
 using Waves.Api.Models.Communitys;
 using Waves.Api.Models.Enums;
@@ -77,7 +78,7 @@ public static class RecordHelper
         }
     }
 
-    public static (List<Tuple<RecordCardItemWrapper, int, bool?>>?,int?) FormatStartFive(
+    public static (List<Tuple<RecordCardItemWrapper, int, bool?>>?, int?) FormatStartFive(
         IEnumerable<RecordCardItemWrapper> source,
         List<int> ids = null
     )
@@ -99,7 +100,7 @@ public static class RecordHelper
                     count++;
                 }
             }
-            return (result,count);
+            return (result, count);
         }
         foreach (var item in items)
         {
@@ -120,7 +121,7 @@ public static class RecordHelper
                 count++;
             }
         }
-        return (result,count);
+        return (result, count);
     }
 
     public static List<Tuple<RecordCardItemWrapper, int>> FormatRecordFive(
@@ -327,25 +328,46 @@ public static class RecordHelper
         return new(wrapper, count);
     }
 
-    public static Tuple<RecordCacheDetily?, string>? MargeRecord(
-        RecordCacheDetily cache,
-        (RecordCacheDetily?, string?) localRecord
+    public static async Task<RecordCacheDetily?>? MargeRecordAsync(
+        string baseFolder,
+        RecordCacheDetily cache
     )
     {
-        if (cache.Id != localRecord.Item1!.Id)
-            return null;
-        if (cache.Time < localRecord.Item1.Time)
-            return null;
-
+        var cachePath = "";
+        RecordCacheDetily? localRecord = null;
+        foreach (var item in Directory.GetFiles(baseFolder, ".json", SearchOption.TopDirectoryOnly))
+        {
+            var data = MemoryPackSerializer.Deserialize<RecordCacheDetily>(
+                await File.ReadAllBytesAsync(item),
+                new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
+            );
+            if (data == null)
+                continue;
+            if (data.Name == cache.Name)
+            {
+                localRecord = data;
+                cachePath = item;
+            }
+        }
+        if (string.IsNullOrWhiteSpace(cachePath))
+        {
+            cachePath = baseFolder + $"\\{cache.Name}.json";
+            File.Create(cachePath).Dispose();
+        }
         var sortedCache = SortItemsByTime(cache);
-        var sortedLocal = SortItemsByTime(localRecord.Item1);
-
+        var sortedLocal = SortItemsByTime(localRecord);
         var mergedRecord = new RecordCacheDetily
         {
-            Guid = cache.Guid,
             Name = cache.Name,
-            Id = cache.Id,
             Time = cache.Time,
+            RoleJourneyItems = SyncCompareLists(
+                sortedCache.RoleJourneyItems,
+                sortedLocal.RoleJourneyItems
+            ),
+            WeaponJourneyItems = SyncCompareLists(
+                sortedCache.WeaponJourneyItems,
+                sortedLocal.WeaponJourneyItems
+            ),
             RoleActivityItems = SyncCompareLists(
                     sortedCache.RoleActivityItems,
                     sortedLocal.RoleActivityItems
@@ -386,12 +408,20 @@ public static class RecordHelper
                 .OrderByDescending(x => x.RecordTime)
                 .ToList(),
         };
-
-        return new Tuple<RecordCacheDetily?, string>(mergedRecord, localRecord.Item2 ?? "");
+        var byteData = MemoryPackSerializer.Serialize<RecordCacheDetily>(
+            mergedRecord,
+            new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
+        );
+        await File.WriteAllBytesAsync(cachePath, byteData);
+        return mergedRecord;
     }
 
-    public static RecordCacheDetily SortItemsByTime(RecordCacheDetily recordCache)
+    public static RecordCacheDetily? SortItemsByTime(RecordCacheDetily recordCache)
     {
+        if (recordCache == null)
+        {
+            return new RecordCacheDetily() { Name = "" };
+        }
         recordCache.RoleActivityItems = recordCache
             .RoleActivityItems.OrderByDescending(x => x.RecordTime)
             .ToList();
@@ -418,13 +448,16 @@ public static class RecordHelper
     }
 
     public static List<RecordCardItemWrapper> SyncCompareLists(
-        List<RecordCardItemWrapper> list1,
-        List<RecordCardItemWrapper> list2
+        IList<RecordCardItemWrapper> list1,
+        IList<RecordCardItemWrapper> list2
     )
     {
+        if (list1 == null)
+            return new(list2);
+        if (list2 == null)
+            return new(list1);
         var result = new List<RecordCardItemWrapper>();
         int maxCount = Math.Max(list1.Count, list2.Count);
-
         int i = 0;
         while (i < maxCount)
         {

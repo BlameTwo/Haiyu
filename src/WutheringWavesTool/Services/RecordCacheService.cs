@@ -8,7 +8,7 @@ public sealed partial class RecordCacheService : IRecordCacheService
     {
         if (recordCacheDetily == null)
             return false;
-        var filePath = $"{App.RecordFolder}\\{recordCacheDetily.Guid}.json";
+        var filePath = $"{App.RecordFolder}\\ccc.json";
         if (File.Exists($"{App.RecordFolder}"))
         {
             File.Delete(filePath);

@@ -1,40 +1,59 @@
-﻿using System.Text.Json.Serialization;
+﻿using MemoryPack;
+using System.Text.Json.Serialization;
 using Waves.Api.Models.Wrappers;
 
 namespace Waves.Api.Models.Record;
 
-public class RecordCacheDetily
+
+[MemoryPackable]
+public partial class RecordCacheDetily
 {
-    [JsonPropertyName(nameof(Guid))]
-    public string Guid { get; set; }
+    public required string Name { get; set; }
 
-    [JsonPropertyName(nameof(Name))]
-    public string Name { get; set; }
-
-    [JsonPropertyName(nameof(Time))]
     public DateTime Time { get; set; }
 
-    [JsonPropertyName(nameof(Id))]
-    public string Id { get; set; }
+    /// <summary>
+    /// 角色活动
+    /// </summary>
+    public IList<RecordCardItemWrapper>? RoleActivityItems { get; set; } = [];
 
-    [JsonPropertyName(nameof(RoleActivityItems))]
-    public List<RecordCardItemWrapper> RoleActivityItems { get; set; }
+    /// <summary>
+    /// 武器活动
+    /// </summary>
+    public IList<RecordCardItemWrapper>? WeaponsActivityItems { get; set; } = [];
 
-    [JsonPropertyName(nameof(WeaponsActivityItems))]
-    public List<RecordCardItemWrapper> WeaponsActivityItems { get; set; }
+    /// <summary>
+    /// 角色常驻
+    /// </summary>
+    public IList<RecordCardItemWrapper>? RoleResidentItems { get; set; } = [];
 
-    [JsonPropertyName(nameof(RoleResidentItems))]
-    public List<RecordCardItemWrapper> RoleResidentItems { get; set; }
+    /// <summary>
+    /// 武器常驻
+    /// </summary>
+    public IList<RecordCardItemWrapper>? WeaponsResidentItems { get; set; } = [];
 
-    [JsonPropertyName(nameof(WeaponsResidentItems))]
-    public List<RecordCardItemWrapper> WeaponsResidentItems { get; set; }
+    /// <summary>
+    /// 新手唤取
+    /// </summary>
+    public IList<RecordCardItemWrapper>? BeginnerItems { get; set; } = [];
 
-    [JsonPropertyName(nameof(BeginnerItems))]
-    public List<RecordCardItemWrapper> BeginnerItems { get; set; }
+    /// <summary>
+    /// 新手自选感恩
+    /// </summary>
+    public IList<RecordCardItemWrapper>? BeginnerChoiceItems { get; set; } = [];
 
-    [JsonPropertyName(nameof(BeginnerChoiceItems))]
-    public List<RecordCardItemWrapper> BeginnerChoiceItems { get; set; }
+    /// <summary>
+    /// 感恩定向
+    /// </summary>
+    public IList<RecordCardItemWrapper>? GratitudeOrientationItems { get; set; } = [];
 
-    [JsonPropertyName(nameof(GratitudeOrientationItems))]
-    public List<RecordCardItemWrapper> GratitudeOrientationItems { get; set; }
+    /// <summary>
+    /// 角色新旅
+    /// </summary>
+    public IList<RecordCardItemWrapper>? RoleJourneyItems { get; set; } = [];
+
+    /// <summary>
+    /// 武器新旅
+    /// </summary>
+    public IList<RecordCardItemWrapper>? WeaponJourneyItems { get; set; } = [];
 }

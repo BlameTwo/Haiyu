@@ -48,7 +48,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="model:RecordCacheDetily">
                     <Grid Padding="3">
-                        <TextBlock Grid.Column="1" Text="{x:Bind Id}" />
+                        <TextBlock Grid.Column="1" Text="{x:Bind Name}" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
