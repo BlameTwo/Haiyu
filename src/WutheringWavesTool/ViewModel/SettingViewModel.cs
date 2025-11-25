@@ -135,4 +135,9 @@ public sealed partial class SettingViewModel : ViewModelBase
                 break;
         }
     }
+
+    public override void Dispose()
+    {
+        base.Dispose();
+    }
 }

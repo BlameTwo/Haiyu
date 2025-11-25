@@ -1,6 +1,6 @@
 ﻿namespace Haiyu.ViewModel.Communitys;
 
-public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
+public sealed partial class GamerChallengeViewModel : ViewModelBase
 {
     private List<ChallengeList>? orginCountrys;
 
@@ -92,7 +92,7 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
         }
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);
         this.Countrys.RemoveAll();
@@ -106,10 +106,11 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase, IDisposable
                 item.BossCover = null;
             }
         }
-        this.Items.RemoveAll();
+        this.Items?.RemoveAll();
         this.Countrys = null;
         this.orginCountrys = null;
         this.Items = null;
+        base.Dispose();
     }
 
     public void SetData(GameRoilDataItem Roilitem)

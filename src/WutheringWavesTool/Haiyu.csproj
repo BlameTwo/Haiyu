@@ -116,6 +116,7 @@
 		<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
 		<PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
 		<PackageReference Include="WinUIEx" Version="2.9.0" />
+		<PackageReference Include="ZLinq" Version="1.5.4" />
 		<PackageReference Include="ZXing.Net" Version="0.16.11" />
 	</ItemGroup>
 	<ItemGroup>

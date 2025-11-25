@@ -18,7 +18,7 @@ namespace Haiyu.Pages.GamePages
             this.ViewModel.SelectTab(sender.SelectedItem.Text);
         }
 
-        public MainPGRViewModel? ViewModel { get; }
+        public MainPGRViewModel ViewModel { get; }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {

@@ -64,19 +64,26 @@ namespace Waves.Core.GameContext
                 gameRunTimer.Interval = 3000;
                 gameRunTimer.Start();
                 Logger.WriteInfo("正在启动游戏……");
+
+                if (gameContextOutputDelegate == null)
+                    return true;
+                await gameContextOutputDelegate
+                    .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
+                    .ConfigureAwait(false);
                 return true;
             }
             catch (Exception ex)
             {
                 this._isStarting = false;
                 Logger.WriteError($"游戏启动错误{ex.Message}");
+
+                if (gameContextOutputDelegate == null)
+                    return false;
+                await gameContextOutputDelegate
+                    .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
+                    .ConfigureAwait(false);
                 return false;
             }
-            if (gameContextOutputDelegate == null)
-                return true;
-            await gameContextOutputDelegate
-                .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
-                .ConfigureAwait(false);
         }
 
         private async void GameRunTimer_Elapsed(object? sender, ElapsedEventArgs e)

@@ -12,7 +12,12 @@ public sealed partial class GamerSignPage : Page, IWindowPage
 
     public GamerSignViewModel ViewModel { get; }
 
-    public void Dispose() { }
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        this.ViewModel.Dispose();
+        base.OnNavigatedFrom(e);
+        GC.Collect();
+    }
 
     public void SetData(object value)
     {
@@ -27,5 +32,10 @@ public sealed partial class GamerSignPage : Page, IWindowPage
         this.titlebar.Window = window;
         this.titlebar.IsExtendsContentIntoTitleBar = true;
         this.titlebar.UpDate();
+    }
+
+    public void Dispose()
+    {
+        this.ViewModel.Dispose();
     }
 }

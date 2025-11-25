@@ -7,7 +7,15 @@ namespace Haiyu.ViewModel.WikiViewModels;
 
 public partial class WavesWikiViewModel : WikiViewModelBase
 {
-    public WavesWikiViewModel() { }
+    public WavesWikiViewModel()
+    {
+        this.Messenger.Register<LoginMessanger>(this, LoginMessangerMethod);
+    }
+
+    private async void LoginMessangerMethod(object recipient, LoginMessanger message)
+    {
+        await Loaded();
+    }
 
     [ObservableProperty]
     public partial ObservableCollection<HotContentSideWrapper> Sides { get; set; }
@@ -67,5 +75,13 @@ public partial class WavesWikiViewModel : WikiViewModelBase
             wrappers.Add(value);
         }
         return wrappers;
+    }
+
+    public override void Dispose()
+    {
+        Sides.Clear();
+        Staminas.Clear();
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        base.Dispose();
     }
 }

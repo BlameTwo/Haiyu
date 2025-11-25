@@ -12,6 +12,12 @@ public sealed partial class GamerSkinPage : Page, IPage
 
     public Type PageType => typeof(GamerSkinPage);
 
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        this.ViewModel.Dispose();
+        base.OnNavigatedFrom(e);
+        GC.Collect();
+    }
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         if (e.Parameter is GameRoilDataItem item)

@@ -92,23 +92,11 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
         this.SelectCountry = Countrys[0];
     }
 
-    protected virtual void Dispose(bool disposing)
+    public override void Dispose()
     {
-        if (!disposedValue)
-        {
-            if (disposing)
-            {
-                WeakReferenceMessenger.Default.UnregisterAll(this);
-                this.Messenger.UnregisterAll(this);
-            }
-
-            disposedValue = true;
-        }
-    }
-
-    public void Dispose()
-    {
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
+        Countrys.Clear();
+        CountrysItems.Clear();
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        this.Messenger.UnregisterAll(this);
     }
 }

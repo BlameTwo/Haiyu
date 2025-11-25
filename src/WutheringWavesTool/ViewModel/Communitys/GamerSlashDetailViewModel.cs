@@ -70,29 +70,15 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
         this.SlashHeader0Items = SlashItemWrapper.Convert(diff0.ChallengeList);
     }
 
-    private void Dispose(bool disposing)
+    public override void Dispose()
     {
-        if (!disposedValue)
-        {
-            if (disposing)
-            {
-                this.CTS.Cancel();
-                this.Difficulty0Header = null;
-                this.Difficulty1Header = null;
-                this.Difficulty2Header = null;
-                this.SlashHeader0Items = null;
-                this.SlashHeader1Items = null;
-                WeakReferenceMessenger.Default.UnregisterAll(this);
-            }
-            // TODO: 释放未托管的资源(未托管的对象)并重写终结器
-            // TODO: 将大型字段设置为 null
-            disposedValue = true;
-        }
-    }
-
-    public void Dispose()
-    {
-        Dispose(disposing: true);
+        this.CTS.Cancel();
+        this.Difficulty0Header = null;
+        this.Difficulty1Header = null;
+        this.Difficulty2Header = null;
+        this.SlashHeader0Items = null;
+        this.SlashHeader1Items = null;
+        WeakReferenceMessenger.Default.UnregisterAll(this);
         GC.SuppressFinalize(this);
     }
 }

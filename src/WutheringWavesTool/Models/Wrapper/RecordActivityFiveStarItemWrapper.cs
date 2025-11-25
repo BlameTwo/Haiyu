@@ -13,13 +13,16 @@ public sealed partial class RecordActivityFiveStarItemWrapper : ObservableObject
 
     [ObservableProperty]
     public partial bool? Flage { get; set; }
+
+    [ObservableProperty]
+    public partial Visibility ShowFlage { get; set; }
 }
 
 public static partial class WrapperCollectionExtension
 {
     public static IEnumerable<RecordActivityFiveStarItemWrapper> Format(
         this IEnumerable<Tuple<RecordCardItemWrapper, int, bool?>> values,
-        IEnumerable<CommunityRoleData>? roles
+        IEnumerable<CommunityRoleData>? roles,bool showFlag
     )
     {
         List<RecordActivityFiveStarItemWrapper> item = new();
@@ -38,7 +41,7 @@ public static partial class WrapperCollectionExtension
                     Count = value.Item2,
                     Name = value.Item1.Name,
                     Icon = new(new($"https://mc.appfeng.com/ui/avatar/{resource.Icon}.png")),
-                    Flage = value.Item3,
+                    Flage = showFlag == true?value.Item3: false
                 }
             );
         }
@@ -47,7 +50,7 @@ public static partial class WrapperCollectionExtension
 
     public static IEnumerable<RecordActivityFiveStarItemWrapper> Format(
         this IEnumerable<Tuple<RecordCardItemWrapper, int, bool?>> values,
-        IEnumerable<CommunityWeaponData>? roles
+        IEnumerable<CommunityWeaponData>? roles, bool showFlag
     )
     {
         List<RecordActivityFiveStarItemWrapper> item = new();
@@ -66,7 +69,7 @@ public static partial class WrapperCollectionExtension
                     Count = value.Item2,
                     Name = value.Item1.Name,
                     Icon = new(new($"https://mc.appfeng.com/ui/weapon/{resource.Icon}.png")),
-                    Flage = value.Item3,
+                    Flage = showFlag == true ? value.Item3 : false
                 }
             );
         }
@@ -75,7 +78,7 @@ public static partial class WrapperCollectionExtension
 
     public static IEnumerable<RecordActivityFiveStarItemWrapper> Format(
         this IEnumerable<Tuple<RecordCardItemWrapper, int>> values,
-        IEnumerable<CommunityWeaponData>? roles
+        IEnumerable<CommunityWeaponData>? roles, bool showFlag
     )
     {
         List<RecordActivityFiveStarItemWrapper> item = new();
@@ -93,6 +96,7 @@ public static partial class WrapperCollectionExtension
                     Name = value.Item1.Name,
                     Icon = new(new($"https://mc.appfeng.com/ui/weapon/{resource.Icon}.png")),
                     Flage = null,
+                    ShowFlage = showFlag == true ? Visibility.Visible : Visibility.Collapsed,
                 }
             );
         }
@@ -101,7 +105,7 @@ public static partial class WrapperCollectionExtension
 
     public static IEnumerable<RecordActivityFiveStarItemWrapper> Format(
         this IEnumerable<Tuple<RecordCardItemWrapper, int>> values,
-        IEnumerable<CommunityRoleData>? roles
+        IEnumerable<CommunityRoleData>? roles, bool showFlag
     )
     {
         List<RecordActivityFiveStarItemWrapper> item = new();
@@ -119,6 +123,7 @@ public static partial class WrapperCollectionExtension
                     Name = value.Item1.Name,
                     Icon = new(new($"https://mc.appfeng.com/ui/avatar/{resource.Icon}.png")),
                     Flage = null,
+                    ShowFlage = showFlag == true? Visibility.Visible: Visibility.Collapsed,
                 }
             );
         }

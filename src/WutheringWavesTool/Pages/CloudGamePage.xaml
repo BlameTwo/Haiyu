@@ -144,15 +144,7 @@
                         FontSize="13.5"
                         Glyph="&#xE7BA;" />
                 </Button>
-                <Button
-                    Command="{x:Bind ViewModel.SavePlayCardDataCommand}"
-                    Style="{ThemeResource TransparentButtonStyle}"
-                    ToolTipService.ToolTip="保存数据">
-                    <FontIcon
-                        FontFamily="Segoe Fluent Icons"
-                        FontSize="13.5"
-                        Glyph="&#xE74E;" />
-                </Button>
+
             </StackPanel>
             <StackPanel
                 Margin="5,0,0,0"

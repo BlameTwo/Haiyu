@@ -1,6 +1,6 @@
 ﻿namespace Haiyu.Common;
 
-public partial class ViewModelBase : ObservableRecipient
+public partial class ViewModelBase : ObservableRecipient,IDisposable
 {
     public CancellationTokenSource CTS { get; set; }
 
@@ -42,5 +42,10 @@ public partial class ViewModelBase : ObservableRecipient
         }
     }
 
-
+    public virtual void Dispose()
+    {
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        this.CTS.Cancel();
+        this.CTS.Dispose();
+    }
 }

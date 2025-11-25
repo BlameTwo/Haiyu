@@ -134,7 +134,7 @@ public partial class ResourceBriefViewModel : ViewModelBase, IDisposable
         await RefreshDataAsync();
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         this.CTS.Cancel();
         this.CTS.Dispose();

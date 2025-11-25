@@ -6,7 +6,7 @@ using Waves.Core.Services;
 
 namespace Haiyu.ViewModel.GameViewModels;
 
-public abstract partial class GameContextViewModelBase : ViewModelBase, IDisposable
+public abstract partial class GameContextViewModelBase : ViewModelBase
 {
     public LoggerService Logger { get; }
     public IGameContext GameContext { get; }
@@ -432,6 +432,12 @@ public abstract partial class GameContextViewModelBase : ViewModelBase, IDisposa
 
     public abstract void DisposeAfter();
 
+    public override void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)
@@ -447,9 +453,9 @@ public abstract partial class GameContextViewModelBase : ViewModelBase, IDisposa
         }
     }
 
-    public void Dispose()
-    {
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
-    }
+    //public void Dispose()
+    //{
+    //    Dispose(disposing: true);
+    //    GC.SuppressFinalize(this);
+    //}
 }

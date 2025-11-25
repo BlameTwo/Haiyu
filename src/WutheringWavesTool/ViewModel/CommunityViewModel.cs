@@ -130,37 +130,11 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
         this.DataLoad = true;
     }
 
-    //[RelayCommand]
-    //void OpenSignWindow()
-    //{
-    //    var win = ViewFactorys.ShowSignWindow(this.SelectRoil.Item);
-    //    win.MaxHeight = 350;
-    //    win.MaxWidth = 350;
-    //    (win.AppWindow.Presenter as OverlappedPresenter)!.IsMaximizable = false;
-    //    (win.AppWindow.Presenter as OverlappedPresenter)!.IsMinimizable = false;
-    //    win.AppWindowApp.Show();
-    //}
-
-    //[RelayCommand]
-    //void OpenPlayerRecordWindow()
-    //{
-    //    var win = ViewFactorys.ShowPlayerRecordWindow();
-    //    (win.AppWindow.Presenter as OverlappedPresenter)!.IsMaximizable = false;
-    //    (win.AppWindow.Presenter as OverlappedPresenter)!.IsMinimizable = false;
-    //    win.SystemBackdrop = new MicaBackdrop();
-    //    win.AppWindowApp.Show();
-    //}
-
-    //[RelayCommand]
-    //async Task ShowGetGeet()
-    //{
-    //    await DialogManager.ShowLoginDialogAsync();
-    //}
-
-    public void Dispose()
+    public override void Dispose()
     {
         this.Messenger.UnregisterAll(this);
         this.NavigationService = null;
         this.CTS.Cancel();
+        GC.SuppressFinalize(this);
     }
 }

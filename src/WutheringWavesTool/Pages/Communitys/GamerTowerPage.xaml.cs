@@ -25,9 +25,9 @@ public sealed partial class GamerTowerPage : Page, IPage, IDisposable
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        this.Dispose();
-        GC.Collect();
+        this.ViewModel.Dispose();
         base.OnNavigatedFrom(e);
+        GC.Collect();
     }
 
     public void Dispose()

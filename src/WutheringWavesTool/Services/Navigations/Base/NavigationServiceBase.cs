@@ -82,6 +82,7 @@ public class NavigationServiceBase : INavigationService
     {
         if (RootFrame == null)
             return;
+
         RootFrame.Navigated -= Navigated;
         RootFrame.NavigationFailed -= NavigationFailed;
         ClearHistory();

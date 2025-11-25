@@ -13,6 +13,7 @@ public sealed partial class SettingPage : Page, IPage
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
         GC.Collect();
+        this.ViewModel.Dispose();
         base.OnNavigatedFrom(e);
     }
 

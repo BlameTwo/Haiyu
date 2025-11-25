@@ -51,40 +51,27 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
         }
     }
 
-    private void Dispose(bool disposing)
+    public override void Dispose()
     {
-        if (!disposedValue)
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        if (this.Difficulties != null)
         {
-            if (disposing)
+            foreach (var item in this.Difficulties)
             {
-                WeakReferenceMessenger.Default.UnregisterAll(this);
-                if (this.Difficulties != null)
+                foreach (var item2 in item.Areas)
                 {
-                    foreach (var item in this.Difficulties)
+                    foreach (var item3 in item2.Floors)
                     {
-                        foreach (var item2 in item.Areas)
-                        {
-                            foreach (var item3 in item2.Floors)
-                            {
-                                item3.Roles.RemoveAll();
-                            }
-                            item2.Floors.RemoveAll();
-                        }
-                        item.Areas.RemoveAll();
+                        item3.Roles.RemoveAll();
                     }
-                    this.Difficulties.RemoveAll();
+                    item2.Floors.RemoveAll();
                 }
-                this.CTS.Cancel();
-                this.CTS.Dispose();
+                item.Areas.RemoveAll();
             }
-            disposedValue = true;
+            this.Difficulties.RemoveAll();
         }
-    }
-
-    public void Dispose()
-    {
-        // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
-        Dispose(disposing: true);
+        this.CTS.Cancel();
+        this.CTS.Dispose();
         GC.SuppressFinalize(this);
     }
 }

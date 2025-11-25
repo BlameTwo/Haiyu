@@ -1,6 +1,6 @@
 ﻿namespace Haiyu.ViewModel.Communitys;
 
-public sealed partial class GamerSkinViewModel : ViewModelBase, IDisposable
+public sealed partial class GamerSkinViewModel : ViewModelBase
 {
     private GameRoilDataItem roil;
     public IWavesClient WavesClient { get; }
@@ -43,7 +43,8 @@ public sealed partial class GamerSkinViewModel : ViewModelBase, IDisposable
         this.WeaponSkins = skin.Item2.WeaponSkinList.ToObservableCollection();
     }
 
-    public void Dispose()
+
+    public override void Dispose()
     {
         WeakReferenceMessenger.Default.UnregisterAll(this);
         this.RoleSkins.RemoveAll();

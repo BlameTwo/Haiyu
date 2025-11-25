@@ -1,4 +1,4 @@
-namespace Haiyu.Pages
+﻿namespace Haiyu.Pages
 {
     public sealed partial class HomePage : Page, IPage
     {
@@ -16,6 +16,8 @@ namespace Haiyu.Pages
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
+            ViewModel.Dispose();
+
             this.ViewModel.NavigationService.UnRegisterView();
         }
 

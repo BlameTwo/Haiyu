@@ -169,7 +169,7 @@ public static class RecordHelper
             }
             catch (Exception)
             {
-                return null;
+                throw new ArgumentException("获取限定分组错误");
             }
         }
     }
@@ -192,7 +192,7 @@ public static class RecordHelper
             }
             catch (Exception)
             {
-                return null;
+                throw new ArgumentException("获取全部角色错误");
             }
         }
     }
@@ -215,7 +215,7 @@ public static class RecordHelper
             }
             catch (Exception)
             {
-                return null;
+                throw new ArgumentException("获取全部武器错误");
             }
         }
     }
@@ -328,7 +328,7 @@ public static class RecordHelper
         return new(wrapper, count);
     }
 
-    public static async Task<RecordCacheDetily?>? MargeRecordAsync(
+    public static async Task<(long, long)>? MargeRecordAsync(
         string baseFolder,
         RecordCacheDetily cache
     )
@@ -415,7 +415,19 @@ public static class RecordHelper
             new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
         );
         await File.WriteAllBytesAsync(cachePath, byteData);
-        return mergedRecord;
+        return (
+            byteData.Length,
+            mergedRecord
+                .RoleActivityItems.Concat(mergedRecord.WeaponsActivityItems)
+                .Concat(mergedRecord.RoleResidentItems)
+                .Concat(mergedRecord.WeaponsResidentItems)
+                .Concat(mergedRecord.BeginnerItems)
+                .Concat(mergedRecord.BeginnerChoiceItems)
+                .Concat(mergedRecord.GratitudeOrientationItems)
+                .Concat(mergedRecord.RoleJourneyItems)
+                .Concat(mergedRecord.WeaponJourneyItems)
+                .Count()
+        );
     }
 
     public static RecordCacheDetily? SortItemsByTime(RecordCacheDetily recordCache)

@@ -1,4 +1,4 @@
-namespace Haiyu.Pages.Communitys;
+﻿namespace Haiyu.Pages.Communitys;
 
 public sealed partial class ResourceBriefPage : Page, IPage
 {
@@ -23,9 +23,9 @@ public sealed partial class ResourceBriefPage : Page, IPage
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        this.Dispose();
-        GC.Collect();
+        this.ViewModel.Dispose();
         base.OnNavigatedFrom(e);
+        GC.Collect();
     }
 
     public void Dispose()

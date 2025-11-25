@@ -1,6 +1,6 @@
 ﻿namespace Haiyu.Pages.Communitys;
 
-public sealed partial class GamerDockPage : Page, IPage, IDisposable
+public sealed partial class GamerDockPage : Page, IPage
 {
     private bool disposedValue;
 
@@ -20,34 +20,16 @@ public sealed partial class GamerDockPage : Page, IPage, IDisposable
         base.OnNavigatedTo(e);
     }
 
-    protected override void OnNavigatedFrom(NavigationEventArgs e)
-    {
-        this.Dispose();
-        GC.Collect();
-        base.OnNavigatedFrom(e);
-    }
 
     public GamerDockViewModel ViewModel { get; }
 
     public Type PageType => typeof(GamerDockViewModel);
 
-    private void Dispose(bool disposing)
-    {
-        if (!disposedValue)
-        {
-            if (disposing)
-            {
-                this.Bindings.StopTracking();
-                this.ViewModel.Dispose();
-            }
-            disposedValue = true;
-        }
-    }
 
-    public void Dispose()
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
+        this.ViewModel.Dispose();
+        base.OnNavigatedFrom(e);
+        GC.Collect();
     }
 }

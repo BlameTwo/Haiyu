@@ -55,7 +55,7 @@ public sealed partial class RecordItemViewModel : ViewModelBase
                     RecordHelper.FormatFiveRoleStar(this.DataItem.FiveGroup!)
                 )!
                 .Item1
-                .Format(this.DataItem.AllRole)
+                .Format(this.DataItem.AllRole,false)
                 .Reverse()
                 .ToCardItemObservableCollection();
         }
@@ -67,7 +67,7 @@ public sealed partial class RecordItemViewModel : ViewModelBase
                     RecordHelper.FormatFiveWeaponeRoleStar(this.DataItem.FiveGroup!)
                 )!
                 .Item1
-                .Format(this.DataItem.AllWeapon)
+                .Format(this.DataItem.AllWeapon,false)
                 .Reverse()
                 .ToCardItemObservableCollection();
         }
@@ -75,7 +75,7 @@ public sealed partial class RecordItemViewModel : ViewModelBase
         {
             StarItems = RecordHelper
                 .FormatRecordFive(this.Items)!
-                .Format(this.DataItem.AllWeapon)
+                .Format(this.DataItem.AllWeapon,false)
                 .Reverse()
                 .ToCardItemObservableCollection();
         }
@@ -88,7 +88,7 @@ public sealed partial class RecordItemViewModel : ViewModelBase
         {
             StarItems = RecordHelper
                 .FormatRecordFive(this.Items)!
-                .Format(this.DataItem.AllRole)
+                .Format(this.DataItem.AllRole,false)
                 .Reverse()
                 .ToCardItemObservableCollection();
         }

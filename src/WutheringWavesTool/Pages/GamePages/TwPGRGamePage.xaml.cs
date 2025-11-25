@@ -1,4 +1,4 @@
-using Haiyu.ViewModel.GameViewModels;
+﻿using Haiyu.ViewModel.GameViewModels;
 namespace Haiyu.Pages.GamePages;
 
 public sealed partial class TwPGRGamePage : Page, IPage
@@ -17,7 +17,7 @@ public sealed partial class TwPGRGamePage : Page, IPage
         this.ViewModel.SelectTab(sender.SelectedItem.Text);
     }
 
-    public TwPGRGameViewModel? ViewModel { get; }
+    public TwPGRGameViewModel ViewModel { get; }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {

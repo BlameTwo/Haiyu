@@ -102,32 +102,12 @@ public sealed partial class GameRoilsViewModel : ViewModelBase, ICommunityViewMo
             new() { DisplayName = "湮灭", Id = 6 },
         };
 
-    private void Dispose(bool disposing)
+    public override void Dispose()
     {
-        if (!disposedValue)
-        {
-            if (disposing)
-            {
-                WeakReferenceMessenger.Default.UnregisterAll(this);
-                RoleDatas.RemoveAll();
-                GamerFilter.RemoveAll();
-                cacheRoils.RemoveAll();
-                this.CTS.Cancel();
-            }
-            disposedValue = true;
-        }
-    }
-
-    // // TODO: 仅当“Dispose(bool disposing)”拥有用于释放未托管资源的代码时才替代终结器
-    // ~GameCountViewModel()
-    // {
-    //     // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
-    //     Dispose(disposing: false);
-    // }
-
-    public void Dispose()
-    {
-        // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
-        Dispose(disposing: true);
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        RoleDatas.RemoveAll();
+        GamerFilter.RemoveAll();
+        cacheRoils.RemoveAll();
+        this.CTS.Cancel();
     }
 }

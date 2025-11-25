@@ -106,9 +106,10 @@ public partial class CloudGameViewModel : ViewModelBase
             this.IsLoginUser = false;
             return;
         }
-        this.IsLoginUser = true;
         this.Users = users.Item2;
         this.SelectedUser = Users[0];
+        this.IsLoginUser = true;
+        await SavePlayCardData();
     }
 
     [RelayCommand]
@@ -141,6 +142,7 @@ public partial class CloudGameViewModel : ViewModelBase
     {
         if (value == null || SelectedUser == null)
             return;
+        this.IsLoginUser = false;
         var url = await TryInvokeAsync(async () =>
             await CloudGameService.GetRecordAsync(this.CTS.Token)
         );
@@ -170,8 +172,11 @@ public partial class CloudGameViewModel : ViewModelBase
         this.cacheItems = resource.Item2.Data;
         this.PageSize = 9;
         this.CurrentPage = 1;
+
         UpdatePageCount();
         LoadPageItems();
+
+        this.IsLoginUser = true;
     }
 
     // 更新总页数
@@ -237,66 +242,72 @@ public partial class CloudGameViewModel : ViewModelBase
         await DialogManager.ShowWebGameDialogAsync();
     }
 
-    [RelayCommand]
     public async Task SavePlayCardData()
     {
-        this.LoadVisibility = Visibility.Visible;
-        this.DataVisibility = Visibility.Collapsed;
-        this.IsLoginUser = true;
-        var FiveGroup = await RecordHelper.GetFiveGroupAsync();
-        var AllRole = await RecordHelper.GetAllRoleAsync();
-        var AllWeapon = await RecordHelper.GetAllWeaponAsync();
-        var StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
-        var StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
-        var url = await TryInvokeAsync(async () =>
-            await CloudGameService.GetRecordAsync(this.CTS.Token)
-        );
-        #region 读取抽卡记录
-        Dictionary<int, IList<RecordCardItemWrapper>> @param =
-            new Dictionary<int, IList<RecordCardItemWrapper>>();
-        for (int i = 1; i < 10; i++)
+        try
         {
-            var player1 = await TryInvokeAsync(async () =>
-                await CloudGameService.GetGameRecordResource(
-                    url.Item2.Data.RecordId,
-                    url.Item2.Data.PlayerId.ToString(),
-                    i,
-                    this.CTS.Token
-                )
+            this.LoadVisibility = Visibility.Visible;
+            this.DataVisibility = Visibility.Collapsed;
+            var FiveGroup = await RecordHelper.GetFiveGroupAsync();
+            var AllRole = await RecordHelper.GetAllRoleAsync();
+            var AllWeapon = await RecordHelper.GetAllWeaponAsync();
+            var StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
+            var StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
+            var url = await TryInvokeAsync(async () =>
+                await CloudGameService.GetRecordAsync(this.CTS.Token)
             );
-            if (player1.Result == null)
+            #region 读取抽卡记录
+            Dictionary<int, IList<RecordCardItemWrapper>> @param =
+                new Dictionary<int, IList<RecordCardItemWrapper>>();
+            for (int i = 1; i < 10; i++)
             {
-                TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
-                return;
+                var player1 = await TryInvokeAsync(async () =>
+                    await CloudGameService.GetGameRecordResource(
+                        url.Item2.Data.RecordId,
+                        url.Item2.Data.PlayerId.ToString(),
+                        i,
+                        this.CTS.Token
+                    )
+                );
+                if (player1.Result == null)
+                {
+                    TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
+                    return;
+                }
+                var WeaponsActivity = player1
+                    .Result.Data.Select(x => new RecordCardItemWrapper(x))
+                    .ToList();
+                param.Add(i, WeaponsActivity);
             }
-            var WeaponsActivity = player1
-                .Result.Data.Select(x => new RecordCardItemWrapper(x))
-                .ToList();
-            param.Add(i, WeaponsActivity);
+            #endregion
+            var cache = new RecordCacheDetily()
+            {
+                Name = this.SelectedUser.Username,
+                Time = DateTime.Now,
+                RoleActivityItems = param[1],
+                WeaponsActivityItems = param[2],
+                RoleResidentItems = param[3],
+                WeaponsResidentItems = param[4],
+                BeginnerItems = param[5],
+                BeginnerChoiceItems = param[6],
+                GratitudeOrientationItems = param[7],
+                RoleJourneyItems = param[8],
+                WeaponJourneyItems = param[9]
+            };
+            var datas = MemoryPackSerializer.Serialize<RecordCacheDetily>(
+                cache,
+                new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
+            );
+            var result = await RecordHelper.MargeRecordAsync(App.RecordFolder, cache)!;
+            TipShow.ShowMessage($"抽卡合并，数据总量{result.Item2},二进制大小{result.Item1 / 1024}KB", Symbol.Accept);
+
+            this.LoadVisibility = Visibility.Collapsed;
+            this.DataVisibility = Visibility.Visible;
         }
-        #endregion
-        this.LoadVisibility = Visibility.Collapsed;
-        this.DataVisibility = Visibility.Visible;
-        this.IsLoginUser = false;
-        var cache = new RecordCacheDetily()
+        catch (Exception ex)
         {
-            Name = this.SelectedUser.Username,
-            Time = DateTime.Now,
-            RoleActivityItems = param[1],
-            WeaponsActivityItems = param[2],
-            RoleResidentItems = param[3],
-            WeaponsResidentItems = param[4],
-            BeginnerItems = param[5],
-            BeginnerChoiceItems = param[6],
-            GratitudeOrientationItems = param[7],
-            RoleJourneyItems = param[8],
-            WeaponJourneyItems = param[9]
-        };
-        //二进制化
-        var datas =  MemoryPackSerializer.Serialize<RecordCacheDetily>(
-            cache,
-            new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
-        );
-        await RecordHelper.MargeRecordAsync(App.RecordFolder,cache)!;
+            TipShow.ShowMessage(ex.Message, Symbol.Clear);
+        }
+        
     }
 }

@@ -63,6 +63,9 @@ public static partial class WindowExtension
     [LibraryImport("user32.dll", SetLastError = true)]
     public static partial long GetWindowLongA(nint hWnd, int nIndex);
 
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    public static extern int MessageBox(IntPtr hWnd, string text, string caption, uint type);
+
     [LibraryImport("user32.dll")]
     public static partial int SetWindowLongA(nint hWnd, int nIndex, long dwNewLong);
 

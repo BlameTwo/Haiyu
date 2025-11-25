@@ -61,34 +61,12 @@ public partial class GamerDockViewModel : ViewModelBase, IDisposable
         await RefreshDataAsync(item);
     }
 
-    protected virtual void Dispose(bool disposing)
+    public override void Dispose()
     {
-        if (!disposedValue)
-        {
-            if (disposing)
-            {
-                WeakReferenceMessenger.Default.UnregisterAll(this);
-                GamerPhantoms.RemoveAll();
-                GamerCalabash = null;
-                GameRoil = null;
-                this.CTS.Cancel();
-                this.Messenger.UnregisterAll(this);
-            }
-            disposedValue = true;
-        }
-    }
-
-    // // TODO: 仅当“Dispose(bool disposing)”拥有用于释放未托管资源的代码时才替代终结器
-    // ~GamerDockViewModel()
-    // {
-    //     // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
-    //     Dispose(disposing: false);
-    // }
-
-    public void Dispose()
-    {
-        // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
+        WeakReferenceMessenger.Default.UnregisterAll(this);
+        GamerPhantoms.RemoveAll();
+        GamerCalabash = null;
+        GameRoil = null;
+        this.Messenger.UnregisterAll(this);
     }
 }

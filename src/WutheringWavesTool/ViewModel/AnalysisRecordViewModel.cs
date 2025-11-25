@@ -1,7 +1,11 @@
-﻿using Haiyu.Contracts;
+﻿using System.Collections.Generic;
+using Haiyu.Contracts;
+using HarfBuzzSharp;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel;
+using MemoryPack;
 using Waves.Api.Models.CloudGame;
+using ZLinq;
 
 namespace Haiyu.ViewModel;
 
@@ -113,7 +117,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
                         this.roleActivity,
                         RecordHelper.FormatFiveRoleStar(this.FiveGroup)
                     )
-                    .Item1.Format(this.AllRole)
+                    .Item1.Format(this.AllRole, true)
                     .ToCardItemObservableCollection();
                 break;
             case 2:
@@ -122,7 +126,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
                         this.weaponActiviy,
                         RecordHelper.FormatFiveWeaponeRoleStar(this.FiveGroup)
                     )
-                    .Item1.Format(this.AllWeapon)
+                    .Item1.Format(this.AllWeapon, false)
                     .ToCardItemObservableCollection();
                 break;
             case 3:
@@ -131,7 +135,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
                         this.roleDaily,
                         RecordHelper.FormatFiveRoleStar(this.FiveGroup)
                     )
-                    .Item1.Format(this.AllRole)
+                    .Item1.Format(this.AllRole, false)
                     .ToCardItemObservableCollection();
                 break;
             case 4:
@@ -140,7 +144,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
                         this.weaponDaily,
                         RecordHelper.FormatFiveRoleStar(this.FiveGroup)
                     )
-                    .Item1.Format(this.AllWeapon)
+                    .Item1.Format(this.AllWeapon, false)
                     .ToCardItemObservableCollection();
                 break;
         }
@@ -149,181 +153,171 @@ public partial class AnalysisRecordViewModel : ViewModelBase
     [RelayCommand]
     async Task RefreshAsync()
     {
-        LoadingVisibility = Visibility.Visible;
-        DataVisibility = Visibility.Collapsed;
-        #region 刷新数据源
-        roleActivity.Clear();
-        weaponActiviy.Clear();
-        roleDaily.Clear();
-        weaponDaily.Clear();
-        RoleActivityAllCount = 0;
-        RoleActivityCount = 0;
-        RoleActivityCount2 = 0;
-        WeaponActivityAllCount = 0;
-        WeaponActivityCount = 0;
-        var result = await CloudGameService.OpenUserAsync(this.LoginData);
-        if (!result.Item1)
-            return;
-        var recordId = (await CloudGameService.GetRecordAsync(this.CTS.Token));
-        roleActivity.AddRange(
-            (
-                await CloudGameService.GetGameRecordResource(
-                    recordId.Data.RecordId,
-                    recordId.Data.PlayerId.ToString(),
-                    1
-                )
-            ).Data.Select(x => new RecordCardItemWrapper(x))
-        );
-        weaponActiviy.AddRange(
-            (
-                await CloudGameService.GetGameRecordResource(
-                    recordId.Data.RecordId,
-                    recordId.Data.PlayerId.ToString(),
-                    2
-                )
-            ).Data.Select(x => new RecordCardItemWrapper(x))
-        );
-        roleDaily.AddRange(
-            (
-                await CloudGameService.GetGameRecordResource(
-                    recordId.Data.RecordId,
-                    recordId.Data.PlayerId.ToString(),
-                    3
-                )
-            ).Data.Select(x => new RecordCardItemWrapper(x))
-        );
-        weaponDaily.AddRange(
-            (
-                await CloudGameService.GetGameRecordResource(
-                    recordId.Data.RecordId,
-                    recordId.Data.PlayerId.ToString(),
-                    4
-                )
-            ).Data.Select(x => new RecordCardItemWrapper(x))
-        );
-        #endregion
-        FiveGroup = await RecordHelper.GetFiveGroupAsync();
-        AllRole = await RecordHelper.GetAllRoleAsync();
-        AllWeapon = await RecordHelper.GetAllWeaponAsync();
-        StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
-        StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
-        #region 计算
-        RoleActivityAllCount = roleActivity.Count;
-        WeaponActivityAllCount = weaponActiviy.Count;
-        DailyAllCount = roleDaily.Count + weaponDaily.Count;
-        var ruleActiv = RecordHelper.FormatRecordFive(this.roleActivity);
-        var weaponActiv = RecordHelper.FormatRecordFive(this.weaponActiviy);
-        var weaponDail = RecordHelper.FormatRecordFive(this.weaponDaily);
-        var roleDail = RecordHelper.FormatRecordFive(this.roleDaily);
-        var allData = roleActivity.Concat(weaponActiviy).Concat(roleDaily).Concat(weaponDaily);
-        this.StarPipeDatas.Clear();
-
-        #region 星级占比
-        StarPipeDatas.Add(
-            new PieData()
-            {
-                Name = "3星",
-                Offset = 0,
-                Values = [allData.Where(x => x.QualityLevel == 3).Count()],
-            }
-        );
-        StarPipeDatas.Add(
-            new PieData()
-            {
-                Name = "4星",
-                Offset = 0,
-                Values = [allData.Where(x => x.QualityLevel == 4).Count()],
-            }
-        );
-        StarPipeDatas.Add(
-            new PieData()
-            {
-                Name = "5星",
-                Offset = 0,
-                Values = [allData.Where(x => x.QualityLevel == 5).Count()],
-            }
-        );
-        #endregion
-
-        #region 歪不歪
-        if (roleActivity.Count > 0)
+        try
         {
-            var roleRange = RecordHelper.FormatStartFive(
-                roleActivity,
-                RecordHelper.FormatFiveRoleStar(FiveGroup!)
+            LoadingVisibility = Visibility.Visible;
+            DataVisibility = Visibility.Collapsed;
+            var cachePath = App.RecordFolder + $"\\{this.LoginData.Username}.json";
+            if (cachePath == null)
+            {
+                LoadingVisibility = Visibility.Collapsed;
+                DataVisibility = Visibility.Collapsed;
+                WindowExtension.MessageBox(IntPtr.Zero, "抽卡获取失败！请尝试重新登陆云鸣潮！", "数据错误", 0);
+                return;
+            }
+            var datas = MemoryPackSerializer.Deserialize<RecordCacheDetily>(
+                await File.ReadAllBytesAsync(cachePath),
+                new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
             );
-            var passValue = roleRange.Item1.Where(x => x.Item3 == false);
-            var ngValue = roleRange.Item1.Where(x => x.Item3 == true);
-            RangePipeDatas.Add(
+            if (datas == null)
+            {
+                LoadingVisibility = Visibility.Collapsed;
+                DataVisibility = Visibility.Collapsed;
+                WindowExtension.MessageBox(IntPtr.Zero, "抽卡获取失败！请尝试重新登陆云鸣潮！", "数据错误", 0);
+                return;
+
+            }
+            #region 刷新数据源
+            roleActivity.Clear();
+            weaponActiviy.Clear();
+            roleDaily.Clear();
+            weaponDaily.Clear();
+            RoleActivityAllCount = 0;
+            RoleActivityCount = 0;
+            RoleActivityCount2 = 0;
+            WeaponActivityAllCount = 0;
+            WeaponActivityCount = 0;
+            roleActivity.AddRange(datas.RoleActivityItems ?? []);
+            weaponActiviy.AddRange(datas.WeaponsActivityItems ?? []);
+            roleDaily.AddRange(datas.RoleResidentItems ?? []);
+            weaponDaily.AddRange(datas.WeaponsResidentItems ?? []);
+            #endregion
+            FiveGroup = await RecordHelper.GetFiveGroupAsync();
+            AllRole = await RecordHelper.GetAllRoleAsync();
+            AllWeapon = await RecordHelper.GetAllWeaponAsync();
+            StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
+            StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
+            #region 计算
+            RoleActivityAllCount = roleActivity.Count;
+            WeaponActivityAllCount = weaponActiviy.Count;
+            DailyAllCount = roleDaily.Count + weaponDaily.Count;
+            var ruleActiv = RecordHelper.FormatRecordFive(this.roleActivity);
+            var weaponActiv = RecordHelper.FormatRecordFive(this.weaponActiviy);
+            var weaponDail = RecordHelper.FormatRecordFive(this.weaponDaily);
+            var roleDail = RecordHelper.FormatRecordFive(this.roleDaily);
+            var allData = roleActivity.Concat(weaponActiviy).Concat(roleDaily).Concat(weaponDaily);
+            this.StarPipeDatas.Clear();
+
+            #region 星级占比
+            StarPipeDatas.Add(
                 new PieData()
                 {
-                    Name = "歪了",
+                    Name = "3星",
                     Offset = 0,
-                    Values = [ngValue.Count()],
+                    Values = [allData.Where(x => x.QualityLevel == 3).Count()],
                 }
             );
-            RangePipeDatas.Add(
+            StarPipeDatas.Add(
                 new PieData()
                 {
-                    Name = "中了",
+                    Name = "4星",
                     Offset = 0,
-                    Values = [passValue.Count()],
+                    Values = [allData.Where(x => x.QualityLevel == 4).Count()],
                 }
             );
-            this.ExpectedActivityRoleDeily = (long)(80 - roleRange.Item2);
-            this.Guaranteed = Math.Round(RecordHelper.GetGuaranteedRange(roleRange.Item1), 2);
-        }
+            StarPipeDatas.Add(
+                new PieData()
+                {
+                    Name = "5星",
+                    Offset = 0,
+                    Values = [allData.Where(x => x.QualityLevel == 5).Count()],
+                }
+            );
+            #endregion
 
-        #endregion
-
-        foreach (var item in ruleActiv)
-        {
-            if (
-                FiveGroup
-                    .Data.FiveGroupConfig.FiveMaps.Where(x => x.ItemId == item.Item1.ResourceId)
-                    .Any()
-            )
+            #region 歪不歪
+            if (roleActivity.Count > 0)
             {
-                RoleActivityCount++;
+                var roleRange = RecordHelper.FormatStartFive(
+                    roleActivity,
+                    RecordHelper.FormatFiveRoleStar(FiveGroup!)
+                );
+                var passValue = roleRange.Item1.Where(x => x.Item3 == false);
+                var ngValue = roleRange.Item1.Where(x => x.Item3 == true);
+                RangePipeDatas.Add(
+                    new PieData()
+                    {
+                        Name = "歪了",
+                        Offset = 0,
+                        Values = [ngValue.Count()],
+                    }
+                );
+                RangePipeDatas.Add(
+                    new PieData()
+                    {
+                        Name = "中了",
+                        Offset = 0,
+                        Values = [passValue.Count()],
+                    }
+                );
+                this.ExpectedActivityRoleDeily = (long)(80 - roleRange.Item2);
+                this.Guaranteed = Math.Round(RecordHelper.GetGuaranteedRange(roleRange.Item1), 2);
             }
-            else
+            #endregion
+            foreach (var item in ruleActiv)
             {
-                RoleActivityCount2++;
+                if (
+                    FiveGroup
+                        .Data.FiveGroupConfig.FiveMaps.Where(x => x.ItemId == item.Item1.ResourceId)
+                        .Any()
+                )
+                {
+                    RoleActivityCount++;
+                }
+                else
+                {
+                    RoleActivityCount2++;
+                }
             }
+            if (weaponActiv.Count != 0)
+            {
+                var weaponRange = RecordHelper.FormatStartFive(
+                    weaponDaily,
+                    RecordHelper.FormatFiveRoleStar(FiveGroup!)
+                );
+                this.WeaponActivityCount = weaponActiv.Count;
+                ExpectedDailyWeaponDeily = (long)(80 - weaponRange.Item2);
+            }
+            #endregion
+            if (roleDail.Count != 0)
+            {
+                var RoleRange = RecordHelper.FormatStartFive(
+                    roleDaily,
+                    RecordHelper.FormatFiveRoleStar(FiveGroup!)
+                );
+                ExpectedRoleDeily = (long)(80 - RoleRange.Item2);
+                CurrentRoleDeily = (double)RoleRange.Item2;
+            }
+            if (weaponDail.Count != 0)
+            {
+                var weaponRange = RecordHelper.FormatStartFive(
+                    weaponActiviy,
+                    RecordHelper.FormatFiveRoleStar(FiveGroup!)
+                );
+                this.WeaponActivityCount = weaponActiv.Count;
+                ExpectedActivityWeaponDeily = (long)(80 - weaponRange.Item2);
+                CurrentWeaponDeily = (double)weaponRange.Item2;
+            }
+            LoadingVisibility = Visibility.Collapsed;
+            DataVisibility = Visibility.Visible;
+            this.SelectNavigationItem = null;
+            this.SelectNavigationItem = this.RecordNavigationItems[0];
         }
-        if (weaponActiv.Count != 0)
+        catch (Exception ex)
         {
-            var weaponRange = RecordHelper.FormatStartFive(
-                weaponDaily,
-                RecordHelper.FormatFiveRoleStar(FiveGroup!)
-            );
-            this.WeaponActivityCount = weaponActiv.Count;
-            ExpectedDailyWeaponDeily = (long)(80 - weaponRange.Item2);
+            WindowExtension.MessageBox(IntPtr.Zero, $"抽卡获取失败！{ex.Message}", "数据错误", 0);
         }
-        #endregion
-        if (roleDail.Count != 0)
-        {
-            var RoleRange = RecordHelper.FormatStartFive(
-                roleDaily,
-                RecordHelper.FormatFiveRoleStar(FiveGroup!)
-            );
-            ExpectedRoleDeily = (long)(80 - RoleRange.Item2);
-            CurrentRoleDeily = (double)RoleRange.Item2;
-        }
-        if (weaponDail.Count != 0)
-        {
-            var weaponRange = RecordHelper.FormatStartFive(
-                weaponActiviy,
-                RecordHelper.FormatFiveRoleStar(FiveGroup!)
-            );
-            this.WeaponActivityCount = weaponActiv.Count;
-            ExpectedActivityWeaponDeily = (long)(80 - weaponRange.Item2);
-            CurrentWeaponDeily = (double)weaponRange.Item2;
-        }
-        LoadingVisibility = Visibility.Collapsed;
-        DataVisibility = Visibility.Visible;
-        this.SelectNavigationItem = null;
-        this.SelectNavigationItem = this.RecordNavigationItems[0];
+        
     }
 }
 
