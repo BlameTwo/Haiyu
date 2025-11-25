@@ -12,14 +12,6 @@ namespace Waves.Api.Models.Communitys.DataCenter
         public int Num { get; set; }
     }
 
-    public class PhantomBoxList
-    {
-        [JsonPropertyName("name")]
-        public string Name { get; set; }
-
-        [JsonPropertyName("num")]
-        public int Num { get; set; }
-    }
 
     public class GamerBassString
     {
@@ -123,7 +115,7 @@ namespace Waves.Api.Models.Communitys.DataCenter
         public string Name { get; set; }
 
         [JsonPropertyName("phantomBoxList")]
-        public List<PhantomBoxList> PhantomBoxList { get; set; }
+        public List<TreasureBoxList> PhantomBoxList { get; set; }
 
         [JsonPropertyName("roleNum")]
         public int RoleNum { get; set; }
@@ -176,6 +168,7 @@ namespace Waves.Api.Models.Communitys.DataCenter
         [JsonPropertyName("worldLevel")]
         public int WorldLevel { get; set; }
     }
+
 
     public class TreasureBoxList
     {

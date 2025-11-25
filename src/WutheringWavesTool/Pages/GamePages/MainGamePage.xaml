@@ -78,7 +78,7 @@
                 <Border
                     Margin="10,0,10,-1"
                     Padding="5"
-                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                     CornerRadius="5 5 0 0">
                     <TextBlock
                         Margin="5,0,0,0"
@@ -89,7 +89,7 @@
                 </Border>
                 <Grid
                     Grid.Row="1"
-                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                     CornerRadius="5">
                     <Grid.ChildrenTransitions>
                         <TransitionCollection>
@@ -422,7 +422,7 @@
             </Grid.ColumnDefinitions>
             <Grid
                 Padding="5"
-                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="2"
                 CornerRadius="5">

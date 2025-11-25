@@ -54,9 +54,10 @@ public partial class ApplicationBackgroundControl : Control
         {
             if (MediaControl.MediaPlayer != null)
             {
-                MediaControl.MediaPlayer.Dispose();
                 MediaControl.MediaPlayer.MediaOpened -= Player_MediaOpened;
+                MediaControl.MediaPlayer.Dispose();
                 MediaControl.MediaPlayer = null;
+                GC.Collect();
             }
             if (this.ShowType == WallpaperShowType.Image)
             {
@@ -66,6 +67,7 @@ public partial class ApplicationBackgroundControl : Control
             else
             {
                 var MediaPlayer = new MediaPlayer() { IsLoopingEnabled = true, AutoPlay = true };
+                MediaPlayer.CommandManager.IsEnabled = false;
                 MediaPlayer.MediaOpened += Player_MediaOpened;
                 var source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(MediaSource));
                 MediaPlayer.Source = source;
@@ -74,7 +76,6 @@ public partial class ApplicationBackgroundControl : Control
             }
         }
         catch (Exception) { }
-        GC.Collect();
     }
 
     private void Player_MediaOpened(MediaPlayer sender, object args)

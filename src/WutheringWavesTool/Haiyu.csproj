@@ -55,6 +55,7 @@
 		<None Remove="Assets\Settingbackground.png" />
 		<None Remove="Controls\Styles\ApplicationBackgroundControl.xaml" />
 		<None Remove="Controls\Styles\Card.xaml" />
+		<None Remove="Controls\Styles\Shimmer.xaml" />
 		<None Remove="Pages\CloudGamePage.xaml" />
 		<None Remove="Pages\ColorFullGame.xaml" />
 		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
@@ -225,6 +226,9 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Controls\Styles\Shimmer.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Pages\GameWikis\PunishWikiPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>

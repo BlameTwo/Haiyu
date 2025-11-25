@@ -335,7 +335,9 @@ public static class RecordHelper
     {
         var cachePath = "";
         RecordCacheDetily? localRecord = null;
-        foreach (var item in Directory.GetFiles(baseFolder, ".json", SearchOption.TopDirectoryOnly))
+        foreach (
+            var item in Directory.GetFiles(baseFolder, "*.json", SearchOption.TopDirectoryOnly)
+        )
         {
             var data = MemoryPackSerializer.Deserialize<RecordCacheDetily>(
                 await File.ReadAllBytesAsync(item),

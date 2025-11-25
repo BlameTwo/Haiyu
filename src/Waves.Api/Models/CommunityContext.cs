@@ -48,7 +48,7 @@ namespace Waves.Api.Models;
 [JsonSerializable(typeof(DisposableGoodsListItem))]
 [JsonSerializable(typeof(SignRecord))]
 [JsonSerializable(typeof(BoxList))]
-[JsonSerializable(typeof(PhantomBoxList))]
+[JsonSerializable(typeof(TreasureBoxList))]
 [JsonSerializable(typeof(GamerBassString))]
 [JsonSerializable(typeof(GamerDataBool))]
 [JsonSerializable(typeof(GamerBassData))]

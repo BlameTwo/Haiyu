@@ -4,18 +4,45 @@ public partial class StaminaWrapper : ObservableObject
 {
     public StaminaWrapper(GamerBassData data)
     {
-        this.Energy = data.Energy;
-        this.MaxEnergy = data.MaxEnergy;
-        this.StoreEnergy = data.StoreEnergy;
-        this.MaxStoreEnergy = data.StoreEnergyLimit;
-        this.Liveness = data.Liveness;
-        this.MaxLiveness = data.LivenessMaxCount;
-        this.WeekyInstCount = data.WeeklyInstCount;
-        this.MaxWeekyInstCount = data.WeeklyInstCountLimit;
-        this.RougeScore = data.RougeScore;
-        this.MaxRougeScore = data.RougeScoreLimit;
-        this.Name = data.Name;
-        this.UserLevel = data.Level;
+        try
+        {
+            this.Energy = data.Energy;
+            var cTime = DateTimeOffset.FromUnixTimeMilliseconds(data.CreatTime).DateTime;
+            var timeCali = cTime - new DateTime(2024, 5, 23);
+            if (timeCali.TotalDays <= 10)
+            {
+                IsShowTime = Visibility.Visible;
+            }
+            this.CreateTime = cTime.ToString("G");
+            this.MaxEnergy = data.MaxEnergy;
+            this.StoreEnergy = data.StoreEnergy;
+            this.MaxStoreEnergy = data.StoreEnergyLimit;
+            this.Liveness = data.Liveness;
+            this.MaxLiveness = data.LivenessMaxCount;
+            this.WeekyInstCount = data.WeeklyInstCount;
+            this.WeekyInstIcon = data.WeeklyInstIconUrl;
+            this.MaxWeekyInstCount = data.WeeklyInstCountLimit;
+            this.RougeScore = data.RougeScore;
+            this.MaxRougeScore = data.RougeScoreLimit;
+            this.EnergyIconUrl = data.StoreEnergyIconUrl;
+            this.WeekyInstIcon = data.WeeklyInstIconUrl;
+            this.Name = data.Name;
+            this.UserLevel = data.Level;
+            this.ActiveDays = data.ActiveDays;
+            this.BoxList = data
+                .BoxList.Concat(
+                    data.PhantomBoxList.Select(x => new BoxList() { BoxName = x.Name, Num = x.Num })
+                )
+                .Concat(
+                    data.TreasureBoxList.Select(x => new BoxList()
+                    {
+                        BoxName = x.Name,
+                        Num = x.Num,
+                    })
+                )
+                .ToList();
+        }
+        catch (Exception) { }
     }
 
     #region User
@@ -24,6 +51,18 @@ public partial class StaminaWrapper : ObservableObject
 
     [ObservableProperty]
     public partial int UserLevel { get; set; }
+
+    [ObservableProperty]
+    public partial List<BoxList> BoxList { get; set; }
+
+    [ObservableProperty]
+    public partial Visibility IsShowTime { get; set; } = Visibility.Collapsed;
+
+    [ObservableProperty]
+    public partial string CreateTime { get; set; }
+
+    [ObservableProperty]
+    public partial int ActiveDays { get; set; }
     #endregion
 
     #region 结晶波片
@@ -55,6 +94,12 @@ public partial class StaminaWrapper : ObservableObject
     #region 战歌重奏
     [ObservableProperty]
     public partial int WeekyInstCount { get; set; }
+
+    [ObservableProperty]
+    public partial string WeekyInstIcon { get; set; }
+
+    [ObservableProperty]
+    public partial string EnergyIconUrl { get; set; }
 
     [ObservableProperty]
     public partial int MaxWeekyInstCount { get; set; }
