@@ -23,5 +23,6 @@ public enum GameContextActionType:uint
     DeleteFile,
     Error,
 
-    Decompress
+    Decompress,
+    GameExit
 }

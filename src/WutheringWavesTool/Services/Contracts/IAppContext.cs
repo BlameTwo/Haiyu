@@ -49,4 +49,9 @@ public interface IAppContext<T>
     /// </summary>
     /// <returns></returns>
     public Task CloseAsync();
+
+    /// <summary>
+    /// 最小化到任务栏
+    /// </summary>
+    void MinToTaskbar();
 }

@@ -1,4 +1,7 @@
-﻿namespace Haiyu.ViewModel.GameViewModels;
+﻿using Microsoft.Windows.AppNotifications;
+using Microsoft.Windows.AppNotifications.Builder;
+
+namespace Haiyu.ViewModel.GameViewModels;
 
 partial class GameContextViewModelBase
 {
@@ -7,7 +10,14 @@ partial class GameContextViewModelBase
     {
         if (_bthType == 3)
         {
-            await GameContext.StartGameAsync();
+            if( await GameContext.StartGameAsync())
+            {
+                this.AppContext.MinToTaskbar();
+                AppNotification notify = new AppNotificationBuilder()
+                    .AddText($"游戏已经启动，程序已最小化到任务栏")
+                    .BuildNotification();
+                AppNotificationManager.Default.Show(notify);
+            }
         }
         if (_bthType == 4)
         {

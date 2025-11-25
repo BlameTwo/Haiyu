@@ -47,6 +47,9 @@ public abstract partial class GameContextBase : IGameContext
     public Process NowProcess { get; private set; }
 
     public virtual Type ContextType { get; }
+
+    public virtual GameType GameType { get; }
+
     #endregion
 
 

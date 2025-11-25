@@ -203,4 +203,9 @@ public class AppContext<T> : IAppContext<T>
             }
         }
     }
+
+    public void MinToTaskbar()
+    {
+        this.App.MainWindow.Hide();
+    }
 }

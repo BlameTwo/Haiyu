@@ -357,6 +357,10 @@
 
                             <Button.Flyout>
                                 <MenuFlyout Placement="Bottom">
+                                    <ToggleMenuFlyoutItem
+                                        IsChecked="{x:Bind ViewModel.IsDx11Launcher, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Text="DX 11 启动"
+                                        ToolTipService.ToolTip="切换启动模式" />
                                     <MenuFlyoutItem
                                         Command="{x:Bind ViewModel.RepirGameCommand}"
                                         Text="修复游戏"

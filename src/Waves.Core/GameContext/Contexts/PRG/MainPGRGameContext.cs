@@ -1,4 +1,5 @@
 ﻿using Waves.Core.Models;
+using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext.Contexts;
 
@@ -11,4 +12,5 @@ public class MainPGRGameContext : GameContextBase
         : base(config, nameof(MainPGRGameContext)) { }
 
     public override Type ContextType => typeof(MainPGRGameContext);
+    public override GameType GameType => GameType.Punish;
 }

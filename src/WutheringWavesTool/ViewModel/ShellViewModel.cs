@@ -276,13 +276,13 @@ public sealed partial class ShellViewModel : ViewModelBase
             await this.RefreshRoleLists();
         }
         this.AppContext.MainTitle.UpDate();
-        this.ShowPGRBilibiliGame = (bool)AppSettings.ShowPGRBilibiliGame;
-        this.ShowPGRGlobalGame = (bool)AppSettings.ShowPGRGlobalGame;
-        this.ShowPGRMainGame = (bool)AppSettings.ShowPGRMainGame;
-        this.ShowWavesMainGame = (bool)AppSettings.ShowWavesMainGame;
-        this.ShowWavesGlobalGame = (bool)AppSettings.ShowWavesGlobalGame;
-        this.ShowWavesBilibiliGame = (bool)AppSettings.ShowWavesBilibiliGame;
-        this.ShowTwPGRGame = (bool)AppSettings.ShowTwPGRGame;
+        this.ShowPGRBilibiliGame = AppSettings.ShowPGRBilibiliGame;
+        this.ShowPGRGlobalGame = AppSettings.ShowPGRGlobalGame;
+        this.ShowPGRMainGame = AppSettings.ShowPGRMainGame;
+        this.ShowWavesMainGame = AppSettings.ShowWavesMainGame;
+        this.ShowWavesGlobalGame = AppSettings.ShowWavesGlobalGame;
+        this.ShowWavesBilibiliGame = AppSettings.ShowWavesBilibiliGame;
+        this.ShowTwPGRGame = AppSettings.ShowTwPGRGame;
         OpenMain();
 
         var accessStatus = await Geolocator.RequestAccessAsync();

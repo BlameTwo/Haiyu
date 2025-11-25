@@ -21,6 +21,8 @@ public interface IGameContext
     public string GamerConfigPath { get; internal set; }
     GameLocalConfig GameLocalConfig { get; }
     public GameAPIConfig Config { get; }
+
+    public GameType GameType { get; }
     Task<FileVersion> GetLocalDLSSAsync();
     Task<FileVersion> GetLocalDLSSGenerateAsync();
     Task<FileVersion> GetLocalXeSSGenerateAsync();
@@ -90,7 +92,7 @@ public interface IGameContext
     /// <returns></returns>
     Task<List<KRSDKLauncherCache>?> GetLocalGameOAuthAsync(CancellationToken token);
 
-    Task StartGameAsync();
+    Task<bool> StartGameAsync();
     Task UpdateGameAsync();
     Task StopGameAsync();
     Task DeleteResourceAsync();

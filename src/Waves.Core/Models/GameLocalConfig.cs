@@ -135,9 +135,9 @@ public class GameLocalConfig
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public string GetConfig(string key)
+    public string? GetConfig(string key)
     {
-        if (_settings.TryGetValue(key, out string value))
+        if (_settings.TryGetValue(key, out string? value))
         {
             return value;
         }

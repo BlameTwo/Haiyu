@@ -24,7 +24,7 @@ namespace Waves.Core.GameContext
         private System.Timers.Timer? gameRunTimer;
         private uint ppid;
 
-        public virtual async Task StartGameAsync()
+        public virtual async Task<bool> StartGameAsync()
         {
             try
             {
@@ -32,9 +32,22 @@ namespace Waves.Core.GameContext
                     GameLocalSettingName.GameLauncherBassFolder
                 );
                 Process ps = new();
+                string argument = "";
+                if(this.GameType == GameType.Waves)
+                {
+                    var ixDx11 = this.GameLocalConfig.GetConfig(GameLocalSettingName.IsDx11);
+                    if (bool.TryParse(ixDx11, out var flag) && flag)
+                    {
+                        argument = " -dx11";
+                    }
+                    else
+                    {
+                        argument = " -dx12";
+                    }
+                }
                 ProcessStartInfo info = new(gameFolder + "\\" + this.Config.GameExeName)
                 {
-                    Arguments = "Client -dx12",
+                    Arguments = argument,
                     WorkingDirectory = gameFolder,
                     Verb = "runas",
                     UseShellExecute = true,
@@ -51,14 +64,16 @@ namespace Waves.Core.GameContext
                 gameRunTimer.Interval = 3000;
                 gameRunTimer.Start();
                 Logger.WriteInfo("正在启动游戏……");
+                return true;
             }
             catch (Exception ex)
             {
                 this._isStarting = false;
                 Logger.WriteError($"游戏启动错误{ex.Message}");
+                return false;
             }
             if (gameContextOutputDelegate == null)
-                return;
+                return true;
             await gameContextOutputDelegate
                 .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
                 .ConfigureAwait(false);
@@ -120,7 +135,7 @@ namespace Waves.Core.GameContext
             if (gameContextOutputDelegate != null)
             {
                 await gameContextOutputDelegate
-                    .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.None })
+                    .Invoke(this, new GameContextOutputArgs { Type = GameContextActionType.GameExit })
                     .ConfigureAwait(false);
             }
         }

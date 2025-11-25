@@ -65,7 +65,7 @@ partial class GameContextViewModelBase
                 this.BottomBarContent = args.DeleteString;
                 PauseStartEnable = false;
             }
-            if (args.Type == Waves.Core.Models.Enums.GameContextActionType.None)
+            if (args.Type == Waves.Core.Models.Enums.GameContextActionType.None || args.Type == Waves.Core.Models.Enums.GameContextActionType.GameExit)
             {
                 PauseStartEnable = true;
                 this.CurrentProgressValue = 0;
@@ -98,6 +98,10 @@ partial class GameContextViewModelBase
                     {
                         this.PauseIcon = "\uE769";
                     }
+                }
+                if (args.Type == Waves.Core.Models.Enums.GameContextActionType.GameExit)
+                {
+                    this.AppContext.App.MainWindow.Show();
                 }
             }
         });
