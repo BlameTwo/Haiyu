@@ -32,7 +32,7 @@ public partial class DeviceInfoViewModel : ViewModelBase, IDisposable
 {
     private bool disposedValue;
 
-    public DeviceInfoViewModel(IWavesClient wavesClient)
+    public DeviceInfoViewModel(IKuroClient wavesClient)
     {
         WavesClient = wavesClient;
     }
@@ -59,7 +59,7 @@ public partial class DeviceInfoViewModel : ViewModelBase, IDisposable
 
     [ObservableProperty]
     public partial Visibility GamerRoleVisibility { get; set; }
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
 
     [ObservableProperty]
     public partial string VerifyCode { get; set; }

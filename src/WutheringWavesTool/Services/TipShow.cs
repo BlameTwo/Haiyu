@@ -1,4 +1,6 @@
-﻿namespace Haiyu.Services;
+﻿using CommunityToolkit.WinUI;
+
+namespace Haiyu.Services;
 
 public class TipShow : ITipShow
 {
@@ -14,7 +16,21 @@ public class TipShow : ITipShow
     {
         if (this.Owner == null)
             return;
-        PopupMessage popup = new(message, Owner, icon);
-        popup.ShowPopup();
+        this.Owner.DispatcherQueue.TryEnqueue(() =>
+        {
+            PopupMessage popup = new(message, Owner, icon);
+            popup.ShowPopup();
+        });
+    }
+
+    public async Task ShowMessageAsync(string message,Symbol icon)
+    {
+        if (this.Owner == null)
+            return;
+        await this.Owner.DispatcherQueue.EnqueueAsync(() =>
+        {
+            PopupMessage popup = new(message, Owner, icon);
+            popup.ShowPopup();
+        });
     }
 }

@@ -5,7 +5,7 @@ using Windows.System.Profile;
 
 namespace Haiyu.Services;
 
-public sealed partial class WavesClient : IWavesClient
+public sealed partial class KuroClient : IKuroClient
 {
     public string Token => AppSettings.Token ?? "";
 
@@ -17,7 +17,7 @@ public sealed partial class WavesClient : IWavesClient
     public string? BAT { get; private set; }
     public string Ip { get; private set; }
 
-    public WavesClient(
+    public KuroClient(
         IHttpClientService httpClientService,
         [FromKeyedServices("AppLog")] LoggerService loggerService
     )

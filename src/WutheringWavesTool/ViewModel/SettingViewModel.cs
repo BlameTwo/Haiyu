@@ -9,7 +9,7 @@ public sealed partial class SettingViewModel : ViewModelBase
 {
     public SettingViewModel(
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
-        IWavesClient wavesClient,
+        IKuroClient wavesClient,
         IAppContext<App> appContext,
         IViewFactorys viewFactorys,
         ITipShow tipShow,
@@ -38,7 +38,7 @@ public sealed partial class SettingViewModel : ViewModelBase
     }
 
     public IDialogManager DialogManager { get; }
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public IAppContext<App> AppContext { get; }
     public IViewFactorys ViewFactorys { get; }
     public ITipShow TipShow { get; }
@@ -46,6 +46,9 @@ public sealed partial class SettingViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataItem> GamerData { get; set; }
+
+    [ObservableProperty]
+    public partial bool? AutoCommunitySign { get; set; }
 
     [ObservableProperty]
     public partial int SelectCloseIndex { get; set; }
@@ -88,6 +91,14 @@ public sealed partial class SettingViewModel : ViewModelBase
         }
         this.InitCapture();
         GetAllVersion();
+        if(bool.TryParse(AppSettings.AutoSignCommunity,out var isSign))
+        {
+            this.AutoCommunitySign = isSign;
+        }
+        else
+        {
+            this.AutoCommunitySign = false;
+        }
     }
 
     [RelayCommand]
@@ -134,6 +145,13 @@ public sealed partial class SettingViewModel : ViewModelBase
                 AppSettings.CloseWindow = "True";
                 break;
         }
+    }
+
+    partial void OnAutoCommunitySignChanged(bool? value)
+    {
+        if (value == null)
+            return;
+        AppSettings.AutoSignCommunity = value.ToString();
     }
 
     public override void Dispose()

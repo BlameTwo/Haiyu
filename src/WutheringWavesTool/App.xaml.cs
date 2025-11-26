@@ -25,6 +25,7 @@ public partial class App : ClientApplication
 
     public App()
     {
+        this.UnhandledException += App_UnhandledException;
         Directory.CreateDirectory(BassFolder);
         Directory.CreateDirectory(RecordFolder);
         Directory.CreateDirectory(ColorGameFolder);
@@ -41,7 +42,6 @@ public partial class App : ClientApplication
         #region PE DPI Resource
         SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         #endregion
-        this.UnhandledException += App_UnhandledException;
 
         GameContextFactory.GameBassPath = BassFolder;
         Instance.InitService();

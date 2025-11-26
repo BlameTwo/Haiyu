@@ -11,7 +11,7 @@ public class AppContext<T> : IAppContext<T>
     where T : ClientApplication
 {
     public AppContext(
-        IWavesClient wavesClient,
+        IKuroClient wavesClient,
         IWallpaperService wallpaperService,
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
         [FromKeyedServices("AppLog")] LoggerService loggerService
@@ -28,7 +28,7 @@ public class AppContext<T> : IAppContext<T>
 
     public T App { get; private set; }
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public IWallpaperService WallpaperService { get; }
     public IDialogManager DialogManager { get; }
     public LoggerService LoggerService { get; }
@@ -37,7 +37,7 @@ public class AppContext<T> : IAppContext<T>
     {
         try
         {
-            await Instance.GetService<IWavesClient>().InitAsync();
+            await Instance.GetService<IKuroClient>().InitAsync();
             await Instance
                 .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainGameContext))
                 .InitAsync();
@@ -103,10 +103,13 @@ public class AppContext<T> : IAppContext<T>
         catch (Exception ex)
         {
             LoggerService.WriteError(ex.Message);
+            WindowExtension.MessageBox(IntPtr.Zero,"出现故障性错误，请检查网络连接和日志！关闭当前消息自动打开日志文件夹","Haiyu",0);
+            WindowExtension.ShellExecute(IntPtr.Zero, "open", Haiyu.App.BassFolder+"\\appLogs", null, null, WindowExtension.SW_SHOWNORMAL);
             Process.GetCurrentProcess().Kill();
         }
 
     }
+
 
     private void AppWindow_Closing(
         Microsoft.UI.Windowing.AppWindow sender,

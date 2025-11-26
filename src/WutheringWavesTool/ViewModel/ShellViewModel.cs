@@ -18,7 +18,8 @@ public sealed partial class ShellViewModel : ViewModelBase
         IAppContext<App> appContext,
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
         IViewFactorys viewFactorys,
-        IWavesClient wavesClient
+        IKuroClient wavesClient,
+        ILauncherTaskService launcherTaskService
     )
     {
         HomeNavigationService = homeNavigationService;
@@ -28,22 +29,15 @@ public sealed partial class ShellViewModel : ViewModelBase
         DialogManager = dialogManager;
         ViewFactorys = viewFactorys;
         WavesClient = wavesClient;
+        LauncherTaskService = launcherTaskService;
         RegisterMessanger();
         SystemMenu = new NotifyIconMenu()
         {
             Items = new List<NotifyIconMenuItem>()
             {
-                new()
-                {
-                     Header="显示主界面",
-                     Command = this.ShowWindowCommand
-                },
-                new()
-                {
-                     Header="退出启动器",
-                     Command = this.ExitWindowCommand
-                }
-            }
+                new() { Header = "显示主界面", Command = this.ShowWindowCommand },
+                new() { Header = "退出启动器", Command = this.ExitWindowCommand },
+            },
         };
     }
 
@@ -70,7 +64,9 @@ public sealed partial class ShellViewModel : ViewModelBase
     public IAppContext<App> AppContext { get; }
     public IDialogManager DialogManager { get; }
     public IViewFactorys ViewFactorys { get; }
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
+    public ILauncherTaskService LauncherTaskService { get; }
+
     private IDirect3DDevice _device;
 
     [ObservableProperty]
@@ -293,10 +289,15 @@ public sealed partial class ShellViewModel : ViewModelBase
             var moonValue = MoonPhaseCalculator.CalculateMoonPhase(DateTime.Now);
             this.MoonIcon = MoonPhaseCalculator.DeterminePhaseIcon(moonValue);
             this.MoonState = MoonPhaseCalculator.DeterminePhaseName(moonValue);
-            var sunTime = SunriseSunsetCalculator.GetSunTime(DateTime.Now, position.Coordinate.Longitude, position.Coordinate.Latitude);
+            var sunTime = SunriseSunsetCalculator.GetSunTime(
+                DateTime.Now,
+                position.Coordinate.Longitude,
+                position.Coordinate.Latitude
+            );
             this.StartTime = sunTime.SunriseTime.ToString("HH:MM:ss");
             this.EndTime = sunTime.SunsetTime.ToString("HH:MM:ss");
         }
+        await LauncherTaskService.RunAsync(this.CTS.Token);
     }
 
     [RelayCommand]
@@ -343,7 +344,6 @@ public sealed partial class ShellViewModel : ViewModelBase
     [ObservableProperty]
     public partial bool? ShowWavesMainGame { get; set; }
 
-
     partial void OnShowWavesMainGameChanged(bool? value)
     {
         AppSettings.ShowWavesMainGame = value;
@@ -385,8 +385,6 @@ public sealed partial class ShellViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial bool? ShowPGRGlobalGame { get; set; }
-
-
 
     partial void OnShowPGRGlobalGameChanged(bool? value)
     {

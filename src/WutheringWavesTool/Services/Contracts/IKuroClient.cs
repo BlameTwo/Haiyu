@@ -4,7 +4,7 @@ using Waves.Api.Models.QRLogin;
 
 namespace WavesLauncher.Core.Contracts;
 
-public interface IWavesClient
+public interface IKuroClient
 {
     public string Token { get; }
 

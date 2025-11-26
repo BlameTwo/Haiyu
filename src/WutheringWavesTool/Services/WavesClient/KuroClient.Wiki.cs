@@ -4,7 +4,7 @@ using Waves.Api.Models.GameWikiiClient;
 
 namespace Haiyu.Services;
 
-partial class WavesClient
+partial class KuroClient
 {
     public async Task<WikiHomeModel> GetMainWikiAsync(CancellationToken token = default)
     {

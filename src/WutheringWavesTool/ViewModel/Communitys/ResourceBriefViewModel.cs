@@ -5,14 +5,14 @@ namespace Haiyu.ViewModel.Communitys;
 
 public partial class ResourceBriefViewModel : ViewModelBase, IDisposable
 {
-    public ResourceBriefViewModel(IWavesClient wavesClient, ITipShow tipShow)
+    public ResourceBriefViewModel(IKuroClient wavesClient, ITipShow tipShow)
     {
         WavesClient = wavesClient;
         TipShow = tipShow;
         WeakReferenceMessenger.Default.Register<SwitchRoleMessager>(this, SwitchRoleMethod);
     }
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public ITipShow TipShow { get; }
     public GameRoilDataItem Item { get; private set; }
 

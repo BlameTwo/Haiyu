@@ -7,7 +7,7 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
     private bool disposedValue;
     private GameRoilDataItem? _roilData;
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public ITipShow TipShow { get; }
 
     [ObservableProperty]
@@ -21,7 +21,7 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
     public partial ExploreIndexCountry SelectCountry { get; set; }
     public GamerExploreIndexData? BassData { get; private set; }
 
-    public GamerExploreIndexViewModel(IWavesClient wavesClient, ITipShow tipShow)
+    public GamerExploreIndexViewModel(IKuroClient wavesClient, ITipShow tipShow)
     {
         WavesClient = wavesClient;
         TipShow = tipShow;

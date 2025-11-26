@@ -8,9 +8,9 @@ public sealed partial class GamerRoilViewModel : ViewModelBase, IDisposable
     private bool disposedValue;
 
     public NavigationRoilsDetilyItem ItemData { get; private set; }
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
 
-    public GamerRoilViewModel(IWavesClient wavesClient)
+    public GamerRoilViewModel(IKuroClient wavesClient)
     {
         WavesClient = wavesClient;
     }

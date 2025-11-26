@@ -116,12 +116,6 @@
                     <ColumnDefinition Width="4*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="16"
-                    Text="登录数据为空"
-                    Visibility="{x:Bind ViewModel.IsLogin, Mode=OneWay, Converter={StaticResource BoolToVisibilityReversalConverter}}" />
                 <Border Margin="5">
                     <FlipView
                         Grid.Column="0"
@@ -418,7 +412,51 @@
                         </FlipView.ItemTemplate>
                     </FlipView>
                 </Border>
-
+                <Border
+                    Grid.Column="1"
+                    Margin="0,5,5,5"
+                    Padding="15"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Sortcuts, Mode=OneWay}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="wikiModel:WavesShortcutsWrapper">
+                                <ui:DraggableCardControl Margin="4">
+                                    <Grid Padding="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <ui:ImageEx Source="{x:Bind ContentUrl}" />
+                                        <Border
+                                            Grid.Row="1"
+                                            Margin="5,0,0,0"
+                                            Padding="3"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Background="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                            CornerRadius="2">
+                                            <TextBlock
+                                                FontSize="12"
+                                                Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                                Text="{x:Bind Title}" />
+                                        </Border>
+                                    </Grid>
+                                </ui:DraggableCardControl>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                        <ItemsRepeater.Layout>
+                            <UniformGridLayout
+                                ItemsJustification="Start"
+                                ItemsStretch="Uniform"
+                                MinColumnSpacing="2"
+                                MinItemHeight="100"
+                                MinItemWidth="100" />
+                        </ItemsRepeater.Layout>
+                    </ItemsRepeater>
+                </Border>
             </Grid>
         </Grid>
     </Grid>

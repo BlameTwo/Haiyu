@@ -29,8 +29,8 @@ public class LoggerService
         if (logOption == null)
             this.Option = new CoreLogOption()
             {
-                EnableError = false,
-                EnableWran = false,
+                EnableError = true,
+                EnableWran = true,
                 EnableInfo = true,
             };
         else

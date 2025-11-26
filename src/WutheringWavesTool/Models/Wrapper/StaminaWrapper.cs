@@ -7,13 +7,13 @@ public partial class StaminaWrapper : ObservableObject
         try
         {
             this.Energy = data.Energy;
-            var cTime = DateTimeOffset.FromUnixTimeMilliseconds(data.CreatTime).DateTime;
+            var cTime = DateTimeOffset.FromUnixTimeMilliseconds((long)(data.CreatTime)).ToLocalTime().DateTime;
             var timeCali = cTime - new DateTime(2024, 5, 23);
             if (timeCali.TotalDays <= 10)
             {
                 IsShowTime = Visibility.Visible;
             }
-            this.CreateTime = cTime.ToString("G");
+            this.CreateTime = $"{cTime.Year}年{cTime.Month}月{cTime.Day}日   {cTime.Hour}:{cTime.Minute}:{cTime.Second}";
             this.MaxEnergy = data.MaxEnergy;
             this.StoreEnergy = data.StoreEnergy;
             this.MaxStoreEnergy = data.StoreEnergyLimit;

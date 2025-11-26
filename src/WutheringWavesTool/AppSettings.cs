@@ -73,6 +73,12 @@ public class AppSettings
         set => Write(value);
     }
 
+    public static string? AutoSignCommunity
+    {
+        get => Read();
+        set => Write(value);
+    }
+
     public static string? WallpaperPath
     {
         get => Read();

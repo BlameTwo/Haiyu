@@ -2,12 +2,12 @@
 
 public sealed partial class GamerSignViewModel : ViewModelBase
 {
-    public GamerSignViewModel(IWavesClient wavesClient)
+    public GamerSignViewModel(IKuroClient wavesClient)
     {
         WavesClient = wavesClient;
     }
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public GameRoilDataItem SignRoil { get; internal set; }
 
     [ObservableProperty]

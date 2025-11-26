@@ -5,7 +5,7 @@ namespace Haiyu.ViewModel.DialogViewModels;
 public sealed partial class BindGameDataViewModel : DialogViewModelBase, IDisposable
 {
     public BindGameDataViewModel(
-        IWavesClient wavesClient,
+        IKuroClient wavesClient,
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager
     )
         : base(dialogManager)
@@ -14,7 +14,7 @@ public sealed partial class BindGameDataViewModel : DialogViewModelBase, IDispos
     }
 
     public IGameContext? GameContext { get; private set; }
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
 
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataItem> Roils { get; set; }

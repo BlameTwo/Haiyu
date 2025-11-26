@@ -4,14 +4,14 @@ public partial class WikiViewModelBase : ViewModelBase
 {
     public WikiViewModelBase()
     {
-        GameWikiClient = Instance.GetService<IGameWikiClient>();
-        WavesClient = Instance.GetService<IWavesClient>();
-        this.TipShow = Instance.GetService<ITipShow>();
+        GameWikiClient = Instance.Service.GetRequiredService<IGameWikiClient>();
+        WavesClient = Instance.Service.GetRequiredService<IKuroClient>();
+        this.TipShow = Instance.Service.GetRequiredService<ITipShow>();
     }
 
     public IGameWikiClient GameWikiClient { get; }
 
-    public IWavesClient WavesClient { get;  }
+    public IKuroClient WavesClient { get;  }
 
     public ITipShow TipShow { get; }
 

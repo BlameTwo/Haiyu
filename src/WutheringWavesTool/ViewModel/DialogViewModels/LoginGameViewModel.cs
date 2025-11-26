@@ -9,7 +9,7 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
     public LoginGameViewModel(
         IAppContext<App> appContext,
         IViewFactorys viewFactorys,
-        IWavesClient wavesClient,
+        IKuroClient wavesClient,
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager
     )
         : base(dialogManager)
@@ -50,7 +50,7 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
 
     public IAppContext<App> AppContext { get; }
     public IViewFactorys ViewFactorys { get; }
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
 
     private async void GeeSuccessMethod(object recipient, GeeSuccessMessanger message)
     {

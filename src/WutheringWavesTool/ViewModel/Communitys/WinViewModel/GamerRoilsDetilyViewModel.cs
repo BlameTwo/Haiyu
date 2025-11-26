@@ -5,7 +5,7 @@ namespace Haiyu.ViewModel.Communitys.WinViewModel;
 public sealed partial class GamerRoilsDetilyViewModel : ViewModelBase, IDisposable
 {
     public GamerRoilsDetilyViewModel(
-        IWavesClient wavesClient,
+        IKuroClient wavesClient,
         GamerRoilViewModel gamerRoilViewModel
     )
     {
@@ -14,7 +14,7 @@ public sealed partial class GamerRoilsDetilyViewModel : ViewModelBase, IDisposab
     }
 
     public ShowRoleData Data { get; internal set; }
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
 
     [ObservableProperty]
     public partial ObservableCollection<INavigationRoilsItem> Roles { get; set; }

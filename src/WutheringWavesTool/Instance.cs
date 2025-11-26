@@ -98,11 +98,12 @@ public static class Instance
         #endregion
         #region Base
             .AddSingleton<IAppContext<App>, AppContext<App>>()
-            .AddSingleton<IWavesClient, WavesClient>()
+            .AddSingleton<IKuroClient, KuroClient>()
             .AddSingleton<ICloudGameService, CloudGameService>()
             .AddSingleton<IScreenCaptureService, ScreenCaptureService>()
             .AddSingleton<IGameWikiClient, GameWikiClient>()
             .AddTransient<IViewFactorys, ViewFactorys>()
+            .AddTransient<ILauncherTaskService,LauncherTaskService>()
             .AddSingleton<CloudConfigManager>(
                 (s) =>
                 {

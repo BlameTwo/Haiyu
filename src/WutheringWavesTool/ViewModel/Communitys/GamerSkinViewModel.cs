@@ -3,7 +3,7 @@
 public sealed partial class GamerSkinViewModel : ViewModelBase
 {
     private GameRoilDataItem roil;
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public ITipShow TipShow { get; }
 
     [ObservableProperty]
@@ -12,7 +12,7 @@ public sealed partial class GamerSkinViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<WeaponSkinList> WeaponSkins { get; set; }
 
-    public GamerSkinViewModel(IWavesClient wavesClient, ITipShow tipShow)
+    public GamerSkinViewModel(IKuroClient wavesClient, ITipShow tipShow)
     {
         WavesClient = wavesClient;
         TipShow = tipShow;

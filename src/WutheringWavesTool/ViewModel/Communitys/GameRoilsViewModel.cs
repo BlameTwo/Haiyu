@@ -5,11 +5,11 @@ public sealed partial class GameRoilsViewModel : ViewModelBase, ICommunityViewMo
     private bool disposedValue;
     private ObservableCollection<DataCenterRoilItemWrapper> cacheRoils;
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public ITipShow TipShow { get; }
     public GameRoilDataItem User { get; private set; }
 
-    public GameRoilsViewModel(IWavesClient wavesClient, ITipShow tipShow)
+    public GameRoilsViewModel(IKuroClient wavesClient, ITipShow tipShow)
     {
         WavesClient = wavesClient;
         TipShow = tipShow;

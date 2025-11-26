@@ -4,7 +4,7 @@ public partial class GamerDockViewModel : ViewModelBase, IDisposable
 {
     private bool disposedValue;
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public ITipShow TipShow { get; }
 
     [ObservableProperty]
@@ -14,7 +14,7 @@ public partial class GamerDockViewModel : ViewModelBase, IDisposable
     public partial GamerCalabashData GamerCalabash { get; set; }
     public GameRoilDataItem GameRoil { get; private set; }
 
-    public GamerDockViewModel(IWavesClient wavesClient, ITipShow tipShow)
+    public GamerDockViewModel(IKuroClient wavesClient, ITipShow tipShow)
     {
         WavesClient = wavesClient;
         TipShow = tipShow;

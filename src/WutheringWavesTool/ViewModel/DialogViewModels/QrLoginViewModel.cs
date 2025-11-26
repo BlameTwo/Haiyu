@@ -12,7 +12,7 @@ namespace Haiyu.ViewModel.DialogViewModels;
 
 public partial class QrLoginViewModel : DialogViewModelBase
 {
-    public QrLoginViewModel([FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager, IAppContext<App> appContext, IWavesClient wavesClient) : base(dialogManager)
+    public QrLoginViewModel([FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager, IAppContext<App> appContext, IKuroClient wavesClient) : base(dialogManager)
     {
         AppContext = appContext;
         WavesClient = wavesClient;
@@ -23,7 +23,7 @@ public partial class QrLoginViewModel : DialogViewModelBase
     private GraphicsCaptureSession? _session;
 
     public IAppContext<App> AppContext { get; }
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
 
     [ObservableProperty]
     public partial Visibility SelectWindowVisibility { get; set; } = Visibility.Visible;

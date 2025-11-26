@@ -8,6 +8,11 @@ namespace Waves.Core.Contracts;
 /// </summary>
 public interface IGameWikiClient
 {
+    public Task<WikiHomeModel?> GetHomePageAsync(
+        WikiType type,
+        CancellationToken token = default
+    );
+
     Task<List<HotContentSide?>> GetEventDataAsync(WikiType type, CancellationToken token = default);
 
     public Task<EventContentSide?> GetEventTabDataAsync(

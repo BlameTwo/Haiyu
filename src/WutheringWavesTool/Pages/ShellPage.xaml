@@ -218,7 +218,7 @@
                         </i:Interaction.Behaviors>
                         <Button.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Command="{x:Bind ViewModel.OpenSignWindowCommand}" Text="签到">
+                                <MenuFlyoutItem Command="{x:Bind ViewModel.OpenSignWindowCommand}" Text="鸣潮签到">
                                     <i:Interaction.Behaviors>
                                         <sound:ControlSoundBehavior />
                                     </i:Interaction.Behaviors>

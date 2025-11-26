@@ -1,6 +1,7 @@
-﻿using Haiyu.Models.Wrapper.Wiki;
-using System.Diagnostics.Metrics;
+﻿using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
+using Haiyu.Helpers;
+using Haiyu.Models.Wrapper.Wiki;
 using Waves.Api.Models.GameWikiiClient;
 
 namespace Haiyu.ViewModel.WikiViewModels;
@@ -18,63 +19,68 @@ public partial class WavesWikiViewModel : WikiViewModelBase
     }
 
     [ObservableProperty]
-    public partial ObservableCollection<HotContentSideWrapper> Sides { get; set; }
-
+    public partial ObservableCollection<HotContentSideWrapper> Sides { get; set; } = [];
 
     [ObservableProperty]
     public partial ObservableCollection<StaminaWrapper> Staminas { get; set; } = [];
 
+    [ObservableProperty]
+    public partial ObservableCollection<WavesShortcutsWrapper> Sortcuts { get; set; } = [];
+
     [RelayCommand]
     async Task Loaded()
     {
-        var result = await TryInvokeAsync(async () => await this.GameWikiClient.GetEventDataAsync(WikiType.Waves, this.CTS.Token));
-        var result2 = await TryInvokeAsync(async () => await this.GameWikiClient.GetEventTabDataAsync(WikiType.Waves, this.CTS.Token));
-        if(await this.WavesClient.IsLoginAsync(this.CTS.Token))
+        var result = await TryInvokeAsync(async () =>
+            await this.GameWikiClient.GetEventDataAsync(WikiType.Waves, this.CTS.Token)
+        );
+        var wikiPage = await TryInvokeAsync(async () =>
+            await this.GameWikiClient.GetHomePageAsync(WikiType.Waves, this.CTS.Token)
+        );
+        if (result.Item1 == 0)
         {
-            var userDatas = await TryInvokeAsync(async () => WavesClient.GetWavesGamerAsync(this.CTS.Token));
-            var roles = await WavesClient.GetWavesGamerAsync(this.CTS.Token);
-            if (roles == null || roles.Code != 200)
+            Sides = result.Item2.Format();
+        }
+        if (await WavesClient.IsLoginAsync(CTS.Token))
+        {
+            var roles = await TryInvokeAsync(async () =>
+                await WavesClient.GetWavesGamerAsync(this.CTS.Token)
+            );
+            if (roles.Code != 0)
             {
+                TipShow.ShowMessage($"获取数据失败，请检查网络或重启应用", Symbol.Clear);
                 return;
             }
-            foreach (var item in roles.Data)
+            foreach (var item in roles.Result.Data)
             {
                 var stamina = await WavesClient.GetGamerBassDataAsync(item);
                 if (stamina == null)
                     continue;
                 this.Staminas.Add(new(stamina));
             }
-            this.IsLogin = true;
         }
-        if (result.Item1 == 0)
+        if (wikiPage.Code == 0 || (wikiPage.Result != null && wikiPage.Result.Data.ContentJson.Shortcuts != null))
         {
-            Sides = Format(result.Item2);
+            foreach (var item in wikiPage.Result.Data.ContentJson.Shortcuts.Content)
+            {
+                if (item.LinkConfig.CatalogueId is JsonElement element)
+                {
+                    Sortcuts.Add(
+                        new WavesShortcutsWrapper()
+                        {
+                            Title = item.Title,
+                            ContentUrl = item.ContentUrl,
+                            CatalogueId = element.GetInt32().ToString(),
+                            LinkType = item.LinkConfig.LinkType.ToString(),
+                        }
+                    );
+                }
+            }
         }
         else
         {
-            TipShow.ShowMessage($"获取数据失败，请检查网络,{result.Item3}", Symbol.Clear);
+            TipShow.ShowMessage($"获取数据失败，请检查网络或重启应用", Symbol.Clear);
         }
-    }
-
-    public ObservableCollection<HotContentSideWrapper> Format(IEnumerable<HotContentSide>? result)
-    {
-        if (result == null)
-            return [];
-        ObservableCollection<HotContentSideWrapper> wrappers = new();
-        foreach (var item in result)
-        {
-            var value = new HotContentSideWrapper()
-            {
-                Title = item.Title,
-                ImageUrl = item.ContentUrl,
-                StartTime = item.CountDown.DateRange[0],
-                EndTime = item.CountDown.DateRange[1],
-            };
-            var spanResult = (DateTime.Parse(item.CountDown.DateRange[1]) - DateTime.Now);
-            value.Cali();
-            wrappers.Add(value);
-        }
-        return wrappers;
+        this.IsLogin = true;
     }
 
     public override void Dispose()

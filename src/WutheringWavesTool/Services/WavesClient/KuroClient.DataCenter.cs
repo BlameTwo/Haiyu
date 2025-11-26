@@ -2,7 +2,7 @@
 
 namespace Haiyu.Services;
 
-partial class WavesClient
+partial class KuroClient
 {
     public async Task<GamerBassData?> GetGamerBassDataAsync(
         GameRoilDataItem roil,

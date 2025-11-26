@@ -6,7 +6,7 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
 {
     private bool disposedValue;
 
-    public GamerSlashDetailViewModel(IWavesClient wavesClient, ITipShow tipShow)
+    public GamerSlashDetailViewModel(IKuroClient wavesClient, ITipShow tipShow)
     {
         WavesClient = wavesClient;
         TipShow = tipShow;
@@ -18,7 +18,7 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
         await this.RefreshData();
     }
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public ITipShow TipShow { get; }
     public GameRoilDataItem Roil { get; private set; }
 

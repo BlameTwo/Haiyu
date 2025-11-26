@@ -4,7 +4,7 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase
 {
     private List<ChallengeList>? orginCountrys;
 
-    public GamerChallengeViewModel(IWavesClient wavesClient, ITipShow tipShow)
+    public GamerChallengeViewModel(IKuroClient wavesClient, ITipShow tipShow)
     {
         Countrys = new();
         WavesClient = wavesClient;
@@ -18,7 +18,7 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase
         await Loaded();
     }
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public ITipShow TipShow { get; }
 
     [ObservableProperty]

@@ -4,7 +4,7 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
 {
     private bool disposedValue;
 
-    public GamerTowerViewModel(IWavesClient wavesClient, ITipShow tipShow)
+    public GamerTowerViewModel(IKuroClient wavesClient, ITipShow tipShow)
     {
         WavesClient = wavesClient;
         TipShow = tipShow;
@@ -14,7 +14,7 @@ public sealed partial class GamerTowerViewModel : ViewModelBase, IDisposable
     [ObservableProperty]
     public partial ObservableCollection<DataCenterTowerDifficultyWrapper> Difficulties { get; set; }
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public ITipShow TipShow { get; }
     public GameRoilDataItem RoilData { get; private set; }
 

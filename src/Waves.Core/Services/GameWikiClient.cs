@@ -25,6 +25,7 @@ public sealed partial class GameWikiClient : IGameWikiClient
                 request.Headers.Add("wiki_type", ((int)type).ToString());
                 request.Method = HttpMethod.Post;
                 var response = await client.SendAsync(request, token);
+                var json = await response.Content.ReadAsStringAsync();
                 var model = await response.Content.ReadFromJsonAsync<WikiHomeModel>(
                     WikiContext.Default.WikiHomeModel,
                     token
@@ -49,7 +50,7 @@ public sealed partial class GameWikiClient : IGameWikiClient
     {
         try
         {
-            var model = await GetHomePageAsync(type, token);
+            var model = await GetHomePageAsync(type, token).ConfigureAwait(false);
             if (model == null)
                 return null;
             var dataString = model

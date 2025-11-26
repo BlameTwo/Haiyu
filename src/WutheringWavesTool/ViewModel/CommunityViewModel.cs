@@ -5,7 +5,7 @@ namespace Haiyu.ViewModel;
 public partial class CommunityViewModel : ViewModelBase, IDisposable
 {
     public CommunityViewModel(
-        IWavesClient wavesClient,
+        IKuroClient wavesClient,
         IViewFactorys viewFactorys,
         [FromKeyedServices(nameof(CommunityNavigationService))]
             INavigationService navigationService,
@@ -19,7 +19,7 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
         RegisterMessanger();
     }
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
     public IAppContext<App> AppContext { get; }
     public IViewFactorys ViewFactorys { get; }
     public INavigationService NavigationService { get; set; }

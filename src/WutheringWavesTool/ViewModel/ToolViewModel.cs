@@ -2,12 +2,12 @@
 
 public sealed partial class ToolViewModel : ViewModelBase
 {
-    public ToolViewModel(IWavesClient wavesClient)
+    public ToolViewModel(IKuroClient wavesClient)
     {
         WavesClient = wavesClient;
     }
 
-    public IWavesClient WavesClient { get; }
+    public IKuroClient WavesClient { get; }
 
     [ObservableProperty]
     public partial bool IsLogin { get; set; }
