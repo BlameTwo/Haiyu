@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.IO;
+using System.Text.Json.Serialization;
 
 namespace Waves.Core.Models.Downloader;
 
@@ -44,6 +45,14 @@ public class PatchResource
     public List<IndexChunkInfo> ChunkInfos { get; set; }
 }
 
+public class GroupFileInfo
+{
+    [JsonPropertyName("dest")]
+    public string Dest { get; set; } = string.Empty;
+
+
+}
+
 
 public class PatchIndexGameResource : IndexGameResource
 {
@@ -55,6 +64,9 @@ public class PatchIndexGameResource : IndexGameResource
 
     [JsonPropertyName("patchInfos")]
     public List<PatchInfo> PatchInfos { get; set; }
+
+    [JsonPropertyName("groupInfos")]
+    public List<GroupFileInfo> GroupInfos { get; set; }
 }
 
 [JsonSerializable(typeof(PatchInfo))]

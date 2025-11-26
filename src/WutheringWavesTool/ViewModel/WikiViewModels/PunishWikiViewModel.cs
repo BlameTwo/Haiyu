@@ -15,14 +15,16 @@ public partial class PunishWikiViewModel : WikiViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
-        var result = await TryInvokeAsync(async () => await this.GameWikiClient.GetEventDataAsync(WikiType.BGR, this.CTS.Token));
-        if (result.Item1 == 0)
+        var wikiPage = await TryInvokeAsync(async () =>
+            await this.GameWikiClient.GetHomePageAsync(WikiType.Waves, this.CTS.Token)
+        );
+        if (wikiPage.Code == 0 || (wikiPage.Result != null && wikiPage.Result.Data.ContentJson.Shortcuts != null))
         {
-            Sides = result.Item2.Format();
+            Sides = GameWikiClient.GetEventData(wikiPage.Result).Format() ?? [];
         }
         else
         {
-            TipShow.ShowMessage($"获取数据失败，请检查网络,{result.Item3}", Symbol.Clear);
+            TipShow.ShowMessage($"获取数据失败，请检查网络或重启应用", Symbol.Clear);
         }
     }
 

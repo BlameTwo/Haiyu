@@ -402,47 +402,48 @@ public partial class GameContextBase
         bool result = false;
         var patchInfos = patch.Resource.Where(x => x.Dest.EndsWith("krpdiff")).ToList();
         var resourceinfo = patch.Resource.Where(x => !(x.Dest.Contains("krpdiff") || x.Dest.Contains("krdiff")));
-        if (patch.Resource.Where(x => x.Dest.Contains("krpdiff")).Any())
-        {
-            _downloadBaseUrl =
+        _downloadBaseUrl =
                 launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
                 + previous.BaseUrl;
-            _totalfileSize = patchInfos.Sum(x => x.Size);
-            _totalFileTotal = patchInfos.Count - 1;
-            _totalProgressTotal = 0;
-            _totalProgressSize = 0;
-            if(patch.PatchInfos!= null && patch.PatchInfos.Count > 0)
-            {
-                result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
-            }
-            result = await Task.Run(() => UpdateGameToResources(folder + "\\Diff", patchInfos));
-            if (!result)
-            {
-                Logger.WriteInfo($"下载差异组文件失败，请联系开发者");
-                await SetNoneStatusAsync().ConfigureAwait(false);
-                return;
-            }
+        _totalfileSize = patchInfos.Sum(x => x.Size);
+        _totalFileTotal = patchInfos.Count - 1;
+        _totalProgressTotal = 0;
+        _totalProgressSize = 0;
+        if (patch.ApplyTypes.Contains("patch") && patch.PatchInfos != null && patch.PatchInfos.Count > 0)
+        {
+            result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
             for (int i = 0; i < patchInfos.Count; i++)
             {
                 var filePath = BuildFilePath(folder + "\\Diff", patchInfos[i]);
-                await DecompressKrdiffFile(folder, filePath,i+1,patchInfos.Count);
+                await DecompressKrdiffFile(folder, filePath, i + 1, patchInfos.Count);
                 Logger.WriteInfo($"文件{filePath}解压完毕，已经删除");
                 File.Delete(filePath);
             }
         }
-        #region Update Resource
-        if (resourceinfo.Count() > 0)
+        else if (patch.ApplyTypes.Contains("group") && patch.GroupInfos != null && patch.GroupInfos.Count > 0)
+        {
+            result = await Task.Run(() => UpdateGameToResources(folder + "\\Diff", patchInfos));
+        }
+        else
         {
             _downloadBaseUrl =
                 launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
                 + launcher.ResourceDefault.ResourcesBasePath;
             _totalfileSize = resourceinfo.Sum(x => x.Size);
             _totalFileTotal = resourceinfo.Count() - 1;
-            _totalProgressTotal = resourceinfo.Sum(x=>x.Size);
+            _totalProgressTotal = resourceinfo.Sum(x => x.Size);
             _totalProgressSize = 0;
             _downloadCTS = new CancellationTokenSource();
             result = await Task.Run(() => UpdateGameToResources(folder, resourceinfo.ToList()));
         }
+        if (!result)
+        {
+            Logger.WriteInfo($"下载差异组文件失败，请联系开发者");
+            await SetNoneStatusAsync().ConfigureAwait(false);
+            return;
+        }
+        #region Update Resource
+        
         for (int i = 0; i < patch.DeleteFiles.Count; i++)
         {
             var localFile = $"{folder}\\{patch.DeleteFiles[i]}".Replace('/', '\\');

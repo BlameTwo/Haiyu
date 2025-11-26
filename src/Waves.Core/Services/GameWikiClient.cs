@@ -98,4 +98,19 @@ public sealed partial class GameWikiClient : IGameWikiClient
             return null;
         }
     }
+
+    public List<HotContentSide?> GetEventData(WikiHomeModel model)
+    {
+        var dataString = model
+                .Data.ContentJson.SideModules.Where(x => x.Type == "hot-content-side")
+                .FirstOrDefault();
+        if (dataString == null)
+            return null;
+        if (dataString.Content is JsonElement element)
+        {
+            var result = element.Deserialize(WikiContext.Default.ListHotContentSide);
+            return result;
+        }
+        return null;
+    }
 }

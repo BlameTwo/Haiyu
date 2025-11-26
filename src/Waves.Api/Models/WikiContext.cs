@@ -16,6 +16,8 @@ namespace Waves.Api.Models
     [JsonSerializable(typeof(EventContentSide))]
     [JsonSerializable(typeof(EventSideTab))]
     [JsonSerializable(typeof(EventSideImage))]
+    [JsonSerializable(typeof(WikiCatalogue))]
+    [JsonSerializable(typeof(WikiCatalogueChildren))]
     public partial class WikiContext:JsonSerializerContext
     {
     }

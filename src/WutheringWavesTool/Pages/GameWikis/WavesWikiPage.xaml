@@ -8,8 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:source="using:Waves.Api.Models.Communitys.DataCenter"
     xmlns:ui="using:Haiyu.Controls"
+    xmlns:wiki="using:Waves.Api.Models.GameWikiiClient"
     xmlns:wikiModel="using:Haiyu.Models.Wrapper.Wiki"
     xmlns:wrapper="using:Haiyu.Models.Wrapper"
+    xmlns:wuc="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
@@ -45,6 +47,12 @@
                     HorizontalScrollMode="Enabled"
                     VerticalScrollMode="Disabled">
                     <ItemsControl ItemsSource="{x:Bind ViewModel.Sides, Mode=OneWay}">
+                        <ItemsControl.ItemContainerTransitions>
+                            <TransitionCollection>
+
+                                <AddDeleteThemeTransition />
+                            </TransitionCollection>
+                        </ItemsControl.ItemContainerTransitions>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="wikiModel:HotContentSideWrapper">
                                 <ui:DraggableCardControl Margin="5" CornerRadius="5">
@@ -116,12 +124,28 @@
                     <ColumnDefinition Width="4*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <Border Margin="5">
+                <Border
+                    Margin="5"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Visibility="{x:Bind ViewModel.KuroLogin, Mode=OneWay, Converter={StaticResource BoolToVisibilityReversalConverter}}">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                        <TextBlock Text="未登录或登陆过期" />
+                    </StackPanel>
+                </Border>
+                <Border
+                    Margin="5"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                    BorderThickness="1"
+                    Visibility="{x:Bind ViewModel.KuroLogin, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                     <FlipView
                         Grid.Column="0"
-                        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                        BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
-                        BorderThickness="1"
                         ItemsSource="{x:Bind ViewModel.Staminas, Mode=OneWay}"
                         Style="{ThemeResource DefaultFlipViewStyle}">
                         <FlipView.ItemTemplate>
@@ -412,51 +436,66 @@
                         </FlipView.ItemTemplate>
                     </FlipView>
                 </Border>
-                <Border
-                    Grid.Column="1"
-                    Margin="0,5,5,5"
-                    Padding="15"
-                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.Sortcuts, Mode=OneWay}">
-                        <ItemsRepeater.ItemTemplate>
-                            <DataTemplate x:DataType="wikiModel:WavesShortcutsWrapper">
-                                <ui:DraggableCardControl Margin="4">
-                                    <Grid Padding="10">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition Height="auto" />
-                                        </Grid.RowDefinitions>
-                                        <ui:ImageEx Source="{x:Bind ContentUrl}" />
-                                        <Border
-                                            Grid.Row="1"
-                                            Margin="5,0,0,0"
-                                            Padding="3"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Background="{ThemeResource AccentAAFillColorDefaultBrush}"
-                                            CornerRadius="2">
-                                            <TextBlock
-                                                FontSize="12"
-                                                Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                                                Text="{x:Bind Title}" />
-                                        </Border>
-                                    </Grid>
-                                </ui:DraggableCardControl>
-                            </DataTemplate>
-                        </ItemsRepeater.ItemTemplate>
-                        <ItemsRepeater.Layout>
-                            <UniformGridLayout
-                                ItemsJustification="Start"
-                                ItemsStretch="Uniform"
-                                MinColumnSpacing="2"
-                                MinItemHeight="100"
-                                MinItemWidth="100" />
-                        </ItemsRepeater.Layout>
-                    </ItemsRepeater>
-                </Border>
+                <Grid Grid.Column="1" Margin="0,5,5,5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid
+                        Grid.RowSpan="2"
+                        Padding="5"
+                        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                        BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <StackPanel
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                            <TextBlock
+                                FontFamily="{ThemeResource DefaultFont}"
+                                FontSize="18"
+                                Text="更多请查看鸣潮Wiki" />
+                            <HyperlinkButton
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                Content="前往"
+                                NavigateUri="https://wiki.kurobbs.com/mc/home" />
+                        </StackPanel>
+                        <!--
+                         <Grid.RowDefinitions>
+     <RowDefinition Height="auto" />
+     <RowDefinition />
+ </Grid.RowDefinitions>
+ <TextBlock
+     Margin="10"
+     FontFamily="{ThemeResource DefaultFont}"
+     FontSize="18"
+     Text="图鉴" />
+ <ItemsControl
+     Grid.Row="1"
+     Margin="5,5,0,0"
+     ItemsSource="{x:Bind ViewModel.CatalogueChildren, Mode=OneWay}">
+     <ItemsControl.ItemContainerTransitions>
+         <TransitionCollection>
+             <AddDeleteThemeTransition />
+         </TransitionCollection>
+     </ItemsControl.ItemContainerTransitions>
+     <ItemsControl.ItemTemplate>
+         <DataTemplate x:DataType="wiki:WikiCatalogueChildren">
+             <HyperlinkButton Content="{x:Bind Name}" NavigateUri="{x:Bind WebUri}" />
+         </DataTemplate>
+     </ItemsControl.ItemTemplate>
+     <ItemsControl.ItemsPanel>
+         <ItemsPanelTemplate>
+             <wuc:WrapPanel />
+         </ItemsPanelTemplate>
+     </ItemsControl.ItemsPanel>
+ </ItemsControl>
+
+                        -->
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     </Grid>

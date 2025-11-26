@@ -22,24 +22,20 @@ public partial class WavesWikiViewModel : WikiViewModelBase
     public partial ObservableCollection<HotContentSideWrapper> Sides { get; set; } = [];
 
     [ObservableProperty]
+    public partial bool KuroLogin { get; set; } = false;
+
+    [ObservableProperty]
     public partial ObservableCollection<StaminaWrapper> Staminas { get; set; } = [];
 
     [ObservableProperty]
-    public partial ObservableCollection<WavesShortcutsWrapper> Sortcuts { get; set; } = [];
+    public partial ObservableCollection<WikiCatalogueChildren> CatalogueChildren { get; set; } = [];
 
     [RelayCommand]
     async Task Loaded()
     {
-        var result = await TryInvokeAsync(async () =>
-            await this.GameWikiClient.GetEventDataAsync(WikiType.Waves, this.CTS.Token)
-        );
         var wikiPage = await TryInvokeAsync(async () =>
             await this.GameWikiClient.GetHomePageAsync(WikiType.Waves, this.CTS.Token)
         );
-        if (result.Item1 == 0)
-        {
-            Sides = result.Item2.Format();
-        }
         if (await WavesClient.IsLoginAsync(CTS.Token))
         {
             var roles = await TryInvokeAsync(async () =>
@@ -57,30 +53,22 @@ public partial class WavesWikiViewModel : WikiViewModelBase
                     continue;
                 this.Staminas.Add(new(stamina));
             }
+            this.KuroLogin = true;
         }
         if (wikiPage.Code == 0 || (wikiPage.Result != null && wikiPage.Result.Data.ContentJson.Shortcuts != null))
         {
-            foreach (var item in wikiPage.Result.Data.ContentJson.Shortcuts.Content)
-            {
-                if (item.LinkConfig.CatalogueId is JsonElement element)
-                {
-                    Sortcuts.Add(
-                        new WavesShortcutsWrapper()
-                        {
-                            Title = item.Title,
-                            ContentUrl = item.ContentUrl,
-                            CatalogueId = element.GetInt32().ToString(),
-                            LinkType = item.LinkConfig.LinkType.ToString(),
-                        }
-                    );
-                }
-            }
+            Sides = GameWikiClient.GetEventData(wikiPage.Result).Format()??[];
+            //var content = wikiPage.Result.Data.ContentJson.MainModules.Where(x => x.Type == "catalogue").FirstOrDefault().Content;
+            //if(content is JsonElement contentElement)
+            //{
+            //    WikiCatalogue catalogue = contentElement.Deserialize(WikiContext.Default.WikiCatalogue);
+            //    this.CatalogueChildren = catalogue.Childrens.ToObservableCollection();
+            //}
         }
         else
         {
             TipShow.ShowMessage($"获取数据失败，请检查网络或重启应用", Symbol.Clear);
         }
-        this.IsLogin = true;
     }
 
     public override void Dispose()
