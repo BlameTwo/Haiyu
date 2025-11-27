@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Metrics;
+﻿using System.Diagnostics.Contracts;
+using System.Diagnostics.Metrics;
 using System.Runtime.CompilerServices;
 using Haiyu.Helpers;
 using Haiyu.Models.Wrapper.Wiki;
@@ -22,6 +23,9 @@ public partial class WavesWikiViewModel : WikiViewModelBase
     public partial ObservableCollection<HotContentSideWrapper> Sides { get; set; } = [];
 
     [ObservableProperty]
+    public partial bool Loading { get; set; }
+
+    [ObservableProperty]
     public partial bool KuroLogin { get; set; } = false;
 
     [ObservableProperty]
@@ -33,6 +37,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
+        Loading = true;
         var wikiPage = await TryInvokeAsync(async () =>
             await this.GameWikiClient.GetHomePageAsync(WikiType.Waves, this.CTS.Token)
         );
@@ -69,6 +74,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase
         {
             TipShow.ShowMessage($"获取数据失败，请检查网络或重启应用", Symbol.Clear);
         }
+        Loading = false;
     }
 
     public override void Dispose()

@@ -5,18 +5,19 @@
     xmlns:local="using:Haiyu.Controls">
 
     <ResourceDictionary.ThemeDictionaries>
-        <ResourceDictionary x:Key="Default">
+        <ResourceDictionary x:Key="Dark">
             <StaticResource x:Key="ShimmerBackground" ResourceKey="ControlAltFillColorTertiaryBrush" />
         </ResourceDictionary>
+
         <ResourceDictionary x:Key="Light">
             <StaticResource x:Key="ShimmerBackground" ResourceKey="ControlAltFillColorTertiaryBrush" />
         </ResourceDictionary>
+
         <ResourceDictionary x:Key="HighContrast">
             <StaticResource x:Key="ShimmerBackground" ResourceKey="SystemColorWindowColor" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
-    <Style BasedOn="{StaticResource DefaultShimmerStyle}" TargetType="local:Shimmer" />
 
     <Style x:Key="DefaultShimmerStyle" TargetType="local:Shimmer">
         <Setter Property="Background" Value="{ThemeResource ShimmerBackground}" />

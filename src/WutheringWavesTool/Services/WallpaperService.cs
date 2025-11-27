@@ -137,11 +137,11 @@ public class WallpaperService : IWallpaperService
         Media.ShowType = type;
         if (type == WallpaperShowType.Video)
         {
-            Media.MediaSource = backgroundFile;
+            Media.SetMediaSource(backgroundFile);
         }
         else if (type == WallpaperShowType.Image)
         {
-            Media.ImageSource = backgroundFile;
+            Media.SetImageSource(backgroundFile);
         }
         this.Media.UpdateMedia();
     }

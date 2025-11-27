@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Composition;
+﻿using CommunityToolkit.WinUI;
+using CommunityToolkit.WinUI.Animations.Expressions;
+using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml.Hosting;
 using Microsoft.UI.Xaml.Shapes;
 using System;
@@ -10,47 +12,15 @@ using System.Threading.Tasks;
 
 namespace Haiyu.Controls;
 
-// using https://github.com/ghost1372/DevWinUI/blob/e8860dd75d0af0a155685618ca07e0b1d83bb29a/dev/DevWinUI.Controls/Themes/Styles/Controls/Shimmer.xaml#L18
+// using https://github.com/CommunityToolkit/Labs-Windows/blob/main/components/Shimmer/src/Shimmer/
 
 [TemplatePart(Name = PART_Shape, Type = typeof(Rectangle))]
 public partial class Shimmer : Control
 {
-    /// <summary>
-    /// Identifies the <see cref="Duration"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty DurationProperty = DependencyProperty.Register(
-       nameof(Duration),
-       typeof(object),
-       typeof(Shimmer),
-       new PropertyMetadata(defaultValue: TimeSpan.FromMilliseconds(1600), PropertyChanged));
-
-    /// <summary>
-    /// Identifies the <see cref="IsActive"/> dependency property.
-    /// </summary>
-    public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
-      nameof(IsActive),
-      typeof(bool),
-      typeof(Shimmer),
-      new PropertyMetadata(defaultValue: true, PropertyChanged));
-
-    /// <summary>
-    /// Gets or sets the animation duration
-    /// </summary>
-    public TimeSpan Duration
-    {
-        get => (TimeSpan)GetValue(DurationProperty);
-        set => SetValue(DurationProperty, value);
-    }
-
-    public bool IsActive
-    {
-        get => (bool)GetValue(IsActiveProperty);
-        set => SetValue(IsActiveProperty, value);
-    }
-
     private const float InitialStartPointX = -7.92f;
     private const string PART_Shape = "Shape";
 
+    private Vector2Node? _sizeAnimation;
     private Vector2KeyFrameAnimation? _gradientStartPointAnimation;
     private Vector2KeyFrameAnimation? _gradientEndPointAnimation;
     private CompositionColorGradientStop? _gradientStop1;
@@ -67,7 +37,6 @@ public partial class Shimmer : Control
 
     public Shimmer()
     {
-        DefaultStyleKey = typeof(Shimmer);
         Loaded += OnLoaded;
         Unloaded += OnUnloaded;
     }
@@ -136,7 +105,7 @@ public partial class Shimmer : Control
             return false;
         }
 
-        var compositor = ElementCompositionPreview.GetElementVisual(_shape).Compositor;
+        var compositor = _shape.GetVisual().Compositor;
 
         _rectangleGeometry = compositor.CreateRoundedRectangleGeometry();
         _shapeVisual = compositor.CreateShapeVisual();
@@ -157,10 +126,61 @@ public partial class Shimmer : Control
         return true;
     }
 
+
+    /// <summary>
+    /// Identifies the <see cref="Duration"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty DurationProperty = DependencyProperty.Register(
+       nameof(Duration),
+       typeof(object),
+       typeof(Shimmer),
+       new PropertyMetadata(defaultValue: TimeSpan.FromMilliseconds(1600), PropertyChanged));
+
+    /// <summary>
+    /// Identifies the <see cref="IsActive"/> dependency property.
+    /// </summary>
+    public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
+      nameof(IsActive),
+      typeof(bool),
+      typeof(Shimmer),
+      new PropertyMetadata(defaultValue: true, PropertyChanged));
+
+
+    /// <summary>
+    /// Gets or sets the animation duration
+    /// </summary>
+    public TimeSpan Duration
+    {
+        get => (TimeSpan)GetValue(DurationProperty);
+        set => SetValue(DurationProperty, value);
+    }
+
+    /// <summary>
+    /// Gets or sets if the animation is playing
+    /// </summary>
+    public bool IsActive
+    {
+        get => (bool)GetValue(IsActiveProperty);
+        set => SetValue(IsActiveProperty, value);
+    }
+
+    private static void PropertyChanged(DependencyObject s, DependencyPropertyChangedEventArgs e)
+    {
+        var self = (Shimmer)s;
+        if (self.IsActive)
+        {
+            self.StopAnimation();
+            self.TryStartAnimation();
+        }
+        else
+        {
+            self.StopAnimation();
+        }
+    }
     private void SetGradientAndStops()
     {
         _shimmerMaskGradient!.StartPoint = new Vector2(InitialStartPointX, 0.0f);
-        _shimmerMaskGradient.EndPoint = new Vector2(0.0f, 1.0f);
+        _shimmerMaskGradient.EndPoint = new Vector2(0.0f, 1.0f); //Vector2.One
 
         _gradientStop1!.Offset = 0.273f;
         _gradientStop2!.Offset = 0.436f;
@@ -200,13 +220,10 @@ public partial class Shimmer : Control
             return;
         }
 
-        var rootVisual = ElementCompositionPreview.GetElementVisual(_shape);
-        var compositor = rootVisual.Compositor;
-        var sizeExpression = compositor.CreateExpressionAnimation("source.Size");
-        sizeExpression.SetReferenceParameter("source", rootVisual);
-
-        _shapeVisual.StartAnimation(nameof(ShapeVisual.Size), sizeExpression);
-        _rectangleGeometry.StartAnimation(nameof(CompositionRoundedRectangleGeometry.Size), sizeExpression);
+        var rootVisual = _shape.GetVisual();
+        _sizeAnimation = rootVisual.GetReference().Size;
+        _shapeVisual.StartAnimation(nameof(ShapeVisual.Size), _sizeAnimation);
+        _rectangleGeometry.StartAnimation(nameof(CompositionRoundedRectangleGeometry.Size), _sizeAnimation);
 
         _gradientStartPointAnimation = rootVisual.Compositor.CreateVector2KeyFrameAnimation();
         _gradientStartPointAnimation.Duration = Duration;
@@ -218,7 +235,7 @@ public partial class Shimmer : Control
         _gradientEndPointAnimation = rootVisual.Compositor.CreateVector2KeyFrameAnimation();
         _gradientEndPointAnimation.Duration = Duration;
         _gradientEndPointAnimation.IterationBehavior = AnimationIterationBehavior.Forever;
-        _gradientEndPointAnimation.InsertKeyFrame(0.0f, new Vector2(1.0f, 0.0f));
+        _gradientEndPointAnimation.InsertKeyFrame(0.0f, new Vector2(1.0f, 0.0f)); //Vector2.One
         _gradientEndPointAnimation.InsertKeyFrame(1.0f, new Vector2(-InitialStartPointX, 1.0f));
         _shimmerMaskGradient.StartAnimation(nameof(CompositionLinearGradientBrush.EndPoint), _gradientEndPointAnimation);
 
@@ -237,22 +254,9 @@ public partial class Shimmer : Control
         _shimmerMaskGradient!.StopAnimation(nameof(CompositionLinearGradientBrush.StartPoint));
         _shimmerMaskGradient.StopAnimation(nameof(CompositionLinearGradientBrush.EndPoint));
 
+        _sizeAnimation!.Dispose();
         _gradientStartPointAnimation!.Dispose();
         _gradientEndPointAnimation!.Dispose();
         _animationStarted = false;
-    }
-
-    private static void PropertyChanged(DependencyObject s, DependencyPropertyChangedEventArgs e)
-    {
-        var self = (Shimmer)s;
-        if (self.IsActive)
-        {
-            self.StopAnimation();
-            self.TryStartAnimation();
-        }
-        else
-        {
-            self.StopAnimation();
-        }
     }
 }

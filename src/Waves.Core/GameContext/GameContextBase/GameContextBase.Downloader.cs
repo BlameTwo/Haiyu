@@ -412,6 +412,10 @@ public partial class GameContextBase
         if (patch.ApplyTypes.Contains("patch") && patch.PatchInfos != null && patch.PatchInfos.Count > 0)
         {
             result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
+            
+        }
+        else if (patch.ApplyTypes.Contains("group") && patch.GroupInfos != null && patch.GroupInfos.Count > 0)
+        {
             for (int i = 0; i < patchInfos.Count; i++)
             {
                 var filePath = BuildFilePath(folder + "\\Diff", patchInfos[i]);
@@ -419,10 +423,6 @@ public partial class GameContextBase
                 Logger.WriteInfo($"文件{filePath}解压完毕，已经删除");
                 File.Delete(filePath);
             }
-        }
-        else if (patch.ApplyTypes.Contains("group") && patch.GroupInfos != null && patch.GroupInfos.Count > 0)
-        {
-            result = await Task.Run(() => UpdateGameToResources(folder + "\\Diff", patchInfos));
         }
         else
         {

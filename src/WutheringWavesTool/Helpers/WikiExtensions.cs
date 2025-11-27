@@ -23,6 +23,7 @@ public static class WikiExtensions
                 ImageUrl = item.ContentUrl,
                 StartTime = item.CountDown.DateRange[0],
                 EndTime = item.CountDown.DateRange[1],
+                JumpUrl = item.LinkConfig.LinkUrl
             };
             var spanResult = (DateTime.Parse(item.CountDown.DateRange[1]) - DateTime.Now);
             value.Cali();

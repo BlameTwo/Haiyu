@@ -1,4 +1,6 @@
-﻿namespace Haiyu.Models.Wrapper.Wiki
+﻿using Windows.System;
+
+namespace Haiyu.Models.Wrapper.Wiki
 {
     public partial class HotContentSideWrapper : ObservableObject
     {
@@ -22,6 +24,15 @@
 
         [ObservableProperty]
         public partial double CurrentProgress { get; set; }
+
+
+        [ObservableProperty]
+        public partial string JumpUrl { get; set; }
+
+        public IAsyncRelayCommand JumpWebCommand => new AsyncRelayCommand(async () =>
+        {
+            await Launcher.LaunchUriAsync(new(JumpUrl));
+        });
 
         public void Cali()
         {

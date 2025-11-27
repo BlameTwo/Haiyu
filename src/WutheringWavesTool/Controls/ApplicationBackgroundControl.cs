@@ -139,6 +139,8 @@ public partial class ApplicationBackgroundControl : Control
 
     public Image ImageControl { get; private set; }
     public MediaPlayerPresenter MediaControl { get; private set; }
+    public string MediaBackground { get; private set; }
+    public string ImageBackground { get; private set; }
 
     public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(
         "Stretch",
@@ -159,5 +161,17 @@ public partial class ApplicationBackgroundControl : Control
         if (MediaControl.MediaPlayer == null)
             return;
         MediaControl.MediaPlayer.Play();
+    }
+
+    public void SetMediaSource(string backgroundFile)
+    {
+        if(this.MediaBackground != backgroundFile)
+            this.MediaSource = backgroundFile;
+    }
+
+    internal void SetImageSource(string backgroundFile)
+    {
+        if (this.ImageBackground != backgroundFile)
+            this.ImageSource = backgroundFile;
     }
 }
