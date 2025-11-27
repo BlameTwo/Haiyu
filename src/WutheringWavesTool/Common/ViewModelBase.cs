@@ -27,7 +27,6 @@ public partial class ViewModelBase : ObservableRecipient, IDisposable
     public async Task<(int Code, T? Result, string? Message)> TryInvokeAsync<T>(
         Func<Task<T?>> taskFactory
     )
-        where T : class
     {
         try
         {
@@ -36,12 +35,12 @@ public partial class ViewModelBase : ObservableRecipient, IDisposable
         }
         catch (OperationCanceledException)
         {
-            return (-1, null, "用户取消操作");
+            return (-1, default(T), "用户取消操作");
         }
         catch (Exception ex)
             when (ex is not StackOverflowException && ex is not OutOfMemoryException)
         {
-            return (-2, null, ex.Message ?? "操作失败");
+            return (-2, default(T), ex.Message ?? "操作失败");
         }
     }
 

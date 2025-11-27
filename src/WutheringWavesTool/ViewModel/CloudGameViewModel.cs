@@ -253,56 +253,75 @@ public partial class CloudGameViewModel : ViewModelBase
             var AllWeapon = await RecordHelper.GetAllWeaponAsync();
             var StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
             var StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
+            var isLogin =  await TryInvokeAsync(async () => await CloudGameService.OpenUserAsync(this.SelectedUser));
+            if(isLogin.Result.Item1 == false)
+            {
+                TipShow.ShowMessage("登陆过期，请重新添加账号", Symbol.Clear);
+                this.LoadVisibility = Visibility.Collapsed;
+                this.DataVisibility = Visibility.Collapsed;
+                return;
+            }
             var url = await TryInvokeAsync(async () =>
                 await CloudGameService.GetRecordAsync(this.CTS.Token)
             );
             #region 读取抽卡记录
-            Dictionary<int, IList<RecordCardItemWrapper>> @param =
+            if(url.Result.Data != null)
+            {
+                Dictionary<int, IList<RecordCardItemWrapper>> @param =
                 new Dictionary<int, IList<RecordCardItemWrapper>>();
-            for (int i = 1; i < 10; i++)
-            {
-                var player1 = await TryInvokeAsync(async () =>
-                    await CloudGameService.GetGameRecordResource(
-                        url.Item2.Data.RecordId,
-                        url.Item2.Data.PlayerId.ToString(),
-                        i,
-                        this.CTS.Token
-                    )
-                );
-                if (player1.Result == null)
+                for (int i = 1; i < 10; i++)
                 {
-                    TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
-                    return;
+                    var player1 = await TryInvokeAsync(async () =>
+                        await CloudGameService.GetGameRecordResource(
+                            url.Item2.Data.RecordId,
+                            url.Item2.Data.PlayerId.ToString(),
+                            i,
+                            this.CTS.Token
+                        )
+                    );
+                    if (player1.Result == null)
+                    {
+                        TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
+                        return;
+                    }
+                    var WeaponsActivity = player1
+                        .Result.Data.Select(x => new RecordCardItemWrapper(x))
+                        .ToList();
+                    param.Add(i, WeaponsActivity);
                 }
-                var WeaponsActivity = player1
-                    .Result.Data.Select(x => new RecordCardItemWrapper(x))
-                    .ToList();
-                param.Add(i, WeaponsActivity);
-            }
-            #endregion
-            var cache = new RecordCacheDetily()
-            {
-                Name = this.SelectedUser.Username,
-                Time = DateTime.Now,
-                RoleActivityItems = param[1],
-                WeaponsActivityItems = param[2],
-                RoleResidentItems = param[3],
-                WeaponsResidentItems = param[4],
-                BeginnerItems = param[5],
-                BeginnerChoiceItems = param[6],
-                GratitudeOrientationItems = param[7],
-                RoleJourneyItems = param[8],
-                WeaponJourneyItems = param[9]
-            };
-            var datas = MemoryPackSerializer.Serialize<RecordCacheDetily>(
-                cache,
-                new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
-            );
-            var result = await RecordHelper.MargeRecordAsync(App.RecordFolder, cache)!;
-            TipShow.ShowMessage($"抽卡合并，数据总量{result.Item2},二进制大小{result.Item1 / 1024}KB", Symbol.Accept);
+                var cache = new RecordCacheDetily()
+                {
+                    Name = this.SelectedUser.Username,
+                    Time = DateTime.Now,
+                    RoleActivityItems = param[1],
+                    WeaponsActivityItems = param[2],
+                    RoleResidentItems = param[3],
+                    WeaponsResidentItems = param[4],
+                    BeginnerItems = param[5],
+                    BeginnerChoiceItems = param[6],
+                    GratitudeOrientationItems = param[7],
+                    RoleJourneyItems = param[8],
+                    WeaponJourneyItems = param[9]
+                };
+                var datas = MemoryPackSerializer.Serialize<RecordCacheDetily>(
+                    cache,
+                    new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
+                );
+                var result = await RecordHelper.MargeRecordAsync(App.RecordFolder, cache)!;
+                TipShow.ShowMessage($"抽卡合并，数据总量{result.Item2},二进制大小{result.Item1 / 1024}KB", Symbol.Accept);
 
-            this.LoadVisibility = Visibility.Collapsed;
-            this.DataVisibility = Visibility.Visible;
+                this.LoadVisibility = Visibility.Collapsed;
+                this.DataVisibility = Visibility.Visible;
+            }
+            else
+            {
+                TipShow.ShowMessage($"{url.Message}", Symbol.Clear);
+                this.LoadVisibility = Visibility.Collapsed;
+                this.DataVisibility = Visibility.Collapsed;
+            }
+            
+            #endregion
+            
         }
         catch (Exception ex)
         {

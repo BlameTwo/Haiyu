@@ -90,5 +90,6 @@ public partial class App : ClientApplication
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
         Instance.Service.GetService<IScreenCaptureService>().Register();
         Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
+
     }
 }
