@@ -71,8 +71,8 @@ public partial class GameContextBase
             return;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
         await UpdateGameResourceAsync(folder, launcher);
+        
     }
-
     #region 核心下载逻辑
     private async Task GetGameResourceAsync(string folder, GameLauncherSource source, bool isDelete)
     {

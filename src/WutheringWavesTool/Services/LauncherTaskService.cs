@@ -25,6 +25,14 @@ public sealed class LauncherTaskService : ILauncherTaskService
         {
             if (Boolean.TryParse(AppSettings.AutoSignCommunity, out var flag) && flag)
             {
+                if (!(await WavesClient.IsLoginAsync(token)))
+                {
+                    await TipShow.ShowMessageAsync(
+                        "请登录库洛通行证以启动自动签到",
+                        Symbol.Message
+                    );
+                    return;
+                }
                 int signErrorCount = 0;
                 var gamers = await WavesClient.GetWavesGamerAsync(token);
                 if (gamers == null || gamers.Success == false)
