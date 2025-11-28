@@ -15,6 +15,8 @@ namespace Waves.Core.GameContext;
 
 public partial class GameContextBase
 {
+    const int MAX_Concurrency_Count = 4;
+
     #region 常量
     const int MaxBufferSize = 65536; // 64KB缓冲区
     const long UpdateThreshold = 1048576; // 1MB进度更新阈值
@@ -47,7 +49,11 @@ public partial class GameContextBase
     private DownloadState _downloadState;
     #endregion
     #region 公开方法
-    public async Task StartDownloadTaskAsync(string folder, GameLauncherSource? source,bool isDelete = false)
+    public async Task StartDownloadTaskAsync(
+        string folder,
+        GameLauncherSource? source,
+        bool isDelete = false
+    )
     {
         if (source == null || string.IsNullOrWhiteSpace(folder))
             return;
@@ -57,7 +63,7 @@ public partial class GameContextBase
         _totalProgressTotal = 0;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.GameLauncherBassFolder, folder);
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
-        await GetGameResourceAsync(folder, source,isDelete);
+        await GetGameResourceAsync(folder, source, isDelete);
     }
     #endregion
 
@@ -66,13 +72,13 @@ public partial class GameContextBase
     {
         _downloadCTS = new CancellationTokenSource();
         var folder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
-        var launcher = await this.GetGameLauncherSourceAsync(null,_downloadCTS.Token);
+        var launcher = await this.GetGameLauncherSourceAsync(null, _downloadCTS.Token);
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
         await UpdateGameResourceAsync(folder, launcher);
-        
     }
+
     #region 核心下载逻辑
     private async Task GetGameResourceAsync(string folder, GameLauncherSource source, bool isDelete)
     {
@@ -88,7 +94,7 @@ public partial class GameContextBase
 
             HttpClientService.BuildClient();
             await InitializeProgress(resource);
-            await Task.Run(() => StartDownloadAsync(folder, resource,isDelete));
+            await Task.Run(() => StartDownloadAsync(folder, resource, isDelete));
             await DownloadComplate(source);
 
             await SetNoneStatusAsync().ConfigureAwait(false);
@@ -144,7 +150,9 @@ public partial class GameContextBase
         {
             Logger.WriteInfo("修复游戏，开始删除本地多余文件");
             var localFile = new DirectoryInfo(folder).GetFiles("*", SearchOption.AllDirectories);
-            var serverFileSet = new HashSet<string>(resource.Resource.Select(x => BuildFilePath(folder, x).ToLower()));
+            var serverFileSet = new HashSet<string>(
+                resource.Resource.Select(x => BuildFilePath(folder, x).ToLower())
+            );
 
             var filesToDelete = localFile
                 .Where(f =>
@@ -167,116 +175,34 @@ public partial class GameContextBase
         #region 下载逻辑
         try
         {
-            for (int j = 0; j < resource.Resource.Count; j++)
+            ParallelOptions options = new ParallelOptions()
             {
-                Logger.WriteInfo(
-                    $"[{resource.Resource[j].Dest}],当前进度大小[{Math.Round((double)_totalProgressSize, 2)}/{Math.Round((double)_totalfileSize, 2)}]，真剩余资源大小{resource.Resource.Skip(j - 1).Sum(x => x.Size)}"
-                );
-                if (_downloadCTS?.IsCancellationRequested ?? true)
-                {
-                    this._downloadState.IsActive = false;
-                    await SetNoneStatusAsync().ConfigureAwait(false);
-                    return;
-                }
-                var filePath = BuildFilePath(folder, resource.Resource[j]);
-                if (File.Exists(filePath))
-                {
-                    if (resource.Resource[j].ChunkInfos == null)
-                    {
-                        var checkResult = await VaildateFullFile(
-                            resource.Resource[j].Md5,
-                            filePath
-                        );
-                        if (checkResult)
+                MaxDegreeOfParallelism = MAX_Concurrency_Count,
+                CancellationToken = _downloadCTS.Token,
+            };
+            var minFiles = resource.Resource.Where(x => x.Size < 200 * 1024 * 1024).ToList();
+            var maxFiles = resource.Resource.Where(x => x.Size >= 200 * 1024 * 1024).ToList();
+            //小文件4线程
+            if (!(await ParallelDownloadAsync(minFiles, options, folder)))
+            {
+                throw new IOException("下载小文件出现错误！");
+            }
+            //大文件1线程
+            if (
+                !(
+                    await ParallelDownloadAsync(
+                        maxFiles,
+                        new ParallelOptions()
                         {
-                            Logger.WriteInfo("需要全量下载……");
-                            await DownloadFileByFull(
-                                resource.Resource[j].Dest,
-                                resource.Resource[j].Size,
-                                filePath,
-                                new()
-                                {
-                                    Start = 0,
-                                    End = resource.Resource[j].Size - 1,
-                                    Md5 = resource.Resource[j].Md5,
-                                }
-                            );
-                            //await FinalValidation(file, filePath);
-                        }
-                        else
-                        {
-                            await UpdateFileProgress(
-                                    GameContextActionType.Verify,
-                                    resource.Resource[j].Size,
-                                    true
-                                )
-                                .ConfigureAwait(false);
-                        }
-                    }
-                    else
-                    {
-                        var fileName = System.IO.Path.GetFileName(filePath);
-                        for (int i = 0; i < resource.Resource[j].ChunkInfos.Count; i++)
-                        {
-                            var needDownload = await ValidateFileChunks(
-                                resource.Resource[j].ChunkInfos[i],
-                                filePath
-                            );
-                            if (needDownload)
-                            {
-                                Logger.WriteInfo($"分片[{i}]需要全量下载……");
-                                if (i == resource.Resource[j].ChunkInfos.Count - 1)
-                                {
-                                    await DownloadFileByChunks(
-                                        resource.Resource[j].Dest,
-                                        filePath,
-                                        resource.Resource[j].ChunkInfos[i].Start,
-                                        resource.Resource[j].ChunkInfos[i].End,
-                                        true,
-                                        resource.Resource[j].Size
-                                    );
-                                }
-                                else
-                                {
-                                    await DownloadFileByChunks(
-                                        resource.Resource[j].Dest,
-                                        filePath,
-                                        resource.Resource[j].ChunkInfos[i].Start,
-                                        resource.Resource[j].ChunkInfos[i].End,
-                                        false
-                                    );
-                                }
-                            }
-                            else
-                            {
-                                await UpdateFileProgress(
-                                        GameContextActionType.Verify,
-                                        resource.Resource[j].ChunkInfos[i].End
-                                            - resource.Resource[j].ChunkInfos[i].Start,
-                                        true
-                                    )
-                                    .ConfigureAwait(false);
-                            }
-                        }
-                    }
-                    //await FinalValidation(file, filePath);
-                }
-                else
-                {
-                    Logger.WriteInfo($"文件不存在，全量下载");
-                    await DownloadFileByFull(
-                        resource.Resource[j].Dest,
-                        resource.Resource[j].Size,
-                        filePath,
-                        new IndexChunkInfo()
-                        {
-                            Start = 0,
-                            End = resource.Resource[j].Size - 1,
-                            Md5 = resource.Resource[j].Md5,
-                        }
-                    );
-                    //await FinalValidation(file, filePath);
-                }
+                            CancellationToken = _downloadCTS.Token,
+                            MaxDegreeOfParallelism = 1,
+                        },
+                        folder
+                    )
+                )
+            )
+            {
+                throw new IOException("下载大文件出现错误！");
             }
         }
         catch (IOException ex)
@@ -308,6 +234,131 @@ public partial class GameContextBase
         _downloadCTS = null;
         _isDownload = false;
         _downloadState.IsActive = false;
+    }
+
+    public async Task<bool> ParallelDownloadAsync(
+        List<IndexResource> resource,
+        ParallelOptions options,
+        string folder
+    )
+    {
+        try
+        {
+            await Parallel.ForEachAsync(
+                resource,
+                options,
+                async (item, token) =>
+                {
+                    Logger.WriteInfo(
+                        $"[{item.Dest}],当前进度大小[{Math.Round((double)_totalProgressSize, 2)}/{Math.Round((double)_totalfileSize, 2)}]"
+                    );
+                    if (_downloadCTS?.IsCancellationRequested ?? true)
+                    {
+                        this._downloadState.IsActive = false;
+                        await SetNoneStatusAsync().ConfigureAwait(false);
+                        return;
+                    }
+                    var filePath = BuildFilePath(folder, item);
+                    if (File.Exists(filePath))
+                    {
+                        if (item.ChunkInfos == null)
+                        {
+                            var checkResult = await VaildateFullFile(item.Md5, filePath);
+                            if (checkResult)
+                            {
+                                Logger.WriteInfo("需要全量下载……");
+                                await DownloadFileByFull(
+                                    item.Dest,
+                                    item.Size,
+                                    filePath,
+                                    new()
+                                    {
+                                        Start = 0,
+                                        End = item.Size - 1,
+                                        Md5 = item.Md5,
+                                    }
+                                );
+                            }
+                            else
+                            {
+                                await UpdateFileProgress(
+                                        GameContextActionType.Verify,
+                                        item.Size,
+                                        true
+                                    )
+                                    .ConfigureAwait(false);
+                            }
+                        }
+                        else
+                        {
+                            var fileName = System.IO.Path.GetFileName(filePath);
+                            for (int i = 0; i < item.ChunkInfos.Count; i++)
+                            {
+                                var needDownload = await ValidateFileChunks(
+                                    item.ChunkInfos[i],
+                                    filePath
+                                );
+                                if (needDownload)
+                                {
+                                    Logger.WriteInfo($"分片[{i}]需要全量下载……");
+                                    if (i == item.ChunkInfos.Count - 1)
+                                    {
+                                        await DownloadFileByChunks(
+                                            item.Dest,
+                                            filePath,
+                                            item.ChunkInfos[i].Start,
+                                            item.ChunkInfos[i].End,
+                                            true,
+                                            item.Size
+                                        );
+                                    }
+                                    else
+                                    {
+                                        await DownloadFileByChunks(
+                                            item.Dest,
+                                            filePath,
+                                            item.ChunkInfos[i].Start,
+                                            item.ChunkInfos[i].End,
+                                            false
+                                        );
+                                    }
+                                }
+                                else
+                                {
+                                    await UpdateFileProgress(
+                                            GameContextActionType.Verify,
+                                            item.ChunkInfos[i].End - item.ChunkInfos[i].Start,
+                                            true
+                                        )
+                                        .ConfigureAwait(false);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Logger.WriteInfo($"文件不存在，全量下载");
+                        await DownloadFileByFull(
+                            item.Dest,
+                            item.Size,
+                            filePath,
+                            new IndexChunkInfo()
+                            {
+                                Start = 0,
+                                End = item.Size - 1,
+                                Md5 = item.Md5,
+                            }
+                        );
+                        //await FinalValidation(file, filePath);
+                    }
+                }
+            );
+            return true;
+        }
+        catch (Exception)
+        {
+            return false;
+        }
     }
 
     public async Task<bool> PauseDownloadAsync()
@@ -391,7 +442,7 @@ public partial class GameContextBase
             await CancelDownloadAsync();
             return;
         }
-        if(patch == null)
+        if (patch == null)
         {
             Logger.WriteInfo("获得Patch文件失败！");
             await CancelDownloadAsync();
@@ -401,20 +452,29 @@ public partial class GameContextBase
         _downloadCTS = new CancellationTokenSource();
         bool result = false;
         var patchInfos = patch.Resource.Where(x => x.Dest.EndsWith("krpdiff")).ToList();
-        var resourceinfo = patch.Resource.Where(x => !(x.Dest.Contains("krpdiff") || x.Dest.Contains("krdiff")));
+        var resourceinfo = patch.Resource.Where(x =>
+            !(x.Dest.Contains("krpdiff") || x.Dest.Contains("krdiff"))
+        );
         _downloadBaseUrl =
-                launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
-                + previous.BaseUrl;
+            launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
+            + previous.BaseUrl;
         _totalfileSize = patchInfos.Sum(x => x.Size);
         _totalFileTotal = patchInfos.Count - 1;
         _totalProgressTotal = 0;
         _totalProgressSize = 0;
-        if (patch.ApplyTypes.Contains("patch") && patch.PatchInfos != null && patch.PatchInfos.Count > 0)
+        if (
+            patch.ApplyTypes.Contains("patch")
+            && patch.PatchInfos != null
+            && patch.PatchInfos.Count > 0
+        )
         {
             result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
-            
         }
-        else if (patch.ApplyTypes.Contains("group") && patch.GroupInfos != null && patch.GroupInfos.Count > 0)
+        else if (
+            patch.ApplyTypes.Contains("group")
+            && patch.GroupInfos != null
+            && patch.GroupInfos.Count > 0
+        )
         {
             for (int i = 0; i < patchInfos.Count; i++)
             {
@@ -443,7 +503,7 @@ public partial class GameContextBase
             return;
         }
         #region Update Resource
-        
+
         for (int i = 0; i < patch.DeleteFiles.Count; i++)
         {
             var localFile = $"{folder}\\{patch.DeleteFiles[i]}".Replace('/', '\\');
@@ -477,9 +537,9 @@ public partial class GameContextBase
     private async Task<bool> DownloadPatcheToResource(string folder, PatchIndexGameResource patch)
     {
         var patchInfos = patch.PatchInfos.Where(x => x.Dest.EndsWith("krdiff")).ToList();
+
         for (int i = 0; i < patchInfos.Count(); i++)
         {
-
             if (patchInfos[i].Dest.EndsWith("krdiff"))
             {
                 var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
@@ -495,13 +555,18 @@ public partial class GameContextBase
                     Logger.WriteError("下载差异文件取消或出现异常");
                     return false;
                 }
-                await DecompressKrdiffFile(folder, filePath,i,patchInfos.Count);
+                await DecompressKrdiffFile(folder, filePath, i, patchInfos.Count);
             }
         }
         return true;
     }
 
-    private async Task DecompressKrdiffFile(string folder, string? krdiffPath,int curent,int total)
+    private async Task DecompressKrdiffFile(
+        string folder,
+        string? krdiffPath,
+        int curent,
+        int total
+    )
     {
         if (krdiffPath == null)
             return;
@@ -524,35 +589,41 @@ public partial class GameContextBase
                         RemainingTime = TimeSpan.FromMicroseconds(0),
                         IsAction = _downloadState?.IsActive ?? false,
                         IsPause = _downloadState?.IsPaused ?? false,
-                        TipMessage = "正在解压合并资源"
-                        ,CurrentDecompressCount = curent,
-                        MaxDecompressValue = total
+                        TipMessage = "正在解压合并资源",
+                        CurrentDecompressCount = curent,
+                        MaxDecompressValue = total,
                     }
                 )
-                .ConfigureAwait(false); 
+                .ConfigureAwait(false);
         };
-        var result =  await manager.StartAsync(progress);
+        var result = await manager.StartAsync(progress);
         Logger.WriteInfo($"解压程序结果{result}");
     }
 
     private string BuildFilePath(string folder, PatchInfo item)
     {
         var path = Path.Combine(folder, item.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(Path.GetDirectoryName(path)??throw new Exception($"文件{item.Dest}创建失败"));
+        Directory.CreateDirectory(
+            Path.GetDirectoryName(path) ?? throw new Exception($"文件{item.Dest}创建失败")
+        );
         return path;
     }
+
     private string BuildFilePath(string folder, string item)
     {
         var path = Path.Combine(folder, item.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(Path.GetDirectoryName(path) ?? throw new Exception($"文件{item}创建失败"));
+        Directory.CreateDirectory(
+            Path.GetDirectoryName(path) ?? throw new Exception($"文件{item}创建失败")
+        );
         return path;
     }
+
     private async Task<bool> UpdateGameToResources(string folder, List<IndexResource> resource)
     {
         _downloadState.IsActive = true;
         _totalProgressTotal = resource.Sum(x => x.Size);
         await UpdateFileProgress(GameContextActionType.Verify, 0);
-       
+
         #region 下载逻辑
         try
         {
@@ -570,10 +641,7 @@ public partial class GameContextBase
                 {
                     if (resource[i].ChunkInfos == null)
                     {
-                        var checkResult = await VaildateFullFile(
-                            resource[i].Md5,
-                            filePath
-                        );
+                        var checkResult = await VaildateFullFile(resource[i].Md5, filePath);
                         if (checkResult)
                         {
                             await DownloadFileByFull(
@@ -691,8 +759,6 @@ public partial class GameContextBase
         _downloadState.IsActive = false;
         return true;
     }
-
-
 
     async Task CancelDownloadAsync()
     {
@@ -994,11 +1060,9 @@ public partial class GameContextBase
                             .ConfigureAwait(false);
                         accumulatedBytes = 0;
                     }
-                    
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-
                     Logger.WriteError(ex.Message);
                 }
                 finally
@@ -1340,7 +1404,7 @@ public partial class GameContextBase
                     TipMessage = v,
                 }
             )
-            .ConfigureAwait(false); 
+            .ConfigureAwait(false);
     }
 
     public TimeSpan RemainingTime
@@ -1375,7 +1439,9 @@ public partial class GameContextBase
     private string BuildFilePath(string folder, IndexResource file)
     {
         var path = Path.Combine(folder, file.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(Path.GetDirectoryName(path) ?? throw new Exception($"文件{file.Dest}创建失败"));
+        Directory.CreateDirectory(
+            Path.GetDirectoryName(path) ?? throw new Exception($"文件{file.Dest}创建失败")
+        );
         return path;
     }
 
@@ -1404,11 +1470,11 @@ public partial class GameContextBase
         Logger.WriteInfo("开始修复游戏");
         var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
         var launcher = await this.GetGameLauncherSourceAsync();
-        if(launcher == null)
+        if (launcher == null)
         {
             Logger.WriteInfo("无网络，无法拉取文件列表");
             return;
         }
-        await Task.Run(async () => await StartDownloadTaskAsync(installFolder, launcher,true));
+        await Task.Run(async () => await StartDownloadTaskAsync(installFolder, launcher, true));
     }
 }
