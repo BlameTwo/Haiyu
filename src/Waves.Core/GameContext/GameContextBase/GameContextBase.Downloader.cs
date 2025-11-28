@@ -15,6 +15,9 @@ namespace Waves.Core.GameContext;
 
 public partial class GameContextBase
 {
+    /// <summary>
+    /// 下载校验最大并发数
+    /// </summary>
     const int MAX_Concurrency_Count = 4;
 
     #region 常量
@@ -355,8 +358,9 @@ public partial class GameContextBase
             );
             return true;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            Logger.WriteError("校验失败！");
             return false;
         }
     }
@@ -448,27 +452,23 @@ public partial class GameContextBase
             await CancelDownloadAsync();
             return;
         }
-        this._downloadState = new DownloadState(patch);
         _downloadCTS = new CancellationTokenSource();
         bool result = false;
-        var patchInfos = patch.Resource.Where(x => x.Dest.EndsWith("krpdiff")).ToList();
-        var resourceinfo = patch.Resource.Where(x =>
-            !(x.Dest.Contains("krpdiff") || x.Dest.Contains("krdiff"))
-        );
+
         _downloadBaseUrl =
             launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
             + previous.BaseUrl;
-        _totalfileSize = patchInfos.Sum(x => x.Size);
-        _totalFileTotal = patchInfos.Count - 1;
         _totalProgressTotal = 0;
         _totalProgressSize = 0;
+        this._downloadState = new DownloadState();
+        _downloadState.IsActive = true;
         if (
             patch.ApplyTypes.Contains("patch")
             && patch.PatchInfos != null
             && patch.PatchInfos.Count > 0
         )
         {
-            result = await Task.Run(() => DownloadPatcheToResource(folder, patch));
+            result = await Task.Run(() => DownloadPatcheToResource(folder + "\\Diff", patch));
         }
         else if (
             patch.ApplyTypes.Contains("group")
@@ -476,16 +476,63 @@ public partial class GameContextBase
             && patch.GroupInfos.Count > 0
         )
         {
-            for (int i = 0; i < patchInfos.Count; i++)
+            result = await Task.Run(() => DownloadGroupPatcheToResource(folder + "\\Diff", patch));
+            if (result == false)
             {
-                var filePath = BuildFilePath(folder + "\\Diff", patchInfos[i]);
-                await DecompressKrdiffFile(folder, filePath, i + 1, patchInfos.Count);
+                Logger.WriteInfo($"下载差异组文件失败，请联系开发者");
+                await SetNoneStatusAsync().ConfigureAwait(false);
+                await UpdateFileProgress(
+                        GameContextActionType.TipMessage,
+                        0,
+                        false,
+                        "下载差异组文件失败，请尝试修复游戏！"
+                    )
+                    .ConfigureAwait(false);
+                return;
+            }
+            string tempFolder = folder + "\\decompressFolder";
+            Dictionary<string, string> newFiles = new();
+            for (int i = 0; i < patch.GroupInfos.Count; i++)
+            {
+                var filePath = BuildFilePath(folder + "\\Diff", patch.GroupInfos[i]);
+                await DecompressKrdiffFile(
+                    folder,
+                    filePath,
+                    i + 1,
+                    patch.GroupInfos.Count,
+                    tempFolder
+                );
                 Logger.WriteInfo($"文件{filePath}解压完毕，已经删除");
+                for (int j = 0; j < patch.GroupInfos[i].SrcFiles.Count; j++)
+                {
+                    var deleteFilePath = BuildFilePath(folder, patch.GroupInfos[i].SrcFiles[j]);
+                    Logger.WriteError($"删除源文件{deleteFilePath}");
+                    File.Delete(deleteFilePath);
+                }
+                foreach (var file in patch.GroupInfos[i].DstFiles)
+                {
+                    newFiles.Add(BuildFilePath(tempFolder, file), BuildFilePath(folder, file));
+                }
                 File.Delete(filePath);
+                Logger.WriteInfo($"删除差异文件：{filePath}");
+            }
+            if (!await CheckApplyFilesMd5(patch.GroupInfos, folder, tempFolder, newFiles))
+            {
+                Logger.WriteInfo($"下载差异组文件失败，请尝试修复游戏！");
+                await UpdateFileProgress(
+                        GameContextActionType.TipMessage,
+                        0,
+                        false,
+                        "下载差异组文件失败，请尝试修复游戏！"
+                    )
+                    .ConfigureAwait(false);
+                await SetNoneStatusAsync().ConfigureAwait(false);
+                return;
             }
         }
         else
         {
+            var resourceinfo = patch.Resource;
             _downloadBaseUrl =
                 launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
                 + launcher.ResourceDefault.ResourcesBasePath;
@@ -500,10 +547,25 @@ public partial class GameContextBase
         {
             Logger.WriteInfo($"下载差异组文件失败，请联系开发者");
             await SetNoneStatusAsync().ConfigureAwait(false);
+            await UpdateFileProgress(
+                GameContextActionType.TipMessage,
+                0,
+                false,
+                "下载差异文件失败，请直接进行修复游戏"
+            );
             return;
         }
+        else 
+        {
+            var diffFolder = folder + "\\Diff";
+            var decompressFolder = folder + "\\decompressFolder";
+            if(Directory.Exists(diffFolder))
+                Directory.Delete(folder + "\\Diff");
+            if(Directory.Exists(decompressFolder))
+                Directory.Delete(folder + "\\decompressFolder");
+            Logger.WriteInfo("删除缓存文件夹");
+        }
         #region Update Resource
-
         for (int i = 0; i < patch.DeleteFiles.Count; i++)
         {
             var localFile = $"{folder}\\{patch.DeleteFiles[i]}".Replace('/', '\\');
@@ -534,43 +596,130 @@ public partial class GameContextBase
         #endregion
     }
 
-    private async Task<bool> DownloadPatcheToResource(string folder, PatchIndexGameResource patch)
+    private async Task<bool> CheckApplyFilesMd5(
+        List<GroupFileInfo> groupInfos,
+        string folder,
+        string tempFolder,
+        Dictionary<string, string> newFiles
+    )
     {
-        var patchInfos = patch.PatchInfos.Where(x => x.Dest.EndsWith("krdiff")).ToList();
+        try
+        {
+            var list = groupInfos.SelectMany(x => x.DstFiles).ToList();
+            _totalfileSize = list.Sum(x => x.Size);
+            _totalFileTotal = list.Count - 1;
+            _totalProgressTotal = 0;
+            if (gameContextOutputDelegate != null)
+            {
+                await gameContextOutputDelegate.Invoke(
+                    this,
+                    new GameContextOutputArgs
+                    {
+                        CurrentSize = 0,
+                        TotalSize = list.Sum(x => x.Size),
+                        Type = GameContextActionType.Download,
+                    }
+                );
+            }
+            if (
+                !(
+                    await ParallelDownloadAsync(
+                        list,
+                        new ParallelOptions() { MaxDegreeOfParallelism = MAX_Concurrency_Count },
+                        tempFolder
+                    )
+                )
+            )
+            {
+                await UpdateFileProgress(
+                        GameContextActionType.TipMessage,
+                        0,
+                        false,
+                        "更新校验出错，请直接尝试修复游戏，下载缓存需手动删除\r\n具体说明请看设置中使用方式"
+                    )
+                    .ConfigureAwait(false);
+                await SetNoneStatusAsync();
+                return false;
+            }
+            foreach (var item in newFiles)
+            {
+                if (File.Exists(item.Value))
+                    File.Delete(item.Value);
+                File.Move(item.Key, item.Value);
+            }
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Logger.WriteError(ex.Message);
+            return false;
+        }
+    }
 
+    private async Task<bool> DownloadGroupPatcheToResource(
+        string folder,
+        PatchIndexGameResource patch
+    )
+    {
+        var patchInfos = patch.GroupInfos.ToList();
         for (int i = 0; i < patchInfos.Count(); i++)
         {
-            if (patchInfos[i].Dest.EndsWith("krdiff"))
+            var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
+            var filePath = BuildFilePath(folder, patchInfos[i]);
+            string? krdiffPath = "";
+            if (File.Exists(filePath))
             {
-                var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
-                var filePath = BuildFilePath(folder, patchInfos[i]);
-                string? krdiffPath = "";
-                if (File.Exists(filePath))
-                {
-                    File.Delete(filePath);
-                }
-                krdiffPath = await DownloadFileByKrDiff(patchInfos[i].Dest, filePath);
-                if (krdiffPath == null)
-                {
-                    Logger.WriteError("下载差异文件取消或出现异常");
-                    return false;
-                }
-                await DecompressKrdiffFile(folder, filePath, i, patchInfos.Count);
+                File.Delete(filePath);
+            }
+            krdiffPath = await DownloadFileByKrDiff(patchInfos[i].Dest, filePath);
+            if (krdiffPath == null)
+            {
+                Logger.WriteError("下载差异文件取消或出现异常");
+                return false;
             }
         }
         return true;
     }
 
-    private async Task DecompressKrdiffFile(
+    private async Task<bool> DownloadPatcheToResource(string folder, PatchIndexGameResource patch)
+    {
+        var patchInfos = patch.GroupInfos.ToList();
+
+        for (int i = 0; i < patchInfos.Count(); i++)
+        {
+            var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
+            var filePath = BuildFilePath(folder, patchInfos[i]);
+            string? krdiffPath = "";
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            krdiffPath = await DownloadFileByKrDiff(patchInfos[i].Dest, filePath);
+            if (krdiffPath == null)
+            {
+                Logger.WriteError("下载差异文件取消或出现异常");
+                return false;
+            }
+            await DecompressKrdiffFile(folder, filePath, i, patchInfos.Count);
+        }
+        return true;
+    }
+
+    private async Task<int> DecompressKrdiffFile(
         string folder,
         string? krdiffPath,
         int curent,
-        int total
+        int total,
+        string? tempFolder = null
     )
     {
         if (krdiffPath == null)
-            return;
-        DiffDecompressManager manager = new DiffDecompressManager(folder, folder, krdiffPath);
+            return -1000;
+        DiffDecompressManager manager = new DiffDecompressManager(
+            folder,
+            tempFolder ?? folder,
+            krdiffPath
+        );
         IProgress<(double, double)> progress = new Progress<(double, double)>();
         ((Progress<(double, double)>)progress).ProgressChanged += async (s, e) =>
         {
@@ -598,9 +747,19 @@ public partial class GameContextBase
         };
         var result = await manager.StartAsync(progress);
         Logger.WriteInfo($"解压程序结果{result}");
+        return result;
     }
 
     private string BuildFilePath(string folder, PatchInfo item)
+    {
+        var path = Path.Combine(folder, item.Dest.Replace('/', Path.DirectorySeparatorChar));
+        Directory.CreateDirectory(
+            Path.GetDirectoryName(path) ?? throw new Exception($"文件{item.Dest}创建失败")
+        );
+        return path;
+    }
+
+    private string BuildFilePath(string folder, GroupFileInfo item)
     {
         var path = Path.Combine(folder, item.Dest.Replace('/', Path.DirectorySeparatorChar));
         Directory.CreateDirectory(
@@ -1086,6 +1245,11 @@ public partial class GameContextBase
 
     public async Task SetNoneStatusAsync()
     {
+        if (this._downloadState != null)
+        {
+            this._downloadState.IsActive = false;
+            this._downloadState.IsStop = false;
+        }
         if (this.gameContextOutputDelegate == null)
             return;
         await this.gameContextOutputDelegate.Invoke(
@@ -1251,12 +1415,12 @@ public partial class GameContextBase
                 long chunkTotalSize = long.Parse(
                     response.Content.Headers.GetValues("Content-Length").First()
                 );
-                ;
                 var memoryPool = ArrayPool<byte>.Shared;
                 fileStream.Seek(0, SeekOrigin.Begin);
                 bool isBreak = false;
                 _totalfileSize = chunkTotalSize;
                 _totalProgressTotal = chunkTotalSize;
+                _totalProgressSize = 0;
                 _totalVerifiedBytes = 0;
                 _totalDownloadedBytes = 0;
                 while (totalWritten < chunkTotalSize)
@@ -1293,7 +1457,6 @@ public partial class GameContextBase
                         accumulatedBytes = 0;
                     }
                 }
-
                 if (accumulatedBytes > 0 && !isBreak)
                 {
                     await UpdateFileProgress(
@@ -1450,7 +1613,7 @@ public partial class GameContextBase
         _totalfileSize = resource.Resource.Sum(x => x.Size);
         _totalFileTotal = resource.Resource.Count - 1;
         _totalProgressTotal = 0;
-        this._downloadState = new DownloadState(resource);
+        this._downloadState = new DownloadState();
         if (gameContextOutputDelegate == null)
             return;
         await gameContextOutputDelegate.Invoke(

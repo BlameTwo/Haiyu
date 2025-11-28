@@ -50,7 +50,11 @@ public class GroupFileInfo
     [JsonPropertyName("dest")]
     public string Dest { get; set; } = string.Empty;
 
+    [JsonPropertyName("srcFiles")]
+    public List<IndexResource> SrcFiles { get; set;  }
 
+    [JsonPropertyName("dstFiles")]
+    public List<IndexResource> DstFiles { get; set; }
 }
 
 

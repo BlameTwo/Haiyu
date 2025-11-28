@@ -8,25 +8,17 @@ public sealed class DownloadState
     public volatile bool _isPaused;
     private long _currentBytes;
 
-    public IndexGameResource Resources { get; }
     public SpeedLimiter SpeedLimiter { get; private set; }
     public bool IsActive { get; set; }
     public CancellationToken CancelToken { get; set; }
     public PauseToken PauseToken => new PauseToken(this);
 
-    public DownloadState(IndexGameResource resources)
+    public DownloadState()
     {
-        Resources = resources;
         SpeedLimiter = new SpeedLimiter();
         _isPaused = false;
     }
 
-    public DownloadState(PatchIndexGameResource resources)
-    {
-        Resources = resources;
-        SpeedLimiter = new SpeedLimiter();
-        _isPaused = false;
-    }
 
     public bool IsPaused => _isPaused;
 

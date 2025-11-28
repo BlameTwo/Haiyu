@@ -104,6 +104,10 @@ partial class GameContextViewModelBase
                     this.AppContext.App.MainWindow.Show();
                 }
             }
+            if(args.Type == Waves.Core.Models.Enums.GameContextActionType.TipMessage)
+            {
+                await DialogManager.ShowMessageDialog(args.TipMessage,"确认","关闭");
+            }
         });
     }
 

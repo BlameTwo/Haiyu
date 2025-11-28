@@ -24,5 +24,6 @@ public enum GameContextActionType:uint
     Error,
 
     Decompress,
-    GameExit
+    GameExit,
+    TipMessage
 }
