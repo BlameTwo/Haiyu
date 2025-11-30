@@ -92,7 +92,7 @@ public static class RecordHelper
             {
                 if (item.QualityLevel == 5)
                 {
-                    result.Add(new(item, count, null));
+                    result.Add(new(item, count -1, null));
                     count = 1;
                 }
                 else
@@ -100,7 +100,7 @@ public static class RecordHelper
                     count++;
                 }
             }
-            return (result, count);
+            return (result, count - 1);
         }
         foreach (var item in items)
         {
@@ -108,11 +108,11 @@ public static class RecordHelper
             {
                 if (ids.Where(x => x == item.ResourceId).Any())
                 {
-                    result.Add(new(item, count, false));
+                    result.Add(new(item, count - 1, false));
                 }
                 else
                 {
-                    result.Add(new(item, count, true));
+                    result.Add(new(item, count - 1, true));
                 }
                 count = 1;
             }

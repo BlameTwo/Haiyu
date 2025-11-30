@@ -16,7 +16,7 @@ public partial class PunishWikiViewModel : WikiViewModelBase
     async Task Loaded()
     {
         var wikiPage = await TryInvokeAsync(async () =>
-            await this.GameWikiClient.GetHomePageAsync(WikiType.Waves, this.CTS.Token)
+            await this.GameWikiClient.GetHomePageAsync(WikiType.BGR, this.CTS.Token)
         );
         if (wikiPage.Code == 0 || (wikiPage.Result != null && wikiPage.Result.Data.ContentJson.Shortcuts != null))
         {

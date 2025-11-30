@@ -30,20 +30,30 @@ public static partial class WrapperCollectionExtension
             return item;
         foreach (var value in values)
         {
-            var resource = roles.Where(x => x.Id == value.Item1.ResourceId).First();
-            if (resource == null)
+            var resource = roles.Where(x => x.Id == value.Item1.ResourceId).FirstOrDefault();
+            if(resource == null)
             {
-                continue;
+                item.Add(
+                new RecordActivityFiveStarItemWrapper()
+                {
+                    Count = value.Item2,
+                    Name = value.Item1.Name,
+                    Icon = null,
+                    Flage = showFlag == true ? value.Item3 : false
+                });
             }
-            item.Add(
+            else
+            {
+                item.Add(
                 new RecordActivityFiveStarItemWrapper()
                 {
                     Count = value.Item2,
                     Name = value.Item1.Name,
                     Icon = new(new($"https://mc.appfeng.com/ui/avatar/{resource.Icon}.png")),
-                    Flage = showFlag == true?value.Item3: false
+                    Flage = showFlag == true ? value.Item3 : false
                 }
             );
+            }
         }
         return item;
     }

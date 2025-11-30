@@ -16,6 +16,7 @@ DownloadClient client = new DownloadClient();
 var resourceUrl = "https://pcdownload-aliyun.aki-game.com/launcher/game/G152/10003/2.7.1/VNpaiLhzRkbHBNdinWAGQduNUBYeHaTD/resource.json";
 var baseUrl = "https://pcdownload-aliyun.aki-game.com//launcher/game/G152/10003/2.7.1/VNpaiLhzRkbHBNdinWAGQduNUBYeHaTD/zip";
 var folder = "E:\\Barkup\\TestDownload";
+//2.6.2
 var resource = await client.GetVersionResource(resourceUrl!);
 client.InitDownload(resource, baseUrl, folder);
 await client.WaitDownloadAsync();

@@ -1,5 +1,6 @@
 ﻿//委托
 using System.Buffers;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -7,6 +8,8 @@ using System.Text;
 using Waves.Api.Models;
 using Waves.Api.Models.Launcher;
 using Waves.Core.Common;
+using Waves.Core.GameContext.Contexts;
+using Waves.Core.GameContext.Contexts.PRG;
 using Waves.Core.Models;
 using Waves.Core.Models.Downloader;
 using Waves.Core.Models.Enums;
@@ -15,7 +18,7 @@ namespace Waves.Core.GameContext;
 
 public partial class GameContextBase
 {
-    /// <summary>
+    /// <summary> u
     /// 下载校验最大并发数
     /// </summary>
     const int MAX_Concurrency_Count = 4;
@@ -83,13 +86,13 @@ public partial class GameContextBase
     }
 
     #region 核心下载逻辑
-    private async Task GetGameResourceAsync(string folder, GameLauncherSource source, bool isDelete)
+    private async Task<bool> GetGameResourceAsync(string folder, GameLauncherSource source, bool isDelete)
     {
         try
         {
             var resource = await GetGameResourceAsync(source.ResourceDefault);
             if (resource == null)
-                return;
+                return false;
             // 构建下载基础URL
             _downloadBaseUrl =
                 source.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
@@ -99,13 +102,14 @@ public partial class GameContextBase
             await InitializeProgress(resource);
             await Task.Run(() => StartDownloadAsync(folder, resource, isDelete));
             await DownloadComplate(source);
-
             await SetNoneStatusAsync().ConfigureAwait(false);
+            return true;
         }
         catch (IOException ex)
         {
             Logger.WriteError(ex.Message);
             await this.SetNoneStatusAsync();
+            return true;
         }
     }
 
@@ -183,30 +187,31 @@ public partial class GameContextBase
                 MaxDegreeOfParallelism = MAX_Concurrency_Count,
                 CancellationToken = _downloadCTS.Token,
             };
-            var minFiles = resource.Resource.Where(x => x.Size < 200 * 1024 * 1024).ToList();
-            var maxFiles = resource.Resource.Where(x => x.Size >= 200 * 1024 * 1024).ToList();
+            var limit = GetVerifyLimit();
+            //var minFiles = resource.Resource.Where(x => x.Size < limit * 1024 * 1024).ToList();
+            //var maxFiles = resource.Resource.Where(x => x.Size >= limit * 1024 * 1024).ToList();
             //小文件4线程
-            if (!(await ParallelDownloadAsync(minFiles, options, folder)))
+            if (!(await ParallelDownloadAsync(resource.Resource, options, folder)))
             {
                 throw new IOException("下载小文件出现错误！");
             }
             //大文件1线程
-            if (
-                !(
-                    await ParallelDownloadAsync(
-                        maxFiles,
-                        new ParallelOptions()
-                        {
-                            CancellationToken = _downloadCTS.Token,
-                            MaxDegreeOfParallelism = 1,
-                        },
-                        folder
-                    )
-                )
-            )
-            {
-                throw new IOException("下载大文件出现错误！");
-            }
+            //if (
+            //    !(
+            //        await ParallelDownloadAsync(
+            //            maxFiles,
+            //            new ParallelOptions()
+            //            {
+            //                CancellationToken = _downloadCTS.Token,
+            //                MaxDegreeOfParallelism = 1,
+            //            },
+            //            folder
+            //        )
+            //    )
+            //)
+            //{
+            //    throw new IOException("下载大文件出现错误！");
+            //}
         }
         catch (IOException ex)
         {
@@ -237,6 +242,22 @@ public partial class GameContextBase
         _downloadCTS = null;
         _isDownload = false;
         _downloadState.IsActive = false;
+    }
+
+    public int GetVerifyLimit()
+    {
+        if (
+            this.ContextName == nameof(MainPGRGameContext)
+            || this.ContextName == nameof(GlobalPRGGameContext)
+            || this.ContextName == nameof(TwPGRGameContext)
+        )
+        {
+            return 200;
+        }
+        else
+        {
+            return 2000;
+        }
     }
 
     public async Task<bool> ParallelDownloadAsync(
@@ -454,7 +475,6 @@ public partial class GameContextBase
         }
         _downloadCTS = new CancellationTokenSource();
         bool result = false;
-
         _downloadBaseUrl =
             launcher.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
             + previous.BaseUrl;
@@ -463,7 +483,8 @@ public partial class GameContextBase
         this._downloadState = new DownloadState();
         _downloadState.IsActive = true;
         if (
-            patch.ApplyTypes.Contains("patch")
+            patch.ApplyTypes != null
+            && patch.ApplyTypes.Contains("patch")
             && patch.PatchInfos != null
             && patch.PatchInfos.Count > 0
         )
@@ -471,7 +492,8 @@ public partial class GameContextBase
             result = await Task.Run(() => DownloadPatcheToResource(folder + "\\Diff", patch));
         }
         else if (
-            patch.ApplyTypes.Contains("group")
+            patch.ApplyTypes != null
+            && patch.ApplyTypes.Contains("group")
             && patch.GroupInfos != null
             && patch.GroupInfos.Count > 0
         )
@@ -516,7 +538,21 @@ public partial class GameContextBase
                 File.Delete(filePath);
                 Logger.WriteInfo($"删除差异文件：{filePath}");
             }
-            if (!await CheckApplyFilesMd5(patch.GroupInfos, folder, tempFolder, newFiles))
+            var resource = await GetGameResourceAsync(launcher.ResourceDefault);
+            if (resource == null)
+            {
+                Logger.WriteInfo($"下载差异组文件失败，请尝试修复游戏！");
+                await UpdateFileProgress(
+                        GameContextActionType.TipMessage,
+                        0,
+                        false,
+                        "下载差异组文件失败，请尝试修复游戏！"
+                    )
+                    .ConfigureAwait(false);
+                await SetNoneStatusAsync().ConfigureAwait(false);
+                return;
+            }
+            if (!await CheckApplyFilesMd5(resource.Resource, folder, tempFolder, newFiles))
             {
                 Logger.WriteInfo($"下载差异组文件失败，请尝试修复游戏！");
                 await UpdateFileProgress(
@@ -555,14 +591,10 @@ public partial class GameContextBase
             );
             return;
         }
-        else 
+        else
         {
             var diffFolder = folder + "\\Diff";
             var decompressFolder = folder + "\\decompressFolder";
-            if(Directory.Exists(diffFolder))
-                Directory.Delete(folder + "\\Diff");
-            if(Directory.Exists(decompressFolder))
-                Directory.Delete(folder + "\\decompressFolder");
             Logger.WriteInfo("删除缓存文件夹");
         }
         #region Update Resource
@@ -597,7 +629,7 @@ public partial class GameContextBase
     }
 
     private async Task<bool> CheckApplyFilesMd5(
-        List<GroupFileInfo> groupInfos,
+        List<IndexResource> list,
         string folder,
         string tempFolder,
         Dictionary<string, string> newFiles
@@ -605,7 +637,28 @@ public partial class GameContextBase
     {
         try
         {
-            var list = groupInfos.SelectMany(x => x.DstFiles).ToList();
+            var keys = newFiles.Keys.ToList();
+            for (int i = 0; i < keys.Count; i++)
+            {
+                string key = keys[i];
+                string value = newFiles[key];
+                if (File.Exists(value))
+                    File.Delete(value);
+                File.Move(key, value);
+                this.gameContextOutputDelegate?.Invoke(
+                        this,
+                        new GameContextOutputArgs()
+                        {
+                            Type = GameContextActionType.DeleteFile,
+                            FileTotal = keys.Count,
+                            CurrentFile = i,
+                            DeleteString = $"正在移动校验文件{System.IO.Path.GetFileName(value)}",
+                        }
+                    )
+                    .ConfigureAwait(false);
+            }
+            var resource = await this.GetGameLauncherSourceAsync();
+            var resourceOne = await this.GetGameResourceAsync(resource.ResourceDefault);
             _totalfileSize = list.Sum(x => x.Size);
             _totalFileTotal = list.Count - 1;
             _totalProgressTotal = 0;
@@ -621,31 +674,17 @@ public partial class GameContextBase
                     }
                 );
             }
-            if (
-                !(
-                    await ParallelDownloadAsync(
-                        list,
-                        new ParallelOptions() { MaxDegreeOfParallelism = MAX_Concurrency_Count },
-                        tempFolder
-                    )
-                )
-            )
+            if(!await GetGameResourceAsync(folder, resource, false))
             {
                 await UpdateFileProgress(
-                        GameContextActionType.TipMessage,
-                        0,
-                        false,
-                        "更新校验出错，请直接尝试修复游戏，下载缓存需手动删除\r\n具体说明请看设置中使用方式"
-                    )
-                    .ConfigureAwait(false);
+                       GameContextActionType.TipMessage,
+                       0,
+                       false,
+                       "更新校验出错，请直接尝试修复游戏，下载缓存需手动删除\r\n具体说明请看设置中使用方式"
+                   )
+                   .ConfigureAwait(false);
                 await SetNoneStatusAsync();
                 return false;
-            }
-            foreach (var item in newFiles)
-            {
-                if (File.Exists(item.Value))
-                    File.Delete(item.Value);
-                File.Move(item.Key, item.Value);
             }
             return true;
         }
@@ -669,7 +708,8 @@ public partial class GameContextBase
             string? krdiffPath = "";
             if (File.Exists(filePath))
             {
-                File.Delete(filePath);
+                continue;
+                //File.Delete(filePath);
             }
             krdiffPath = await DownloadFileByKrDiff(patchInfos[i].Dest, filePath);
             if (krdiffPath == null)

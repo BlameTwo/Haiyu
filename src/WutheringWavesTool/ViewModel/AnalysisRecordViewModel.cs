@@ -85,7 +85,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
     public partial double Guaranteed { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<RecordActivityFiveStarItemWrapper> StarItems { get; set; }
+    public partial ObservableCollection<RecordActivityFiveStarItemWrapper> StarItems { get; set; } = [];
     public FiveGroupModel FiveGroup { get; private set; }
     public List<CommunityRoleData> AllRole { get; private set; }
     public List<CommunityWeaponData> AllWeapon { get; private set; }
