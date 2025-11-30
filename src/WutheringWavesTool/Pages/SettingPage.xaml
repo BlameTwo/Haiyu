@@ -325,6 +325,18 @@
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7AC;" />
                 </ui:SettingsCard.ActionIcon>
             </ui:SettingsCard>
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                Command="{x:Bind ViewModel.CreateLinkCommand}"
+                Header="创建快捷方式"
+                IsClickEnabled="True">
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE71B;" />
+                </ui:SettingsCard.HeaderIcon>
+                <ui:SettingsCard.ActionIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF466;" />
+                </ui:SettingsCard.ActionIcon>
+            </ui:SettingsCard>
             <ui:SettingsExpander Margin="0,5,0,0" Header="诊断环境">
                 <ui:SettingsExpander.Items>
                     <ui:SettingsCard Description="观察右侧内容是否为图标，来确定图标是否正常" Header="字体文件">

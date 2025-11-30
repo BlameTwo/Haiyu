@@ -301,6 +301,8 @@
                         Orientation="Horizontal"
                         Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
                         <Button
+                            Width="140"
+                            Height="60"
                             property:CursorProperty.CursorName="{x:Bind ViewModel.CursorName}"
                             property:CursorProperty.CursorType="Link"
                             BorderThickness="0"

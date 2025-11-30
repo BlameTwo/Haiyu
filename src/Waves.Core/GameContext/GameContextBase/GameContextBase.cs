@@ -112,7 +112,7 @@ public abstract partial class GameContextBase : IGameContext
         }
         else
         {
-            status.IsGameExists = true;
+            status.IsGameExists = false;
             status.IsGameInstalled = false;
         }
         var ping = (await NetworkCheck.PingAsync(GameAPIConfig.BaseAddress[0]));

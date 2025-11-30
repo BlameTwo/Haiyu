@@ -13,7 +13,8 @@ public sealed partial class SettingViewModel : ViewModelBase
         IAppContext<App> appContext,
         IViewFactorys viewFactorys,
         ITipShow tipShow,
-        IScreenCaptureService screenCaptureService
+        IScreenCaptureService screenCaptureService,
+        IPickersService pickersService
     )
     {
         DialogManager = dialogManager;
@@ -22,6 +23,7 @@ public sealed partial class SettingViewModel : ViewModelBase
         ViewFactorys = viewFactorys;
         TipShow = tipShow;
         ScreenCaptureService = screenCaptureService;
+        PickersService = pickersService;
         RegisterMessanger();
     }
 
@@ -43,7 +45,7 @@ public sealed partial class SettingViewModel : ViewModelBase
     public IViewFactorys ViewFactorys { get; }
     public ITipShow TipShow { get; }
     public IScreenCaptureService ScreenCaptureService { get; }
-
+    public IPickersService PickersService { get; }
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataItem> GamerData { get; set; }
 

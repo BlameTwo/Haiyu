@@ -8,5 +8,5 @@ public interface IPickersService
 
     public Task<PickFileResult> GetFileOpenPicker(List<string> extention);
 
-    public Task<PickFileResult> GetFileSavePicker();
+    public Task<PickFileResult> GetFileSavePicker(List<string> extention);
 }

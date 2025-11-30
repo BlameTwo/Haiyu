@@ -64,7 +64,9 @@
                             </TextBlock>
                             <TextBlock Grid.Row="1" Grid.ColumnSpan="2">
                                 <Run Text="联觉等级" />
-                                <Run Text="{x:Bind GameLevel, Mode=OneWay}" />
+                                <Run 
+                                    
+                                    Text="{x:Bind GameLevel, Mode=OneWay}" />
                             </TextBlock>
                         </Grid>
                     </Grid>
