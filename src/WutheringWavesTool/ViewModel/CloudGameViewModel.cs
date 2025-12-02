@@ -11,7 +11,6 @@ namespace Haiyu.ViewModel;
 
 public partial class CloudGameViewModel : ViewModelBase
 {
-    private List<Datum> cacheItems;
 
     public CloudGameViewModel(
         ICloudGameService cloudGameService,
@@ -44,12 +43,16 @@ public partial class CloudGameViewModel : ViewModelBase
     public IDialogManager DialogManager { get; }
     public IViewFactorys ViewFactorys { get; }
 
-    [ObservableProperty]
-    public partial long PageSize { get; set; } = 1;
+    private List<RecordCardItemWrapper> cacheItems;
 
     [ObservableProperty]
-    public partial ObservableCollection<Datum> ResourceItems { get; set; } =
-        new ObservableCollection<Datum>();
+    public partial long PageSize { get; set; } = 10;
+
+    [ObservableProperty]
+    public partial ObservableCollection<RecordCardItemWrapper> ResourceItems { get; set; } =
+        new ObservableCollection<RecordCardItemWrapper>();
+
+    public readonly Dictionary<int, IList<RecordCardItemWrapper>> aLLcacheItems = new Dictionary<int, IList<RecordCardItemWrapper>>();
 
     [ObservableProperty]
     public partial ObservableCollection<LoginData> Users { get; set; }
@@ -78,6 +81,12 @@ public partial class CloudGameViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial ObservableCollection<DateTimePoint> AllPoints { get; set; } = new();
+
+    /// <summary>
+    /// 是否加载列表
+    /// </summary>
+    [ObservableProperty]
+    public partial bool IsLoadCardItem { get; set; } = false;
 
     [ObservableProperty]
     public partial long CurrentPage { get; set; }
@@ -109,7 +118,6 @@ public partial class CloudGameViewModel : ViewModelBase
         this.Users = users.Item2;
         this.SelectedUser = Users[0];
         this.IsLoginUser = true;
-        await SavePlayCardData();
     }
 
     [RelayCommand]
@@ -122,6 +130,9 @@ public partial class CloudGameViewModel : ViewModelBase
     {
         if (value == null)
             return;
+        var url = await TryInvokeAsync(async () =>
+            await CloudGameService.GetRecordAsync(this.CTS.Token)
+        );
         NoLoginVisibility = Visibility.Collapsed;
         this.LoadVisibility = Visibility.Visible;
         this.DataVisibility = Visibility.Collapsed;
@@ -130,53 +141,27 @@ public partial class CloudGameViewModel : ViewModelBase
         NoLoginVisibility = Visibility.Collapsed;
         this.LoadVisibility = Visibility.Collapsed;
         this.DataVisibility = Visibility.Visible;
-        this.SelectRecordType = RecordNavigationItems[0];
-        if (!result.Item1)
+        if(await SavePlayCardData())
         {
-            TipShow.ShowMessage(result.Item2, Symbol.Clear);
-            return;
+            this.SelectRecordType = RecordNavigationItems[0];
+            if (!result.Item1)
+            {
+                TipShow.ShowMessage(result.Item2, Symbol.Clear);
+                return;
+            }
+            this.IsLoginUser = true;
+            this.PageSize = 10;
+            this.CurrentPage = 1;
         }
     }
 
     async partial void OnSelectRecordTypeChanged(GameRecordNavigationItem value)
     {
-        if (value == null || SelectedUser == null)
+        if (value == null)
             return;
-        this.IsLoginUser = false;
-        var url = await TryInvokeAsync(async () =>
-            await CloudGameService.GetRecordAsync(this.CTS.Token)
-        );
-        if (url.Item2.Code == 315)
-        {
-            TipShow.ShowMessage("登陆状态失效，请直接重新添加账号", Symbol.Clear);
-            return;
-        }
-        if (url.Item2.Code == 5)
-        {
-            TipShow.ShowMessage("请求频繁，请稍等5s-10s", Symbol.Clear);
-            return;
-        }
-        var resource = await TryInvokeAsync(async () =>
-            await CloudGameService.GetGameRecordResource(
-                url.Item2.Data.RecordId,
-                url.Item2.Data.PlayerId.ToString(),
-                value.Id,
-                this.CTS.Token
-            )
-        );
-        if (resource.Result == null)
-        {
-            TipShow.ShowMessage("请求失败！", Symbol.Clear);
-            return;
-        }
-        this.cacheItems = resource.Item2.Data;
-        this.PageSize = 9;
-        this.CurrentPage = 1;
-
+        this.cacheItems = (List<RecordCardItemWrapper>)aLLcacheItems[value.Id];
         UpdatePageCount();
         LoadPageItems();
-
-        this.IsLoginUser = true;
     }
 
     // 更新总页数
@@ -198,7 +183,6 @@ public partial class CloudGameViewModel : ViewModelBase
         ResourceItems.Clear();
         if (cacheItems == null || cacheItems.Count == 0)
             return;
-
         var pageSize = (int)(PageSize > 0 ? PageSize : 10);
         var pageIdx = (int)(CurrentPage <= 0 ? 1 : CurrentPage);
         var start = (pageIdx - 1) * pageSize;
@@ -242,10 +226,11 @@ public partial class CloudGameViewModel : ViewModelBase
         await DialogManager.ShowWebGameDialogAsync();
     }
 
-    public async Task SavePlayCardData()
+    public async Task<bool> SavePlayCardData()
     {
         try
         {
+            this.aLLcacheItems.Clear();
             this.LoadVisibility = Visibility.Visible;
             this.DataVisibility = Visibility.Collapsed;
             var FiveGroup = await RecordHelper.GetFiveGroupAsync();
@@ -259,11 +244,16 @@ public partial class CloudGameViewModel : ViewModelBase
                 TipShow.ShowMessage("登陆过期，请重新添加账号", Symbol.Clear);
                 this.LoadVisibility = Visibility.Collapsed;
                 this.DataVisibility = Visibility.Collapsed;
-                return;
+                return false;
             }
             var url = await TryInvokeAsync(async () =>
                 await CloudGameService.GetRecordAsync(this.CTS.Token)
             );
+            if(url.Result == null)
+            {
+                TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
+                return false;
+            }
             #region 读取抽卡记录
             if(url.Result.Data != null)
             {
@@ -282,7 +272,7 @@ public partial class CloudGameViewModel : ViewModelBase
                     if (player1.Result == null)
                     {
                         TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
-                        return;
+                        return false;
                     }
                     var WeaponsActivity = player1
                         .Result.Data.Select(x => new RecordCardItemWrapper(x))
@@ -307,25 +297,39 @@ public partial class CloudGameViewModel : ViewModelBase
                     cache,
                     new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
                 );
+
                 var result = await RecordHelper.MargeRecordAsync(App.RecordFolder, cache)!;
                 TipShow.ShowMessage($"抽卡合并，数据总量{result.Item2},二进制大小{result.Item1 / 1024}KB", Symbol.Accept);
-
+                if (result.Item3 == null)
+                    return false;
+                this.aLLcacheItems.Add(1, result.Item3.RoleActivityItems ?? []);
+                this.aLLcacheItems.Add(2, result.Item3.WeaponsActivityItems ?? []);
+                this.aLLcacheItems.Add(3, result.Item3.RoleResidentItems ?? []);
+                this.aLLcacheItems.Add(4, result.Item3.WeaponsResidentItems ?? []);
+                this.aLLcacheItems.Add(5, result.Item3.BeginnerItems ?? []);
+                this.aLLcacheItems.Add(6, result.Item3.BeginnerChoiceItems ?? []);
+                this.aLLcacheItems.Add(7, result.Item3.GratitudeOrientationItems ?? []);
+                this.aLLcacheItems.Add(8, result.Item3.RoleJourneyItems ?? []);
+                this.aLLcacheItems.Add(9, result.Item3.WeaponJourneyItems ?? []);
                 this.LoadVisibility = Visibility.Collapsed;
                 this.DataVisibility = Visibility.Visible;
+                this.IsLoadCardItem = true;
             }
             else
             {
                 TipShow.ShowMessage($"{url.Message}", Symbol.Clear);
                 this.LoadVisibility = Visibility.Collapsed;
                 this.DataVisibility = Visibility.Collapsed;
+                this.IsLoadCardItem = true;
             }
-            
+            return true;
             #endregion
             
         }
         catch (Exception ex)
         {
             TipShow.ShowMessage(ex.Message, Symbol.Clear);
+            return false;
         }
         
     }

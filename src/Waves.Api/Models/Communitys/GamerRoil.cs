@@ -112,7 +112,7 @@ public class GameRoilDataItem
     ///
     /// </summary>
     [JsonPropertyName("fashionCollectionPercent")]
-    public int FashionCollectionPercent { get; set; }
+    public double FashionCollectionPercent { get; set; }
 
     /// <summary>
     ///

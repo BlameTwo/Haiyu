@@ -28,8 +28,6 @@ public abstract class DialogManager : IDialogManager
         await _dialog.ShowAsync();
     }
 
-    public async Task<ContentDialogResult> ShowBindGameDataAsync(string name) =>
-        await ShowDialogAsync<BindGameDataDialog>(name);
 
     public async Task ShowDialogAsync<T>()
         where T : ContentDialog, IDialog

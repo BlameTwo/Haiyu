@@ -36,10 +36,14 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
     #endregion
     #region HeaderItem
     [ObservableProperty]
-    public partial ObservableCollection<SlashItemWrapper>? SlashHeader0Items { get; set; }
+    public partial ObservableCollection<SlashItemWrapper> SlashHeader0Items { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<SlashItemWrapper>? SlashHeader1Items { get; set; }
+    public partial ObservableCollection<SlashItemWrapper> SlashHeader1Items { get; set; }
+
+
+    [ObservableProperty]
+    public partial ObservableCollection<SlashItemWrapper> SlashHeader2Items { get; set; }
 
     #endregion
     #endregion
@@ -67,12 +71,20 @@ public sealed partial class GamerSlashDetailViewModel : ViewModelBase, IDisposab
         var diff1 = result.Item2.DifficultyList.Where(x => x.Difficulty == 1).FirstOrDefault();
         var diff2 = result.Item2.DifficultyList.Where(x => x.Difficulty == 2).FirstOrDefault();
         this.Difficulty0Header = SlashHeaderWrapper.Convert(diff0);
+        this.Difficulty1Header = SlashHeaderWrapper.Convert(diff1);
+        this.Difficulty2Header = SlashHeaderWrapper.Convert(diff2);
         this.SlashHeader0Items = SlashItemWrapper.Convert(diff0.ChallengeList);
+        this.SlashHeader1Items = SlashItemWrapper.Convert(diff1.ChallengeList);
+        this.SlashHeader2Items = SlashItemWrapper.Convert(diff2.ChallengeList);
+
     }
 
     public override void Dispose()
     {
         this.CTS.Cancel();
+        this.SlashHeader0Items?.Clear();
+        this.SlashHeader1Items?.Clear();
+        this.SlashHeader2Items?.Clear();
         this.Difficulty0Header = null;
         this.Difficulty1Header = null;
         this.Difficulty2Header = null;

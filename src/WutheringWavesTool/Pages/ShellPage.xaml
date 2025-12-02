@@ -14,6 +14,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:property="using:Haiyu.Controls.Propertys"
+    xmlns:selector="using:Haiyu.Controls.Selector"
     xmlns:sound="using:Haiyu.Controls.Behaviors"
     xmlns:ui="using:Haiyu.Controls"
     xmlns:wrapper="using:Haiyu.Models.Wrapper"
@@ -184,7 +185,7 @@
                                             VerticalAlignment="Center"
                                             FontSize="10">
                                             <Run Text="-" />
-                                            <Run Text="{x:Bind Id}" />
+                                            <Run Text="{x:Bind ServerName}" />
                                         </TextBlock>
                                     </Grid>
                                 </Grid>
@@ -218,7 +219,7 @@
                         </i:Interaction.Behaviors>
                         <Button.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Command="{x:Bind ViewModel.OpenSignWindowCommand}" Text="鸣潮签到">
+                                <MenuFlyoutItem Command="{x:Bind ViewModel.OpenSignWindowCommand}" Text="签到">
                                     <i:Interaction.Behaviors>
                                         <sound:ControlSoundBehavior />
                                     </i:Interaction.Behaviors>
@@ -523,8 +524,19 @@
                     </NavigationViewItem>
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CommunityViewModel"
-                        Content="数据"
-                        Visibility="{x:Bind ViewModel.CommunitySelectItemVisiblity, Mode=OneWay}">
+                        Content="鸣潮数据"
+                        Visibility="{x:Bind ViewModel.WavesCommunitySelectItemVisiblity, Mode=OneWay}">
+                        <i:Interaction.Behaviors>
+                            <sound:NavigationViewItemSoundBehavior />
+                        </i:Interaction.Behaviors>
+                        <NavigationViewItem.Icon>
+                            <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F4E6;" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
+                    <NavigationViewItem
+                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CommunityViewModel"
+                        Content="战双数据"
+                        Visibility="{x:Bind ViewModel.PunishCommunitySelectItemVisiblity, Mode=OneWay}">
                         <i:Interaction.Behaviors>
                             <sound:NavigationViewItemSoundBehavior />
                         </i:Interaction.Behaviors>

@@ -1,6 +1,6 @@
 ﻿namespace Haiyu.Pages.Communitys;
 
-public sealed partial class GamerSkinPage : Page, IPage
+public sealed partial class GamerSkinPage : Page, IPage,IDisposable
 {
     public GamerSkinPage()
     {
@@ -12,11 +12,16 @@ public sealed partial class GamerSkinPage : Page, IPage
 
     public Type PageType => typeof(GamerSkinPage);
 
-    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    public void Dispose()
     {
         this.ViewModel.Dispose();
-        base.OnNavigatedFrom(e);
         GC.Collect();
+    }
+
+    protected override void OnNavigatedFrom(NavigationEventArgs e)
+    {
+        Dispose();
+        base.OnNavigatedFrom(e);
     }
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
@@ -26,4 +31,5 @@ public sealed partial class GamerSkinPage : Page, IPage
         }
         base.OnNavigatedTo(e);
     }
+
 }

@@ -1,5 +1,4 @@
-﻿//委托
-using System.Buffers;
+﻿using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http.Headers;
@@ -18,7 +17,7 @@ namespace Waves.Core.GameContext;
 
 public partial class GameContextBase
 {
-    /// <summary> u
+    /// <summary>
     /// 下载校验最大并发数
     /// </summary>
     const int MAX_Concurrency_Count = 4;
@@ -187,31 +186,10 @@ public partial class GameContextBase
                 MaxDegreeOfParallelism = MAX_Concurrency_Count,
                 CancellationToken = _downloadCTS.Token,
             };
-            var limit = GetVerifyLimit();
-            //var minFiles = resource.Resource.Where(x => x.Size < limit * 1024 * 1024).ToList();
-            //var maxFiles = resource.Resource.Where(x => x.Size >= limit * 1024 * 1024).ToList();
-            //小文件4线程
             if (!(await ParallelDownloadAsync(resource.Resource, options, folder)))
             {
-                throw new IOException("下载小文件出现错误！");
+                throw new IOException("下载文件出错！");
             }
-            //大文件1线程
-            //if (
-            //    !(
-            //        await ParallelDownloadAsync(
-            //            maxFiles,
-            //            new ParallelOptions()
-            //            {
-            //                CancellationToken = _downloadCTS.Token,
-            //                MaxDegreeOfParallelism = 1,
-            //            },
-            //            folder
-            //        )
-            //    )
-            //)
-            //{
-            //    throw new IOException("下载大文件出现错误！");
-            //}
         }
         catch (IOException ex)
         {
@@ -501,7 +479,7 @@ public partial class GameContextBase
             result = await Task.Run(() => DownloadGroupPatcheToResource(folder + "\\Diff", patch));
             if (result == false)
             {
-                Logger.WriteInfo($"下载差异组文件失败，请联系开发者");
+                Logger.WriteInfo($"下载差异组文件失败，请检查网络之后，重启启动器再次更新");
                 await SetNoneStatusAsync().ConfigureAwait(false);
                 await UpdateFileProgress(
                         GameContextActionType.TipMessage,
@@ -546,7 +524,7 @@ public partial class GameContextBase
                         GameContextActionType.TipMessage,
                         0,
                         false,
-                        "下载差异组文件失败，请尝试修复游戏！"
+                        "下载差异组文件失败，请重启应用进行重新更新"
                     )
                     .ConfigureAwait(false);
                 await SetNoneStatusAsync().ConfigureAwait(false);
@@ -559,7 +537,7 @@ public partial class GameContextBase
                         GameContextActionType.TipMessage,
                         0,
                         false,
-                        "下载差异组文件失败，请尝试修复游戏！"
+                        "更新失败，请直接进行修复文件"
                     )
                     .ConfigureAwait(false);
                 await SetNoneStatusAsync().ConfigureAwait(false);
@@ -623,9 +601,7 @@ public partial class GameContextBase
         }
         await DownloadComplate(launcher);
         #endregion
-        #region UpdatePatcher
         await SetNoneStatusAsync().ConfigureAwait(false);
-        #endregion
     }
 
     private async Task<bool> CheckApplyFilesMd5(
@@ -680,7 +656,7 @@ public partial class GameContextBase
                        GameContextActionType.TipMessage,
                        0,
                        false,
-                       "更新校验出错，请直接尝试修复游戏，下载缓存需手动删除\r\n具体说明请看设置中使用方式"
+                       "更新校验出错，请直接尝试修复游戏，下载缓存需手动删除"
                    )
                    .ConfigureAwait(false);
                 await SetNoneStatusAsync();

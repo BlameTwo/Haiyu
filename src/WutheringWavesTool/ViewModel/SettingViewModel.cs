@@ -60,9 +60,10 @@ public sealed partial class SettingViewModel : ViewModelBase
     {
         if (await WavesClient.IsLoginAsync())
         {
-            var gamers = await WavesClient.GetWavesGamerAsync(this.CTS.Token);
-            if (gamers != null)
-                this.GamerData = gamers.Data.ToObservableCollection();
+            var gamers = await WavesClient.GetGamerAsync(Waves.Core.Models.Enums.GameType.Waves,this.CTS.Token);
+            var punish = await WavesClient.GetGamerAsync(Waves.Core.Models.Enums.GameType.Punish,this.CTS.Token);
+            if (gamers != null &&  punish != null)
+                this.GamerData = gamers.Data.Concat(punish.Data).ToObservableCollection();
         }
         var closeWindow = AppSettings.CloseWindow;
         switch (closeWindow)
@@ -130,11 +131,6 @@ public sealed partial class SettingViewModel : ViewModelBase
         Clipboard.SetContent(package);
     }
 
-    [RelayCommand]
-    void OpenDesktopTool()
-    {
-        ViewFactorys.ShowToolWindow();
-    }
 
     partial void OnSelectCloseIndexChanged(int value)
     {

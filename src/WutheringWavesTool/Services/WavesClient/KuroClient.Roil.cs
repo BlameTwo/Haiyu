@@ -1,4 +1,5 @@
 ﻿using Haiyu.Helpers;
+using Waves.Core.Models.Enums;
 
 namespace Haiyu.Services;
 
@@ -32,10 +33,16 @@ partial class KuroClient
         return JsonSerializer.Deserialize(jsonStr, CommunityContext.Default.GamerDataModel);
     }
 
-    public async Task<GamerRoil?> GetWavesGamerAsync(CancellationToken token = default)
+    public async Task<GamerRoil?> GetGamerAsync(
+        GameType gameId,
+        CancellationToken token = default
+    )
     {
         var header = GetDeviceHeader(true);
-        var content = new Dictionary<string, string>() { { "gameId", "3" } };
+        var content = new Dictionary<string, string>()
+        {
+            { "gameId", gameId == GameType.Waves ? "3" : "2" },
+        };
         var request = await BuildRequestAsync(
             "https://api.kurobbs.com/gamer/role/list",
             HttpMethod.Post,
@@ -111,7 +118,7 @@ partial class KuroClient
         var query = new Dictionary<string, string>()
         {
             { "mobile", mobile },
-            { "devCode", HardwareIdGenerator.GenerateUniqueId()},
+            { "devCode", HardwareIdGenerator.GenerateUniqueId() },
             { "code", code },
         };
         var request = await BuildLoginRequest(

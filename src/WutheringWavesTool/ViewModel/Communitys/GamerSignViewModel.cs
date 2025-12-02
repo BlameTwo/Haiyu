@@ -1,4 +1,6 @@
-﻿namespace Haiyu.ViewModel.Communitys;
+﻿using Waves.Core.Models.Enums;
+
+namespace Haiyu.ViewModel.Communitys;
 
 public sealed partial class GamerSignViewModel : ViewModelBase
 {
@@ -46,17 +48,18 @@ public sealed partial class GamerSignViewModel : ViewModelBase
 
     async Task RefreshSignHistoryAsync()
     {
-        var game = await TryInvokeAsync(async () => await WavesClient.GetWavesGamerAsync(this.CTS.Token));
+        var game = await TryInvokeAsync(async () =>
+            await WavesClient.GetGamerAsync((GameType)this.SignRoil.GameId, this.CTS.Token)
+        );
         if (game.Item1 != 0)
         {
             return;
         }
-        var games = game.Item2.Data.Where(p => p.GameId == 3);
+        var games = game.Item2.Data;
         if (games.Count() != 0)
         {
             var result = await WavesClient.GetSignInDataAsync(
-                SignRoil.UserId,
-                long.Parse(SignRoil.RoleId)
+                SignRoil
             );
             var signCount = result!.Data.SigInNum;
             var signs = result.Data.SignInGoodsConfigs.Take(signCount);
@@ -99,7 +102,12 @@ public sealed partial class GamerSignViewModel : ViewModelBase
     [RelayCommand]
     async Task SignAsync()
     {
-        var result = await TryInvokeAsync(async () => await WavesClient.SignInAsync(SignRoil.UserId.ToString(), SignRoil.RoleId, this.CTS.Token));
+        var result = await TryInvokeAsync(async () =>
+            await WavesClient.SignInAsync(
+                SignRoil,
+                this.CTS.Token
+            )
+        );
         if (result.Item1 != 0)
         {
             return;

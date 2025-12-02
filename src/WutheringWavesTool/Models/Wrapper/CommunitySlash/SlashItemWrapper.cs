@@ -17,10 +17,10 @@ public sealed partial class SlashItemWrapper : ObservableObject
     [ObservableProperty]
     public partial ObservableCollection<HalfList> Halfs { get; set; }
 
-    public static ObservableCollection<SlashItemWrapper> Convert(List<SlashChallengeList> values)
+    public static ObservableCollection<SlashItemWrapper> Convert(IEnumerable<SlashChallengeList> values)
     {
         var value = new ObservableCollection<SlashItemWrapper>();
-        foreach (var item in values)
+        foreach (var item in values.Reverse())
         {
             value.Add(
                 new SlashItemWrapper()

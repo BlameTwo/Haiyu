@@ -16,7 +16,6 @@ public interface IViewFactorys
     public Window ShowAnalysisRecord(LoginData data);
     public TransparentWindow CreateTransperentWindow();
     public WindowModelBase ShowAdminDevice();
-    public bool ShowToolWindow();
 
     public WindowModelBase ShowStartColorGame();
     public WindowModelBase ShowColorGame();

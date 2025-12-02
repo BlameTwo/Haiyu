@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json;
 using MemoryPack;
+using MemoryPack.Formatters;
 using Waves.Api.Models;
 using Waves.Api.Models.Communitys;
 using Waves.Api.Models.Enums;
@@ -80,6 +81,7 @@ public static class RecordHelper
 
     public static (List<Tuple<RecordCardItemWrapper, int, bool?>>?, int?) FormatStartFive(
         IEnumerable<RecordCardItemWrapper> source,
+        out int lastCount,
         List<int> ids = null
     )
     {
@@ -100,6 +102,7 @@ public static class RecordHelper
                     count++;
                 }
             }
+            lastCount = 0;
             return (result, count - 1);
         }
         foreach (var item in items)
@@ -120,9 +123,20 @@ public static class RecordHelper
             {
                 count++;
             }
+            
         }
+        if (count > 0)
+        {
+            lastCount = count;
+        }
+        else
+        {
+            lastCount = 0;
+        }
+
         return (result, count);
     }
+
 
     public static List<Tuple<RecordCardItemWrapper, int>> FormatRecordFive(
         IEnumerable<RecordCardItemWrapper> source
@@ -328,106 +342,114 @@ public static class RecordHelper
         return new(wrapper, count);
     }
 
-    public static async Task<(long, long)>? MargeRecordAsync(
+    public static async Task<(long, long, RecordCacheDetily? catche)>? MargeRecordAsync(
         string baseFolder,
         RecordCacheDetily cache
     )
     {
-        var cachePath = "";
-        RecordCacheDetily? localRecord = null;
-        foreach (
-            var item in Directory.GetFiles(baseFolder, "*.json", SearchOption.TopDirectoryOnly)
-        )
+        try
         {
-            var data = MemoryPackSerializer.Deserialize<RecordCacheDetily>(
-                await File.ReadAllBytesAsync(item),
+            var cachePath = "";
+            RecordCacheDetily? localRecord = null;
+            foreach (
+                var item in Directory.GetFiles(baseFolder, "*.json", SearchOption.TopDirectoryOnly)
+            )
+            {
+                var data = MemoryPackSerializer.Deserialize<RecordCacheDetily>(
+                    await File.ReadAllBytesAsync(item),
+                    new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
+                );
+                if (data == null)
+                    continue;
+                if (data.Name == cache.Name)
+                {
+                    localRecord = data;
+                    cachePath = item;
+                }
+            }
+            if (string.IsNullOrWhiteSpace(cachePath))
+            {
+                cachePath = baseFolder + $"\\{cache.Name}.json";
+                File.Create(cachePath).Dispose();
+            }
+            var sortedCache = SortItemsByTime(cache);
+            var sortedLocal = SortItemsByTime(localRecord);
+            var mergedRecord = new RecordCacheDetily
+            {
+                Name = cache.Name,
+                Time = cache.Time,
+                RoleJourneyItems = SyncCompareLists(
+                    sortedCache.RoleJourneyItems,
+                    sortedLocal.RoleJourneyItems
+                ),
+                WeaponJourneyItems = SyncCompareLists(
+                    sortedCache.WeaponJourneyItems,
+                    sortedLocal.WeaponJourneyItems
+                ),
+                RoleActivityItems = SyncCompareLists(
+                        sortedCache.RoleActivityItems,
+                        sortedLocal.RoleActivityItems
+                    )
+                    .OrderByDescending(x => x.RecordTime)
+                    .ToList(),
+                RoleResidentItems = SyncCompareLists(
+                        sortedCache.RoleResidentItems,
+                        sortedLocal.RoleResidentItems
+                    )
+                    .OrderByDescending(x => x.RecordTime)
+                    .ToList(),
+                WeaponsActivityItems = SyncCompareLists(
+                        sortedCache.WeaponsActivityItems,
+                        sortedLocal.WeaponsActivityItems
+                    )
+                    .OrderByDescending(x => x.RecordTime)
+                    .ToList(),
+                WeaponsResidentItems = SyncCompareLists(
+                        sortedCache.WeaponsResidentItems,
+                        sortedLocal.WeaponsResidentItems
+                    )
+                    .OrderByDescending(x => x.RecordTime)
+                    .ToList(),
+                BeginnerChoiceItems = SyncCompareLists(
+                        sortedCache.BeginnerChoiceItems,
+                        sortedLocal.BeginnerChoiceItems
+                    )
+                    .OrderByDescending(x => x.RecordTime)
+                    .ToList(),
+                BeginnerItems = SyncCompareLists(sortedCache.BeginnerItems, sortedLocal.BeginnerItems)
+                    .OrderByDescending(x => x.RecordTime)
+                    .ToList(),
+                GratitudeOrientationItems = SyncCompareLists(
+                        sortedCache.GratitudeOrientationItems,
+                        sortedLocal.GratitudeOrientationItems
+                    )
+                    .OrderByDescending(x => x.RecordTime)
+                    .ToList(),
+            };
+            var byteData = MemoryPackSerializer.Serialize<RecordCacheDetily>(
+                mergedRecord,
                 new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
             );
-            if (data == null)
-                continue;
-            if (data.Name == cache.Name)
-            {
-                localRecord = data;
-                cachePath = item;
-            }
+            await File.WriteAllBytesAsync(cachePath, byteData);
+            return (
+                byteData.Length,
+                mergedRecord
+                    .RoleActivityItems.Concat(mergedRecord.WeaponsActivityItems)
+                    .Concat(mergedRecord.RoleResidentItems)
+                    .Concat(mergedRecord.WeaponsResidentItems)
+                    .Concat(mergedRecord.BeginnerItems)
+                    .Concat(mergedRecord.BeginnerChoiceItems)
+                    .Concat(mergedRecord.GratitudeOrientationItems)
+                    .Concat(mergedRecord.RoleJourneyItems)
+                    .Concat(mergedRecord.WeaponJourneyItems)
+                    .Count()
+            , mergedRecord);
         }
-        if (string.IsNullOrWhiteSpace(cachePath))
+        catch (Exception)
         {
-            cachePath = baseFolder + $"\\{cache.Name}.json";
-            File.Create(cachePath).Dispose();
+            return (0, 0, null);
         }
-        var sortedCache = SortItemsByTime(cache);
-        var sortedLocal = SortItemsByTime(localRecord);
-        var mergedRecord = new RecordCacheDetily
-        {
-            Name = cache.Name,
-            Time = cache.Time,
-            RoleJourneyItems = SyncCompareLists(
-                sortedCache.RoleJourneyItems,
-                sortedLocal.RoleJourneyItems
-            ),
-            WeaponJourneyItems = SyncCompareLists(
-                sortedCache.WeaponJourneyItems,
-                sortedLocal.WeaponJourneyItems
-            ),
-            RoleActivityItems = SyncCompareLists(
-                    sortedCache.RoleActivityItems,
-                    sortedLocal.RoleActivityItems
-                )
-                .OrderByDescending(x => x.RecordTime)
-                .ToList(),
-            RoleResidentItems = SyncCompareLists(
-                    sortedCache.RoleResidentItems,
-                    sortedLocal.RoleResidentItems
-                )
-                .OrderByDescending(x => x.RecordTime)
-                .ToList(),
-            WeaponsActivityItems = SyncCompareLists(
-                    sortedCache.WeaponsActivityItems,
-                    sortedLocal.WeaponsActivityItems
-                )
-                .OrderByDescending(x => x.RecordTime)
-                .ToList(),
-            WeaponsResidentItems = SyncCompareLists(
-                    sortedCache.WeaponsResidentItems,
-                    sortedLocal.WeaponsResidentItems
-                )
-                .OrderByDescending(x => x.RecordTime)
-                .ToList(),
-            BeginnerChoiceItems = SyncCompareLists(
-                    sortedCache.BeginnerChoiceItems,
-                    sortedLocal.BeginnerChoiceItems
-                )
-                .OrderByDescending(x => x.RecordTime)
-                .ToList(),
-            BeginnerItems = SyncCompareLists(sortedCache.BeginnerItems, sortedLocal.BeginnerItems)
-                .OrderByDescending(x => x.RecordTime)
-                .ToList(),
-            GratitudeOrientationItems = SyncCompareLists(
-                    sortedCache.GratitudeOrientationItems,
-                    sortedLocal.GratitudeOrientationItems
-                )
-                .OrderByDescending(x => x.RecordTime)
-                .ToList(),
-        };
-        var byteData = MemoryPackSerializer.Serialize<RecordCacheDetily>(
-            mergedRecord,
-            new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
-        );
-        await File.WriteAllBytesAsync(cachePath, byteData);
-        return (
-            byteData.Length,
-            mergedRecord
-                .RoleActivityItems.Concat(mergedRecord.WeaponsActivityItems)
-                .Concat(mergedRecord.RoleResidentItems)
-                .Concat(mergedRecord.WeaponsResidentItems)
-                .Concat(mergedRecord.BeginnerItems)
-                .Concat(mergedRecord.BeginnerChoiceItems)
-                .Concat(mergedRecord.GratitudeOrientationItems)
-                .Concat(mergedRecord.RoleJourneyItems)
-                .Concat(mergedRecord.WeaponJourneyItems)
-                .Count()
-        );
+        
     }
 
     public static RecordCacheDetily? SortItemsByTime(RecordCacheDetily recordCache)

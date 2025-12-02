@@ -43,7 +43,6 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
     {
         if (value == null || BassData == null)
         {
-            TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
             return;
         }
         var country = this
@@ -51,7 +50,6 @@ public partial class GamerExploreIndexViewModel : ViewModelBase, IDisposable
             .FirstOrDefault();
         if (country == null)
         {
-            TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
             return;
         }
         this.CountrysItems.Clear();

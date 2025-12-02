@@ -1,4 +1,6 @@
-﻿namespace Haiyu.Common;
+﻿using Waves.Core.Services;
+
+namespace Haiyu.Common;
 
 public partial class ViewModelBase : ObservableRecipient, IDisposable
 {
@@ -13,10 +15,12 @@ public partial class ViewModelBase : ObservableRecipient, IDisposable
             : AppSettings.SelectCursor == "卡提西亚" ? CursorName.KaTiXiYa
             : AppSettings.SelectCursor == "守岸人" ? CursorName.ShouAnRen
             : CursorName.None;
+        this.Logger = Instance.Service.GetRequiredKeyedService<LoggerService>("AppLog");
     }
 
     [ObservableProperty]
     public partial CursorName CursorName { get; set; }
+    public LoggerService Logger { get; }
 
     /// <summary>
     /// 闭包返回

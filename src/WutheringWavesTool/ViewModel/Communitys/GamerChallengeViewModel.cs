@@ -47,7 +47,6 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase
         ));
         if (result.Item1 != 0 || result.Item2 == null)
         {
-            TipShow.ShowMessage("数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
             return;
         }
         var value2 = result!.Item2.ChallengeInfo.Detilys.GroupBy(x => x.BossId);
@@ -79,7 +78,6 @@ public sealed partial class GamerChallengeViewModel : ViewModelBase
         var challData = await TryInvokeAsync(async () => await WavesClient.GetGamerChallengeIndexDataAsync(RoilItem, this.CTS.Token));
         if (challData.Item1 == -1 || challData.Item1 == -2 || challData.Item2 == null || challData.Item2.ChallengeList == null)
         {
-            TipShow.ShowMessage("拉取数据为空", Symbol.Clear);
             return;
         }
         foreach (var item in challData.Item2.ChallengeList)

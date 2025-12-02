@@ -21,7 +21,7 @@ public class LoggerService
     public void InitLogger(
         string file,
         RollingInterval time,
-        int fileMax = 1024,
+        int fileMax = 5120,
         int fileSizeLimitBytes = 10485760,
         CoreLogOption logOption = null
     )
@@ -44,7 +44,8 @@ public class LoggerService
                     rollingInterval: time,
                     retainedFileCountLimit: fileMax,
                     rollOnFileSizeLimit: true,
-                    fileSizeLimitBytes: fileSizeLimitBytes
+                    fileSizeLimitBytes: fileSizeLimitBytes,
+                    retainedFileTimeLimit:TimeSpan.FromDays(15)
                 );
             })
             .CreateLogger();

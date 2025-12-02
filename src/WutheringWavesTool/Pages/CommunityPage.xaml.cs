@@ -82,7 +82,6 @@ public sealed partial class CommunityPage : Page, IPage, IDisposable
         {
             if (disposing)
             {
-                this.ViewModel.NavigationService.UnRegisterView();
                 this.ViewModel.Dispose();
             }
             disposedValue = true;

@@ -8,8 +8,9 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Haiyu.Pages"
     xmlns:lvc="using:LiveChartsCore.SkiaSharpView.WinUI"
-    xmlns:m="using:Waves.Api.Models.CloudGame"
+    xmlns:m="using:Waves.Api.Models.Wrappers"
     xmlns:m2="using:Haiyu.Models"
+    xmlns:m3="using:Waves.Api.Models.CloudGame"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:Haiyu.Controls"
     xmlns:wui="using:CommunityToolkit.WinUI.Controls"
@@ -33,6 +34,8 @@
             Height="210"
             Padding="10"
             Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+            BorderThickness="2"
             CornerRadius="10"
             Visibility="{x:Bind ViewModel.LoadVisibility, Mode=OneWay}">
             <StackPanel
@@ -87,7 +90,7 @@
                 ItemsSource="{x:Bind ViewModel.Users, Mode=OneWay}"
                 SelectedItem="{x:Bind ViewModel.SelectedUser, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="m:LoginData">
+                    <DataTemplate x:DataType="m3:LoginData">
                         <Grid VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
@@ -173,7 +176,7 @@
         </StackPanel>
         <Grid
             Grid.Row="1"
-            Margin="0,15,0,0"
+            Margin="0,0,0,0"
             Visibility="{x:Bind ViewModel.DataVisibility, Mode=OneWay}">
 
             <Grid>
@@ -192,9 +195,11 @@
                     FontFamily="{ThemeResource DefaultFont}"
                     Text="唤取类型：" />
                 <ComboBox
+                    x:Name="selectComboBox"
                     Grid.Column="1"
                     Padding="10"
                     HorizontalAlignment="Stretch"
+                    x:Load="{x:Bind ViewModel.IsLoadCardItem, Mode=OneWay}"
                     ItemsSource="{x:Bind ViewModel.RecordNavigationItems, Mode=OneWay}"
                     SelectedItem="{x:Bind ViewModel.SelectRecordType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ComboBox.ItemTemplate>
@@ -206,9 +211,9 @@
                 <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3">
                     <ItemsControl ItemsSource="{x:Bind ViewModel.ResourceItems, Mode=OneWay}">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="m:Datum">
+                            <DataTemplate x:DataType="m:RecordCardItemWrapper">
                                 <Grid
-                                    Margin="0,5,0,0"
+                                    Margin="0,3,0,0"
                                     Padding="8.5"
                                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
@@ -244,6 +249,7 @@
                         <ItemsControl.ItemContainerTransitions>
                             <TransitionCollection>
                                 <ContentThemeTransition />
+                                <RepositionThemeTransition />
                             </TransitionCollection>
                         </ItemsControl.ItemContainerTransitions>
                     </ItemsControl>

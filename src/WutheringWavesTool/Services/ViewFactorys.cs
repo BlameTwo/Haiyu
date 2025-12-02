@@ -72,21 +72,7 @@ public class ViewFactorys : IViewFactorys
         return window;
     }
 
-    public bool ShowToolWindow()
-    {
-        try
-        {
-            ToolWindow window = new ToolWindow();
-            var content = Instance.GetService<ToolPage>();
-            window.content.Content = content;
-            window.Activate();
-            return true;
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-    }
+    
 
     public Window ShowAnalysisRecord(LoginData data)
 

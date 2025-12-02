@@ -57,7 +57,7 @@ partial class SettingViewModel
     {
         try
         {
-            var saveDialog = await PickersService.GetFileSavePicker(new List<string>() { ".lnk" });
+            var saveDialog = await PickersService.GetFileSavePicker(new List<string>() { ".lnk" },"Haiyu");
             if (saveDialog != null)
             {
                 if (File.Exists(saveDialog.Path))

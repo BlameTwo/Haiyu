@@ -160,14 +160,14 @@ public sealed partial class KuroClient : IKuroClient
         return request;
     }
 
-    public async Task<SignIn?> GetSignInDataAsync(string userId, long roleId)
+    public async Task<SignIn?> GetSignInDataAsync(GameRoilDataItem item)
     {
         var queryData = new Dictionary<string, string>()
         {
-            { "gameId", "3" },
-            { "serverId", "76402e5b20be2c39f095a152090afddc" },
-            { "roleId", roleId.ToString() },
-            { "userId", userId.ToString() },
+            { "gameId", item.GameId.ToString() },
+            { "serverId", item.ServerId },
+            { "roleId", item.RoleId },
+            { "userId", item.UserId },
         };
         var header = GetDeviceHeader(true);
         var request = await BuildRequestAsync(
@@ -184,15 +184,15 @@ public sealed partial class KuroClient : IKuroClient
         return sign;
     }
 
-    public async Task<SignRecord?> GetSignRecordAsync(string userId, string roldId)
+    public async Task<SignRecord?> GetSignRecordAsync(GameRoilDataItem item)
     {
         var header = GetDeviceHeader(true);
         var queryData = new Dictionary<string, string>()
         {
-            { "gameId", "3" },
-            { "serverId", "76402e5b20be2c39f095a152090afddc" },
-            { "userId", userId },
-            { "roleId", roldId },
+            { "gameId", item.GameId.ToString() },
+            { "serverId", item.ServerId },
+            { "roleId", item.RoleId },
+            { "userId", item.UserId },
             { "reqMonth", DateTime.Now.Month.ToString("D2") },
         };
         var request = await BuildRequestAsync(
@@ -209,18 +209,17 @@ public sealed partial class KuroClient : IKuroClient
     }
 
     public async Task<SignInResult?> SignInAsync(
-        string userId,
-        string roleId,
+        GameRoilDataItem item,
         CancellationToken token = default
     )
     {
         var header = GetDeviceHeader(true, false);
         var queryData = new Dictionary<string, string>()
         {
-            { "gameId", "3" },
-            { "serverId", "76402e5b20be2c39f095a152090afddc" },
-            { "userId", userId },
-            { "roleId", roleId },
+            { "gameId", item.GameId.ToString() },
+            { "serverId", item.ServerId },
+            { "roleId", item.RoleId },
+            { "userId", item.UserId },
             { "reqMonth", DateTime.Now.Month.ToString("D2") },
         };
         var request = await BuildRequestAsync(

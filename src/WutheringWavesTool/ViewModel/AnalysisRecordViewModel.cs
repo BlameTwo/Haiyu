@@ -85,7 +85,8 @@ public partial class AnalysisRecordViewModel : ViewModelBase
     public partial double Guaranteed { get; set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<RecordActivityFiveStarItemWrapper> StarItems { get; set; } = [];
+    public partial ObservableCollection<RecordActivityFiveStarItemWrapper> StarItems { get; set; } =
+    [];
     public FiveGroupModel FiveGroup { get; private set; }
     public List<CommunityRoleData> AllRole { get; private set; }
     public List<CommunityWeaponData> AllWeapon { get; private set; }
@@ -98,6 +99,9 @@ public partial class AnalysisRecordViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<object> StarPipeDatas { get; set; } = new();
 
+    [ObservableProperty]
+    public partial double AvgCount { get; set; } = 0;
+
     /// <summary>
     /// 大保底与小保底占比
     /// </summary>
@@ -109,44 +113,73 @@ public partial class AnalysisRecordViewModel : ViewModelBase
         if (value == null)
             return;
         AllPoints.Clear();
+        int lastCount = 0;
         switch (value.Id)
         {
             case 1:
                 StarItems = RecordHelper
                     .FormatStartFive(
                         this.roleActivity,
+                        out lastCount,
                         RecordHelper.FormatFiveRoleStar(this.FiveGroup)
                     )
                     .Item1.Format(this.AllRole, true)
-                    .ToCardItemObservableCollection();
+                    .Reverse()
+                    .ToObservableCollection();
+
                 break;
             case 2:
                 StarItems = RecordHelper
                     .FormatStartFive(
                         this.weaponActiviy,
+                        out lastCount,
                         RecordHelper.FormatFiveWeaponeRoleStar(this.FiveGroup)
                     )
                     .Item1.Format(this.AllWeapon, false)
-                    .ToCardItemObservableCollection();
+                    .Reverse()
+                    .ToObservableCollection();
                 break;
             case 3:
                 StarItems = RecordHelper
                     .FormatStartFive(
                         this.roleDaily,
+                        out lastCount,
                         RecordHelper.FormatFiveRoleStar(this.FiveGroup)
                     )
                     .Item1.Format(this.AllRole, false)
+                    .Reverse()
                     .ToCardItemObservableCollection();
                 break;
             case 4:
                 StarItems = RecordHelper
                     .FormatStartFive(
                         this.weaponDaily,
+                        out lastCount,
                         RecordHelper.FormatFiveRoleStar(this.FiveGroup)
                     )
                     .Item1.Format(this.AllWeapon, false)
+                    .Reverse()
                     .ToCardItemObservableCollection();
                 break;
+        }
+        if (StarItems != null && StarItems.Count > 0)
+        {
+            StarItems.Insert(
+                0,
+                new RecordActivityFiveStarItemWrapper()
+                {
+                    Icon = null,
+                    Flage = false,
+                    Count = lastCount - 1,
+                    ShowFlage = Visibility.Collapsed,
+                    Name = $"已经垫了{lastCount - 1}发",
+                }
+            );
+            AvgCount = Math.Round(StarItems.Select(x => x.Count).Average(), 2);
+        }
+        else
+        {
+            AvgCount = 0;
         }
     }
 
@@ -158,11 +191,17 @@ public partial class AnalysisRecordViewModel : ViewModelBase
             LoadingVisibility = Visibility.Visible;
             DataVisibility = Visibility.Collapsed;
             var cachePath = App.RecordFolder + $"\\{this.LoginData.Username}.json";
+            int lastCount = 0;
             if (cachePath == null)
             {
                 LoadingVisibility = Visibility.Collapsed;
                 DataVisibility = Visibility.Collapsed;
-                WindowExtension.MessageBox(IntPtr.Zero, "抽卡获取失败！请尝试重新登陆云鸣潮！", "数据错误", 0);
+                WindowExtension.MessageBox(
+                    IntPtr.Zero,
+                    "抽卡获取失败！请尝试重新登陆云鸣潮！",
+                    "数据错误",
+                    0
+                );
                 return;
             }
             var datas = MemoryPackSerializer.Deserialize<RecordCacheDetily>(
@@ -173,9 +212,13 @@ public partial class AnalysisRecordViewModel : ViewModelBase
             {
                 LoadingVisibility = Visibility.Collapsed;
                 DataVisibility = Visibility.Collapsed;
-                WindowExtension.MessageBox(IntPtr.Zero, "抽卡获取失败！请尝试重新登陆云鸣潮！", "数据错误", 0);
+                WindowExtension.MessageBox(
+                    IntPtr.Zero,
+                    "抽卡获取失败！请尝试重新登陆云鸣潮！",
+                    "数据错误",
+                    0
+                );
                 return;
-
             }
             #region 刷新数据源
             roleActivity.Clear();
@@ -240,6 +283,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
             {
                 var roleRange = RecordHelper.FormatStartFive(
                     roleActivity,
+                    out lastCount,
                     RecordHelper.FormatFiveRoleStar(FiveGroup!)
                 );
                 var passValue = roleRange.Item1.Where(x => x.Item3 == false);
@@ -283,6 +327,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
             {
                 var weaponRange = RecordHelper.FormatStartFive(
                     weaponDaily,
+                    out lastCount,
                     RecordHelper.FormatFiveRoleStar(FiveGroup!)
                 );
                 this.WeaponActivityCount = weaponActiv.Count;
@@ -293,6 +338,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
             {
                 var RoleRange = RecordHelper.FormatStartFive(
                     roleDaily,
+                    out lastCount,
                     RecordHelper.FormatFiveRoleStar(FiveGroup!)
                 );
                 ExpectedRoleDeily = (long)(80 - RoleRange.Item2);
@@ -302,6 +348,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
             {
                 var weaponRange = RecordHelper.FormatStartFive(
                     weaponActiviy,
+                    out lastCount,
                     RecordHelper.FormatFiveRoleStar(FiveGroup!)
                 );
                 this.WeaponActivityCount = weaponActiv.Count;
@@ -317,7 +364,6 @@ public partial class AnalysisRecordViewModel : ViewModelBase
         {
             WindowExtension.MessageBox(IntPtr.Zero, $"抽卡获取失败！{ex.Message}", "数据错误", 0);
         }
-        
     }
 }
 
@@ -331,6 +377,7 @@ public partial class PieData : ObservableObject
 
     [ObservableProperty]
     public partial double Offset { get; set; }
+
     public Func<ChartPoint, string> Formatter { get; set; } =
         point =>
         {

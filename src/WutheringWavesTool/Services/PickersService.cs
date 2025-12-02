@@ -20,11 +20,11 @@ public class PickersService : IPickersService
         return await openPicker.PickSingleFileAsync();
     }
 
-    public async Task<PickFileResult> GetFileSavePicker(List<string> extention)
+    public async Task<PickFileResult> GetFileSavePicker(List<string> extention,string saveName)
     {
         FileSavePicker picker = new FileSavePicker(ApplicationSetup.App.MainWindow.AppWindow.Id);
         picker.FileTypeChoices.Add("主程序", extention);
-        picker.SuggestedFileName = "Wuthering Waves";
+        picker.SuggestedFileName = saveName;
         PickFileResult file = await picker.PickSaveFileAsync();
         return file;
     }

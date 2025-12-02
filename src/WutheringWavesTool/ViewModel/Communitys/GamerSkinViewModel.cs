@@ -36,7 +36,7 @@ public sealed partial class GamerSkinViewModel : ViewModelBase
         var skin = await TryInvokeAsync(async () => await this.WavesClient.GetGamerSkinAsync(roil, this.CTS.Token));
         if (skin.Item1 != 0)
         {
-            TipShow.ShowMessage("数据拉取失败！", Microsoft.UI.Xaml.Controls.Symbol.Clear);
+            
             return;
         }
         this.RoleSkins = skin.Item2.RoleSkinList.ToObservableCollection();

@@ -17,8 +17,6 @@ public static class Instance
         #region View and ViewModel
             .AddSingleton<ShellPage>()
             .AddSingleton<ShellViewModel>()
-            .AddTransient<ToolPage>()
-            .AddTransient<ToolViewModel>()
             .AddTransient<PlayerRecordPage>()
             .AddTransient<PlayerRecordViewModel>()
             .AddTransient<SettingViewModel>()
@@ -77,8 +75,6 @@ public static class Instance
             .AddTransient<GameLauncherCacheViewModel>()
             .AddTransient<WebGameLogin>()
             .AddTransient<WebGameViewModel>()
-            .AddTransient<BindGameDataDialog>()
-            .AddTransient<BindGameDataViewModel>()
             .AddTransient<SelectGameFolderDialog>()
             .AddTransient<SelectGameFolderViewModel>()
             .AddTransient<CloseDialog>()

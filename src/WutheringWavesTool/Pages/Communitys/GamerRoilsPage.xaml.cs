@@ -1,6 +1,6 @@
 ﻿namespace Haiyu.Pages.Communitys;
 
-public sealed partial class GamerRoilsPage : Page, IPage
+public sealed partial class GamerRoilsPage : Page, IPage,IDisposable
 {
     private GameRoilsViewModel viewModel;
     private bool disposedValue;
@@ -23,8 +23,13 @@ public sealed partial class GamerRoilsPage : Page, IPage
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        this.ViewModel.Dispose();
+        Dispose();
         base.OnNavigatedFrom(e);
+    }
+
+    public void Dispose()
+    {
+        this.ViewModel.Dispose();
         GC.Collect();
     }
 

@@ -47,11 +47,13 @@ public sealed partial class RecordItemViewModel : ViewModelBase
     async Task Loaded()
     {
         await Task.Delay(100);
+        int lastCount;
         if (DataItem.Type == CardPoolType.RoleActivity)
         {
             StarItems = RecordHelper
                 .FormatStartFive(
                     this.Items,
+                    out lastCount,
                     RecordHelper.FormatFiveRoleStar(this.DataItem.FiveGroup!)
                 )!
                 .Item1
@@ -64,6 +66,7 @@ public sealed partial class RecordItemViewModel : ViewModelBase
             StarItems = RecordHelper
                 .FormatStartFive(
                     this.Items,
+                    out lastCount,
                     RecordHelper.FormatFiveWeaponeRoleStar(this.DataItem.FiveGroup!)
                 )!
                 .Item1

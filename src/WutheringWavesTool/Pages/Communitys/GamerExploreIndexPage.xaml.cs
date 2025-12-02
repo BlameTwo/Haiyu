@@ -1,6 +1,6 @@
 ﻿namespace Haiyu.Pages.Communitys;
 
-public sealed partial class GamerExploreIndexPage : Page, IPage
+public sealed partial class GamerExploreIndexPage : Page, IPage,IDisposable
 {
     public GamerExploreIndexPage()
     {
@@ -20,12 +20,17 @@ public sealed partial class GamerExploreIndexPage : Page, IPage
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-        this.ViewModel.Dispose();
+        this.Dispose();
         base.OnNavigatedFrom(e);
-        GC.Collect();
     }
 
     public Type PageType => typeof(GamerExploreIndexPage);
 
     public GamerExploreIndexViewModel ViewModel { get; private set; }
+
+    public void Dispose()
+    {
+        this.ViewModel.Dispose();
+        GC.Collect();
+    }
 }

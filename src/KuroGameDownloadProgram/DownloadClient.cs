@@ -51,13 +51,11 @@ public class DownloadClient
 
                 if (File.Exists(filePath))
                 {
-                    // 文件已存在，检查完整性
                     if (item.ChunkInfos == null)
                     {
                         var checkResult = await VaildateFullFile(item.Md5, filePath);
                         if (checkResult)
                         {
-                            // 更新总进度（线程安全）
                             await DownloadFileByFull(
                                 item.Dest,
                                 item.Size,
@@ -73,7 +71,6 @@ public class DownloadClient
                     }
                     else
                     {
-                        // 处理分块文件（内层循环保持顺序）
                         for (int c = 0; c < item.ChunkInfos.Count; c++)
                         {
                             var needDownload = await ValidateFileChunks(item.ChunkInfos[c], filePath);

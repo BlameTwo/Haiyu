@@ -1,3 +1,4 @@
+using Haiyu.Controls.AnimatedTextBlock.Effects;
 using Waves.Api.Models.CloudGame;
 
 namespace Haiyu.Pages.Record;
@@ -7,7 +8,7 @@ public sealed partial class AnalysisRecordPage : Page, IWindowPage
     public AnalysisRecordPage()
     {
         InitializeComponent();
-        this.ViewModel = Instance.GetService<AnalysisRecordViewModel>();
+        this.ViewModel = Instance.Service.GetRequiredService<AnalysisRecordViewModel>();
     }
 
     public AnalysisRecordViewModel ViewModel { get; }

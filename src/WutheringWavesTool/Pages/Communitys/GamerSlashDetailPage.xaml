@@ -21,8 +21,12 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
         <Grid Margin="0,0,2.5,0" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
-            <!--<Grid.RowDefinitions>
+            <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
@@ -51,13 +55,12 @@
                 <Run Text="/" />
                 <Run Text="{x:Bind ViewModel.Difficulty1Header.MaxScore, Mode=OneWay}" />
             </TextBlock>
-            <ScrollView
+            <Grid
                 Grid.Row="1"
                 Padding="10"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch">
                 <ScrollView
-                    Grid.Row="1"
                     Padding="10"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch">
@@ -95,7 +98,6 @@
                                             FontWeight="Bold"
                                             Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
                                             Text="{x:Bind Rank}" />
-
                                         <TextBlock
                                             Margin="10,0,0,0"
                                             VerticalAlignment="Center"
@@ -106,7 +108,7 @@
                                             <FontIcon
                                                 FontFamily="Segoe Fluent Icons"
                                                 FontSize="14"
-                                                Glyph="&#xE974;" />
+                                                Glyph="" />
                                             <Button.Flyout>
                                                 <Flyout ShouldConstrainToRootBounds="False">
                                                     <Flyout.SystemBackdrop>
@@ -176,15 +178,172 @@
                         </ItemsRepeater.ItemTemplate>
                     </ItemsRepeater>
                 </ScrollView>
-            </ScrollView>-->
+
+            </Grid>
+        </Grid>
+
+        <Grid
+            Grid.Row="1"
+            Margin="0,5,2.5,0"
+            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+            CornerRadius="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <ui:ImageEx
+                VerticalAlignment="Top"
+                Opacity="0.8"
+                Source="{x:Bind ViewModel.Difficulty2Header.SlashHeaderBG, Mode=OneWay}" />
+            <StackPanel Margin="25,0,0,0" Orientation="Horizontal">
+                <ui:ImageEx
+                    Width="25"
+                    Height="25"
+                    Source="{x:Bind ViewModel.Difficulty2Header.SlashHeaderIcon, Mode=OneWay}" />
+                <TextBlock
+                    Margin="15,0,0,0"
+                    VerticalAlignment="Center"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="17"
+                    Text="{x:Bind ViewModel.Difficulty2Header.SlashHeaderName, Mode=OneWay}" />
+            </StackPanel>
             <TextBlock
-                HorizontalAlignment="Center"
+                Margin="05,0,20,0"
+                HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                FontFamily="{ThemeResource DefaultFont}"
-                FontSize="25"
-                Text="未开放" />
+                FontFamily="{ThemeResource DefaultFont}">
+                <Run Text="{x:Bind ViewModel.Difficulty2Header.Score, Mode=OneWay}" />
+                <Run Text="/" />
+                <Run Text="{x:Bind ViewModel.Difficulty2Header.MaxScore, Mode=OneWay}" />
+            </TextBlock>
+            <Grid
+                Grid.Row="1"
+                Padding="10"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+                <ScrollView
+                    Padding="10"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <ItemsRepeater ItemsSource="{x:Bind ViewModel.SlashHeader2Items, Mode=OneWay}">
+                        <ItemsRepeater.ItemTemplate>
+                            <DataTemplate x:DataType="slashData:SlashItemWrapper">
+                                <Grid
+                                    Margin="8"
+                                    Padding="10"
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    CornerRadius="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="18"
+                                            Text="{x:Bind SlashItemId}" />
+                                        <TextBlock
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="16"
+                                            Text="{x:Bind ItemName}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                        <TextBlock
+                                            VerticalAlignment="Center"
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="18"
+                                            FontWeight="Bold"
+                                            Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                            Text="{x:Bind Rank}" />
+                                        <TextBlock
+                                            Margin="10,0,0,0"
+                                            VerticalAlignment="Center"
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="16"
+                                            Text="{x:Bind Score}" />
+                                        <Button Margin="5,0,0,0" Style="{ThemeResource TransparentButtonStyle}">
+                                            <FontIcon
+                                                FontFamily="Segoe Fluent Icons"
+                                                FontSize="14"
+                                                Glyph="" />
+                                            <Button.Flyout>
+                                                <Flyout ShouldConstrainToRootBounds="False">
+                                                    <Flyout.SystemBackdrop>
+                                                        <DesktopAcrylicBackdrop />
+                                                    </Flyout.SystemBackdrop>
+                                                    <ScrollView>
+                                                        <ItemsRepeater ItemsSource="{x:Bind Halfs}">
+                                                            <ItemsRepeater.Layout>
+                                                                <StackLayout Orientation="Vertical" />
+                                                            </ItemsRepeater.Layout>
+                                                            <ItemsRepeater.ItemTemplate>
+                                                                <DataTemplate x:DataType="slash:HalfList">
+                                                                    <Grid>
+                                                                        <Grid.ColumnDefinitions>
+                                                                            <ColumnDefinition Width="auto" />
+                                                                            <ColumnDefinition />
+                                                                        </Grid.ColumnDefinitions>
+                                                                        <Button Style="{ThemeResource TransparentButtonStyle}">
+                                                                            <ui:ImageEx Width="35" Height="35">
+                                                                                <ui:ImageEx.Source>
+                                                                                    <BitmapImage UriSource="{x:Bind BuffIcon}" />
+                                                                                </ui:ImageEx.Source>
+                                                                            </ui:ImageEx>
+                                                                            <Button.Flyout>
+                                                                                <Flyout ShouldConstrainToRootBounds="False">
+                                                                                    <Flyout.SystemBackdrop>
+                                                                                        <DesktopAcrylicBackdrop />
+                                                                                    </Flyout.SystemBackdrop>
+                                                                                    <TextBlock
+                                                                                        MaxWidth="140"
+                                                                                        Text="{x:Bind BuffDescription}"
+                                                                                        TextWrapping="Wrap" />
+                                                                                </Flyout>
+                                                                            </Button.Flyout>
+                                                                        </Button>
+                                                                        <ItemsRepeater
+                                                                            Grid.Column="1"
+                                                                            Margin="5,0,0,0"
+                                                                            ItemsSource="{x:Bind RoleList}">
+                                                                            <ItemsRepeater.ItemTemplate>
+                                                                                <DataTemplate x:DataType="slash:SlashRoleList">
+                                                                                    <ui:ImageEx
+                                                                                        Width="35"
+                                                                                        Height="35"
+                                                                                        Margin="5,0">
+                                                                                        <ui:ImageEx.Source>
+                                                                                            <BitmapImage UriSource="{x:Bind IconUrl}" />
+                                                                                        </ui:ImageEx.Source>
+                                                                                    </ui:ImageEx>
+                                                                                </DataTemplate>
+                                                                            </ItemsRepeater.ItemTemplate>
+                                                                            <ItemsRepeater.Layout>
+                                                                                <StackLayout Orientation="Horizontal" />
+                                                                            </ItemsRepeater.Layout>
+                                                                        </ItemsRepeater>
+                                                                    </Grid>
+                                                                </DataTemplate>
+                                                            </ItemsRepeater.ItemTemplate>
+                                                        </ItemsRepeater>
+                                                    </ScrollView>
+                                                </Flyout>
+                                            </Button.Flyout>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsRepeater.ItemTemplate>
+                    </ItemsRepeater>
+                </ScrollView>
+
+            </Grid>
         </Grid>
         <Grid
+            Grid.RowSpan="2"
             Grid.Column="1"
             Margin="2.5,0,0,0"
             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
@@ -256,7 +415,6 @@
                                         FontWeight="Bold"
                                         Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
                                         Text="{x:Bind Rank}" />
-
                                     <TextBlock
                                         Margin="10,0,0,0"
                                         VerticalAlignment="Center"
@@ -267,7 +425,7 @@
                                         <FontIcon
                                             FontFamily="Segoe Fluent Icons"
                                             FontSize="14"
-                                            Glyph="&#xE974;" />
+                                            Glyph="" />
                                         <Button.Flyout>
                                             <Flyout ShouldConstrainToRootBounds="False">
                                                 <Flyout.SystemBackdrop>

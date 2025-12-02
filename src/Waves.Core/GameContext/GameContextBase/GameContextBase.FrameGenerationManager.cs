@@ -9,20 +9,21 @@ namespace Waves.Core.GameContext;
 
 partial class GameContextBase
 {
-    public async Task<FileVersion> GetLocalDLSSAsync()
+
+    public async Task<FileVersion> GetLocalFileVersionAsync(string fileName,string displayName)
     {
         var gameFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
         var file = Directory
-            .GetFiles(gameFolder, "nvngx_dlss.dll", SearchOption.AllDirectories)
+            .GetFiles(gameFolder, fileName, SearchOption.AllDirectories)
             .FirstOrDefault();
         if (file == null)
         {
-            return new FileVersion() { DisplayName = "Xess", Version = "未找到文件" };
+            return new FileVersion() { DisplayName = displayName, Version = "未找到文件" };
         }
         FileVersionInfo fileinfo = FileVersionInfo.GetVersionInfo(file);
         return new FileVersion()
         {
-            DisplayName = "Dlss",
+            DisplayName = displayName,
             Subtitle = fileinfo.InternalName,
             FilePath = file,
             Version =
@@ -30,45 +31,17 @@ partial class GameContextBase
         };
     }
 
+    public async Task<FileVersion> GetLocalDLSSAsync()
+    {
+        return await GetLocalFileVersionAsync("nvngx_dlss.dll", "Xess");
+    }
     public async Task<FileVersion> GetLocalDLSSGenerateAsync()
     {
-        var gameFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
-        var file = Directory
-            .GetFiles(gameFolder, "nvngx_dlssg.dll", SearchOption.AllDirectories)
-            .FirstOrDefault();
-        if (file == null)
-        {
-            return new FileVersion() { DisplayName = "Xess", Version = "未找到文件" };
-        }
-        FileVersionInfo fileinfo = FileVersionInfo.GetVersionInfo(file);
-        return new FileVersion()
-        {
-            DisplayName = "Dlss 帧生成",
-            Subtitle = fileinfo.InternalName,
-            FilePath = file,
-            Version =
-                $"{fileinfo.FileMajorPart}.{fileinfo.FileMinorPart}.{fileinfo.FileBuildPart}.{fileinfo.FilePrivatePart}",
-        };
+        return await GetLocalFileVersionAsync("nvngx_dlssg.dll", "Dlss 帧生成");
     }
 
     public async Task<FileVersion> GetLocalXeSSGenerateAsync()
     {
-        var gameFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
-        var file = Directory
-            .GetFiles(gameFolder, "libxess.dll", SearchOption.AllDirectories)
-            .FirstOrDefault();
-        if (file == null)
-        {
-            return new FileVersion(){ DisplayName = "Xess", Version = "未找到文件"};
-        }
-        FileVersionInfo fileinfo = FileVersionInfo.GetVersionInfo(file);
-        return new FileVersion()
-        {
-            DisplayName = "XeSS",
-            Subtitle = fileinfo.InternalName,
-            FilePath = file,
-            Version =
-                $"{fileinfo.FileMajorPart}.{fileinfo.FileMinorPart}.{fileinfo.FileBuildPart}.{fileinfo.FilePrivatePart}",
-        };
+        return await GetLocalFileVersionAsync("libxess.dll", "Xess");
     }
 }

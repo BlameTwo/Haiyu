@@ -32,7 +32,6 @@ public partial class GamerDockViewModel : ViewModelBase, IDisposable
         var calabash = await TryInvokeAsync(async () => await WavesClient.GetGamerCalabashDataAsync(GameRoil));
         if (calabash.Item1 == -2 || calabash.Item1 == -1)
         {
-            TipShow.ShowMessage("未请求到数据坞信息", Microsoft.UI.Xaml.Controls.Symbol.Clear);
             TipShow.ShowMessage("拉取数据为空", Symbol.Clear);
         }
         else if (calabash.Item1 == 0)

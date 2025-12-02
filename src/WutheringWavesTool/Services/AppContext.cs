@@ -17,7 +17,7 @@ public class AppContext<T> : IAppContext<T>
         [FromKeyedServices("AppLog")] LoggerService loggerService
     )
     {
-        WavesClient = wavesClient;
+        KuroClient = wavesClient;
         WallpaperService = wallpaperService;
         DialogManager = dialogManager;
         LoggerService = loggerService;
@@ -28,7 +28,7 @@ public class AppContext<T> : IAppContext<T>
 
     public T App { get; private set; }
 
-    public IKuroClient WavesClient { get; }
+    public IKuroClient KuroClient { get; }
     public IWallpaperService WallpaperService { get; }
     public IDialogManager DialogManager { get; }
     public LoggerService LoggerService { get; }
@@ -78,7 +78,6 @@ public class AppContext<T> : IAppContext<T>
             }
             catch
             {
-                // Fallback to logical size if DPI detection fails
                 win.MaxWidth = 1100;
                 win.MaxHeight = 700;
             }
@@ -87,17 +86,6 @@ public class AppContext<T> : IAppContext<T>
             win.IsMaximizable = false;
             this.App.MainWindow = win;
             (win.AppWindow.Presenter as OverlappedPresenter)!.SetBorderAndTitleBar(true, false);
-            if (await WavesClient.IsLoginAsync())
-            {
-                var gamers = await WavesClient.GetWavesGamerAsync();
-                if (gamers != null && gamers.Success)
-                {
-                    foreach (var item in gamers.Data)
-                    {
-                        var data = await WavesClient.RefreshGamerDataAsync(item);
-                    }
-                }
-            }
             this.App.MainWindow.AppWindow.Closing += AppWindow_Closing;
         }
         catch (Exception ex)

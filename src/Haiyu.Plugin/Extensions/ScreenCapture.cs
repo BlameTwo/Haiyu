@@ -91,14 +91,10 @@ public static class ScreenCapture
                 throw new Exception($"GetDIBits 调用失败! 错误码: {Marshal.GetLastWin32Error()}");
             }
 
-            Console.WriteLine("全屏截图像素数据已成功获取到字节数组！");
-            Console.WriteLine($"分辨率: {screenWidth} x {screenHeight}");
-            Console.WriteLine($"数据长度: {pixelData.Length} 字节");
             return pixelData;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"错误: {ex.Message}");
             NativeMethods.MessageBox(IntPtr.Zero, ex.Message, "错误", 0);
             return null;
         }

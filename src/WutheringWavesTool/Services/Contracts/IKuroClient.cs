@@ -1,6 +1,7 @@
 ﻿using Waves.Api.Models.Communitys.DataCenter.ResourceBrief;
 using Waves.Api.Models.GameWikiiClient;
 using Waves.Api.Models.QRLogin;
+using Waves.Core.Models.Enums;
 
 namespace WavesLauncher.Core.Contracts;
 
@@ -18,7 +19,7 @@ public interface IKuroClient
         GameRoilDataItem gamerRoil,
         CancellationToken token = default
     );
-    public Task<GamerRoil?> GetWavesGamerAsync(CancellationToken token = default);
+    public Task<GamerRoil?> GetGamerAsync(GameType gameId, CancellationToken token = default);
 
     public Task<SMSResultModel?> SendSMSAsync(
         string mobile,
@@ -26,7 +27,7 @@ public interface IKuroClient
         CancellationToken token = default
     );
 
-    public Task<SignIn?> GetSignInDataAsync(string userId, long roleId);
+    public Task<SignIn?> GetSignInDataAsync(GameRoilDataItem item);
 
     public Task<AccountModel?> LoginAsync(
         string mobile,
@@ -34,10 +35,9 @@ public interface IKuroClient
         CancellationToken token = default
     );
 
-    public Task<SignRecord?> GetSignRecordAsync(string userId, string roldId);
+    public Task<SignRecord?> GetSignRecordAsync(GameRoilDataItem item);
     public Task<SignInResult?> SignInAsync(
-        string userId,
-        string roleId,
+        GameRoilDataItem item,
         CancellationToken token = default
     );
     public Task<AccountMine?> GetWavesMineAsync(long id, CancellationToken token = default);

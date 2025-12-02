@@ -34,16 +34,16 @@ public sealed class LauncherTaskService : ILauncherTaskService
                     return;
                 }
                 int signErrorCount = 0;
-                var gamers = await WavesClient.GetWavesGamerAsync(token);
-                if (gamers == null || gamers.Success == false)
+                var gamers = await WavesClient.GetGamerAsync( Waves.Core.Models.Enums.GameType.Waves,token);
+                var Punish = await WavesClient.GetGamerAsync( Waves.Core.Models.Enums.GameType.Punish,token);
+                if (gamers == null || gamers.Success == false || Punish == null || Punish.Success == false)
                 {
                     return;
                 }
-                foreach (var item in gamers.Data)
+                foreach (var item in gamers.Data.Concat(Punish.Data))
                 {
                     var result = await WavesClient.SignInAsync(
-                        item.UserId.ToString(),
-                        item.RoleId,
+                        item,
                         token
                     );
                     if (result is null || (!result.Success && result.Code != 1511))

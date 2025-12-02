@@ -2,6 +2,6 @@
 
 public enum GameType:uint
 {
-    Waves,
-    Punish
+    Waves=3,
+    Punish=2
 }

@@ -123,7 +123,7 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
         this.IsLogin = (await WavesClient.IsLoginAsync());
         if (!IsLogin)
             return;
-        var gamers = await WavesClient.GetWavesGamerAsync(this.CTS.Token);
+        var gamers = await WavesClient.GetGamerAsync(Waves.Core.Models.Enums.GameType.Waves,this.CTS.Token);
         if (gamers == null || gamers.Code != 200)
             return;
         this.SelectPageItem = Pages[0];
@@ -133,6 +133,7 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
     public override void Dispose()
     {
         this.Messenger.UnregisterAll(this);
+        this.NavigationService.UnRegisterView();
         this.NavigationService = null;
         this.CTS.Cancel();
         GC.SuppressFinalize(this);

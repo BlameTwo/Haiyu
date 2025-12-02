@@ -1,6 +1,9 @@
-﻿using Astronomical;
+﻿using System.Linq;
+using Astronomical;
+using Haiyu.Models.Wrapper;
 using Haiyu.Services.DialogServices;
 using Waves.Core.Common;
+using Waves.Core.Models.Enums;
 using Windows.Devices.Geolocation;
 using Windows.Graphics.DirectX.Direct3D11;
 
@@ -82,13 +85,21 @@ public sealed partial class ShellViewModel : ViewModelBase
     public partial Visibility GamerRoleListsVisibility { get; set; } = Visibility.Collapsed;
 
     [ObservableProperty]
-    public partial Visibility CommunitySelectItemVisiblity { get; set; } = Visibility.Collapsed;
+    public partial Visibility WavesCommunitySelectItemVisiblity { get; set; } =
+        Visibility.Collapsed;
+
+    [ObservableProperty]
+    public partial Visibility PunishCommunitySelectItemVisiblity { get; set; } =
+        Visibility.Collapsed;
 
     public Controls.ImageEx Image { get; set; }
     public Border BackControl { get; internal set; }
 
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataWrapper> Roles { get; set; }
+
+    [ObservableProperty]
+    public partial CollectionViewSource RoleViewSource { get; set; }
 
     [ObservableProperty]
     public partial GameRoilDataWrapper SelectRoles { get; set; }
@@ -103,6 +114,16 @@ public sealed partial class ShellViewModel : ViewModelBase
         if (value == null)
             return;
         this.WavesClient.CurrentRoil = value;
+        if (value.Type == Waves.Core.Models.Enums.GameType.Waves)
+        {
+            this.WavesCommunitySelectItemVisiblity = Visibility.Visible;
+            this.PunishCommunitySelectItemVisiblity = Visibility.Collapsed;
+        }
+        else if (value.Type == Waves.Core.Models.Enums.GameType.Punish)
+        {
+            this.WavesCommunitySelectItemVisiblity = Visibility.Collapsed;
+            this.PunishCommunitySelectItemVisiblity = Visibility.Visible;
+        }
         WeakReferenceMessenger.Default.Send<SwitchRoleMessager>(new SwitchRoleMessager(value));
     }
 
@@ -228,7 +249,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     private async void LoginMessangerMethod(object recipient, LoginMessanger message)
     {
         this.LoginBthVisibility = Visibility.Collapsed;
-        CommunitySelectItemVisiblity = Visibility.Visible;
+        WavesCommunitySelectItemVisiblity = Visibility.Visible;
         await RefreshRoleLists();
         await Task.Delay(800);
         this.AppContext.MainTitle.UpDate();
@@ -237,10 +258,14 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     public async Task RefreshRoleLists()
     {
-        var gamers = await WavesClient.GetWavesGamerAsync(this.CTS.Token);
-        if (gamers == null || gamers.Code != 200)
+        var gamers = await WavesClient.GetGamerAsync(GameType.Waves,this.CTS.Token);
+        var punishs = await WavesClient.GetGamerAsync(GameType.Punish,this.CTS.Token);
+        if (gamers == null || gamers.Code != 200 || punishs == null || punishs.Code != 200)
             return;
-        this.Roles = gamers.Data.FormatRoil();
+        this.Roles = gamers
+            .Data.FormatRoil(Waves.Core.Models.Enums.GameType.Waves)
+            .Concat(punishs.Data.FormatRoil(Waves.Core.Models.Enums.GameType.Punish))
+            .ToObservableCollection();
         if (Roles != null)
         {
             if (Roles.Count > 0)
@@ -262,12 +287,12 @@ public sealed partial class ShellViewModel : ViewModelBase
         if (!result)
         {
             this.LoginBthVisibility = Visibility.Visible;
-            CommunitySelectItemVisiblity = Visibility.Collapsed;
+            WavesCommunitySelectItemVisiblity = Visibility.Collapsed;
         }
         else
         {
             this.LoginBthVisibility = Visibility.Collapsed;
-            CommunitySelectItemVisiblity = Visibility.Visible;
+            WavesCommunitySelectItemVisiblity = Visibility.Visible;
             this.GamerRoleListsVisibility = Visibility.Visible;
             await this.RefreshRoleLists();
         }
