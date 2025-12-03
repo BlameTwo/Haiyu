@@ -2,6 +2,7 @@
 using Haiyu.Services.DialogServices;
 using Haiyu.Services.Navigations.NavigationViewServices;
 using Haiyu.ViewModel.GameViewModels;
+using Haiyu.ViewModel.OOBEViewModels;
 using Haiyu.ViewModel.WikiViewModels;
 using Waves.Core.Services;
 
@@ -14,9 +15,11 @@ public static class Instance
     public static void InitService()
     {
         Service = new ServiceCollection()
-        #region View and ViewModel
+            #region View and ViewModel
             .AddSingleton<ShellPage>()
             .AddSingleton<ShellViewModel>()
+            .AddSingleton<OOBEPage>()
+            .AddSingleton<OOBEViewModel>()
             .AddTransient<PlayerRecordPage>()
             .AddTransient<PlayerRecordViewModel>()
             .AddTransient<SettingViewModel>()
@@ -34,9 +37,10 @@ public static class Instance
             .AddTransient<AnalysisRecordViewModel>()
             .AddTransient<AnalysisRecordPage>()
             .AddTransient<HomeViewModel>()
-        #region ColorGame
-        #endregion
-        #region GameContext
+            .AddTransient<LanguageSelectViewModel>()
+            #region ColorGame
+            #endregion
+            #region GameContext
             .AddTransient<MainGameViewModel>()
             .AddTransient<BiliBiliGameViewModel>()
             .AddTransient<GlobalGameViewModel>()
@@ -44,12 +48,12 @@ public static class Instance
             .AddTransient<TwPGRGameViewModel>()
             .AddTransient<GlobalPGRViewModel>()
             .AddTransient<BiliBiliPGRGameViewModel>()
-        #endregion
-        #region Wiki
+            #endregion
+            #region Wiki
             .AddTransient<WavesWikiViewModel>()
             .AddTransient<PunishWikiViewModel>()
-        #endregion
-        #region Community
+            #endregion
+            #region Community
             .AddTransient<GamerSignPage>()
             .AddTransient<GamerSignViewModel>()
             .AddTransient<GamerRoilsDetilyViewModel>()
@@ -60,15 +64,15 @@ public static class Instance
             .AddTransient<GamerTowerViewModel>()
             .AddTransient<GamerSkinViewModel>()
             .AddTransient<GamerSlashDetailViewModel>()
-        #endregion
-        #region Record
+            #endregion
+            #region Record
             .AddTransient<RecordItemViewModel>()
-        #endregion
-        #region Roil
+            #endregion
+            #region Roil
             .AddTransient<GamerRoilsDetilyPage>()
             .AddTransient<GamerRoilViewModel>()
-        #endregion
-        #region Dialog
+            #endregion
+            #region Dialog
             .AddTransient<LoginDialog>()
             .AddTransient<LoginGameViewModel>()
             .AddTransient<GameLauncherCacheManager>()
@@ -82,24 +86,26 @@ public static class Instance
             .AddTransient<SelectDownloadGameViewModel>()
             .AddTransient<QRLoginDialog>()
             .AddTransient<QrLoginViewModel>()
-        #endregion
-        #endregion
-        #region Navigation
+            #endregion
+            #endregion
+            #region More
             .AddTransient<IPageService, PageService>()
             .AddTransient<IPickersService, PickersService>()
             .AddSingleton<ITipShow, TipShow>()
             .AddKeyedTransient<ITipShow, PageTipShow>("Cache")
             .AddKeyedTransient<IDialogManager, MainDialogService>("Cache")
             .AddTransient<IColorGameManager, ColorGameManager>()
-        #endregion
-        #region Base
+            #endregion
+            #region Base
             .AddSingleton<IAppContext<App>, AppContext<App>>()
             .AddSingleton<IKuroClient, KuroClient>()
+            .AddTransient<IPlayerCardService, PlayerCardService>()
             .AddSingleton<ICloudGameService, CloudGameService>()
             .AddSingleton<IScreenCaptureService, ScreenCaptureService>()
             .AddSingleton<IGameWikiClient, GameWikiClient>()
             .AddTransient<IViewFactorys, ViewFactorys>()
-            .AddTransient<ILauncherTaskService,LauncherTaskService>()
+            .AddTransient<ILauncherTaskService, LauncherTaskService>()
+            .AddTransient<ILanguageService,LanguageService>()
             .AddSingleton<CloudConfigManager>(
                 (s) =>
                 {
@@ -115,8 +121,8 @@ public static class Instance
                     return service;
                 }
             )
-        #endregion
-        #region Navigation
+            #endregion
+            #region Navigation
             .AddKeyedSingleton<INavigationService, HomeNavigationService>(
                 nameof(HomeNavigationService)
             )
@@ -128,13 +134,17 @@ public static class Instance
             )
             .AddKeyedTransient<INavigationService, WebGameNavigationService>(
                 nameof(WebGameNavigationService)
-            ).AddKeyedTransient<INavigationService, GameWikiNavigationService>(
+            )
+            .AddKeyedTransient<INavigationService, GameWikiNavigationService>(
                 nameof(GameWikiNavigationService)
             )
-        #endregion
-        #region Plugin
+            .AddKeyedSingleton<INavigationService, OOBENavigationService>(
+                nameof(OOBENavigationService)
+            )
+            #endregion
+            #region Plugin
 
-        #endregion
+            #endregion
             .AddKeyedSingleton<IDialogManager, MainDialogService>(nameof(MainDialogService))
             .AddKeyedSingleton<LoggerService>(
                 "AppLog",
@@ -145,7 +155,7 @@ public static class Instance
                     return logger;
                 }
             )
-        #region Record
+            #region Record
             .AddScoped<IDialogManager, ScopeDialogService>()
             .AddScoped<ITipShow, TipShow>()
             .AddKeyedScoped<IPlayerRecordContext, PlayerRecordContext>("PlayerRecord")
@@ -157,7 +167,7 @@ public static class Instance
             .AddKeyedScoped<INavigationService, GameRoilNavigationService>(
                 nameof(GameRoilNavigationService)
             )
-        #endregion
+            #endregion
             .AddGameContext()
             .BuildServiceProvider();
     }

@@ -137,7 +137,8 @@
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
                 Description="更改选项需要重启生效"
-                Header="元素鼠标指针">
+                Header="元素鼠标指针"
+                Visibility="Collapsed">
                 <ui:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x270C;" />
                 </ui:SettingsCard.HeaderIcon>

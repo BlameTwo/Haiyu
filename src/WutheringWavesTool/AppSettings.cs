@@ -113,6 +113,19 @@ public class AppSettings
         get => Read();
         set => Write(value);
     }
+
+    public static string? Language
+    {
+        get => Read();
+        set => Write(value);
+    }
+
+    public static string? AutoOOBE
+    {
+        get => Read();
+        set => Write(value);
+    }
+
     #region 鸣潮
     public static bool? ShowWavesMainGame
     {
@@ -252,8 +265,7 @@ public class AppSettings
     {
         if (string.IsNullOrWhiteSpace(key))
         {
-            Debug.WriteLine("Attempted to write setting with a null or empty key.");
-            return;
+            throw new IOException("找不到相关Key");
         }
 
         if (value == null)

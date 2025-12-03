@@ -23,6 +23,16 @@
     <Project Path="Haiyu.Plugin/Haiyu.Plugin.csproj" Id="1d4b3247-f5e2-4702-890e-976aa3752a89">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
+    <Project Path="LanguageEditer.Model/LanguageEditer.Model.csproj" Id="54317a76-6add-4f74-ad1e-9525d1d5df9b">
+      <BuildType Solution="All|*" Project="Debug" />
+    </Project>
+    <Project Path="LanguageEditer/LanguageEditer.csproj" Id="08d1ca46-b4bc-43d5-8328-98ca132359b1">
+      <BuildType Solution="All|*" Project="Debug" />
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Platform Solution="*|x64" Project="x64" />
+      <Platform Solution="*|x86" Project="x86" />
+      <Deploy />
+    </Project>
     <Project Path="Performances/FpsCounter/CounterMonitor.csproj">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>

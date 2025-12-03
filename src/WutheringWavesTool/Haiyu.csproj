@@ -25,9 +25,7 @@
 		<GenerateTestArtifacts>False</GenerateTestArtifacts>
 		<AppxBundle>Auto</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-		
 		<!--Win32 PE-->
-		<NoWin32Manifest>True</NoWin32Manifest>
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<DefaultLanguage>zh-Hans</DefaultLanguage>
 		<PackageCertificateThumbprint>9A058084F8990CF8FEAA9817CB4E3FC0A7C56294</PackageCertificateThumbprint>
@@ -68,6 +66,8 @@
 		<None Remove="Pages\GameWikis\PunishWikiPage.xaml" />
 		<None Remove="Pages\GameWikis\WavesWikiPage.xaml" />
 		<None Remove="Pages\HomePage.xaml" />
+		<None Remove="Pages\OOBEPage.xaml" />
+		<None Remove="Pages\OOBE\LanguageSelectPage.xaml" />
 		<None Remove="Pages\Record\AnalysisRecordPage.xaml" />
 		<None Remove="Pages\StartColorFullGamePage.xaml" />
 	</ItemGroup>
@@ -239,6 +239,12 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\OOBEPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="Pages\OOBE\LanguageSelectPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Controls\Styles\AnimatedTextBlock.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
@@ -297,7 +303,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Common\Plugins\" />
+	  <Folder Include="Languages\" />
 	  <Folder Include="Pages\ColorGame\" />
+	  <Folder Include="Strings\" />
 	</ItemGroup>
 	<PropertyGroup Label="Globals">
 	  <WV2WinRTExplicitIncludesOnly>False</WV2WinRTExplicitIncludesOnly>
