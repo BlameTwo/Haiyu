@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:LanguageEditer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:page="using:LanguageEditer.Pages"
     Title="LanguageEditer"
     mc:Ignorable="d">
 
@@ -13,5 +14,5 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid />
+    <page:LanguateEditerPage />
 </Window>

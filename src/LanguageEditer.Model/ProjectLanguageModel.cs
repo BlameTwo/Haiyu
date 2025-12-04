@@ -1,22 +1,38 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
 namespace LanguageEditer.Model;
 
-public  class ProjectLanguageModel
+public partial class ProjectLanguageModel:ObservableObject
 {
-    /// <summary>
-    /// 语言代码
-    /// </summary>
-    [JsonPropertyName("code")]
-    public string Code { get; set;  }
+    [JsonPropertyName("keys")]
+    [ObservableProperty]
+    public partial string Keys { get; set; }
 
-    /// <summary>
-    /// 语言名称（开发者自定义）
-    /// </summary>
-    [JsonPropertyName("name")]
-    public string Name { get; set;  }
+    [JsonPropertyName("zh-Hans")]
+    [ObservableProperty]
+    public partial string ZH_Hans { get; set; }
 
-    [JsonPropertyName("resources")]
-    public ObservableCollection<LanguageItem> Resources { get; set;  }
+    [JsonPropertyName("zh-Hant")]
+    [ObservableProperty]
+    public partial string ZH_Hant { get; set; }
+
+    [JsonPropertyName("en-us")]
+    [ObservableProperty]
+    public partial string EN_Us { get; set;  }
+
+    [JsonPropertyName("ja-Jp")]
+    [ObservableProperty]
+    public partial string Ja_Jp { get; set;  }
+}
+
+[JsonSerializable(typeof(ProjectLanguageModel))]
+[JsonSerializable(typeof(List<ProjectLanguageModel>))]
+[JsonSerializable(typeof(ObservableCollection<ProjectLanguageModel>))]
+[JsonSerializable(typeof(List<LanguageItem>))]
+[JsonSerializable(typeof(LanguageItem))]
+public partial class ProjectLanguageModelContext:JsonSerializerContext
+{
+
 }

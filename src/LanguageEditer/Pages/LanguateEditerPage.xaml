@@ -1,14 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="LanguageEditer.Pages.LanguateEditerPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:LanguageEditer.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:LanguageEditer.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:table="using:Syncfusion.UI.Xaml.DataGrid"
     mc:Ignorable="d">
-
-    <Grid>
-
+    <i:Interaction.Behaviors>
+        <i:EventTriggerBehavior EventName="Loaded">
+            <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </i:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Button Command="{x:Bind ViewModel.OpenDocumentCommand}" Content="Open File" />
+            <Button Command="{x:Bind ViewModel.SaveDocumentCommand}" Content="Save File" />
+            <Button Command="{x:Bind ViewModel.GeneratedLanguageCommand}" Content="Generated" />
+        </StackPanel>
+        <table:SfDataGrid
+            x:Name="dataGrid"
+            Grid.Row="1"
+            AddNewRowPosition="Bottom"
+            AddNewRowText="Create new row"
+            AllowEditing="True"
+            AllowFiltering="True"
+            AutoGenerateColumns="False"
+            ColumnWidthMode="Star"
+            EnableDataVirtualization="True"
+            IsReadOnly="False"
+            ItemsSource="{x:Bind ViewModel.ProjectLanguages, Mode=OneWay}">
+            <table:SfDataGrid.Columns>
+                <table:GridTextColumn
+                    AllowEditing="True"
+                    HeaderText="Key"
+                    IsReadOnly="False"
+                    MappingName="Keys" />
+                <table:GridTextColumn
+                    AllowEditing="True"
+                    HeaderText="ZH_Hans"
+                    IsReadOnly="False"
+                    MappingName="ZH_Hans" />
+                <table:GridTextColumn
+                    AllowEditing="True"
+                    HeaderText="ZH_Hant"
+                    IsReadOnly="False"
+                    MappingName="ZH_Hant" />
+                <table:GridTextColumn
+                    AllowEditing="True"
+                    HeaderText="EN_Us"
+                    IsReadOnly="False"
+                    MappingName="EN_Us" />
+                <table:GridTextColumn
+                    AllowEditing="True"
+                    HeaderText="Ja_Jp"
+                    IsReadOnly="False"
+                    MappingName="Ja_Jp" />
+            </table:SfDataGrid.Columns>
+        </table:SfDataGrid>
     </Grid>
 </Page>

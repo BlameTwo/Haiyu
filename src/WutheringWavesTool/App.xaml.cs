@@ -105,8 +105,8 @@ public partial class App : ClientApplication
             Process.GetCurrentProcess().Kill();
             return;
         }
-
+        await Instance.Service.GetRequiredService<ILanguageService>().InitAsync();
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
-        Instance.Service.GetService<IScreenCaptureService>().Register();
+        Instance.Service.GetService<IScreenCaptureService>()!.Register();
     }
 }

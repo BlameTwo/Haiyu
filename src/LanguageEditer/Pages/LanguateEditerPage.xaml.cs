@@ -1,31 +1,17 @@
-using Microsoft.UI.Xaml;
+﻿using LanguageEditer.ViewModels;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+namespace LanguageEditer.Pages;
 
-namespace LanguageEditer.Pages
+public sealed partial class LanguateEditerPage : Page
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class LanguateEditerPage : Page
+    public LanguateEditerPage()
     {
-        public LanguateEditerPage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        this.ViewModel = new LanguageEditerViewModel();
+        this.ViewModel.SetDataGrid(this.dataGrid);
     }
+
+    internal LanguageEditerViewModel ViewModel { get; }
+
 }

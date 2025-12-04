@@ -4,6 +4,7 @@ namespace LanguageEditer.Model;
 
 public  class LanguageItem
 {
+    
     [JsonPropertyName("key")]
     public string Key { get; set;  }
 

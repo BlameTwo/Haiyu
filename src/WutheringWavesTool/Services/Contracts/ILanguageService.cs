@@ -7,4 +7,6 @@ public interface ILanguageService
     public bool SetLanguage(string language);
 
     public string GetLanguage();
+
+    public Task InitAsync();
 }
