@@ -1,4 +1,5 @@
 ﻿using Haiyu.Contracts;
+using Haiyu.Helpers;
 using Haiyu.Services.DialogServices;
 using Haiyu.Services.Navigations.NavigationViewServices;
 using Haiyu.ViewModel.GameViewModels;
@@ -105,7 +106,6 @@ public static class Instance
             .AddSingleton<IGameWikiClient, GameWikiClient>()
             .AddTransient<IViewFactorys, ViewFactorys>()
             .AddTransient<ILauncherTaskService, LauncherTaskService>()
-            .AddTransient<ILanguageService,LanguageService>()
             .AddSingleton<CloudConfigManager>(
                 (s) =>
                 {

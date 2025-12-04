@@ -13,8 +13,6 @@ public sealed partial class PopupMessage : UserControl
         _popup = new Popup();
         _popup.Child = this;
         this.Loaded += PopupNoticeLoaded;
-        this.grid.RequestedTheme =
-             ElementTheme.Dark;
     }
 
     public PopupMessage(string popupContentString, Panel uIElement, Symbol symbol)

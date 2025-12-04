@@ -9,7 +9,6 @@
     xmlns:ui="using:Haiyu.Controls"
     Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
     CornerRadius="5"
-    RequestedTheme="Dark"
     mc:Ignorable="d">
 
     <Grid Width="470" Height="270">

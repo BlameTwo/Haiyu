@@ -13,7 +13,6 @@
     xmlns:wrapper="using:Haiyu.Models.Wrapper.WindowRoils"
     xmlns:wuc="using:CommunityToolkit.WinUI.Controls"
     xmlns:wui="using:CommunityToolkit.WinUI"
-    RequestedTheme="Dark"
     mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="RoleItemTempalte" x:DataType="wrapper:NavigationRoilsDetilyItem">

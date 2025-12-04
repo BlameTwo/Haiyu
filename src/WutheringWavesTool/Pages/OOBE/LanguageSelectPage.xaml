@@ -19,7 +19,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock VerticalAlignment="Center" Text="{x:Bind helper:LanguageHelper.GetString('LanguageSelect')}" />
+        <TextBlock VerticalAlignment="Center" Text="{x:Bind helper:LanguageService.GetString('SelectLanguage')}" />
         <ComboBox
             Grid.Column="1"
             Margin="10,0,0,0"

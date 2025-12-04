@@ -1,4 +1,5 @@
-﻿using Microsoft.Windows.AppLifecycle;
+﻿using Haiyu.Helpers;
+using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.Globalization;
 using Windows.ApplicationModel.Core;
 
@@ -6,9 +7,8 @@ namespace Haiyu.ViewModel.OOBEViewModels;
 
 public sealed partial class LanguageSelectViewModel : ViewModelBase
 {
-    public LanguageSelectViewModel(ILanguageService languageService)
+    public LanguageSelectViewModel()
     {
-        LanguageService = languageService;
         this.Languages = LanguageService.Languages.ToList();
         for (int i = 0; i < Languages.Count; i++)
         {
@@ -37,7 +37,6 @@ public sealed partial class LanguageSelectViewModel : ViewModelBase
         }
     }
 
-    public ILanguageService LanguageService { get; }
 
     [RelayCommand]
     void Loaded()

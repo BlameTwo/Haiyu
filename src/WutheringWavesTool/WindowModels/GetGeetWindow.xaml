@@ -10,7 +10,7 @@
     xmlns:ui="using:Haiyu.Controls"
     Title="GetgeetWindow"
     mc:Ignorable="d">
-    <Grid RequestedTheme="Dark">
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
@@ -27,7 +27,6 @@
         <WebView2
             x:Name="webView2"
             Grid.Row="1"
-            RequestedTheme="Dark"
             DefaultBackgroundColor="Transparent">
             <WebView2.Resources>
                 <SolidColorBrush x:Key="BrushForThemeBackgroundColor" Color="Transparent" />

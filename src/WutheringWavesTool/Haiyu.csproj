@@ -34,12 +34,16 @@
 	<ItemGroup>
 	  <Compile Remove="AppPackages\**" />
 	  <Compile Remove="BundleArtifacts\**" />
+	  <Compile Remove="Strings\**" />
 	  <EmbeddedResource Remove="AppPackages\**" />
 	  <EmbeddedResource Remove="BundleArtifacts\**" />
+	  <EmbeddedResource Remove="Strings\**" />
 	  <None Remove="AppPackages\**" />
 	  <None Remove="BundleArtifacts\**" />
+	  <None Remove="Strings\**" />
 	  <Page Remove="AppPackages\**" />
 	  <Page Remove="BundleArtifacts\**" />
+	  <Page Remove="Strings\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Remove="Assets\Cursor\CursorResource.res" />
@@ -198,18 +202,6 @@
 		<Content Update="Assets\kLogo.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Update="Assets\Languages\en-US.json">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Update="Assets\Languages\ja-JP.json">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Update="Assets\Languages\zh-Hans.json">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Update="Assets\Languages\zh-Hant.json">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
 		<Content Update="Assets\logo.ico">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -319,7 +311,6 @@
 	  <Folder Include="Common\Plugins\" />
 	  <Folder Include="Languages\" />
 	  <Folder Include="Pages\ColorGame\" />
-	  <Folder Include="Strings\" />
 	</ItemGroup>
 	<PropertyGroup Label="Globals">
 	  <WV2WinRTExplicitIncludesOnly>False</WV2WinRTExplicitIncludesOnly>
@@ -342,5 +333,8 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PRIResource Remove="BundleArtifacts\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PRIResource Remove="Strings\**" />
 	</ItemGroup>
 </Project>

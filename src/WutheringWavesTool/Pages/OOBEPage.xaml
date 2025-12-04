@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="Haiyu.Pages.OOBEPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helper="using:Haiyu.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Haiyu.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:Haiyu.Controls"
-    RequestedTheme="Dark"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
@@ -41,11 +41,11 @@
         <NavigationViewItemSeparator Grid.Row="2" />
         <Grid Grid.Row="3" Padding="20">
             <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                <Button Content="退出" />
+                <Button Content="{x:Bind helper:LanguageService.GetString('OOBE_Exit')}" />
             </StackPanel>
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <Button Content="回退" />
-                <Button Margin="5,0,0,0" Content="继续" />
+                <Button Content="{x:Bind helper:LanguageService.GetString('OOBE_Back')}" />
+                <Button Margin="5,0,0,0" Content="{x:Bind helper:LanguageService.GetString('OOBE_Next')}" />
             </StackPanel>
         </Grid>
     </Grid>

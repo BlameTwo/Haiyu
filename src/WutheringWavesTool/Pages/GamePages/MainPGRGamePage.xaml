@@ -411,7 +411,7 @@
             </Grid.ColumnDefinitions>
             <Grid
                 Padding="5"
-                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="2"
                 CornerRadius="5">

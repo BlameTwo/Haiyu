@@ -101,8 +101,6 @@ public class AppContext<T> : IAppContext<T>
                 var page = Instance.Service!.GetRequiredService<ShellPage>();
                 page.titlebar.Window = win;
                 win.Content = page;
-                win.Activate();
-                
             }
             catch
             {
@@ -113,6 +111,7 @@ public class AppContext<T> : IAppContext<T>
             win.IsResizable = false;
             win.IsMaximizable = false;
             this.App.MainWindow = win;
+            this.App.MainWindow.Activate();
             (win.AppWindow.Presenter as OverlappedPresenter)!.SetBorderAndTitleBar(true, false);
             this.App.MainWindow.AppWindow.Closing += AppWindow_Closing;
         }

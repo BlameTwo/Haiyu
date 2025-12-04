@@ -8,7 +8,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:property="using:Haiyu.Controls.Propertys"
     CornerRadius="5"
-    RequestedTheme="Dark"
     mc:Ignorable="d">
 
     <Grid>

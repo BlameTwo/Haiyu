@@ -9,7 +9,6 @@
     xmlns:um="using:Waves.Api.Models.Launcher"
     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
     CornerRadius="5"
-    RequestedTheme="Dark"
     mc:Ignorable="d">
 
     <Grid Height="300">

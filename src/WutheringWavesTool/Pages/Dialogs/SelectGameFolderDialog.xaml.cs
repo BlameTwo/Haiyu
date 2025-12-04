@@ -9,8 +9,6 @@ namespace Haiyu.Pages.Dialogs
         public SelectGameFolderDialog()
         {
             this.InitializeComponent();
-            this.RequestedTheme =
-                 ElementTheme.Dark;
             this.ViewModel = Instance.Service.GetRequiredService<SelectGameFolderViewModel>();
         }
 

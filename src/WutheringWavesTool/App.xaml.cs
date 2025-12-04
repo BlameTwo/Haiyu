@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using Haiyu.Helpers;
 using Microsoft.Windows.ApplicationModel.Resources;
 using Microsoft.Windows.AppLifecycle;
 using Waves.Core.Services;
@@ -82,15 +83,14 @@ public partial class App : ClientApplication
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
         Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
-        var language = Instance.Service.GetRequiredService<ILanguageService>();
-        if (string.IsNullOrWhiteSpace(language.GetLanguage()))
+        if (string.IsNullOrWhiteSpace(LanguageService.GetLanguage()))
         {
-            language.SetLanguage("zh-Hans");
+            LanguageService.SetLanguage("zh-Hans");
             ApplicationLanguages.PrimaryLanguageOverride = "zh-Hans";
         }
         else
         {
-            ApplicationLanguages.PrimaryLanguageOverride = language.GetLanguage();
+            ApplicationLanguages.PrimaryLanguageOverride = LanguageService.GetLanguage();
         }
         var mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(
             "Haiyu_Main"
@@ -105,7 +105,7 @@ public partial class App : ClientApplication
             Process.GetCurrentProcess().Kill();
             return;
         }
-        await Instance.Service.GetRequiredService<ILanguageService>().InitAsync();
+        await LanguageService.InitAsync();
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
         Instance.Service.GetService<IScreenCaptureService>()!.Register();
     }
