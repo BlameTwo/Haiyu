@@ -14,6 +14,7 @@ public sealed partial class SettingPage : Page, IPage
     {
         GC.Collect();
         this.ViewModel.Dispose();
+        this.Bindings.StopTracking();
         base.OnNavigatedFrom(e);
     }
 

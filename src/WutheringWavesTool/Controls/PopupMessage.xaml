@@ -65,6 +65,8 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
             Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource SolidBackgroundFillColorBaseAltBrush}"
+            BorderThickness="1"
             CornerRadius="5"
             Opacity="0">
             <Border.RenderTransform>

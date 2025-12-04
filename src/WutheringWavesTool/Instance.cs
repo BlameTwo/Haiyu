@@ -99,6 +99,7 @@ public static class Instance
             .AddSingleton<IScreenCaptureService, ScreenCaptureService>()
             .AddSingleton<IGameWikiClient, GameWikiClient>()
             .AddTransient<IViewFactorys, ViewFactorys>()
+            .AddTransient<IThemeService, ThemeService>()
             .AddTransient<ILauncherTaskService,LauncherTaskService>()
             .AddSingleton<CloudConfigManager>(
                 (s) =>

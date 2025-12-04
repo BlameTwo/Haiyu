@@ -113,12 +113,21 @@
                 FontFamily="{StaticResource DefaultFont}"
                 FontSize="15"
                 Text="通用" />
-
             <ui:SettingsCard
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
-                Header="游戏背景设置">
+                Header="启动器主题">
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE790;" />
+                </ui:SettingsCard.HeaderIcon>
+                <ComboBox ItemsSource="{x:Bind ViewModel.Themes, Mode=OneWay}" SelectedItem="{x:Bind ViewModel.SelectTheme, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </ui:SettingsCard>
+            <ui:SettingsCard
+                Margin="0,5,0,0"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                Header="游戏背景类型">
                 <ui:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8B9;" />
                 </ui:SettingsCard.HeaderIcon>

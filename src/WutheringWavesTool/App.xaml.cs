@@ -42,7 +42,6 @@ public partial class App : ClientApplication
         #region PE DPI Resource
         SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         #endregion
-
         GameContextFactory.GameBassPath = BassFolder;
         Instance.InitService();
         this.InitializeComponent();
@@ -89,7 +88,29 @@ public partial class App : ClientApplication
 
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
         Instance.Service.GetService<IScreenCaptureService>().Register();
+        SetTheme();
         Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
 
+    }
+
+    private void SetTheme()
+    {
+        var theme = Instance.Service.GetRequiredService<IThemeService>();
+        switch (AppSettings.ElementTheme)
+        {
+            case "Light":
+                theme.SetTheme(ElementTheme.Light);
+                break;
+            case "Dark":
+                theme.SetTheme(ElementTheme.Dark);
+                break;
+            case "Default":
+                theme.SetTheme(ElementTheme.Default);
+                break;
+            case null:
+            default:
+                theme.SetTheme(ElementTheme.Default);
+                break;
+        }
     }
 }

@@ -113,6 +113,12 @@ public class AppSettings
         get => Read();
         set => Write(value);
     }
+
+    public static string? ElementTheme
+    {
+        get => Read();
+        set => Write(value);
+    }
     #region 鸣潮
     public static bool? ShowWavesMainGame
     {

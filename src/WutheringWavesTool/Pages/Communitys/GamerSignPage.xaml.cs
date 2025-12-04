@@ -8,6 +8,8 @@ public sealed partial class GamerSignPage : Page, IWindowPage
     {
         this.InitializeComponent();
         this.ViewModel = Instance.Service!.GetRequiredService<GamerSignViewModel>();
+
+        this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     public GamerSignViewModel ViewModel { get; }

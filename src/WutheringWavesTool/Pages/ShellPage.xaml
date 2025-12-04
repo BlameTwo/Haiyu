@@ -344,7 +344,7 @@
                         CornerRadius="5"
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
                         ToolTipService.ToolTip="溢彩画（测试）"
-                        Visibility="Visible">
+                        Visibility="Collapsed">
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"
                             FontSize="14"

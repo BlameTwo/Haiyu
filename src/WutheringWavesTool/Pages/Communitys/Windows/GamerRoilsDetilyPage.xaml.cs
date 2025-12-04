@@ -11,6 +11,8 @@ public sealed partial class GamerRoilsDetilyPage : Page, IWindowPage
         ViewModel = Instance.GetService<GamerRoilsDetilyViewModel>();
         this.title_bth.Click += Button_Click;
         this.Loaded += this.Page_Loaded;
+
+        this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     public GamerRoilsDetilyViewModel ViewModel { get; }

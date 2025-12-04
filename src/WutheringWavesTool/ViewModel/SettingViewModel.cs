@@ -14,7 +14,8 @@ public sealed partial class SettingViewModel : ViewModelBase
         IViewFactorys viewFactorys,
         ITipShow tipShow,
         IScreenCaptureService screenCaptureService,
-        IPickersService pickersService
+        IPickersService pickersService,
+        IThemeService themeService
     )
     {
         DialogManager = dialogManager;
@@ -24,6 +25,7 @@ public sealed partial class SettingViewModel : ViewModelBase
         TipShow = tipShow;
         ScreenCaptureService = screenCaptureService;
         PickersService = pickersService;
+        ThemeService = themeService;
         RegisterMessanger();
     }
 
@@ -46,6 +48,7 @@ public sealed partial class SettingViewModel : ViewModelBase
     public ITipShow TipShow { get; }
     public IScreenCaptureService ScreenCaptureService { get; }
     public IPickersService PickersService { get; }
+    public IThemeService ThemeService { get; }
     [ObservableProperty]
     public partial ObservableCollection<GameRoilDataItem> GamerData { get; set; }
 
@@ -101,6 +104,20 @@ public sealed partial class SettingViewModel : ViewModelBase
         else
         {
             this.AutoCommunitySign = false;
+        }
+        switch (AppSettings.ElementTheme)
+        {
+            case "Light":
+                this.SelectTheme = Themes[1];
+                break;
+            case "Dark":
+                this.SelectTheme = Themes[2];
+                break;
+            case "Default":
+                this.SelectTheme = Themes[0];
+                break;
+            default:
+                break;
         }
     }
 

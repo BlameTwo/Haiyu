@@ -9,29 +9,37 @@ public partial class RecordColorItemConverter : IValueConverter
             if (intValue == 4)
             {
                 return new SolidColorBrush(
-                    new Color()
-                    {
-                        R = 147,
-                        G = 0,
-                        B = 255,
-                        A = 255,
-                    }
-                );
+                   new Color()
+                   {
+                       R = 151,
+                       G = 64,
+                       B = 251,
+                       A = 255,
+                   }
+               );
             }
             else if (intValue == 5)
             {
                 return new SolidColorBrush(
                     new Color()
                     {
-                        R = 249,
-                        G = 255,
-                        B = 60,
+                        R = 255,
+                        G = 118,
+                        B = 49,
                         A = 255,
                     }
                 );
             }
         }
-        return (SolidColorBrush)App.Current.Resources["TextFillColorPrimaryBrush"];
+        return new SolidColorBrush(
+                    new Color()
+                    {
+                        R = 99,
+                        G = 126,
+                        B = 127,
+                        A = 255,
+                    }
+                );
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)
