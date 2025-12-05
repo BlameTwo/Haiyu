@@ -46,6 +46,7 @@ jobs:
         with:
           filetype: local
           filename: downloads/Haiyu.zip
+          version_name: ${{ inputs.tag || steps.latest-release.outputs.release }}
 
           mirrorchyan_rid: Haiyu
 
