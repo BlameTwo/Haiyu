@@ -125,6 +125,11 @@ public class AppSettings
         get => Read();
         set => Write(value);
     }
+    public static string ElementTheme
+    {
+        get => Read();
+        set => Write(value);
+    }
 
     #region 鸣潮
     public static bool? ShowWavesMainGame
@@ -241,6 +246,7 @@ public class AppSettings
         }
         set => Write(value.ToString());
     }
+
     #endregion
 
     internal static string? Read([CallerMemberName] string key = null)

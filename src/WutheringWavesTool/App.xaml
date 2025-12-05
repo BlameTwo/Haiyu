@@ -30,7 +30,7 @@
                 <ResourceDictionary Source="/Controls/Styles/AnimatedTextBlock.xaml" />
                 <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.Controls.Segmented/SegmentedItem/SegmentedItem.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <x:String x:Key="AppVersion">1.2.15</x:String>
+            <x:String x:Key="AppVersion">1.2.16</x:String>
             <converter:BoolReversalConvert x:Key="BoolReversalConvert" />
             <converter:CardPoolTypeConverter x:Key="CardPoolTypeConverter" />
             <converter:RecordStarConverter x:Key="RecordStarConverter" />

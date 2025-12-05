@@ -142,22 +142,7 @@
                     </ComboBox>
                 </ui:SettingsCard.Content>
             </ui:SettingsCard>
-            <ui:SettingsCard Header="主题">
-                <StackPanel Orientation="Horizontal">
-                    <RadioButton
-                        Checked="RadioButton_Checked"
-                        Content="浅色"
-                        GroupName="Theme" />
-                    <RadioButton
-                        Checked="RadioButton_Checked_1"
-                        Content="深色"
-                        GroupName="Theme" />
-                    <RadioButton
-                        Checked="RadioButton_Checked_2"
-                        Content="默认"
-                        GroupName="Theme" />
-                </StackPanel>
-            </ui:SettingsCard>
+
             <ui:SettingsCard
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"
