@@ -12,7 +12,6 @@ on:
 jobs:
   mirrorchyan:
     runs-on: macos-latest
-    if: false
     # if: ${{ github.repository_owner == 'BlameTwo' }}
     env:
       owner: BlameTwo
