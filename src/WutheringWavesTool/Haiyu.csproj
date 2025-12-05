@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
+		<TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>Haiyu</RootNamespace>
 		<Platforms>x64</Platforms>
@@ -13,6 +13,7 @@
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<PublishAot>true</PublishAot>
 		<UseNativeAot>true</UseNativeAot>
+		
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
 		<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
@@ -134,6 +135,15 @@
 		<PackageReference Include="WinUIEx" Version="2.9.0" />
 		<PackageReference Include="ZLinq" Version="1.5.4" />
 		<PackageReference Include="ZXing.Net" Version="0.16.11" />
+		<PackageReference Include="Microsoft.DotNet.ILCompiler" Version="10.0.0-rtm.25507.103" />
+		<KnownRuntimePack Update="@(KnownRuntimePack)">
+			<LatestRuntimeFrameworkVersion Condition="'%(KnownRuntimePack.Identity)' == 'Microsoft.NETCore.App'
+      and '%(KnownRuntimePack.RuntimePackLabels)' == 'NativeAOT'
+      and '%(KnownRuntimePack.TargetFramework)' == 'net10.0'">10.0.0-rtm.25507.103</LatestRuntimeFrameworkVersion>
+		</KnownRuntimePack>
+		<KnownILCompilerPack Update="@(KnownILCompilerPack)">
+			<ILCompilerPackVersion Condition="'%(KnownILCompilerPack.TargetFramework)' == 'net10.0'">10.0.0-rtm.25507.103</ILCompilerPackVersion>
+		</KnownILCompilerPack>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Astronomical\Astronomical.csproj" />
