@@ -1,0 +1,56 @@
+name: mirrorchyan_release
+
+on:
+  workflow_dispatch:
+    inputs:
+        tag:
+            default: ''
+            required: false
+  release:
+    types: [released]
+
+jobs:
+  mirrorchyan:
+    runs-on: macos-latest
+    if: false
+    # if: ${{ github.repository_owner == 'BlameTwo' }}
+    env:
+      owner: BlameTwo
+      repo: Haiyu
+      github_token: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - id: latest-release
+        if: ${{ inputs.tag == '' }}
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+            owner: ${{ env.owner}}
+            repo: ${{ env.repo}}
+            token: ${{ env.github_token}}
+            excludes: "draft"
+
+      - id: download-release
+        uses: robinraju/release-downloader@v1
+        with:
+            repository: ${{ env.owner}}/${{ env.repo}}
+            fileName: "Haiyu*"
+            tag: ${{ inputs.tag || steps.latest-release.outputs.release }}
+            out-file-path: "downloads"
+            extract: false
+            token: ${{ env.github_token}}
+
+      - name: Zip files
+        run: |
+          cd downloads
+          zip Haiyu.zip Haiyu*
+
+      - uses: MirrorChyan/uploading-action@v1
+        with:
+          filetype: local
+          filename: downloads/Haiyu.zip
+
+          mirrorchyan_rid: Haiyu
+
+          owner: ${{ env.owner}}
+          repo: ${{ env.repo}}
+          github_token: ${{ env.github_token}}
+          upload_token: ${{ secrets.MirrorChyanUploadToken }}
