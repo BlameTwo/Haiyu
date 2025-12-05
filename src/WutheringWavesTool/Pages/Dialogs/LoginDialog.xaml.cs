@@ -7,6 +7,7 @@ public sealed partial class LoginDialog : ContentDialog, IDialog
         this.InitializeComponent();
         this.ViewModel = Instance.Service.GetRequiredService<LoginGameViewModel>();
 
+        this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     public LoginGameViewModel ViewModel { get; }

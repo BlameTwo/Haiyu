@@ -125,7 +125,6 @@ public class AppContext<T> : IAppContext<T>
 
     }
 
-
     private void AppWindow_Closing(
         Microsoft.UI.Windowing.AppWindow sender,
         Microsoft.UI.Windowing.AppWindowClosingEventArgs args

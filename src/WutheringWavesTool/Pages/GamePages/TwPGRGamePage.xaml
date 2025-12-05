@@ -15,7 +15,6 @@
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:n="using:System.Numerics"
     xmlns:property="using:Haiyu.Controls.Propertys"
-    xmlns:sound="using:Haiyu.Controls.Behaviors"
     xmlns:ui="using:CommunityToolkit.WinUI"
     Background="Transparent"
     mc:Ignorable="d">
@@ -114,9 +113,6 @@
                             IsEnabled="{x:Bind ViewModel.PauseStartEnable, Mode=OneWay}"
                             Style="{ThemeResource TransparentButtonStyle}"
                             ToolTipService.ToolTip="暂停当前操作">
-                            <i:Interaction.Behaviors>
-                                <sound:ControlSoundBehavior />
-                            </i:Interaction.Behaviors>
                             <FontIcon
                                 FontFamily="Segoe Fluent Icons"
                                 FontSize="15"
@@ -132,9 +128,6 @@
                             IsEnabled="{x:Bind ViewModel.PauseStartEnable, Mode=OneWay}"
                             Style="{ThemeResource TransparentButtonStyle}"
                             ToolTipService.ToolTip="取消当前操作">
-                            <i:Interaction.Behaviors>
-                                <sound:ControlSoundBehavior />
-                            </i:Interaction.Behaviors>
                             <FontIcon
                                 FontFamily="Segoe Fluent Icons"
                                 FontSize="15"
@@ -149,9 +142,6 @@
                             VerticalAlignment="Center"
                             CornerRadius="5"
                             Style="{ThemeResource TransparentButtonStyle}">
-                            <i:Interaction.Behaviors>
-                                <sound:ControlSoundBehavior />
-                            </i:Interaction.Behaviors>
                             <FontIcon
                                 FontFamily="Segoe UI Emoji"
                                 FontSize="15"
@@ -212,9 +202,6 @@
                             VerticalAlignment="Center"
                             CornerRadius="5"
                             Style="{ThemeResource TransparentButtonStyle}">
-                            <i:Interaction.Behaviors>
-                                <sound:ControlSoundBehavior />
-                            </i:Interaction.Behaviors>
                             <FontIcon
                                 FontFamily="Segoe Fluent Icons"
                                 FontSize="16"
@@ -263,9 +250,6 @@
                             Style="{ThemeResource TransparentButtonStyle}"
                             ToolTipService.ToolTip="选择下载路径"
                             Visibility="{x:Bind ViewModel.GameInstallBthVisibility, Mode=OneWay}">
-                            <i:Interaction.Behaviors>
-                                <sound:ControlSoundBehavior />
-                            </i:Interaction.Behaviors>
                             <FontIcon
                                 FontFamily="Segoe Fluent Icons"
                                 FontSize="15"
@@ -287,9 +271,6 @@
                             Style="{ThemeResource TransparentButtonStyle}"
                             ToolTipService.ToolTip="定位游戏位置"
                             Visibility="{x:Bind ViewModel.GameInputFolderBthVisibility, Mode=OneWay}">
-                            <i:Interaction.Behaviors>
-                                <sound:ControlSoundBehavior />
-                            </i:Interaction.Behaviors>
                             <FontIcon
                                 FontFamily="Segoe Fluent Icons"
                                 FontSize="15"
@@ -354,6 +335,7 @@
 
                         </Button>
                         <Button
+                            Width="60"
                             Margin="3,0,0,0"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
@@ -519,9 +501,6 @@
                                         FontSize="12"
                                         NavigateUri="{x:Bind JumpUrl}">
                                         <TextBlock Text="{x:Bind TContent}" TextTrimming="CharacterEllipsis" />
-                                        <i:Interaction.Behaviors>
-                                            <sound:ButtonSoundBehavior />
-                                        </i:Interaction.Behaviors>
                                     </HyperlinkButton>
                                 </DataTemplate>
                             </ItemsRepeater.ItemTemplate>
@@ -540,7 +519,6 @@
                 CornerRadius="0 10 10 0"
                 Style="{ThemeResource DefaultAcrylicButtonStyle}">
                 <i:Interaction.Behaviors>
-                    <sound:ControlSoundBehavior />
                     <i:EventTriggerBehavior EventName="Loaded">
                         <i:InvokeCommandAction Command="{x:Bind ViewModel.CardLoadedCommand}" />
                     </i:EventTriggerBehavior>

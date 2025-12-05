@@ -1,4 +1,4 @@
-namespace Haiyu.Pages.Dialogs;
+﻿namespace Haiyu.Pages.Dialogs;
 
 public sealed partial class WebGameLogin : ContentDialog, IDialog
 {
@@ -6,6 +6,7 @@ public sealed partial class WebGameLogin : ContentDialog, IDialog
     {
         InitializeComponent();
         this.ViewModel = Instance.GetService<WebGameViewModel>();
+        this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     public WebGameViewModel ViewModel { get; }

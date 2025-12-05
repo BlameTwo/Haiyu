@@ -236,21 +236,21 @@
                                     <TextBlock
                                         FontFamily="{ThemeResource DefaultFont}"
                                         FontSize="15"
-                                        Foreground="{x:Bind QualityLevel, Converter={StaticResource RecordColorItemConverter}}"
+                                        Foreground="{x:Bind QualityLevel, Mode=OneWay, Converter={StaticResource RecordColorItemConverter}}"
                                         Text="{x:Bind Name}" />
                                     <TextBlock
                                         Grid.Column="1"
                                         HorizontalAlignment="Center"
                                         FontFamily="{ThemeResource DefaultFont}"
                                         FontSize="15"
-                                        Foreground="{x:Bind QualityLevel, Converter={StaticResource RecordColorItemConverter}}"
+                                        Foreground="{x:Bind QualityLevel, Mode=OneWay, Converter={StaticResource RecordColorItemConverter}}"
                                         Text="{x:Bind ResourceType}" />
                                     <TextBlock
                                         Grid.Column="2"
                                         HorizontalAlignment="Right"
                                         FontFamily="{ThemeResource DefaultFont}"
                                         FontSize="15"
-                                        Foreground="{x:Bind QualityLevel, Converter={StaticResource RecordColorItemConverter}}"
+                                        Foreground="{x:Bind QualityLevel, Mode=OneWay, Converter={StaticResource RecordColorItemConverter}}"
                                         Text="{x:Bind Time}" />
                                 </Grid>
                             </DataTemplate>

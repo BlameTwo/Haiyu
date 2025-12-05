@@ -4,8 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
     xmlns:controls="using:Microsoft.UI.Xaml.Controls"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:sound="using:Haiyu.Controls.Behaviors">
+    xmlns:i="using:Microsoft.Xaml.Interactivity">
     <ResourceDictionary.MergedDictionaries>
         <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
     </ResourceDictionary.MergedDictionaries>
@@ -137,11 +136,7 @@
                             FontWeight="{TemplateBinding FontWeight}"
                             Foreground="{TemplateBinding Foreground}"
                             IsTabStop="False"
-                            Style="{ThemeResource TransparentButtonStyle}">
-                            <i:Interaction.Behaviors>
-                                <sound:ButtonSoundBehavior />
-                            </i:Interaction.Behaviors>
-                        </Button>
+                            Style="{ThemeResource TransparentButtonStyle}" />
                         <Button
                             x:Name="SecondaryButton"
                             Grid.Column="2"
@@ -157,9 +152,6 @@
                             Foreground="{ThemeResource SplitButtonForegroundSecondary}"
                             IsTabStop="False"
                             Style="{ThemeResource TransparentButtonStyle}">
-                            <i:Interaction.Behaviors>
-                                <sound:ButtonSoundBehavior />
-                            </i:Interaction.Behaviors>
                             <Button.Content>
                                 <controls:AnimatedIcon
                                     Width="12"

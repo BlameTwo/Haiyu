@@ -109,7 +109,9 @@
                                         <Grid
                                             Margin="0,8,0,0"
                                             Padding="10"
-                                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                            Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                                            BorderBrush="{ThemeResource SolidBackgroundFillColorBaseAltBrush}"
+                                            BorderThickness="1"
                                             CornerRadius="5">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="auto" />
