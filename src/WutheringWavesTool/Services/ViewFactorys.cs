@@ -31,7 +31,6 @@ public class ViewFactorys : IViewFactorys
             page.SetData(data);
         page.SetWindow(win);
         win.Content = page;
-        
         return win;
     }
 
@@ -41,10 +40,6 @@ public class ViewFactorys : IViewFactorys
         var page = Instance.Service!.GetRequiredService<DeviceInfoPage>();
         page.SetWindow(win);
         win.Content = page;
-        if (win.Content is FrameworkElement fs)
-        {
-            fs.RequestedTheme = ElementTheme.Dark;
-        }
         win.Manager.MaxHeight = 530;
         win.Manager.MaxWidth = 750;
         return win;

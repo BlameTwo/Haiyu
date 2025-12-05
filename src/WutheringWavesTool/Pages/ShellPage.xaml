@@ -20,7 +20,6 @@
     xmlns:wui="using:CommunityToolkit.WinUI"
     property:CursorProperty.CursorName="{x:Bind ViewModel.CursorName, Mode=OneWay}"
     property:CursorProperty.CursorType="Normal"
-    RequestedTheme="Dark"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">

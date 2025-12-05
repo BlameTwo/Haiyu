@@ -13,7 +13,6 @@ public sealed partial class PopupMessage : UserControl
         _popup = new Popup();
         _popup.Child = this;
         this.Loaded += PopupNoticeLoaded;
-        this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     public PopupMessage(string popupContentString, Panel uIElement, Symbol symbol)

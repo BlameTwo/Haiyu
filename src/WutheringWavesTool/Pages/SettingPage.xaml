@@ -81,7 +81,7 @@
                     Grid.ColumnSpan="2"
                     Canvas.ZIndex="-1"
                     CornerRadius="10"
-                    Opacity="0.2"
+                    Opacity="0.4"
                     Source="ms-appx:///Assets/Settingbackground.png"
                     Stretch="UniformToFill" />
                 <TextBlock
@@ -142,12 +142,29 @@
                     </ComboBox>
                 </ui:SettingsCard.Content>
             </ui:SettingsCard>
+            <ui:SettingsCard Header="主题">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton
+                        Checked="RadioButton_Checked"
+                        Content="浅色"
+                        GroupName="Theme" />
+                    <RadioButton
+                        Checked="RadioButton_Checked_1"
+                        Content="深色"
+                        GroupName="Theme" />
+                    <RadioButton
+                        Checked="RadioButton_Checked_2"
+                        Content="默认"
+                        GroupName="Theme" />
+                </StackPanel>
+            </ui:SettingsCard>
             <ui:SettingsCard
                 Margin="0,5,0,0"
                 HorizontalAlignment="Stretch"
                 HorizontalContentAlignment="Stretch"
                 Description="更改选项需要重启生效"
-                Header="元素鼠标指针">
+                Header="元素鼠标指针"
+                Visibility="Collapsed">
                 <ui:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x270C;" />
                 </ui:SettingsCard.HeaderIcon>

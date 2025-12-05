@@ -12,7 +12,6 @@
     Padding="0"
     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
     CornerRadius="5"
-    RequestedTheme="Dark"
     mc:Ignorable="d">
     <Grid Width="400" Height="400">
 

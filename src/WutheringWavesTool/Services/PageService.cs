@@ -1,6 +1,8 @@
 ﻿using Haiyu.Pages.GamePages;
 using Haiyu.Pages.GameWikis;
+using Haiyu.Pages.OOBE;
 using Haiyu.ViewModel.GameViewModels;
+using Haiyu.ViewModel.OOBEViewModels;
 using Haiyu.ViewModel.WikiViewModels;
 
 namespace Haiyu.Services;
@@ -40,6 +42,10 @@ public sealed partial class PageService : IPageService
         #region Wiki
         this.RegisterView<WavesWikiPage, WavesWikiViewModel>();
         this.RegisterView<PunishWikiPage, PunishWikiViewModel>();
+        #endregion
+
+        #region OOBE
+        this.RegisterView<LanguageSelectPage, LanguageSelectViewModel>();
         #endregion
     }
 

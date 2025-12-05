@@ -1,5 +1,9 @@
-﻿using Microsoft.Windows.AppLifecycle;
+﻿using System.Globalization;
+using Haiyu.Helpers;
+using Microsoft.Windows.ApplicationModel.Resources;
+using Microsoft.Windows.AppLifecycle;
 using Waves.Core.Services;
+using Windows.Globalization;
 
 namespace Haiyu;
 
@@ -17,6 +21,7 @@ public partial class App : ClientApplication
     public static string ColorGameFolder => BassFolder + "\\ColorGameFolder";
 
     public string ToolsPosionFilePath => App.BassFolder + "\\ToolsPostion.json";
+
     [DllImport("shcore.dll", SetLastError = true)]
     private static extern int SetProcessDpiAwareness(int dpiAwareness);
 
@@ -37,7 +42,9 @@ public partial class App : ClientApplication
         {
             AppSettings.WallpaperType = "Video";
         }
-        mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey("Haiyu_Main");
+        mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(
+            "Haiyu_Main"
+        );
         mainInstance.Activated += MainInstance_Activated;
         #region PE DPI Resource
         SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
@@ -49,9 +56,7 @@ public partial class App : ClientApplication
 
     private void MainInstance_Activated(object sender, AppActivationArguments e)
     {
-        if (e.Kind == Microsoft.Windows.AppLifecycle.ExtendedActivationKind.File)
-        {
-        }
+        if (e.Kind == Microsoft.Windows.AppLifecycle.ExtendedActivationKind.File) { }
     }
 
     private void App_UnhandledException(
@@ -76,21 +81,32 @@ public partial class App : ClientApplication
 
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
-        var mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey("Haiyu_Main");
+        Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
+        if (string.IsNullOrWhiteSpace(LanguageService.GetLanguage()))
+        {
+            LanguageService.SetLanguage("zh-Hans");
+            ApplicationLanguages.PrimaryLanguageOverride = "zh-Hans";
+        }
+        else
+        {
+            ApplicationLanguages.PrimaryLanguageOverride = LanguageService.GetLanguage();
+        }
+        var mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(
+            "Haiyu_Main"
+        );
         if (!mainInstance.IsCurrent)
         {
             mainInstance.Activated -= MainInstance_Activated;
-            var activatedEventArgs = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().GetActivatedEventArgs();
+            var activatedEventArgs = Microsoft
+                .Windows.AppLifecycle.AppInstance.GetCurrent()
+                .GetActivatedEventArgs();
             await mainInstance.RedirectActivationToAsync(activatedEventArgs);
             Process.GetCurrentProcess().Kill();
             return;
         }
-
+        await LanguageService.InitAsync();
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
-        Instance.Service.GetService<IScreenCaptureService>().Register();
-        SetTheme();
-        Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
-
+        Instance.Service.GetService<IScreenCaptureService>()!.Register();
     }
 
     private void SetTheme()

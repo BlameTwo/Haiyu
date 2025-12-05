@@ -19,4 +19,21 @@ public sealed partial class SettingPage : Page, IPage
     }
 
     public SettingViewModel ViewModel { get; }
+
+    private void RadioButton_Checked(object sender, RoutedEventArgs e)
+    {
+        (Instance.Service.GetRequiredService<IAppContext<App>>().App.MainWindow.Content as Page)?.RequestedTheme = ElementTheme.Light;
+    }
+
+    private void RadioButton_Checked_1(object sender, RoutedEventArgs e)
+    {
+
+        (Instance.Service.GetRequiredService<IAppContext<App>>().App.MainWindow.Content as Page)?.RequestedTheme = ElementTheme.Dark;
+    }
+
+    private void RadioButton_Checked_2(object sender, RoutedEventArgs e)
+    {
+
+        (Instance.Service.GetRequiredService<IAppContext<App>>().App.MainWindow.Content as Page)?.RequestedTheme = ElementTheme.Default;
+    }
 }

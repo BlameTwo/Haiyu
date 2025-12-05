@@ -10,7 +10,7 @@
     xmlns:ui="using:Haiyu.Controls"
     Title="GetgeetWindow"
     mc:Ignorable="d">
-    <Grid x:Name="grid">
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />

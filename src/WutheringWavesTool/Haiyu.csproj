@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net9.0-windows10.0.22621.0</TargetFramework>
+		<TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
 		<RootNamespace>Haiyu</RootNamespace>
 		<Platforms>x64</Platforms>
@@ -13,6 +13,7 @@
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<PublishAot>true</PublishAot>
 		<UseNativeAot>true</UseNativeAot>
+		
 		<InvariantGlobalization>true</InvariantGlobalization>
 		<CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
 		<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
@@ -25,9 +26,7 @@
 		<GenerateTestArtifacts>False</GenerateTestArtifacts>
 		<AppxBundle>Auto</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-		
 		<!--Win32 PE-->
-		<NoWin32Manifest>True</NoWin32Manifest>
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<DefaultLanguage>zh-Hans</DefaultLanguage>
 		<PackageCertificateThumbprint>9A058084F8990CF8FEAA9817CB4E3FC0A7C56294</PackageCertificateThumbprint>
@@ -36,12 +35,16 @@
 	<ItemGroup>
 	  <Compile Remove="AppPackages\**" />
 	  <Compile Remove="BundleArtifacts\**" />
+	  <Compile Remove="Strings\**" />
 	  <EmbeddedResource Remove="AppPackages\**" />
 	  <EmbeddedResource Remove="BundleArtifacts\**" />
+	  <EmbeddedResource Remove="Strings\**" />
 	  <None Remove="AppPackages\**" />
 	  <None Remove="BundleArtifacts\**" />
+	  <None Remove="Strings\**" />
 	  <Page Remove="AppPackages\**" />
 	  <Page Remove="BundleArtifacts\**" />
+	  <Page Remove="Strings\**" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Remove="Assets\Cursor\CursorResource.res" />
@@ -68,6 +71,8 @@
 		<None Remove="Pages\GameWikis\PunishWikiPage.xaml" />
 		<None Remove="Pages\GameWikis\WavesWikiPage.xaml" />
 		<None Remove="Pages\HomePage.xaml" />
+		<None Remove="Pages\OOBEPage.xaml" />
+		<None Remove="Pages\OOBE\LanguageSelectPage.xaml" />
 		<None Remove="Pages\Record\AnalysisRecordPage.xaml" />
 		<None Remove="Pages\StartColorFullGamePage.xaml" />
 	</ItemGroup>
@@ -130,10 +135,20 @@
 		<PackageReference Include="WinUIEx" Version="2.9.0" />
 		<PackageReference Include="ZLinq" Version="1.5.4" />
 		<PackageReference Include="ZXing.Net" Version="0.16.11" />
+		<PackageReference Include="Microsoft.DotNet.ILCompiler" Version="10.0.0-rtm.25507.103" />
+		<KnownRuntimePack Update="@(KnownRuntimePack)">
+			<LatestRuntimeFrameworkVersion Condition="'%(KnownRuntimePack.Identity)' == 'Microsoft.NETCore.App'
+      and '%(KnownRuntimePack.RuntimePackLabels)' == 'NativeAOT'
+      and '%(KnownRuntimePack.TargetFramework)' == 'net10.0'">10.0.0-rtm.25507.103</LatestRuntimeFrameworkVersion>
+		</KnownRuntimePack>
+		<KnownILCompilerPack Update="@(KnownILCompilerPack)">
+			<ILCompilerPackVersion Condition="'%(KnownILCompilerPack.TargetFramework)' == 'net10.0'">10.0.0-rtm.25507.103</ILCompilerPackVersion>
+		</KnownILCompilerPack>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Astronomical\Astronomical.csproj" />
 		<ProjectReference Include="..\Haiyu.Plugin\Haiyu.Plugin.csproj" />
+		<ProjectReference Include="..\LanguageEditer.Model\LanguageEditer.Model.csproj" />
 		<ProjectReference Include="..\Waves.Api\Waves.Api.csproj" />
 		<ProjectReference Include="..\Waves.Core\Waves.Core.csproj" />
 	</ItemGroup>
@@ -233,6 +248,12 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\OOBEPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="Pages\OOBE\LanguageSelectPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Controls\Styles\AnimatedTextBlock.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
@@ -290,8 +311,9 @@
 		</Page>
 	</ItemGroup>
 	<ItemGroup>
+	  <Folder Include="Assets\Languages\" />
 	  <Folder Include="Common\Plugins\" />
-	  <Folder Include="Controls\Behaviors\" />
+	  <Folder Include="Languages\" />
 	  <Folder Include="Pages\ColorGame\" />
 	</ItemGroup>
 	<PropertyGroup Label="Globals">
@@ -315,5 +337,8 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PRIResource Remove="BundleArtifacts\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PRIResource Remove="Strings\**" />
 	</ItemGroup>
 </Project>

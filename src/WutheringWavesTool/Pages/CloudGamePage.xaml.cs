@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.Windows.ApplicationModel.Resources;
+
 namespace Haiyu.Pages;
 
 public sealed partial class CloudGamePage : Page, IPage
@@ -7,6 +9,7 @@ public sealed partial class CloudGamePage : Page, IPage
     {
         InitializeComponent();
         this.ViewModel = Instance.GetService<CloudGameViewModel>();
+        
     }
 
     public Type PageType => typeof(CloudGamePage);

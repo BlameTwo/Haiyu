@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using Haiyu.Contracts;
 using Haiyu.Services.DialogServices;
 using LiveChartsCore.Defaults;
@@ -11,18 +12,21 @@ namespace Haiyu.ViewModel;
 
 public partial class CloudGameViewModel : ViewModelBase
 {
-
     public CloudGameViewModel(
         ICloudGameService cloudGameService,
         ITipShow tipShow,
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
-        IViewFactorys viewFactorys
+        IViewFactorys viewFactorys,
+        IPlayerCardService playerCardService,
+        IPickersService pickersService
     )
     {
         CloudGameService = cloudGameService;
         TipShow = tipShow;
         DialogManager = dialogManager;
         ViewFactorys = viewFactorys;
+        PlayerCardService = playerCardService;
+        PickersService = pickersService;
         RegisterMananger();
     }
 
@@ -42,6 +46,8 @@ public partial class CloudGameViewModel : ViewModelBase
     public ITipShow TipShow { get; }
     public IDialogManager DialogManager { get; }
     public IViewFactorys ViewFactorys { get; }
+    public IPlayerCardService PlayerCardService { get; }
+    public IPickersService PickersService { get; }
 
     private List<RecordCardItemWrapper> cacheItems;
 
@@ -52,7 +58,8 @@ public partial class CloudGameViewModel : ViewModelBase
     public partial ObservableCollection<RecordCardItemWrapper> ResourceItems { get; set; } =
         new ObservableCollection<RecordCardItemWrapper>();
 
-    public readonly Dictionary<int, IList<RecordCardItemWrapper>> aLLcacheItems = new Dictionary<int, IList<RecordCardItemWrapper>>();
+    public readonly Dictionary<int, IList<RecordCardItemWrapper>> aLLcacheItems =
+        new Dictionary<int, IList<RecordCardItemWrapper>>();
 
     [ObservableProperty]
     public partial ObservableCollection<LoginData> Users { get; set; }
@@ -141,7 +148,7 @@ public partial class CloudGameViewModel : ViewModelBase
         NoLoginVisibility = Visibility.Collapsed;
         this.LoadVisibility = Visibility.Collapsed;
         this.DataVisibility = Visibility.Visible;
-        if(await SavePlayCardData())
+        if (await SavePlayCardData())
         {
             this.SelectRecordType = RecordNavigationItems[0];
             if (!result.Item1)
@@ -164,7 +171,6 @@ public partial class CloudGameViewModel : ViewModelBase
         LoadPageItems();
     }
 
-    // 更新总页数
     private void UpdatePageCount()
     {
         if (cacheItems == null || cacheItems.Count == 0)
@@ -177,7 +183,6 @@ public partial class CloudGameViewModel : ViewModelBase
         TotalPages = (cacheItems.Count + pageSize - 1) / pageSize;
     }
 
-    // 从缓存中加载当前页的数据到 ResourceItems
     private void LoadPageItems()
     {
         ResourceItems.Clear();
@@ -238,8 +243,10 @@ public partial class CloudGameViewModel : ViewModelBase
             var AllWeapon = await RecordHelper.GetAllWeaponAsync();
             var StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
             var StartWeapons = RecordHelper.FormatFiveWeaponeRoleStar(FiveGroup);
-            var isLogin =  await TryInvokeAsync(async () => await CloudGameService.OpenUserAsync(this.SelectedUser));
-            if(isLogin.Result.Item1 == false)
+            var isLogin = await TryInvokeAsync(async () =>
+                await CloudGameService.OpenUserAsync(this.SelectedUser)
+            );
+            if (isLogin.Result.Item1 == false)
             {
                 TipShow.ShowMessage("登陆过期，请重新添加账号", Symbol.Clear);
                 this.LoadVisibility = Visibility.Collapsed;
@@ -249,16 +256,16 @@ public partial class CloudGameViewModel : ViewModelBase
             var url = await TryInvokeAsync(async () =>
                 await CloudGameService.GetRecordAsync(this.CTS.Token)
             );
-            if(url.Result == null)
+            if (url.Result == null)
             {
                 TipShow.ShowMessage("数据拉取失败！", Symbol.Clear);
                 return false;
             }
             #region 读取抽卡记录
-            if(url.Result.Data != null)
+            if (url.Result.Data != null)
             {
                 Dictionary<int, IList<RecordCardItemWrapper>> @param =
-                new Dictionary<int, IList<RecordCardItemWrapper>>();
+                    new Dictionary<int, IList<RecordCardItemWrapper>>();
                 for (int i = 1; i < 10; i++)
                 {
                     var player1 = await TryInvokeAsync(async () =>
@@ -291,7 +298,7 @@ public partial class CloudGameViewModel : ViewModelBase
                     BeginnerChoiceItems = param[6],
                     GratitudeOrientationItems = param[7],
                     RoleJourneyItems = param[8],
-                    WeaponJourneyItems = param[9]
+                    WeaponJourneyItems = param[9],
                 };
                 var datas = MemoryPackSerializer.Serialize<RecordCacheDetily>(
                     cache,
@@ -299,7 +306,10 @@ public partial class CloudGameViewModel : ViewModelBase
                 );
 
                 var result = await RecordHelper.MargeRecordAsync(App.RecordFolder, cache)!;
-                TipShow.ShowMessage($"抽卡合并，数据总量{result.Item2},二进制大小{result.Item1 / 1024}KB", Symbol.Accept);
+                TipShow.ShowMessage(
+                    $"抽卡合并，数据总量{result.Item2},二进制大小{result.Item1 / 1024}KB",
+                    Symbol.Accept
+                );
                 if (result.Item3 == null)
                     return false;
                 this.aLLcacheItems.Add(1, result.Item3.RoleActivityItems ?? []);
@@ -324,13 +334,33 @@ public partial class CloudGameViewModel : ViewModelBase
             }
             return true;
             #endregion
-            
         }
         catch (Exception ex)
         {
             TipShow.ShowMessage(ex.Message, Symbol.Clear);
             return false;
         }
-        
+    }
+
+    [RelayCommand]
+    public async Task SaveAsPlayCardData()
+    {
+        try
+        {
+            var savePath = await PickersService.GetFileSavePicker([".json"], "");
+            if (savePath != null)
+            {
+                var cardDatas = await this.PlayerCardService.GetRecordAsync(this.SelectedUser.Username);
+                var json = JsonSerializer.Serialize(cardDatas, RecordCacheDetilyContext.Default.RecordCacheDetily);
+                if (File.Exists(savePath.Path))
+                    File.Delete(savePath.Path);
+                await File.WriteAllTextAsync(savePath.Path, json, encoding: Encoding.UTF8, this.CTS.Token);
+            }
+            await TipShow.ShowMessageAsync("导出成功", Symbol.Accept);
+        }
+        catch (Exception ex)
+        {
+            await TipShow.ShowMessageAsync($"导出失败{ex.Message}", Symbol.Clear);
+        }
     }
 }

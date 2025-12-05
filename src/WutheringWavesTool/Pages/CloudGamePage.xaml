@@ -145,6 +145,15 @@
                         FontSize="13.5"
                         Glyph="&#xE72C;" />
                 </Button>
+                <Button
+                    Command="{x:Bind ViewModel.SaveAsPlayCardDataCommand}"
+                    Style="{ThemeResource TransparentButtonStyle}"
+                    ToolTipService.ToolTip="另存抽卡记录">
+                    <FontIcon
+                        FontFamily="Segoe Fluent Icons"
+                        FontSize="13.5"
+                        Glyph="&#xE74E;" />
+                </Button>
                 <Button Style="{ThemeResource TransparentButtonStyle}" ToolTipService.ToolTip="云工具为云鸣潮账户数据">
                     <FontIcon
                         FontFamily="Segoe Fluent Icons"
