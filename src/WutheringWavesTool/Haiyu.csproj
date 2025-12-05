@@ -147,17 +147,11 @@
 		<Content Update="Assets\background.png">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
-		<Content Update="Assets\clickSound2.wav">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Update="Assets\Font.ttf">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
-		<Content Update="Assets\clickSound.wav">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Update="Assets\GameIcons\pgr.ico">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -297,6 +291,7 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Common\Plugins\" />
+	  <Folder Include="Controls\Behaviors\" />
 	  <Folder Include="Pages\ColorGame\" />
 	</ItemGroup>
 	<PropertyGroup Label="Globals">

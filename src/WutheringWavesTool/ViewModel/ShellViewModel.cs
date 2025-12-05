@@ -288,6 +288,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         {
             this.LoginBthVisibility = Visibility.Visible;
             WavesCommunitySelectItemVisiblity = Visibility.Collapsed;
+            PunishCommunitySelectItemVisiblity = Visibility.Collapsed;
         }
         else
         {
@@ -339,6 +340,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         AppSettings.TokenId = "";
         WeakReferenceMessenger.Default.Send<UnLoginMessager>();
         this.GamerRoleListsVisibility = Visibility.Collapsed;
+        
 
         await Loaded();
     }

@@ -23,7 +23,10 @@
                 IsSelected="True"
                 Tag="Phone"
                 Text="手机号码" />
-            <SelectorBarItem Tag="Token" Text="授权码" />
+            <SelectorBarItem
+                Tag="Token"
+                Text="授权码"
+                Visibility="Collapsed" />
         </SelectorBar>
         <Border Grid.Row="1" Visibility="{x:Bind ViewModel.PhoneVisibility, Mode=OneWay}">
             <Grid VerticalAlignment="Center">

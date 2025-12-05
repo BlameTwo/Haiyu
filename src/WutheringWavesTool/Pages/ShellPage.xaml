@@ -15,7 +15,6 @@
     xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:property="using:Haiyu.Controls.Propertys"
     xmlns:selector="using:Haiyu.Controls.Selector"
-    xmlns:sound="using:Haiyu.Controls.Behaviors"
     xmlns:ui="using:Haiyu.Controls"
     xmlns:wrapper="using:Haiyu.Models.Wrapper"
     xmlns:wui="using:CommunityToolkit.WinUI"
@@ -151,9 +150,6 @@
                         Style="{ThemeResource AcrylicComboBoxStyle}"
                         ToolTipService.ToolTip="选择角色"
                         Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
-                        <i:Interaction.Behaviors>
-                            <sound:ControlSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="wrapper:GameRoilDataWrapper">
                                 <Grid>
@@ -214,15 +210,10 @@
                         ToolTipService.ToolTip="工具箱"
                         Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
-                        <i:Interaction.Behaviors>
-                            <sound:ButtonSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <Button.Flyout>
                             <MenuFlyout Placement="Bottom">
                                 <MenuFlyoutItem Command="{x:Bind ViewModel.OpenSignWindowCommand}" Text="签到">
-                                    <i:Interaction.Behaviors>
-                                        <sound:ControlSoundBehavior />
-                                    </i:Interaction.Behaviors>
+
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE929;" />
                                     </MenuFlyoutItem.Icon>
@@ -243,9 +234,6 @@
                                     Command="{x:Bind ViewModel.UnLoginCommand}"
                                     Foreground="{ThemeResource SystemFillColorCriticalBrush}"
                                     Text="退出登录">
-                                    <i:Interaction.Behaviors>
-                                        <sound:ControlSoundBehavior />
-                                    </i:Interaction.Behaviors>
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF3B1;" />
                                     </MenuFlyoutItem.Icon>
@@ -436,9 +424,6 @@
                 Style="{ThemeResource MainNavigationViewStyle}">
                 <NavigationView.MenuItems>
                     <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.HomeViewModel" ToolTipService.ToolTip="首页">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA8A;" />
                         </NavigationViewItem.Icon>
@@ -448,9 +433,6 @@
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.MainGameViewModel"
                         ToolTipService.ToolTip="鸣潮（官服）"
                         Visibility="{x:Bind ViewModel.ShowWavesMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/global.ico" />
                         </NavigationViewItem.Icon>
@@ -459,9 +441,6 @@
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GlobalGameViewModel"
                         ToolTipService.ToolTip="鸣潮（国际服）"
                         Visibility="{x:Bind ViewModel.ShowWavesGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/global.ico" />
                         </NavigationViewItem.Icon>
@@ -471,9 +450,6 @@
                         ToolTipService.ToolTip="鸣潮（B服）"
                         Visibility="{x:Bind ViewModel.ShowWavesBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
 
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/bilibili.ico" />
                         </NavigationViewItem.Icon>
@@ -482,9 +458,6 @@
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.MainPGRViewModel"
                         ToolTipService.ToolTip="战双帕弥什（官方）"
                         Visibility="{x:Bind ViewModel.ShowPGRMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
                         </NavigationViewItem.Icon>
@@ -493,9 +466,6 @@
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.BiliBiliPGRGameViewModel"
                         ToolTipService.ToolTip="战双帕弥什（B服）"
                         Visibility="{x:Bind ViewModel.ShowPGRBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
                         </NavigationViewItem.Icon>
@@ -504,9 +474,6 @@
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GlobalPGRViewModel"
                         ToolTipService.ToolTip="战双帕弥什（国际服）"
                         Visibility="{x:Bind ViewModel.ShowPGRGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
                         </NavigationViewItem.Icon>
@@ -515,9 +482,6 @@
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.TwPGRGameViewModel"
                         ToolTipService.ToolTip="战双帕弥什（台服）"
                         Visibility="{x:Bind ViewModel.ShowTwPGRGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
                         </NavigationViewItem.Icon>
@@ -526,9 +490,6 @@
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CommunityViewModel"
                         Content="鸣潮数据"
                         Visibility="{x:Bind ViewModel.WavesCommunitySelectItemVisiblity, Mode=OneWay}">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F4E6;" />
                         </NavigationViewItem.Icon>
@@ -536,18 +497,13 @@
                     <NavigationViewItem
                         property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CommunityViewModel"
                         Content="战双数据"
+                        IsEnabled="False"
                         Visibility="{x:Bind ViewModel.PunishCommunitySelectItemVisiblity, Mode=OneWay}">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F4E6;" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
                     <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CloudGameViewModel" Content="云工具">
-                        <i:Interaction.Behaviors>
-                            <sound:NavigationViewItemSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <NavigationViewItem.Icon>
                             <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x2601;" />
                         </NavigationViewItem.Icon>
@@ -564,9 +520,6 @@
                         Control.IsTemplateFocusTarget="True"
                         CornerRadius="5"
                         Style="{ThemeResource TransparentButtonStyle}">
-                        <i:Interaction.Behaviors>
-                            <sound:ControlSoundBehavior />
-                        </i:Interaction.Behaviors>
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"
                             FontSize="14"

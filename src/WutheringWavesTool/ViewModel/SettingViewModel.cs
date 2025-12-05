@@ -117,6 +117,7 @@ public sealed partial class SettingViewModel : ViewModelBase
                 this.SelectTheme = Themes[0];
                 break;
             default:
+                this.SelectTheme = Themes[0];
                 break;
         }
     }

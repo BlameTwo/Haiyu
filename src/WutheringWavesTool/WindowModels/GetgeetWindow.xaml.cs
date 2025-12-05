@@ -22,6 +22,9 @@ public sealed partial class GetGeetWindow : WindowModelBase
             default:
                 break;
         }
+
+
+        this.grid.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     private void WebView2_NavigationCompleted(

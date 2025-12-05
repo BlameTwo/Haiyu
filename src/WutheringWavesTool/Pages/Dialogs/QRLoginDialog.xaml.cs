@@ -1,4 +1,4 @@
-using Haiyu.Models.Dialogs;
+﻿using Haiyu.Models.Dialogs;
 
 namespace Haiyu.Pages.Dialogs
 {
@@ -8,6 +8,7 @@ namespace Haiyu.Pages.Dialogs
         {
             InitializeComponent();
             this.ViewModel = Instance.GetService<QrLoginViewModel>();
+            this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
         }
 
         public QrLoginViewModel? ViewModel { get; }

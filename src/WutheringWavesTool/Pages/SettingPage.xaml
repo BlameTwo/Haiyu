@@ -81,6 +81,7 @@
                     Grid.ColumnSpan="2"
                     Canvas.ZIndex="-1"
                     CornerRadius="10"
+                    Opacity="0.2"
                     Source="ms-appx:///Assets/Settingbackground.png"
                     Stretch="UniformToFill" />
                 <TextBlock
