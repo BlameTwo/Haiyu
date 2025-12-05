@@ -12,7 +12,7 @@ on:
 jobs:
   mirrorchyan:
     runs-on: macos-latest
-    # if: ${{ github.repository_owner == 'BlameTwo' }}
+    if: ${{ github.repository_owner == 'BlameTwo' }}
     env:
       owner: BlameTwo
       repo: Haiyu
