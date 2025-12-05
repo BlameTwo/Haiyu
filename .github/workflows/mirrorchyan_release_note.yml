@@ -3,9 +3,9 @@ name: mirrorchyan_release_note
 on:
   workflow_dispatch:
     inputs:
-        tag:
-            default: ''
-            required: false
+      tag:
+        default: ""
+        required: false
   release:
     types: [edited, released]
 
@@ -26,7 +26,7 @@ jobs:
 
           mirrorchyan_rid: Haiyu
 
-          owner: ${{ env.owner}}
-          repo: ${{ env.repo}}
-          github_token: ${{ env.github_token}}
+          owner: ${{ env.owner }}
+          repo: ${{ env.repo }}
+          github_token: ${{ env.github_token }}
           upload_token: ${{ secrets.MirrorChyanUploadToken }}

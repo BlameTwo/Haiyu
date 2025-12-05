@@ -3,9 +3,9 @@ name: mirrorchyan_release
 on:
   workflow_dispatch:
     inputs:
-        tag:
-            default: ''
-            required: false
+      tag:
+        default: ""
+        required: false
   release:
     types: [released]
 
@@ -22,20 +22,20 @@ jobs:
         if: ${{ inputs.tag == '' }}
         uses: pozetroninc/github-action-get-latest-release@master
         with:
-            owner: ${{ env.owner}}
-            repo: ${{ env.repo}}
-            token: ${{ env.github_token}}
-            excludes: "draft"
+          owner: ${{ env.owner }}
+          repo: ${{ env.repo }}
+          token: ${{ env.github_token }}
+          excludes: "draft"
 
       - id: download-release
         uses: robinraju/release-downloader@v1
         with:
-            repository: ${{ env.owner}}/${{ env.repo}}
-            fileName: "Haiyu*"
-            tag: ${{ inputs.tag || steps.latest-release.outputs.release }}
-            out-file-path: "downloads"
-            extract: false
-            token: ${{ env.github_token}}
+          repository: ${{ env.owner }}/${{ env.repo }}
+          fileName: "Haiyu*"
+          tag: ${{ inputs.tag || steps.latest-release.outputs.release }}
+          out-file-path: "downloads"
+          extract: false
+          token: ${{ env.github_token }}
 
       - name: Zip files
         run: |
@@ -50,7 +50,7 @@ jobs:
 
           mirrorchyan_rid: Haiyu
 
-          owner: ${{ env.owner}}
-          repo: ${{ env.repo}}
-          github_token: ${{ env.github_token}}
+          owner: ${{ env.owner }}
+          repo: ${{ env.repo }}
+          github_token: ${{ env.github_token }}
           upload_token: ${{ secrets.MirrorChyanUploadToken }}
