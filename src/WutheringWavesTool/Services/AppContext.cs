@@ -39,13 +39,13 @@ public class AppContext<T> : IAppContext<T>
         {
             await Instance.GetService<IKuroClient>().InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavestMainGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(BiliBiliGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesBiliBiliGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesGlobalGameContext))
                 .InitAsync();
             await Instance
                 .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainPGRGameContext))

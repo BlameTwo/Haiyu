@@ -6,17 +6,19 @@ namespace Haiyu.Controls;
 [TemplateVisualState(GroupName = "CommonStates", Name = "ShowMedia")]
 [TemplateVisualState(GroupName = "CommonStates", Name = "ShowImage")]
 [TemplateVisualState(GroupName = "CommonStates", Name = "MediaLoading")]
+[TemplateVisualState(GroupName ="CommonStates",Name = "ImageLoading")]
 [TemplatePart(Name = "MediaControl", Type = typeof(MediaPlayerPresenter))]
 [TemplatePart(Name = "MediaBorder", Type = typeof(Border))]
-[TemplatePart(Name = "ImageControl", Type = typeof(Image))]
+[TemplatePart(Name = "ImageControl", Type = typeof(ImageEx))]
 [TemplatePart(Name = "LoadingControl", Type = typeof(ProgressBar))]
 public partial class ApplicationBackgroundControl : Control
 {
     protected override void OnApplyTemplate()
     {
-        this.ImageControl = (Image)GetTemplateChild("ImageControl");
+        this.ImageControl = (ImageEx)GetTemplateChild("ImageControl");
         this.MediaControl = (MediaPlayerPresenter)GetTemplateChild("MediaControl");
     }
+    
 
     public ApplicationBackgroundControl()
     {
@@ -78,6 +80,7 @@ public partial class ApplicationBackgroundControl : Control
         catch (Exception) { }
     }
 
+
     private void Player_MediaOpened(MediaPlayer sender, object args)
     {
 
@@ -137,7 +140,7 @@ public partial class ApplicationBackgroundControl : Control
         set { SetValue(StretchProperty, value); }
     }
 
-    public Image ImageControl { get; private set; }
+    public ImageEx ImageControl { get; private set; }
     public MediaPlayerPresenter MediaControl { get; private set; }
     public string MediaBackground { get; private set; }
     public string ImageBackground { get; private set; }

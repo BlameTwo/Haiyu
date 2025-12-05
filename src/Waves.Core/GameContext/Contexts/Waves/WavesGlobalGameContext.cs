@@ -8,12 +8,12 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext.Contexts
 {
-    public class GlobalGameContext : GameContextBase
+    public class WavesGlobalGameContext : GameContextBase
     {
-        internal GlobalGameContext(GameAPIConfig config)
-            : base(config, nameof(GlobalGameContext)) { }
+        internal WavesGlobalGameContext(GameAPIConfig config)
+            : base(config, nameof(WavesGlobalGameContext)) { }
 
-        public override Type ContextType => typeof(GlobalGameContext);
+        public override Type ContextType => typeof(WavesGlobalGameContext);
         public override GameType GameType => GameType.Waves;
     }
 }

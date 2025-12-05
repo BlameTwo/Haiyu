@@ -3,6 +3,7 @@ using Haiyu.Helpers;
 using Haiyu.Services.DialogServices;
 using Haiyu.Services.Navigations.NavigationViewServices;
 using Haiyu.ViewModel.GameViewModels;
+using Haiyu.ViewModel.GameViewModels.GameContexts;
 using Haiyu.ViewModel.OOBEViewModels;
 using Haiyu.ViewModel.WikiViewModels;
 using Waves.Core.Services;
@@ -42,13 +43,7 @@ public static class Instance
             #region ColorGame
             #endregion
             #region GameContext
-            .AddTransient<MainGameViewModel>()
-            .AddTransient<BiliBiliGameViewModel>()
-            .AddTransient<GlobalGameViewModel>()
-            .AddTransient<MainPGRViewModel>()
-            .AddTransient<TwPGRGameViewModel>()
-            .AddTransient<GlobalPGRViewModel>()
-            .AddTransient<BiliBiliPGRGameViewModel>()
+            .AddTransient<WavesGameContextViewModel>()
             #endregion
             #region Wiki
             .AddTransient<WavesWikiViewModel>()

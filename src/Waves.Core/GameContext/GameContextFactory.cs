@@ -10,22 +10,24 @@ public static class GameContextFactory
 {
     public static string GameBassPath { get; set; }
 
-    internal static BiliBiliGameContext GetBilibiliGameContext() =>
-        new BiliBiliGameContext(GameAPIConfig.BilibiliConfig)
+
+
+    internal static WavesBiliBiliGameContext GetBilibiliGameContext() =>
+        new WavesBiliBiliGameContext(GameAPIConfig.BilibiliConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\BiliBiliConfig",
             IsLimitSpeed = false,
         };
 
-    internal static GlobalGameContext GetGlobalGameContext() =>
-        new GlobalGameContext(GameAPIConfig.GlobalConfig)
+    internal static WavesGlobalGameContext GetGlobalGameContext() =>
+        new WavesGlobalGameContext(GameAPIConfig.GlobalConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\GlobalConfig",
             IsLimitSpeed = false,
         };
 
-    internal static MainGameContext GetMainGameContext() =>
-        new MainGameContext(GameAPIConfig.MainAPiConfig)
+    internal static WavestMainGameContext GetMainGameContext() =>
+        new WavestMainGameContext(GameAPIConfig.MainAPiConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\MainConfig",
             IsLimitSpeed = false,
@@ -43,14 +45,16 @@ public static class GameContextFactory
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\BilibiliPRGConfig",
             IsLimitSpeed = false,
-        }; internal static GlobalPRGGameContext GetGlobalPGRGameContext() =>
+        };
+
+    internal static GlobalPRGGameContext GetGlobalPGRGameContext() =>
         new GlobalPRGGameContext(GameAPIConfig.GlobalBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\GlokbalPGRConfig",
             IsLimitSpeed = false,
         };
 
-    internal static TwPGRGameContext GetTwWavesGameContext()=>
+    internal static TwPGRGameContext GetTwWavesGameContext() =>
         new TwPGRGameContext(GameAPIConfig.TWBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\TwPGRConfig",

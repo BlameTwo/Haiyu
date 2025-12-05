@@ -1,43 +1,51 @@
-﻿using Haiyu.Models.Dialogs;
+using System.Diagnostics.Contracts;
+using Haiyu.Models.Dialogs;
+using Haiyu.Services.DialogServices;
+using Haiyu.ViewModel.GameViewModels.Contracts;
 using Microsoft.Windows.AppNotifications;
 using Microsoft.Windows.AppNotifications.Builder;
-using System.Diagnostics.Contracts;
+using Waves.Core.Models.Enums;
 using Waves.Core.Services;
 
 namespace Haiyu.ViewModel.GameViewModels;
 
-public abstract partial class GameContextViewModelBase : ViewModelBase
+public abstract partial class KuroGameContextViewModel
+    : ViewModelBase,
+        IKuroGameContextViewModelBase
 {
+    public virtual string DefaultServerName { get; }
     public LoggerService Logger { get; }
-    public IGameContext GameContext { get; }
+    public IGameContext GameContext { get; private set; }
     public IDialogManager DialogManager { get; }
     public IAppContext<App> AppContext { get; }
     public ITipShow TipShow { get; }
     public IWallpaperService WallpaperService { get; }
 
-    protected GameContextViewModelBase(
-        IGameContext gameContext,
-        IDialogManager dialogManager,
-        IAppContext<App> appContext,
-        ITipShow tipShow
-    )
+    protected KuroGameContextViewModel(IAppContext<App> appContext, ITipShow tipShow)
     {
         this.Logger = Instance.Service.GetKeyedService<LoggerService>("AppLog");
-        GameContext = gameContext;
-        DialogManager = dialogManager;
+        DialogManager = Instance.Service.GetRequiredKeyedService<IDialogManager>(
+            nameof(MainDialogService)
+        );
         AppContext = appContext;
         TipShow = tipShow;
         WallpaperService = Instance.GetService<IWallpaperService>();
-        GameContext.GameContextOutput += GameContext_GameContextOutput;
+        this.Servers =
+            this.GameType == GameType.Waves
+                ? ServerDisplay.GetWavesGames
+                : ServerDisplay.GetWavesGames;
+        this.SelectServer = Servers[0];
         this.AppContext.WallpaperService.WallpaperPletteChanged +=
             WallpaperService_WallpaperPletteChanged;
         this.StressShadowColor = AppContext.StressShadowColor;
-        var dx11 = this.GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.IsDx11);
-        if (bool.TryParse(dx11, out var flag))
-        {
-            this.IsDx11Launcher = flag;
-        }
     }
+
+    public static List<string> GetWavesServers() =>
+        [
+            nameof(WavesBiliBiliGameContext),
+            nameof(WavesGlobalGameContext),
+            nameof(WavestMainGameContext),
+        ];
 
     private void WallpaperService_WallpaperPletteChanged(object sender, PletteArgs args)
     {
@@ -54,10 +62,13 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
 
     async partial void OnIsDx11LauncherChanged(bool value)
     {
-       await this.GameContext.GameLocalConfig.SaveConfigAsync(GameLocalSettingName.IsDx11, value == true ? "true" : "false");
+        await this.GameContext.GameLocalConfig.SaveConfigAsync(
+            GameLocalSettingName.IsDx11,
+            value == true ? "true" : "false"
+        );
     }
 
-    #region MyRegion
+    #region 下载显示
 
     /// <summary>
     /// 选择下载路径显示
@@ -105,17 +116,48 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
     [ObservableProperty]
     public partial bool EnableStartGameBth { get; set; } = false;
 
+    [ObservableProperty]
+    public partial ObservableCollection<ServerDisplay> Servers { get; set; }
+
+    [ObservableProperty]
+    public partial ServerDisplay SelectServer { get; set; }
+
+    [ObservableProperty]
+    public partial bool ProcessAction { get; set; } = false;
+    public GameType GameType { get; }
+
+    async partial void OnSelectServerChanged(ServerDisplay value)
+    {
+        await SelectGameContextAsync(value.Key, value.ShowCard);
+    }
+
+    public async Task SelectGameContextAsync(string name, bool showCard)
+    {
+        if (this.GameContext != null)
+        {
+            GameContext.GameContextOutput -= GameContext_GameContextOutput;
+        }
+        this.GameContext = Instance.Service.GetRequiredKeyedService<IGameContext>(name);
+        GameContext.GameContextOutput += GameContext_GameContextOutput;
+        var dx11 = this.GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.IsDx11);
+        if (bool.TryParse(dx11, out var flag))
+        {
+            this.IsDx11Launcher = flag;
+        }
+        await RefreshCoreAsync(showCard);
+    }
+
     /// <summary>
     /// 按钮类型,1为安装游戏,2为下载游戏,3为开始游戏,4为准备更新,5为游戏中
     /// </summary>
     private int _bthType = 0;
     private bool disposedValue;
 
-    [RelayCommand]
-    async Task Loaded()
+    async Task RefreshCoreAsync(bool showCard = true)
     {
         try
         {
+            ProcessAction = true;
             var status = await this.GameContext.GetGameContextStatusAsync(this.CTS.Token);
             if (!status.IsGameExists && !status.IsGameInstalled)
             {
@@ -144,21 +186,11 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
                 }
                 ShowGameDownloadingBth();
             }
-            if (
-                status.IsGameExists
-                && status.IsGameInstalled
-                && !status.IsPause
-                && status.IsAction
-            )
+            if (status.IsGameExists && status.IsGameInstalled && !status.IsPause && status.IsAction)
             {
                 this.PauseIcon = "\uE769";
             }
-            if (
-                status.IsGameExists
-                && status.IsGameInstalled
-                && status.IsPause
-                && status.IsAction
-            )
+            if (status.IsGameExists && status.IsGameInstalled && status.IsPause && status.IsAction)
             {
                 this.PauseIcon = "\uE768";
             }
@@ -170,21 +202,31 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
             var wallpaperType = AppSettings.WallpaperType;
             if (wallpaperType == "Video")
             {
-                WallpaperService.SetMediaForUrl(Waves.Core.Models.Enums.WallpaperShowType.Video, background.BackgroundFile);
+                WallpaperService.SetMediaForUrl(
+                    Waves.Core.Models.Enums.WallpaperShowType.Video,
+                    background.BackgroundFile
+                );
             }
             else
             {
-                WallpaperService.SetMediaForUrl(Waves.Core.Models.Enums.WallpaperShowType.Image, background.FirstFrameImage);
+                WallpaperService.SetMediaForUrl(
+                    Waves.Core.Models.Enums.WallpaperShowType.Image,
+                    background.FirstFrameImage
+                );
             }
             this.VersionLogo = new BitmapImage(new(background.Slogan));
-           
+
+            await ShowCardAsync(showCard);
             await LoadAfter();
+            ProcessAction = false;
         }
         catch (Exception ex)
         {
             TipShow.ShowMessage(ex.Message, Symbol.Clear);
         }
     }
+
+    public abstract Task ShowCardAsync(bool showCard);
 
     private void ShowGameLauncherBth(bool isUpdate, string version, bool gameing)
     {
@@ -267,22 +309,15 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
             {
                 return;
             }
-            Logger.WriteInfo(
-                $"选择游戏安装路径：{result.InstallFolder},即将进入通知核心进行下载"
-            );
-            await this.GameContext.StartDownloadTaskAsync(
-                result.InstallFolder,
-                result.Launcher
-            );
+            Logger.WriteInfo($"选择游戏安装路径：{result.InstallFolder},即将进入通知核心进行下载");
+            await this.GameContext.StartDownloadTaskAsync(result.InstallFolder, result.Launcher);
         }
         else
         {
             Logger.WriteInfo($"继续更新触发");
             var launcher = await GameContext.GetGameLauncherSourceAsync(null, this.CTS.Token);
             await this.GameContext.StartDownloadTaskAsync(
-                GameContext.GameLocalConfig.GetConfig(
-                    GameLocalSettingName.GameLauncherBassFolder
-                ),
+                GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder),
                 launcher
             );
         }
@@ -318,9 +353,7 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
             Logger.WriteInfo($"继续进行下载");
             var launcher = await GameContext.GetGameLauncherSourceAsync(null, this.CTS.Token);
             await this.GameContext.StartDownloadTaskAsync(
-                GameContext.GameLocalConfig.GetConfig(
-                    GameLocalSettingName.GameLauncherBassFolder
-                ),
+                GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder),
                 launcher
             );
         }
@@ -337,6 +370,32 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
         GameDownloadingBthVisibility = Visibility.Collapsed;
         GameLauncherBthVisibility = Visibility.Collapsed;
         BottomBarContent = "游戏文件不存在";
+    }
+
+    private void ShowGameDownloadingBth()
+    {
+        Logger.WriteInfo($"游戏正在下载中");
+        _bthType = 2;
+        if (GameDownloadingBthVisibility == Visibility.Visible)
+            return;
+        this.PauseIcon = "\uE769";
+        GameInputFolderBthVisibility = Visibility.Collapsed;
+        GameInstallBthVisibility = Visibility.Collapsed;
+        GameLauncherBthVisibility = Visibility.Collapsed;
+        GameDownloadingBthVisibility = Visibility.Visible;
+    }
+
+    /// <summary>
+    /// 显示继续下载
+    /// </summary>
+    private void ShowGameDownloadBth()
+    {
+        _bthType = 2;
+        GameInputFolderBthVisibility = Visibility.Collapsed;
+        GameInstallBthVisibility = Visibility.Visible;
+        GameDownloadingBthVisibility = Visibility.Collapsed;
+        GameLauncherBthVisibility = Visibility.Collapsed;
+        BottomBarContent = "请点击右下角继续更新游戏";
     }
 
     [RelayCommand]
@@ -360,8 +419,6 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
             Logger.WriteInfo($"取消修复文件");
         }
     }
-
-
 
     [RelayCommand]
     async Task ShowGameResource()
@@ -402,32 +459,6 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
         );
     }
 
-    private void ShowGameDownloadingBth()
-    {
-        Logger.WriteInfo($"游戏正在下载中");
-        _bthType = 2;
-        if (GameDownloadingBthVisibility == Visibility.Visible)
-            return;
-        this.PauseIcon = "\uE769";
-        GameInputFolderBthVisibility = Visibility.Collapsed;
-        GameInstallBthVisibility = Visibility.Collapsed;
-        GameLauncherBthVisibility = Visibility.Collapsed;
-        GameDownloadingBthVisibility = Visibility.Visible;
-    }
-
-    /// <summary>
-    /// 显示继续下载
-    /// </summary>
-    private void ShowGameDownloadBth()
-    {
-        _bthType = 2;
-        GameInputFolderBthVisibility = Visibility.Collapsed;
-        GameInstallBthVisibility = Visibility.Visible;
-        GameDownloadingBthVisibility = Visibility.Collapsed;
-        GameLauncherBthVisibility = Visibility.Collapsed;
-        BottomBarContent = "请点击右下角继续更新游戏";
-    }
-
     public abstract Task LoadAfter();
 
     public abstract void DisposeAfter();
@@ -452,10 +483,4 @@ public abstract partial class GameContextViewModelBase : ViewModelBase
             disposedValue = true;
         }
     }
-
-    //public void Dispose()
-    //{
-    //    Dispose(disposing: true);
-    //    GC.SuppressFinalize(this);
-    //}
 }

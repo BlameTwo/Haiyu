@@ -1,6 +1,6 @@
 ﻿namespace Haiyu.ViewModel.GameViewModels;
 
-partial class GameContextViewModelBase
+partial class KuroGameContextViewModel
 {
     [ObservableProperty]
     public partial double MaxProgressValue { get; set; }

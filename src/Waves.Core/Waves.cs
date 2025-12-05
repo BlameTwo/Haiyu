@@ -18,8 +18,8 @@ public static class Waves
     {
         services
             .AddTransient<IHttpClientService, HttpClientService>()
-            .AddKeyedSingleton<IGameContext, MainGameContext>(
-                nameof(MainGameContext),
+            .AddKeyedSingleton<IGameContext, WavestMainGameContext>(
+                nameof(WavestMainGameContext),
                 (provider, c) =>
                 {
                     var context = GameContextFactory.GetMainGameContext();
@@ -27,8 +27,8 @@ public static class Waves
                     return context;
                 }
             )
-            .AddKeyedSingleton<IGameContext, GlobalGameContext>(
-                nameof(GlobalGameContext),
+            .AddKeyedSingleton<IGameContext, WavesGlobalGameContext>(
+                nameof(WavesGlobalGameContext),
                 (provider, c) =>
                 {
                     var context = GameContextFactory.GetGlobalGameContext();
@@ -36,8 +36,8 @@ public static class Waves
                     return context;
                 }
             )
-            .AddKeyedSingleton<IGameContext, BiliBiliGameContext>(
-                nameof(BiliBiliGameContext),
+            .AddKeyedSingleton<IGameContext, WavesBiliBiliGameContext>(
+                nameof(WavesBiliBiliGameContext),
                 (provider, c) =>
                 {
                     var context = GameContextFactory.GetBilibiliGameContext();

@@ -65,9 +65,7 @@
 		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
 		<None Remove="Pages\Dialogs\GameLauncherCacheManager.xaml" />
 		<None Remove="Pages\Dialogs\WebGameLogin.xaml" />
-		<None Remove="Pages\GamePages\BiliBiliPGRGamePage.xaml" />
-		<None Remove="Pages\GamePages\GlobalPGRGamePage.xaml" />
-		<None Remove="Pages\GamePages\TwPGRGamePage.xaml" />
+		<None Remove="Pages\GamePages\WavesGamePage.xaml" />
 		<None Remove="Pages\GameWikis\PunishWikiPage.xaml" />
 		<None Remove="Pages\GameWikis\WavesWikiPage.xaml" />
 		<None Remove="Pages\HomePage.xaml" />
@@ -137,9 +135,7 @@
 		<PackageReference Include="ZXing.Net" Version="0.16.11" />
 		<PackageReference Include="Microsoft.DotNet.ILCompiler" Version="10.0.0-rtm.25507.103" />
 		<KnownRuntimePack Update="@(KnownRuntimePack)">
-			<LatestRuntimeFrameworkVersion Condition="'%(KnownRuntimePack.Identity)' == 'Microsoft.NETCore.App'
-      and '%(KnownRuntimePack.RuntimePackLabels)' == 'NativeAOT'
-      and '%(KnownRuntimePack.TargetFramework)' == 'net10.0'">10.0.0-rtm.25507.103</LatestRuntimeFrameworkVersion>
+			<LatestRuntimeFrameworkVersion Condition="'%(KnownRuntimePack.Identity)' == 'Microsoft.NETCore.App'&#xD;&#xA;      and '%(KnownRuntimePack.RuntimePackLabels)' == 'NativeAOT'&#xD;&#xA;      and '%(KnownRuntimePack.TargetFramework)' == 'net10.0'">10.0.0-rtm.25507.103</LatestRuntimeFrameworkVersion>
 		</KnownRuntimePack>
 		<KnownILCompilerPack Update="@(KnownILCompilerPack)">
 			<ILCompilerPackVersion Condition="'%(KnownILCompilerPack.TargetFramework)' == 'net10.0'">10.0.0-rtm.25507.103</ILCompilerPackVersion>
@@ -248,6 +244,9 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\GamePages\WavesGamePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Pages\OOBEPage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
@@ -275,19 +274,10 @@
 		<Page Update="Pages\HomePage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
-		<Page Update="Pages\GamePages\TwPGRGamePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
 		<Page Update="Pages\StartColorFullGamePage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
 		<Page Update="Pages\Record\AnalysisRecordPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\GamePages\GlobalPGRGamePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\GamePages\BiliBiliPGRGamePage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
 		<Page Update="Pages\ColorFullGame.xaml">

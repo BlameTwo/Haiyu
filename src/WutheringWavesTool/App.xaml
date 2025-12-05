@@ -28,7 +28,7 @@
                 <ResourceDictionary Source="/Controls/Styles/Shimmer.xaml" />
                 <ResourceDictionary Source="/Controls/Styles/ApplicationBackgroundControl.xaml" />
                 <ResourceDictionary Source="/Controls/Styles/AnimatedTextBlock.xaml" />
-                <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.Controls.Segmented/SegmentedItem/SegmentedItem.xaml" />
+                <ResourceDictionary Source="ms-appx:///CommunityToolkit.WinUI.Controls.Segmented/Segmented/Segmented.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <x:String x:Key="AppVersion">1.2.16</x:String>
             <converter:BoolReversalConvert x:Key="BoolReversalConvert" />

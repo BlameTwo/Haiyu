@@ -3,7 +3,7 @@ using Microsoft.Windows.AppNotifications.Builder;
 
 namespace Haiyu.ViewModel.GameViewModels;
 
-partial class GameContextViewModelBase
+partial class KuroGameContextViewModel
 {
     [RelayCommand]
     async Task UpdateGameAsync()

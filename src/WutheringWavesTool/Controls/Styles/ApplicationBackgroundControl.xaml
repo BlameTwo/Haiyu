@@ -12,7 +12,7 @@
                         <Border x:Name="MediaBorder" Opacity="1">
                             <MediaPlayerPresenter x:Name="MediaControl" Stretch="{TemplateBinding Stretch}" />
                         </Border>
-                        <Image
+                        <local:ImageEx
                             x:Name="ImageControl"
                             Opacity="1"
                             Stretch="{TemplateBinding Stretch}" />
@@ -51,6 +51,22 @@
                                     </VisualState.Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="MediaLoading">
+                                    <VisualState.Storyboard>
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="ImageControl"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0"
+                                                Duration="0:0:1" />
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="MediaBorder"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0"
+                                                Duration="0:0:1" />
+                                        </Storyboard>
+                                    </VisualState.Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="ImageLoading">
                                     <VisualState.Storyboard>
                                         <Storyboard>
                                             <DoubleAnimation

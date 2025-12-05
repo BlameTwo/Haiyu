@@ -427,62 +427,12 @@
                             <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA8A;" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
-
                     <NavigationViewItem
-                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.MainGameViewModel"
-                        ToolTipService.ToolTip="鸣潮（官服）"
+                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GameContexts.WavesGameContextViewModel"
+                        Content="鸣潮"
                         Visibility="{x:Bind ViewModel.ShowWavesMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
                         <NavigationViewItem.Icon>
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/global.ico" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem
-                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GlobalGameViewModel"
-                        ToolTipService.ToolTip="鸣潮（国际服）"
-                        Visibility="{x:Bind ViewModel.ShowWavesGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <NavigationViewItem.Icon>
-                            <ImageIcon Source="ms-appx:///Assets/GameIcons/global.ico" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem
-                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.BiliBiliGameViewModel"
-                        ToolTipService.ToolTip="鸣潮（B服）"
-                        Visibility="{x:Bind ViewModel.ShowWavesBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-
-                        <NavigationViewItem.Icon>
-                            <ImageIcon Source="ms-appx:///Assets/GameIcons/bilibili.ico" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem
-                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.MainPGRViewModel"
-                        ToolTipService.ToolTip="战双帕弥什（官方）"
-                        Visibility="{x:Bind ViewModel.ShowPGRMainGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <NavigationViewItem.Icon>
-                            <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem
-                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.BiliBiliPGRGameViewModel"
-                        ToolTipService.ToolTip="战双帕弥什（B服）"
-                        Visibility="{x:Bind ViewModel.ShowPGRBilibiliGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <NavigationViewItem.Icon>
-                            <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem
-                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.GlobalPGRViewModel"
-                        ToolTipService.ToolTip="战双帕弥什（国际服）"
-                        Visibility="{x:Bind ViewModel.ShowPGRGlobalGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <NavigationViewItem.Icon>
-                            <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem
-                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.GameViewModels.TwPGRGameViewModel"
-                        ToolTipService.ToolTip="战双帕弥什（台服）"
-                        Visibility="{x:Bind ViewModel.ShowTwPGRGame, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <NavigationViewItem.Icon>
-                            <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
                     <NavigationViewItem
