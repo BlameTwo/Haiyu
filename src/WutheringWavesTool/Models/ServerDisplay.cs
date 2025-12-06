@@ -1,4 +1,6 @@
-﻿namespace Haiyu.Models;
+﻿using Waves.Core.GameContext.Contexts.PRG;
+
+namespace Haiyu.Models;
 
 public class ServerDisplay
 {
@@ -18,7 +20,7 @@ public class ServerDisplay
             new ServerDisplay()
             {
                 Display = "官服",
-                Key = $"{nameof(WavestMainGameContext)}",
+                Key = $"{nameof(WavesMainGameContext)}",
                 Tag = "Main",
                 ShowCard= true
             },new ServerDisplay()
@@ -34,5 +36,34 @@ public class ServerDisplay
                 Tag = "Main",
                 ShowCard= true
             },
+        ];
+
+    public static ObservableCollection<ServerDisplay> GetPunishGames =>
+        [
+            new ServerDisplay()
+            {
+                Display = "官服",
+                Key = $"{nameof(PunishMainGameContext)}",
+                Tag = "Main",
+                ShowCard= true
+            },new ServerDisplay()
+            {
+                Display = "Bilibili",
+                Key = $"{nameof(PunishBiliBiliGameContext)}",
+                Tag = "Main",
+                ShowCard= false
+            },new ServerDisplay()
+            {
+                Display = "国际服",
+                Key = $"{nameof(PunishGlobalGameContext)}",
+                Tag = "Main",
+                ShowCard= true
+            },new ServerDisplay()
+            {
+                Display = "台服",
+                Key = $"{nameof(PunishTwGameContext)}",
+                Tag = "Main",
+                ShowCard= true
+            }
         ];
 }

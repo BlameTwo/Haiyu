@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text;
+using Waves.Core.Models.Enums;
 
 namespace Haiyu.ViewModel.GameViewModels.GameContexts;
 
@@ -42,6 +43,9 @@ public partial class WavesGameContextViewModel : KuroGameContextViewModel
     {
         return Task.CompletedTask;
     }
+
+
+    public override GameType GameType => GameType.Waves;
 
     [ObservableProperty]
     public partial ObservableCollection<Slideshow> SlideShows { get; set; }

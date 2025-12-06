@@ -65,6 +65,7 @@
 		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
 		<None Remove="Pages\Dialogs\GameLauncherCacheManager.xaml" />
 		<None Remove="Pages\Dialogs\WebGameLogin.xaml" />
+		<None Remove="Pages\GamePages\PunishGamePage.xaml" />
 		<None Remove="Pages\GamePages\WavesGamePage.xaml" />
 		<None Remove="Pages\GameWikis\PunishWikiPage.xaml" />
 		<None Remove="Pages\GameWikis\WavesWikiPage.xaml" />
@@ -244,6 +245,9 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\GamePages\PunishGamePage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Pages\GamePages\WavesGamePage.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>

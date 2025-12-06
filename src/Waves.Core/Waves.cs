@@ -18,8 +18,8 @@ public static class Waves
     {
         services
             .AddTransient<IHttpClientService, HttpClientService>()
-            .AddKeyedSingleton<IGameContext, WavestMainGameContext>(
-                nameof(WavestMainGameContext),
+            .AddKeyedSingleton<IGameContext, WavesMainGameContext>(
+                nameof(WavesMainGameContext),
                 (provider, c) =>
                 {
                     var context = GameContextFactory.GetMainGameContext();
@@ -45,8 +45,8 @@ public static class Waves
                     return context;
                 }
             )
-            .AddKeyedSingleton<IGameContext, MainPGRGameContext>(
-                nameof(MainPGRGameContext),
+            .AddKeyedSingleton<IGameContext, PunishMainGameContext>(
+                nameof(PunishMainGameContext),
                 (provider, c) =>
                 {
                     var context = GameContextFactory.GetMainPGRGameContext();
@@ -54,8 +54,8 @@ public static class Waves
                     return context;
                 }
             )
-            .AddKeyedSingleton<IGameContext, BiliBiliPRGGameContext>(
-                nameof(BiliBiliPRGGameContext),
+            .AddKeyedSingleton<IGameContext, PunishBiliBiliGameContext>(
+                nameof(PunishBiliBiliGameContext),
                 (provider, c) =>
                 {
                     var context = GameContextFactory.GetBiliBiliPRGGameContext();
@@ -63,8 +63,8 @@ public static class Waves
                     return context;
                 }
             )
-            .AddKeyedSingleton<IGameContext, GlobalPRGGameContext>(
-                nameof(GlobalPRGGameContext),
+            .AddKeyedSingleton<IGameContext, PunishGlobalGameContext>(
+                nameof(PunishGlobalGameContext),
                 (provider, c) =>
                 {
                     var context = GameContextFactory.GetGlobalPGRGameContext();
@@ -72,8 +72,8 @@ public static class Waves
                     return context;
                 }
             )
-            .AddKeyedSingleton<IGameContext, TwPGRGameContext>(
-                nameof(TwPGRGameContext),
+            .AddKeyedSingleton<IGameContext, PunishTwGameContext>(
+                nameof(PunishTwGameContext),
                 (provider, c) =>
                 {
                     var context = GameContextFactory.GetTwWavesGameContext();

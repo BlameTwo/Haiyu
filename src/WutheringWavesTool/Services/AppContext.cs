@@ -39,7 +39,7 @@ public class AppContext<T> : IAppContext<T>
         {
             await Instance.GetService<IKuroClient>().InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavestMainGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesMainGameContext))
                 .InitAsync();
             await Instance
                 .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesBiliBiliGameContext))
@@ -48,16 +48,16 @@ public class AppContext<T> : IAppContext<T>
                 .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesGlobalGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainPGRGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishMainGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(BiliBiliPRGGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishBiliBiliGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalPRGGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishGlobalGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(TwPGRGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishTwGameContext))
                 .InitAsync();
             this.App = app;
             var win = new MainWindow();

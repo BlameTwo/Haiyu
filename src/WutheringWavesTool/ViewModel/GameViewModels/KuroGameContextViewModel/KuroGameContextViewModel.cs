@@ -33,7 +33,7 @@ public abstract partial class KuroGameContextViewModel
         this.Servers =
             this.GameType == GameType.Waves
                 ? ServerDisplay.GetWavesGames
-                : ServerDisplay.GetWavesGames;
+                : ServerDisplay.GetPunishGames;
         this.SelectServer = Servers[0];
         this.AppContext.WallpaperService.WallpaperPletteChanged +=
             WallpaperService_WallpaperPletteChanged;
@@ -44,7 +44,7 @@ public abstract partial class KuroGameContextViewModel
         [
             nameof(WavesBiliBiliGameContext),
             nameof(WavesGlobalGameContext),
-            nameof(WavestMainGameContext),
+            nameof(WavesMainGameContext),
         ];
 
     private void WallpaperService_WallpaperPletteChanged(object sender, PletteArgs args)
@@ -124,7 +124,7 @@ public abstract partial class KuroGameContextViewModel
 
     [ObservableProperty]
     public partial bool ProcessAction { get; set; } = false;
-    public GameType GameType { get; }
+    public abstract GameType GameType { get; }
 
     async partial void OnSelectServerChanged(ServerDisplay value)
     {

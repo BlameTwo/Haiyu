@@ -31,5 +31,16 @@ namespace Haiyu.Pages.GamePages
 
         public WavesGameContextViewModel ViewModel { get; set;  }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            this.Bindings.StopTracking();
+            this.ViewModel.Dispose();
+            base.OnNavigatedTo(e);
+            GC.Collect();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+        }
     }
 }

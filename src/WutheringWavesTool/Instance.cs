@@ -44,6 +44,7 @@ public static class Instance
             #endregion
             #region GameContext
             .AddTransient<WavesGameContextViewModel>()
+            .AddTransient<PunishGameContextViewModel>()
             #endregion
             #region Wiki
             .AddTransient<WavesWikiViewModel>()

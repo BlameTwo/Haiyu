@@ -20,6 +20,7 @@ public sealed partial class PageService : IPageService
         this.RegisterView<HomePage, HomeViewModel>();
         #region GameContext
         this.RegisterView<WavesGamePage, WavesGameContextViewModel>();
+        this.RegisterView<PunishGamePage, PunishGameContextViewModel>();
         #endregion
         this.RegisterView<StatisticsPage, StatisticsViewModel>();
         this.RegisterView<GamerRoilsPage, GameRoilsViewModel>();

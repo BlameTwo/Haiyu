@@ -26,36 +26,36 @@ public static class GameContextFactory
             IsLimitSpeed = false,
         };
 
-    internal static WavestMainGameContext GetMainGameContext() =>
-        new WavestMainGameContext(GameAPIConfig.MainAPiConfig)
+    internal static WavesMainGameContext GetMainGameContext() =>
+        new WavesMainGameContext(GameAPIConfig.MainAPiConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\MainConfig",
             IsLimitSpeed = false,
         };
 
-    internal static MainPGRGameContext GetMainPGRGameContext() =>
-        new MainPGRGameContext(GameAPIConfig.MainBGRConfig)
+    internal static PunishMainGameContext GetMainPGRGameContext() =>
+        new PunishMainGameContext(GameAPIConfig.MainBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\MainPGRConfig",
             IsLimitSpeed = false,
         };
 
-    internal static BiliBiliPRGGameContext GetBiliBiliPRGGameContext() =>
-        new BiliBiliPRGGameContext(GameAPIConfig.BiliBiliBGRConfig)
+    internal static PunishBiliBiliGameContext GetBiliBiliPRGGameContext() =>
+        new PunishBiliBiliGameContext(GameAPIConfig.BiliBiliBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\BilibiliPRGConfig",
             IsLimitSpeed = false,
         };
 
-    internal static GlobalPRGGameContext GetGlobalPGRGameContext() =>
-        new GlobalPRGGameContext(GameAPIConfig.GlobalBGRConfig)
+    internal static PunishGlobalGameContext GetGlobalPGRGameContext() =>
+        new PunishGlobalGameContext(GameAPIConfig.GlobalBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\GlokbalPGRConfig",
             IsLimitSpeed = false,
         };
 
-    internal static TwPGRGameContext GetTwWavesGameContext() =>
-        new TwPGRGameContext(GameAPIConfig.TWBGRConfig)
+    internal static PunishTwGameContext GetTwWavesGameContext() =>
+        new PunishTwGameContext(GameAPIConfig.TWBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\TwPGRConfig",
             IsLimitSpeed = false,
