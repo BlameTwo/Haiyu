@@ -82,15 +82,7 @@ public partial class App : ClientApplication
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
         Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
-        if (string.IsNullOrWhiteSpace(LanguageService.GetLanguage()))
-        {
-            LanguageService.SetLanguage("zh-Hans");
-            ApplicationLanguages.PrimaryLanguageOverride = "zh-Hans";
-        }
-        else
-        {
-            ApplicationLanguages.PrimaryLanguageOverride = LanguageService.GetLanguage();
-        }
+       
         var mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(
             "Haiyu_Main"
         );

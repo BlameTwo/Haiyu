@@ -105,12 +105,26 @@ public partial class TitleBar : ContentControl
         List<Windows.Graphics.RectInt32> dragRectsList = new();
         if (RightPaddingColumn == null || LeftPaddingColumn == null)
             return;
-        RightPaddingColumn.Width = new GridLength(
-            Window.AppWindow.TitleBar.RightInset / ScaleAdjustment
-        );
-        LeftPaddingColumn.Width = new GridLength(
-            Window.AppWindow.TitleBar.LeftInset / ScaleAdjustment
-        );
+        if (Window.AppWindow.TitleBar.RightInset > 0)
+        {
+            RightPaddingColumn.Width = new GridLength(
+                Window.AppWindow.TitleBar.RightInset / ScaleAdjustment
+            );
+        }
+        else
+        {
+            RightPaddingColumn.Width = new GridLength(0);
+        }
+        if (Window.AppWindow.TitleBar.LeftInset > 0)
+        {
+            LeftPaddingColumn.Width = new GridLength(
+                Window.AppWindow.TitleBar.RightInset / ScaleAdjustment
+            );
+        }
+        else
+        {
+            LeftPaddingColumn.Width = new GridLength(0);
+        }
         #region Header —— Title
         //左侧拖动
         //Windows.Graphics.RectInt32 dragRectL = new();
