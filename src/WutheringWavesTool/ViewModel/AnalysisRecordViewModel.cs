@@ -288,14 +288,16 @@ public partial class AnalysisRecordViewModel : ViewModelBase
                 );
                 var passValue = roleRange.Item1.Where(x => x.Item3 == false);
                 var ngValue = roleRange.Item1.Where(x => x.Item3 == true);
+                int passCount = passValue.Count();
+                int ngCount = ngValue.Count();
                 RangePipeDatas.Add(
-                    new PieData()
-                    {
-                        Name = "歪了",
-                        Offset = 0,
-                        Values = [ngValue.Count()],
-                    }
-                );
+                        new PieData()
+                        {
+                            Name = "歪了",
+                            Offset = 0,
+                            Values = [ngCount],
+                        }
+                    );
                 RangePipeDatas.Add(
                     new PieData()
                     {

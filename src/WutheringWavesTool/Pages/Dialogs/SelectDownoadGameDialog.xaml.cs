@@ -14,6 +14,7 @@ namespace Haiyu.Pages.Dialogs
                 nameof(MainDialogService)
             );
             this.Pickers = Instance.Service.GetRequiredService<IPickersService>();
+            this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
         }
 
         SelectDownloadFolderResult downloadResult = null;

@@ -10,6 +10,7 @@ namespace Haiyu.Pages.Dialogs
         {
             this.InitializeComponent();
             this.ViewModel = Instance.Service.GetRequiredService<SelectGameFolderViewModel>();
+            this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
         }
 
         public SelectGameFolderViewModel ViewModel { get; }

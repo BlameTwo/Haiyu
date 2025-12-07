@@ -86,7 +86,7 @@ public static class RecordHelper
     )
     {
         List<Tuple<RecordCardItemWrapper, int, bool?>> result = new();
-        int count = 1;
+        int count = 0;
         var items = source.Reverse();
         if (ids == null)
         {
@@ -94,8 +94,8 @@ public static class RecordHelper
             {
                 if (item.QualityLevel == 5)
                 {
-                    result.Add(new(item, count -1, null));
-                    count = 1;
+                    result.Add(new(item, count, null));
+                    count = 0;
                 }
                 else
                 {
@@ -111,13 +111,13 @@ public static class RecordHelper
             {
                 if (ids.Where(x => x == item.ResourceId).Any())
                 {
-                    result.Add(new(item, count - 1, false));
+                    result.Add(new(item, count, false));
                 }
                 else
                 {
-                    result.Add(new(item, count - 1, true));
+                    result.Add(new(item, count, true));
                 }
-                count = 1;
+                count = 0;
             }
             else
             {
@@ -243,35 +243,42 @@ public static class RecordHelper
         this IEnumerable<Tuple<RecordCardItemWrapper, int, bool?>> itemWrapper
     )
     {
-        if (itemWrapper == null || itemWrapper.Count() == 0)
+        if (itemWrapper == null || !itemWrapper.Any())
         {
-            return 0; // 无数据时返回0
+            return 0;
         }
-
-        // 统计小保底次数和歪的次数
+        // 反转后按抽卡时间从旧到新遍历（若原列表是新到旧排列，反转后为旧到新，符合推导顺序）
+        var items = itemWrapper.ToList();
         int totalSmallGuarantees = 0;
         int totalSmallGuaranteeFails = 0;
+        // 初始状态：第一次五星为小保底（isNextSmallGuarantee=true表示下一个五星是小保底）
+        bool isNextSmallGuarantee = true;
 
-        foreach (var item in itemWrapper)
+        foreach (var item in items)
         {
-            var isOffBanner = item.Item3; // 获取是否歪的标志
-            if (isOffBanner.HasValue) // 仅统计非null的项
+            var isOffBanner = item.Item3;
+            if (isOffBanner.HasValue)
             {
-                totalSmallGuarantees++;
-                if (isOffBanner.Value) // 记录歪的次数
+                // 仅当当前五星是小保底状态时，计入统计
+                if (isNextSmallGuarantee)
                 {
-                    totalSmallGuaranteeFails++;
+                    totalSmallGuarantees++;
+                    if (isOffBanner.Value)
+                    {
+                        totalSmallGuaranteeFails++;
+                    }
                 }
+                // 根据当前五星结果，更新下一个五星的保底状态
+                // 若当前歪了（isOffBanner=true），下一个是大保底；若没歪（false），下一个是小保底
+                isNextSmallGuarantee = !isOffBanner.Value;
             }
         }
 
-        // 如果没有有效的小保底记录，歪率为0
         if (totalSmallGuarantees == 0)
         {
             return 0;
         }
 
-        // 计算小保底歪率并返回
         return (double)totalSmallGuaranteeFails / totalSmallGuarantees * 100;
     }
 

@@ -98,6 +98,7 @@ public partial class App : ClientApplication
         }
         await LanguageService.InitAsync();
         await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
+        SetTheme();
         Instance.Service.GetService<IScreenCaptureService>()!.Register();
     }
 

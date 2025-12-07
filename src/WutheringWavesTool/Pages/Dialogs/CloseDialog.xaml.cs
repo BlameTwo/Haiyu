@@ -12,6 +12,7 @@ namespace Haiyu.Pages.Dialogs
         public CloseDialog()
         {
             this.InitializeComponent();
+            this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
         }
 
         private bool isExit = false, isMin = false;
