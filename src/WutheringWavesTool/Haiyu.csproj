@@ -14,8 +14,6 @@
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<Nullable>enable</Nullable>
 		<PublishAot>true</PublishAot>
-		<!--
-		<WindowsPackageType>None</WindowsPackageType>-->
 		<PublishTrimmed>true</PublishTrimmed>
 	</PropertyGroup>
 	<ItemGroup>
@@ -228,7 +226,6 @@
 		<PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
 		<PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-		<!--App Sign-->
 		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 		<PackageCertificateThumbprint>9A058084F8990CF8FEAA9817CB4E3FC0A7C56294</PackageCertificateThumbprint>
@@ -237,7 +234,6 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<AppxBundle>Never</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-		<!--End App Sign-->
 	</PropertyGroup>
 	<ItemGroup>
 	  <PRIResource Remove="AppPackages\**" />
