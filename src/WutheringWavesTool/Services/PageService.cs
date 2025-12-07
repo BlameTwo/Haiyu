@@ -2,6 +2,7 @@
 using Haiyu.Pages.GameWikis;
 using Haiyu.Pages.OOBE;
 using Haiyu.ViewModel.GameViewModels;
+using Haiyu.ViewModel.GameViewModels.GameContexts;
 using Haiyu.ViewModel.OOBEViewModels;
 using Haiyu.ViewModel.WikiViewModels;
 
@@ -18,15 +19,10 @@ public sealed partial class PageService : IPageService
         this.RegisterView<CommunityPage, CommunityViewModel>();
         this.RegisterView<HomePage, HomeViewModel>();
         #region GameContext
-        this.RegisterView<MainGamePage, MainGameViewModel>();
-        this.RegisterView<GlobalGamePage, GlobalGameViewModel>();
-        this.RegisterView<BiliBiliGamePage, BiliBiliGameViewModel>();
-        this.RegisterView<MainPGRGamePage, MainPGRViewModel>();
-        this.RegisterView<TwPGRGamePage, TwPGRGameViewModel>();
-        this.RegisterView<BiliBiliPGRGamePage, BiliBiliPGRGameViewModel>();
-        this.RegisterView<GlobalPGRGamePage, GlobalPGRViewModel>();
-        this.RegisterView<StatisticsPage, StatisticsViewModel>();
+        this.RegisterView<WavesGamePage, WavesGameContextViewModel>();
+        this.RegisterView<PunishGamePage, PunishGameContextViewModel>();
         #endregion
+        this.RegisterView<StatisticsPage, StatisticsViewModel>();
         this.RegisterView<GamerRoilsPage, GameRoilsViewModel>();
         this.RegisterView<GamerDockPage, GamerDockViewModel>();
         this.RegisterView<CloudGamePage, CloudGameViewModel>();

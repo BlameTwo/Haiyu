@@ -44,20 +44,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         };
     }
 
-    #region 时间
-    [ObservableProperty]
-    public partial string MoonIcon { get; set; }
-
-    [ObservableProperty]
-    public partial string MoonState { get; set; }
-
-    [ObservableProperty]
-    public partial string StartTime { get; set; }
-
-    [ObservableProperty]
-    public partial string EndTime { get; set; }
-    #endregion
-
     [ObservableProperty]
     public partial NotifyIconMenu SystemMenu { get; set; }
 
@@ -281,6 +267,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         var network = await NetworkCheck.PingAsync(GameAPIConfig.BaseAddress[0]);
         if (network == null || network.Status != System.Net.NetworkInformation.IPStatus.Success)
         {
+            Logger.WriteError($"检查库洛CDN服务器失败！，地址为:{GameAPIConfig.BaseAddress[0]}");
             Environment.Exit(0);
         }
         var result = await WavesClient.IsLoginAsync(this.CTS.Token);
@@ -306,23 +293,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         this.ShowWavesBilibiliGame = AppSettings.ShowWavesBilibiliGame;
         this.ShowTwPGRGame = AppSettings.ShowTwPGRGame;
         OpenMain();
-
-        var accessStatus = await Geolocator.RequestAccessAsync();
-        if (accessStatus == GeolocationAccessStatus.Allowed)
-        {
-            var geolocator = new Geolocator { DesiredAccuracyInMeters = 0 };
-            var position = await geolocator.GetGeopositionAsync();
-            var moonValue = MoonPhaseCalculator.CalculateMoonPhase(DateTime.Now);
-            this.MoonIcon = MoonPhaseCalculator.DeterminePhaseIcon(moonValue);
-            this.MoonState = MoonPhaseCalculator.DeterminePhaseName(moonValue);
-            var sunTime = SunriseSunsetCalculator.GetSunTime(
-                DateTime.Now,
-                position.Coordinate.Longitude,
-                position.Coordinate.Latitude
-            );
-            this.StartTime = sunTime.SunriseTime.ToString("HH:MM:ss");
-            this.EndTime = sunTime.SunsetTime.ToString("HH:MM:ss");
-        }
         await LauncherTaskService.RunAsync(this.CTS.Token);
     }
 

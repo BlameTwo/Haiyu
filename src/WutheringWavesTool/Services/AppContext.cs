@@ -39,25 +39,25 @@ public class AppContext<T> : IAppContext<T>
         {
             await Instance.GetService<IKuroClient>().InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesMainGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(BiliBiliGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesBiliBiliGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesGlobalGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(MainPGRGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishMainGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(BiliBiliPRGGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishBiliBiliGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(GlobalPRGGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishGlobalGameContext))
                 .InitAsync();
             await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(TwPGRGameContext))
+                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishTwGameContext))
                 .InitAsync();
             this.App = app;
             var win = new MainWindow();

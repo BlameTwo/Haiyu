@@ -1,36 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net10.0-windows10.0.22621.0</TargetFramework>
-		<TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+		<TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
 		<RootNamespace>Haiyu</RootNamespace>
 		<Platforms>x64</Platforms>
 		<Nullable>enable</Nullable>
 		<RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-		<PublishProfile>win-$(Platform).pubxml</PublishProfile>
+		<PublishProfile>win-x64.pubxml</PublishProfile>
 		<UseWinUI>true</UseWinUI>
 		<LangVersion>preview</LangVersion>
+		<WinUISDKReferences>false</WinUISDKReferences>
 		<EnableMsixTooling>true</EnableMsixTooling>
+		<Nullable>enable</Nullable>
 		<PublishAot>true</PublishAot>
-		<UseNativeAot>true</UseNativeAot>
-		
-		<InvariantGlobalization>true</InvariantGlobalization>
-		<CsWinRTAotOptimizerEnabled>true</CsWinRTAotOptimizerEnabled>
-		<WindowsSdkPackageVersion>10.0.26100.56</WindowsSdkPackageVersion>
-		<IsAotCompatible>true</IsAotCompatible>
-		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
-		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
-		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-		<GenerateTestArtifacts>False</GenerateTestArtifacts>
-		<AppxBundle>Auto</AppxBundle>
-		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-		<!--Win32 PE-->
-		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
-		<DefaultLanguage>zh-Hans</DefaultLanguage>
-		<PackageCertificateThumbprint>9A058084F8990CF8FEAA9817CB4E3FC0A7C56294</PackageCertificateThumbprint>
-		<!--Win32 PE-->
+		<PublishTrimmed>true</PublishTrimmed>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="AppPackages\**" />
@@ -65,9 +49,8 @@
 		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
 		<None Remove="Pages\Dialogs\GameLauncherCacheManager.xaml" />
 		<None Remove="Pages\Dialogs\WebGameLogin.xaml" />
-		<None Remove="Pages\GamePages\BiliBiliPGRGamePage.xaml" />
-		<None Remove="Pages\GamePages\GlobalPGRGamePage.xaml" />
-		<None Remove="Pages\GamePages\TwPGRGamePage.xaml" />
+		<None Remove="Pages\GamePages\PunishGamePage.xaml" />
+		<None Remove="Pages\GamePages\WavesGamePage.xaml" />
 		<None Remove="Pages\GameWikis\PunishWikiPage.xaml" />
 		<None Remove="Pages\GameWikis\WavesWikiPage.xaml" />
 		<None Remove="Pages\HomePage.xaml" />
@@ -89,24 +72,10 @@
 	<ItemGroup>
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>
-	<ItemGroup>
-		<COMReference Include="IWshRuntimeLibrary">
-			<WrapperTool>tlbimp</WrapperTool>
-			<VersionMinor>0</VersionMinor>
-			<VersionMajor>1</VersionMajor>
-			<Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
-			<Lcid>0</Lcid>
-			<Isolated>false</Isolated>
-			<EmbedInteropTypes>true</EmbedInteropTypes>
-		</COMReference>
-	</ItemGroup>
 	<ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<ProjectCapability Include="Msix" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<None Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
-	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.2.250402" />
 		<PackageReference Include="CommunityToolkit.WinUI.Behaviors" Version="8.2.250402" />
@@ -122,12 +91,9 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3537.50" />
-		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.235">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.6901" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251003001" />
+		
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
 		<PackageReference Include="Serilog" Version="4.3.1-dev-02373" />
 		<PackageReference Include="Serilog.Sinks.Async" Version="2.1.0" />
@@ -135,19 +101,9 @@
 		<PackageReference Include="WinUIEx" Version="2.9.0" />
 		<PackageReference Include="ZLinq" Version="1.5.4" />
 		<PackageReference Include="ZXing.Net" Version="0.16.11" />
-		<PackageReference Include="Microsoft.DotNet.ILCompiler" Version="10.0.0-rtm.25507.103" />
-		<KnownRuntimePack Update="@(KnownRuntimePack)">
-			<LatestRuntimeFrameworkVersion Condition="'%(KnownRuntimePack.Identity)' == 'Microsoft.NETCore.App'
-      and '%(KnownRuntimePack.RuntimePackLabels)' == 'NativeAOT'
-      and '%(KnownRuntimePack.TargetFramework)' == 'net10.0'">10.0.0-rtm.25507.103</LatestRuntimeFrameworkVersion>
-		</KnownRuntimePack>
-		<KnownILCompilerPack Update="@(KnownILCompilerPack)">
-			<ILCompilerPackVersion Condition="'%(KnownILCompilerPack.TargetFramework)' == 'net10.0'">10.0.0-rtm.25507.103</ILCompilerPackVersion>
-		</KnownILCompilerPack>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Astronomical\Astronomical.csproj" />
-		<ProjectReference Include="..\Haiyu.Plugin\Haiyu.Plugin.csproj" />
 		<ProjectReference Include="..\LanguageEditer.Model\LanguageEditer.Model.csproj" />
 		<ProjectReference Include="..\Waves.Api\Waves.Api.csproj" />
 		<ProjectReference Include="..\Waves.Core\Waves.Core.csproj" />
@@ -248,78 +204,13 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<Page Update="Pages\OOBEPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\OOBE\LanguageSelectPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Controls\Styles\AnimatedTextBlock.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Controls\Styles\Shimmer.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\GameWikis\PunishWikiPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Controls\Styles\ApplicationBackgroundControl.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\Dialogs\GameLauncherCacheManager.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\GameWikis\WavesWikiPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\HomePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\GamePages\TwPGRGamePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\StartColorFullGamePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\Record\AnalysisRecordPage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\GamePages\GlobalPGRGamePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\GamePages\BiliBiliPGRGamePage.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\ColorFullGame.xaml">
-		  <Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Controls\Styles\Card.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\CloudGamePage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\Dialogs\WebGameLogin.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		
-		<Page Update="Pages\Communitys\ResourceBriefPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
-		<Page Update="Pages\DeviceInfoPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</Page>
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\Languages\" />
 	  <Folder Include="Common\Plugins\" />
-	  <Folder Include="Languages\" />
 	  <Folder Include="Pages\ColorGame\" />
 	</ItemGroup>
 	<PropertyGroup Label="Globals">
-	  <WV2WinRTExplicitIncludesOnly>False</WV2WinRTExplicitIncludesOnly>
-	  <WV2WinRTRequireAllowForWebAttribute>False</WV2WinRTRequireAllowForWebAttribute>
-	  <SignAssembly>False</SignAssembly>
 	  <Win32Resource>Assets/Cursor/CursorResource.res</Win32Resource>
 	</PropertyGroup>
 
@@ -331,7 +222,19 @@
 	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
 	</PropertyGroup>
-	
+	<PropertyGroup>
+		<PublishReadyToRun Condition="'$(Configuration)' == 'Debug'">False</PublishReadyToRun>
+		<PublishReadyToRun Condition="'$(Configuration)' != 'Debug'">True</PublishReadyToRun>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+		<PackageCertificateThumbprint>9A058084F8990CF8FEAA9817CB4E3FC0A7C56294</PackageCertificateThumbprint>
+		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
+		<GenerateTestArtifacts>True</GenerateTestArtifacts>
+		<AppxBundle>Never</AppxBundle>
+		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+	</PropertyGroup>
 	<ItemGroup>
 	  <PRIResource Remove="AppPackages\**" />
 	</ItemGroup>

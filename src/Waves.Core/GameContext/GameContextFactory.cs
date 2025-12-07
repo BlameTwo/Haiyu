@@ -10,48 +10,52 @@ public static class GameContextFactory
 {
     public static string GameBassPath { get; set; }
 
-    internal static BiliBiliGameContext GetBilibiliGameContext() =>
-        new BiliBiliGameContext(GameAPIConfig.BilibiliConfig)
+
+
+    internal static WavesBiliBiliGameContext GetBilibiliGameContext() =>
+        new WavesBiliBiliGameContext(GameAPIConfig.BilibiliConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\BiliBiliConfig",
             IsLimitSpeed = false,
         };
 
-    internal static GlobalGameContext GetGlobalGameContext() =>
-        new GlobalGameContext(GameAPIConfig.GlobalConfig)
+    internal static WavesGlobalGameContext GetGlobalGameContext() =>
+        new WavesGlobalGameContext(GameAPIConfig.GlobalConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\GlobalConfig",
             IsLimitSpeed = false,
         };
 
-    internal static MainGameContext GetMainGameContext() =>
-        new MainGameContext(GameAPIConfig.MainAPiConfig)
+    internal static WavesMainGameContext GetMainGameContext() =>
+        new WavesMainGameContext(GameAPIConfig.MainAPiConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\MainConfig",
             IsLimitSpeed = false,
         };
 
-    internal static MainPGRGameContext GetMainPGRGameContext() =>
-        new MainPGRGameContext(GameAPIConfig.MainBGRConfig)
+    internal static PunishMainGameContext GetMainPGRGameContext() =>
+        new PunishMainGameContext(GameAPIConfig.MainBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\MainPGRConfig",
             IsLimitSpeed = false,
         };
 
-    internal static BiliBiliPRGGameContext GetBiliBiliPRGGameContext() =>
-        new BiliBiliPRGGameContext(GameAPIConfig.BiliBiliBGRConfig)
+    internal static PunishBiliBiliGameContext GetBiliBiliPRGGameContext() =>
+        new PunishBiliBiliGameContext(GameAPIConfig.BiliBiliBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\BilibiliPRGConfig",
             IsLimitSpeed = false,
-        }; internal static GlobalPRGGameContext GetGlobalPGRGameContext() =>
-        new GlobalPRGGameContext(GameAPIConfig.GlobalBGRConfig)
+        };
+
+    internal static PunishGlobalGameContext GetGlobalPGRGameContext() =>
+        new PunishGlobalGameContext(GameAPIConfig.GlobalBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\GlokbalPGRConfig",
             IsLimitSpeed = false,
         };
 
-    internal static TwPGRGameContext GetTwWavesGameContext()=>
-        new TwPGRGameContext(GameAPIConfig.TWBGRConfig)
+    internal static PunishTwGameContext GetTwWavesGameContext() =>
+        new PunishTwGameContext(GameAPIConfig.TWBGRConfig)
         {
             GamerConfigPath = GameContextFactory.GameBassPath + "\\TwPGRConfig",
             IsLimitSpeed = false,

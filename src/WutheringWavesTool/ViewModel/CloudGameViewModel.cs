@@ -355,8 +355,8 @@ public partial class CloudGameViewModel : ViewModelBase
                 if (File.Exists(savePath.Path))
                     File.Delete(savePath.Path);
                 await File.WriteAllTextAsync(savePath.Path, json, encoding: Encoding.UTF8, this.CTS.Token);
+                await TipShow.ShowMessageAsync("导出成功", Symbol.Accept);
             }
-            await TipShow.ShowMessageAsync("导出成功", Symbol.Accept);
         }
         catch (Exception ex)
         {

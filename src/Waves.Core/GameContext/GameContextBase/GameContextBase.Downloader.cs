@@ -225,9 +225,9 @@ public partial class GameContextBase
     public int GetVerifyLimit()
     {
         if (
-            this.ContextName == nameof(MainPGRGameContext)
-            || this.ContextName == nameof(GlobalPRGGameContext)
-            || this.ContextName == nameof(TwPGRGameContext)
+            this.ContextName == nameof(PunishMainGameContext)
+            || this.ContextName == nameof(PunishGlobalGameContext)
+            || this.ContextName == nameof(PunishTwGameContext)
         )
         {
             return 200;

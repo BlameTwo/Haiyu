@@ -22,22 +22,11 @@ public sealed partial class ShellPage : Page
     private void HomeNavigationService_Navigated(object sender, NavigationEventArgs e)
     {
         if (
-            e.SourcePageType == typeof(MainGamePage)
-            || e.SourcePageType == typeof(BiliBiliGamePage)
-            || e.SourcePageType == typeof(GlobalGamePage)
-            || e.SourcePageType == typeof(MainPGRGamePage)
-            || e.SourcePageType == typeof(GlobalPGRGamePage)
-            || e.SourcePageType == typeof(BiliBiliPGRGamePage)
-            || e.SourcePageType == typeof(TwPGRGamePage)
+            e.SourcePageType == typeof(WavesGamePage)
+            || e.SourcePageType == typeof(PunishGamePage)
         )
         {
             To0.Start();
-            this.titlebar.UpDate();
-        }
-        else if (e.SourcePageType == typeof(CommunityPage))
-        {
-            To8.Start();
-            this.ViewModel.LoginBthVisibility = Visibility.Collapsed;
             this.titlebar.UpDate();
         }
         else
