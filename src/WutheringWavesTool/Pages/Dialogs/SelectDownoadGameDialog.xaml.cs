@@ -1,4 +1,5 @@
-﻿using Haiyu.Models.Dialogs;
+﻿using Haiyu.Common;
+using Haiyu.Models.Dialogs;
 using Haiyu.Services.DialogServices;
 
 namespace Haiyu.Pages.Dialogs
@@ -81,6 +82,16 @@ namespace Haiyu.Pages.Dialogs
                 .FirstOrDefault(drive =>
                     drive.Name.Equals(rootPath, StringComparison.OrdinalIgnoreCase)
                 );
+            var isVild = Path.GetPathRoot(folderPath.Path) == folderPath.Path;
+            if(isVild)
+            {
+                layeredGrid.Visibility = Visibility.Visible;
+                layerText.Visibility = Visibility.Collapsed;
+                TipMessage.Text = "请选择一个文件夹，而并非一个磁盘";
+                download.Fill = new SolidColorBrush(Colors.Red);
+                downloadBth.IsEnabled = false;
+                return;
+            }
             if (selectedDrive == null)
                 return;
             double totalSizeMB = (double)selectedDrive.TotalSize / (1024 * 1024 * 1024);

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -65,7 +66,15 @@ public sealed partial class InstallViewModel : ObservableRecipient
                 MessageBox.Show("本程序不允许安装在C盘");
                 return;
             }
-            InstallFolder = dialog.FileName;
+            var isVild =  Path.GetPathRoot(dialog.FileName) == dialog.FileName;
+            if (isVild)
+            {
+                InstallFolder = dialog.FileName+"\\Haiyu";
+            }
+            else
+            {
+                InstallFolder = dialog.FileName;
+            }
             this.SetupProperty.InstallPath = InstallFolder;
         }
     }
