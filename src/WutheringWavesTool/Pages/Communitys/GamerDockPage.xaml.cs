@@ -8,7 +8,7 @@ public sealed partial class GamerDockPage : Page, IPage,IDisposable
     {
         this.InitializeComponent();
 
-        this.ViewModel = Instance.Service.GetRequiredService<GamerDockViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<GamerDockViewModel>();
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)

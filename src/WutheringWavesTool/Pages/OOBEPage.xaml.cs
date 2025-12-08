@@ -5,7 +5,7 @@ public sealed partial class OOBEPage : Page
     public OOBEPage()
     {
         InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<OOBEViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<OOBEViewModel>();
         this.ViewModel.NavigationService.RegisterView(this.frame);
     }
 

@@ -155,7 +155,7 @@
                 HorizontalContentAlignment="Stretch"
                 Description="更改选项需要重启生效"
                 Header="元素鼠标指针"
-                Visibility="Collapsed">
+                Visibility="Visible">
                 <ui:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x270C;" />
                 </ui:SettingsCard.HeaderIcon>
@@ -332,6 +332,14 @@
                 FontSize="15"
                 Text="存储与其他" />
             <ui:SettingsCard
+                Command="{x:Bind ViewModel.DeleteWebCacheCommandCommand}"
+                Header="删除Web缓存"
+                IsClickEnabled="True">
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE74D;" />
+                </ui:SettingsCard.HeaderIcon>
+            </ui:SettingsCard>
+            <ui:SettingsCard
                 Margin="0,5,0,0"
                 Command="{x:Bind ViewModel.OpenConfigFolderCommand}"
                 Header="配置文件夹"
@@ -369,7 +377,7 @@
                     <ui:SettingsCard Header="Web内核版本">
                         <TextBlock Text="{x:Bind ViewModel.WebViewVersion, Mode=OneWay}" />
                     </ui:SettingsCard>
-                    <ui:SettingsCard Header="WSDK 版本">
+                    <ui:SettingsCard Header="WindowsApp Sdk">
 
                         <TextBlock Text="{x:Bind ViewModel.WindowsAppSdkVersion, Mode=OneWay}" />
                     </ui:SettingsCard>

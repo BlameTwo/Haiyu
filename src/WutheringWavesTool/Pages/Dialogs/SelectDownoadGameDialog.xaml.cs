@@ -11,11 +11,11 @@ namespace Haiyu.Pages.Dialogs
         public SelectDownoadGameDialog()
         {
             InitializeComponent();
-            this.DialogManager = Instance.Service.GetRequiredKeyedService<IDialogManager>(
+            this.DialogManager = Instance.Host.Services.GetRequiredKeyedService<IDialogManager>(
                 nameof(MainDialogService)
             );
-            this.Pickers = Instance.Service.GetRequiredService<IPickersService>();
-            this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
+            this.Pickers = Instance.Host.Services.GetRequiredService<IPickersService>();
+            this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
         }
 
         SelectDownloadFolderResult downloadResult = null;
@@ -35,7 +35,7 @@ namespace Haiyu.Pages.Dialogs
             if (data is Type type)
             {
                 var name = type.Name;
-                this.GameContext = Instance.Service.GetRequiredKeyedService<IGameContext>(name);
+                this.GameContext = Instance.Host.Services.GetRequiredKeyedService<IGameContext>(name);
             }
         }
 

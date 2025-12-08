@@ -21,7 +21,7 @@ public abstract class DialogManager : IDialogManager
 
     public async Task ShowGameResourceDialogAsync(string contextName)
     {
-        var dialog = Instance.Service.GetRequiredService<GameResourceDialog>();
+        var dialog = Instance.Host.Services.GetRequiredService<GameResourceDialog>();
         dialog.SetData(contextName);
         dialog.XamlRoot = this.Root;
         this._dialog = dialog;
@@ -34,7 +34,7 @@ public abstract class DialogManager : IDialogManager
     {
         if (_dialog != null)
             return;
-        var dialog = Instance.Service.GetRequiredService<T>();
+        var dialog = Instance.Host.Services.GetRequiredService<T>();
         dialog.XamlRoot = this.Root;
         this._dialog = dialog;
         var result = await _dialog.ShowAsync();
@@ -49,7 +49,7 @@ public abstract class DialogManager : IDialogManager
             _dialog.Hide();
             _dialog = null;
         }
-        var dialog = Instance.Service.GetRequiredService<T>();
+        var dialog = Instance.Host.Services.GetRequiredService<T>();
         dialog.XamlRoot = this.Root;
         dialog.SetData(data);
         this._dialog = dialog;
@@ -74,7 +74,7 @@ public abstract class DialogManager : IDialogManager
         {
             _dialog = null;
         }
-        var dialog = Instance.Service.GetRequiredService<T>();
+        var dialog = Instance.Host.Services.GetRequiredService<T>();
         dialog.XamlRoot = this.Root;
         dialog.SetData(data);
         this._dialog = dialog;

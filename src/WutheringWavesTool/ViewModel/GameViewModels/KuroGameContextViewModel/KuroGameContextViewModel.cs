@@ -23,8 +23,8 @@ public abstract partial class KuroGameContextViewModel
 
     protected KuroGameContextViewModel(IAppContext<App> appContext, ITipShow tipShow)
     {
-        this.Logger = Instance.Service.GetKeyedService<LoggerService>("AppLog");
-        DialogManager = Instance.Service.GetRequiredKeyedService<IDialogManager>(
+        this.Logger = Instance.Host.Services.GetKeyedService<LoggerService>("AppLog");
+        DialogManager = Instance.Host.Services.GetRequiredKeyedService<IDialogManager>(
             nameof(MainDialogService)
         );
         AppContext = appContext;
@@ -137,7 +137,7 @@ public abstract partial class KuroGameContextViewModel
         {
             GameContext.GameContextOutput -= GameContext_GameContextOutput;
         }
-        this.GameContext = Instance.Service.GetRequiredKeyedService<IGameContext>(name);
+        this.GameContext = Instance.Host.Services.GetRequiredKeyedService<IGameContext>(name);
         GameContext.GameContextOutput += GameContext_GameContextOutput;
         var dx11 = this.GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.IsDx11);
         if (bool.TryParse(dx11, out var flag))

@@ -22,7 +22,7 @@ public sealed partial class PunishGamePage : Page,IPage
     public PunishGamePage()
     {
         InitializeComponent();
-        ViewModel = Instance.Service.GetRequiredService<PunishGameContextViewModel>();
+        ViewModel = Instance.Host.Services.GetRequiredService<PunishGameContextViewModel>();
         DataContext = this;
     }
 

@@ -7,7 +7,7 @@ public sealed partial class CommunityPage : Page, IPage, IDisposable
     public CommunityPage()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<CommunityViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<CommunityViewModel>();
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)

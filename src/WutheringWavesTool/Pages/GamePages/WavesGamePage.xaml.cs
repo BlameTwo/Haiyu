@@ -23,7 +23,7 @@ namespace Haiyu.Pages.GamePages
         public WavesGamePage()
         {
             InitializeComponent();
-            ViewModel =  Instance.Service.GetRequiredService<WavesGameContextViewModel>();
+            ViewModel =  Instance.Host.Services.GetRequiredService<WavesGameContextViewModel>();
             DataContext = this;
         }
 

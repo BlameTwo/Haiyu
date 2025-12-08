@@ -5,7 +5,7 @@ public sealed partial class PlayerRecordPage : Page, IWindowPage
     public PlayerRecordPage()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<PlayerRecordViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<PlayerRecordViewModel>();
         this.Loaded += PlayerRecordPage_Loaded;
         this.ViewModel.PlayerRecordContext.TipShow.Owner = this.grid;
     }

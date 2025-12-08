@@ -37,7 +37,7 @@ public sealed partial class GameResourceViewModel : DialogViewModelBase
     internal void SetData(string contextName)
     {
         ContextName = contextName;
-        this.GameContext = Instance.Service.GetRequiredKeyedService<IGameContext>(contextName);
+        this.GameContext = Instance.Host.Services.GetRequiredKeyedService<IGameContext>(contextName);
     }
 
     [RelayCommand]

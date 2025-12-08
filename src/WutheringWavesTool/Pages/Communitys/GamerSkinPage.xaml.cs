@@ -5,7 +5,7 @@ public sealed partial class GamerSkinPage : Page, IPage,IDisposable
     public GamerSkinPage()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<GamerSkinViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<GamerSkinViewModel>();
     }
 
     public GamerSkinViewModel ViewModel { get; }

@@ -5,7 +5,7 @@ public sealed partial class ResourceBriefPage : Page, IPage,IDisposable
     public ResourceBriefPage()
     {
         InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<ResourceBriefViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<ResourceBriefViewModel>();
     }
 
     public Type PageType => typeof(ResourceBriefPage);

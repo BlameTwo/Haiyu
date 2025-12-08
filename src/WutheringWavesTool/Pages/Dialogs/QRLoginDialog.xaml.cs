@@ -8,7 +8,7 @@ namespace Haiyu.Pages.Dialogs
         {
             InitializeComponent();
             this.ViewModel = Instance.GetService<QrLoginViewModel>();
-            this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
+            this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
         }
 
         public QrLoginViewModel? ViewModel { get; }

@@ -6,19 +6,30 @@ using Haiyu.ViewModel.GameViewModels;
 using Haiyu.ViewModel.GameViewModels.GameContexts;
 using Haiyu.ViewModel.OOBEViewModels;
 using Haiyu.ViewModel.WikiViewModels;
+using Microsoft.Extensions.Hosting;
 using Waves.Core.Services;
 
 namespace Haiyu;
 
 public static class Instance
 {
-    public static IServiceProvider Service { get; private set; }
+
+    public static IHost Host { get; private set;}
 
     public static void InitService()
     {
-        Service = new ServiceCollection()
+        Host = AppBuilder()
+               .Build();
+        
+    }
+
+    public static IHostBuilder AppBuilder()
+    {
+        IHostBuilder builder = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder();
+        builder.ConfigureServices((Service) =>
+        {
             #region View and ViewModel
-            .AddSingleton<ShellPage>()
+            Service.AddSingleton<ShellPage>()
             .AddSingleton<ShellViewModel>()
             .AddSingleton<OOBEPage>()
             .AddSingleton<OOBEViewModel>()
@@ -101,7 +112,7 @@ public static class Instance
             .AddSingleton<IScreenCaptureService, ScreenCaptureService>()
             .AddSingleton<IGameWikiClient, GameWikiClient>()
             .AddTransient<IViewFactorys, ViewFactorys>()
-            .AddSingleton<IThemeService,ThemeService>()
+            .AddSingleton<IThemeService, ThemeService>()
             .AddTransient<ILauncherTaskService, LauncherTaskService>()
             .AddSingleton<CloudConfigManager>(
                 (s) =>
@@ -165,14 +176,15 @@ public static class Instance
                 nameof(GameRoilNavigationService)
             )
             #endregion
-            .AddGameContext()
-            .BuildServiceProvider();
+            .AddGameContext();
+        });
+        return builder;
     }
 
     public static T? GetService<T>()
         where T : notnull
     {
-        if (Service.GetRequiredService<T>() is not T v)
+        if (Host.Services.GetRequiredService<T>() is not T v)
         {
             throw new ArgumentException("服务未注入");
             ;

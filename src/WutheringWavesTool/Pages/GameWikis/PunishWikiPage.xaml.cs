@@ -8,7 +8,7 @@ public sealed partial class PunishWikiPage : Page, IPage
     public PunishWikiPage()
     {
         InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<PunishWikiViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<PunishWikiViewModel>();
     }
     public PunishWikiViewModel ViewModel { get; private set; }
     public Type PageType => typeof(PunishWikiPage);

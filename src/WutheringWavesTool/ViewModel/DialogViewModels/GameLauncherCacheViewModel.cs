@@ -56,7 +56,7 @@ public sealed partial class GameLauncherCacheViewModel : DialogViewModelBase
     public void SetData(GameLauncherCacheArgs args)
     {
         this._args = args;
-        this.GameContext = Instance.Service.GetKeyedService<IGameContext>(args.GameContextName);
+        this.GameContext = Instance.Host.Services.GetKeyedService<IGameContext>(args.GameContextName);
         this.Items = args.Datas.ToObservableCollection();
     }
 }

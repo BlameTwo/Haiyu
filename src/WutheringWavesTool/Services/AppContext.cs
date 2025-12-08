@@ -37,27 +37,20 @@ public class AppContext<T> : IAppContext<T>
     {
         try
         {
-            await Instance.GetService<IKuroClient>().InitAsync();
-            await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesMainGameContext))
+            await Instance.Host.Services.GetService<IKuroClient>().InitAsync();
+            await Instance.Host.Services!.GetRequiredKeyedService<IGameContext>(nameof(WavesMainGameContext))
                 .InitAsync();
-            await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesBiliBiliGameContext))
+            await Instance.Host.Services!.GetRequiredKeyedService<IGameContext>(nameof(WavesBiliBiliGameContext))
                 .InitAsync();
-            await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(WavesGlobalGameContext))
+            await Instance.Host.Services!.GetRequiredKeyedService<IGameContext>(nameof(WavesGlobalGameContext))
                 .InitAsync();
-            await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishMainGameContext))
+            await Instance.Host.Services!.GetRequiredKeyedService<IGameContext>(nameof(PunishMainGameContext))
                 .InitAsync();
-            await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishBiliBiliGameContext))
+            await Instance.Host.Services!.GetRequiredKeyedService<IGameContext>(nameof(PunishBiliBiliGameContext))
                 .InitAsync();
-            await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishGlobalGameContext))
+            await Instance.Host.Services!.GetRequiredKeyedService<IGameContext>(nameof(PunishGlobalGameContext))
                 .InitAsync();
-            await Instance
-                .Service!.GetRequiredKeyedService<IGameContext>(nameof(PunishTwGameContext))
+            await Instance.Host.Services!.GetRequiredKeyedService<IGameContext>(nameof(PunishTwGameContext))
                 .InitAsync();
             this.App = app;
             var win = new MainWindow();
@@ -74,7 +67,7 @@ public class AppContext<T> : IAppContext<T>
                 //    win.AppWindow.Resize(
                 //        new Windows.Graphics.SizeInt32 { Width = pixelWidth, Height = pixelHeight }
                 //    );
-                //    var page = Instance.Service!.GetRequiredService<OOBEPage>();
+                //    var page = Instance.Host.Services!.GetRequiredService<OOBEPage>();
                 //    page.titlebar.Window = win;
                 //    win.Content = page;
                 //}
@@ -87,7 +80,7 @@ public class AppContext<T> : IAppContext<T>
                 //    win.AppWindow.Resize(
                 //        new Windows.Graphics.SizeInt32 { Width = pixelWidth, Height = pixelHeight }
                 //    );
-                //    var page = Instance.Service!.GetRequiredService<ShellPage>();
+                //    var page = Instance.Host.Services!.GetRequiredService<ShellPage>();
                 //    page.titlebar.Window = win;
                 //    win.Content = page;
                 //}
@@ -98,7 +91,7 @@ public class AppContext<T> : IAppContext<T>
                 win.AppWindow.Resize(
                     new Windows.Graphics.SizeInt32 { Width = pixelWidth, Height = pixelHeight }
                 );
-                var page = Instance.Service!.GetRequiredService<ShellPage>();
+                var page = Instance.Host.Services!.GetRequiredService<ShellPage>();
                 page.titlebar.Window = win;
                 win.Content = page;
             }

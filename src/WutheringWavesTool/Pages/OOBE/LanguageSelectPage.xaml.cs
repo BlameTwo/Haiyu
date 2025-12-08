@@ -21,7 +21,7 @@ namespace Haiyu.Pages.OOBE
         public LanguageSelectPage()
         {
             InitializeComponent();
-            this.ViewModel = Instance.Service.GetRequiredService<LanguageSelectViewModel>();
+            this.ViewModel = Instance.Host.Services.GetRequiredService<LanguageSelectViewModel>();
         }
 
         public Type PageType => typeof(Page);

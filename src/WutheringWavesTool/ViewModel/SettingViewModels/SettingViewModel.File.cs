@@ -1,5 +1,6 @@
 ﻿using System.Security.Principal;
 using Haiyu.Plugin.Extensions;
+using Microsoft.WindowsAppSDK;
 using Windows.Management.Deployment;
 
 namespace Haiyu.ViewModel;
@@ -21,7 +22,7 @@ partial class SettingViewModel
     void GetAllVersion()
     {
         WebViewVersion = CoreWebView2Environment.GetAvailableBrowserVersionString() ?? "未安装";
-        this.WindowsAppSdkVersion = $"1.8.251003001";
+        this.WindowsAppSdkVersion = $"{Release.Major}.{Release.Minor}.{Release.Patch}-{Release.Channel}";
         this.RunType = RuntimeFeature.IsDynamicCodeCompiled ? "JIT" : "AOT";
         this.FrameworkType = RuntimeInformation.FrameworkDescription;
     }
@@ -37,6 +38,18 @@ partial class SettingViewModel
             null,
             WindowExtension.SW_SHOWNORMAL
         );
+    }
+
+    [RelayCommand]
+    async Task DeleteWebCacheCommand()
+    {
+        if (Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Haiyu.exe.WebView2")))
+        {
+            await Task.Run(() =>
+            {
+                Directory.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Haiyu.exe.WebView2"), true);
+            });
+        }
     }
 
     [RelayCommand]

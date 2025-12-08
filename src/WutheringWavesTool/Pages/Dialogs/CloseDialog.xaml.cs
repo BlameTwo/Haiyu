@@ -12,7 +12,7 @@ namespace Haiyu.Pages.Dialogs
         public CloseDialog()
         {
             this.InitializeComponent();
-            this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
+            this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
         }
 
         private bool isExit = false, isMin = false;
@@ -29,7 +29,7 @@ namespace Haiyu.Pages.Dialogs
             }
             this.isExit = false;
             this.isMin = true;
-            Instance.Service.GetRequiredKeyedService<IDialogManager>(nameof(MainDialogService)).CloseDialog();
+            Instance.Host.Services.GetRequiredKeyedService<IDialogManager>(nameof(MainDialogService)).CloseDialog();
         }
 
         private void Close_Win(object sender, RoutedEventArgs e)
@@ -40,7 +40,7 @@ namespace Haiyu.Pages.Dialogs
             }
             this.isExit = true;
             this.isMin = false;
-            Instance.Service.GetRequiredKeyedService<IDialogManager>(nameof(MainDialogService)).CloseDialog();
+            Instance.Host.Services.GetRequiredKeyedService<IDialogManager>(nameof(MainDialogService)).CloseDialog();
         }
 
         public void SetData(object data)
