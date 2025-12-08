@@ -247,6 +247,12 @@ public class AppSettings
         set => Write(value.ToString());
     }
 
+    public static string TokenDid
+    {
+        get => Read();
+        set => Write(value);
+    }
+
     #endregion
 
     internal static string? Read([CallerMemberName] string key = null)

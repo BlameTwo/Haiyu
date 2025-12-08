@@ -70,11 +70,17 @@
                         Source="ms-appx:///Assets/GameIcons/bilibili.ico" />
                     <controls:ImageEx
                         Grid.Row="1"
-                        Grid.ColumnSpan="2"
                         Width="45"
                         Height="45"
                         Margin="5"
                         Source="ms-appx:///Assets/GameIcons/pgr.ico" />
+                    <controls:ImageEx
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="45"
+                        Height="45"
+                        Margin="5"
+                        Source="ms-appx:///Assets/appLogo.png" />
                 </Grid>
                 <controls:ImageEx
                     Grid.RowSpan="3"

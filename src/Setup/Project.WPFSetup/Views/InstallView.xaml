@@ -38,7 +38,7 @@
                     Grid.Column="1"
                     Margin="10,0,0,0"
                     Command="{Binding OpenFolderCommand}">
-                    <ui:FontIcon Glyph="SelectAll" />
+                    <ui:FontIcon Glyph="Folder" />
                 </ui:FluentButton>
             </Grid>
             <StackPanel

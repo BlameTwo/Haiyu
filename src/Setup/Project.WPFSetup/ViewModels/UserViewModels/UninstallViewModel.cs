@@ -56,8 +56,8 @@ public sealed partial class UninstallViewModel : ObservableRecipient
         UninstallingVisibility = Visibility.Visible;
         UninstadVisibility = Visibility.Collapsed;
         SetupProperty.Setups.Clear();
-        SetupProperty.Setups.Add(new RemoveRegisterSetup());
         SetupProperty.Setups.Add(new DeleteInstallFolderSetup());
+        SetupProperty.Setups.Add(new RemoveRegisterSetup());
         SetupProperty.Setups.Add(new RemoveLinkSetup());
         IProgress<InstallProgressArgs> installProgress = new Progress<InstallProgressArgs>();
         (installProgress as Progress<InstallProgressArgs>)!.ProgressChanged += (s, e) =>

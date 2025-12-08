@@ -25,7 +25,7 @@
             <SelectorBarItem
                 Tag="Token"
                 Text="授权码"
-                Visibility="Collapsed" />
+                Visibility="Visible" />
         </SelectorBar>
         <Border Grid.Row="1" Visibility="{x:Bind ViewModel.PhoneVisibility, Mode=OneWay}">
             <Grid VerticalAlignment="Center">
@@ -56,13 +56,16 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <TextBox PlaceholderText="输入授权码" Text="{x:Bind ViewModel.Token, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox PlaceholderText="输入Token" Text="{x:Bind ViewModel.Token, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBox
                     Grid.Row="1"
                     Margin="0,10,0,0"
-                    PlaceholderText="输入账号Uid"
+                    PlaceholderText="账号Uid"
                     Text="{x:Bind ViewModel.TokenId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
+                <TextBox
+                    Grid.Row="2"
+                    Margin="0,10,0,0"
+                    PlaceholderText="设备Did" />
             </Grid>
         </Border>
 

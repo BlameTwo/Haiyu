@@ -12,9 +12,11 @@
 		<LangVersion>preview</LangVersion>
 		<WinUISDKReferences>false</WinUISDKReferences>
 		<EnableMsixTooling>true</EnableMsixTooling>
-		<Nullable>enable</Nullable>
 		<PublishAot>true</PublishAot>
 		<PublishTrimmed>true</PublishTrimmed>
+	
+	
+		<WindowsPackageType>None</WindowsPackageType>
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="AppPackages\**" />
@@ -35,29 +37,6 @@
 		<Content Remove="assets\geet2.html" />
 		<Content Remove="Assets\HpatchzResource\hpatchz.exe" />
 		<Content Remove="Assets\RolePage\appLogo.png" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Remove="Assets\background.png" />
-		<None Remove="Assets\Fonts\gameIcon.ttf" />
-		<None Remove="Assets\Settingbackground.png" />
-		<None Remove="Controls\Styles\AnimatedTextBlock.xaml" />
-		<None Remove="Controls\Styles\ApplicationBackgroundControl.xaml" />
-		<None Remove="Controls\Styles\Card.xaml" />
-		<None Remove="Controls\Styles\Shimmer.xaml" />
-		<None Remove="Pages\CloudGamePage.xaml" />
-		<None Remove="Pages\ColorFullGame.xaml" />
-		<None Remove="Pages\Communitys\ResourceBriefPage.xaml" />
-		<None Remove="Pages\Dialogs\GameLauncherCacheManager.xaml" />
-		<None Remove="Pages\Dialogs\WebGameLogin.xaml" />
-		<None Remove="Pages\GamePages\PunishGamePage.xaml" />
-		<None Remove="Pages\GamePages\WavesGamePage.xaml" />
-		<None Remove="Pages\GameWikis\PunishWikiPage.xaml" />
-		<None Remove="Pages\GameWikis\WavesWikiPage.xaml" />
-		<None Remove="Pages\HomePage.xaml" />
-		<None Remove="Pages\OOBEPage.xaml" />
-		<None Remove="Pages\OOBE\LanguageSelectPage.xaml" />
-		<None Remove="Pages\Record\AnalysisRecordPage.xaml" />
-		<None Remove="Pages\StartColorFullGamePage.xaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -109,12 +88,6 @@
 		<ProjectReference Include="..\Waves.Core\Waves.Core.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<Content Update="Assets\appLogo.ico">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Update="Assets\applogo.png">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
 		<Content Update="Assets\background.png">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -162,6 +135,18 @@
 		<Content Update="Assets\kLogo.png">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
+		<Content Update="Assets\Languages\en-US.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="Assets\Languages\ja-JP.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="Assets\Languages\zh-Hans.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="Assets\Languages\zh-Hant.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 		<Content Update="Assets\logo.ico">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
@@ -198,6 +183,12 @@
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
+		<Content Update="Assets\appLogo.ico">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="Assets\appLogo.png">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
 		<None Update="Assets\geet2.html">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -210,9 +201,7 @@
 	  <Folder Include="Common\Plugins\" />
 	  <Folder Include="Pages\ColorGame\" />
 	</ItemGroup>
-	<PropertyGroup Label="Globals">
-	  <Win32Resource>Assets/Cursor/CursorResource.res</Win32Resource>
-	</PropertyGroup>
+	<PropertyGroup Label="Globals" />
 
 	<!--
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution
@@ -234,6 +223,7 @@
 		<GenerateTestArtifacts>True</GenerateTestArtifacts>
 		<AppxBundle>Never</AppxBundle>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+		<Win32Resource>D:\WorkSpace\WutheringWavesTool\src\WutheringWavesTool\Assets\Cursor\CursorResource.res</Win32Resource>
 	</PropertyGroup>
 	<ItemGroup>
 	  <PRIResource Remove="AppPackages\**" />
@@ -243,5 +233,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <PRIResource Remove="Strings\**" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Assets\appLogo.ico" />
+	  <None Remove="Assets\appLogo.png" />
 	</ItemGroup>
 </Project>

@@ -51,106 +51,104 @@
             <ItemsRepeater ItemsSource="{x:Bind ViewModel.CountrysItems, Mode=OneWay}">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate x:DataType="wrapper:DataCenterExploreCountryItem">
-                        <ui:DraggableCardControl Margin="3">
-                            <Grid>
-                                <ui:ImageEx
-                                    Opacity="1"
-                                    Source="{x:Bind AreaPic}"
-                                    Stretch="UniformToFill" />
-                                <StackPanel
-                                    Padding="10,10,10,10"
-                                    HorizontalAlignment="Left"
-                                    VerticalAlignment="Bottom"
-                                    Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                                    CornerRadius="0 5 0 0"
-                                    Orientation="Vertical">
-                                    <TextBlock FontFamily="{ThemeResource DefaultFont}">
-                                        <Run FontSize="20" Text="{x:Bind Progress}" />
-                                        <Run Text="%" />
-                                    </TextBlock>
-                                    <TextBlock FontFamily="{ThemeResource DefaultFont}" Text="{x:Bind DisplayName}" />
-                                </StackPanel>
-                                <ProgressBar
-                                    VerticalAlignment="Bottom"
-                                    Foreground="{ThemeResource SystemFillColorSuccessBrush}"
-                                    Value="{x:Bind Progress}" />
-                                <Button
-                                    Margin="10"
-                                    Padding="5"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Bottom"
-                                    CornerRadius="5"
-                                    Style="{ThemeResource DefaultAcrylicButtonStyle}">
-                                    <FontIcon
-                                        FontFamily="Segoe Fluent Icons"
-                                        FontSize="18"
-                                        Glyph="&#xE76C;" />
-                                    <Button.Flyout>
-                                        <Flyout Placement="Right" ShouldConstrainToRootBounds="False">
-                                            <ScrollView Width="200" Height="200">
-                                                <ItemsRepeater Width="200" ItemsSource="{x:Bind Items}">
-                                                    <ItemsRepeater.ItemTemplate>
-                                                        <DataTemplate x:DataType="model:ItemList">
-                                                            <Grid
-                                                                Margin="5"
-                                                                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                                                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                                                BorderThickness="2"
-                                                                CornerRadius="4">
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition />
-                                                                    <RowDefinition Height="auto" />
-                                                                </Grid.RowDefinitions>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="auto" />
-                                                                    <ColumnDefinition />
-                                                                </Grid.ColumnDefinitions>
-                                                                <ui:ImageEx
-                                                                    Grid.RowSpan="2"
-                                                                    Width="20"
-                                                                    Height="20"
-                                                                    Margin="5,5,0,5"
-                                                                    Source="{x:Bind Icon}"
-                                                                    Stretch="UniformToFill" />
-                                                                <ProgressBar
-                                                                    Grid.Row="1"
-                                                                    Grid.Column="0"
-                                                                    Grid.ColumnSpan="2"
-                                                                    Margin="0,5,0,0"
-                                                                    VerticalAlignment="Bottom"
-                                                                    Background="Transparent"
-                                                                    Foreground="{ThemeResource SystemFillColorSuccessBrush}"
-                                                                    Maximum="100"
-                                                                    Value="{x:Bind Progress}" />
-                                                                <TextBlock
-                                                                    Grid.Row="0"
-                                                                    Grid.Column="1"
-                                                                    Margin="5,5,0,0"
-                                                                    VerticalAlignment="Center"
-                                                                    Text="{x:Bind Name}"
-                                                                    TextTrimming="CharacterEllipsis" />
-                                                                <TextBlock
-                                                                    Grid.RowSpan="2"
-                                                                    Grid.Column="1"
-                                                                    Margin="0,0,5,0"
-                                                                    HorizontalAlignment="Right"
-                                                                    VerticalAlignment="Center">
-                                                                    <Run Text="{x:Bind Progress}" />
-                                                                    <Run Text="%" />
-                                                                </TextBlock>
-                                                            </Grid>
-                                                        </DataTemplate>
-                                                    </ItemsRepeater.ItemTemplate>
-                                                    <ItemsRepeater.Layout>
-                                                        <StackLayout Orientation="Vertical" />
-                                                    </ItemsRepeater.Layout>
-                                                </ItemsRepeater>
-                                            </ScrollView>
-                                        </Flyout>
-                                    </Button.Flyout>
-                                </Button>
-                            </Grid>
-                        </ui:DraggableCardControl>
+                        <Grid>
+                            <ui:ImageEx
+                                Opacity="1"
+                                Source="{x:Bind AreaPic}"
+                                Stretch="UniformToFill" />
+                            <StackPanel
+                                Padding="10,10,10,10"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Bottom"
+                                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                                CornerRadius="0 5 0 0"
+                                Orientation="Vertical">
+                                <TextBlock FontFamily="{ThemeResource DefaultFont}">
+                                    <Run FontSize="20" Text="{x:Bind Progress}" />
+                                    <Run Text="%" />
+                                </TextBlock>
+                                <TextBlock FontFamily="{ThemeResource DefaultFont}" Text="{x:Bind DisplayName}" />
+                            </StackPanel>
+                            <ProgressBar
+                                VerticalAlignment="Bottom"
+                                Foreground="{ThemeResource SystemFillColorSuccessBrush}"
+                                Value="{x:Bind Progress}" />
+                            <Button
+                                Margin="10"
+                                Padding="5"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                CornerRadius="5"
+                                Style="{ThemeResource DefaultAcrylicButtonStyle}">
+                                <FontIcon
+                                    FontFamily="Segoe Fluent Icons"
+                                    FontSize="18"
+                                    Glyph="&#xE76C;" />
+                                <Button.Flyout>
+                                    <Flyout Placement="Right" ShouldConstrainToRootBounds="False">
+                                        <ScrollView Width="200" Height="200">
+                                            <ItemsRepeater Width="200" ItemsSource="{x:Bind Items}">
+                                                <ItemsRepeater.ItemTemplate>
+                                                    <DataTemplate x:DataType="model:ItemList">
+                                                        <Grid
+                                                            Margin="5"
+                                                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                                            BorderThickness="2"
+                                                            CornerRadius="4">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition />
+                                                                <RowDefinition Height="auto" />
+                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="auto" />
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
+                                                            <ui:ImageEx
+                                                                Grid.RowSpan="2"
+                                                                Width="20"
+                                                                Height="20"
+                                                                Margin="5,5,0,5"
+                                                                Source="{x:Bind Icon}"
+                                                                Stretch="UniformToFill" />
+                                                            <ProgressBar
+                                                                Grid.Row="1"
+                                                                Grid.Column="0"
+                                                                Grid.ColumnSpan="2"
+                                                                Margin="0,5,0,0"
+                                                                VerticalAlignment="Bottom"
+                                                                Background="Transparent"
+                                                                Foreground="{ThemeResource SystemFillColorSuccessBrush}"
+                                                                Maximum="100"
+                                                                Value="{x:Bind Progress}" />
+                                                            <TextBlock
+                                                                Grid.Row="0"
+                                                                Grid.Column="1"
+                                                                Margin="5,5,0,0"
+                                                                VerticalAlignment="Center"
+                                                                Text="{x:Bind Name}"
+                                                                TextTrimming="CharacterEllipsis" />
+                                                            <TextBlock
+                                                                Grid.RowSpan="2"
+                                                                Grid.Column="1"
+                                                                Margin="0,0,5,0"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Center">
+                                                                <Run Text="{x:Bind Progress}" />
+                                                                <Run Text="%" />
+                                                            </TextBlock>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </ItemsRepeater.ItemTemplate>
+                                                <ItemsRepeater.Layout>
+                                                    <StackLayout Orientation="Vertical" />
+                                                </ItemsRepeater.Layout>
+                                            </ItemsRepeater>
+                                        </ScrollView>
+                                    </Flyout>
+                                </Button.Flyout>
+                            </Button>
+                        </Grid>
                     </DataTemplate>
                 </ItemsRepeater.ItemTemplate>
                 <ItemsRepeater.Layout>

@@ -45,6 +45,9 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
     public partial string TokenId { get; set; }
 
     [ObservableProperty]
+    public partial string TokenDid { get; set; }
+
+    [ObservableProperty]
     public partial string TipMessage { get; set; }
     public string GeetValue { get; set; }
 
@@ -119,6 +122,7 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
             }
             AppSettings.Token = login.Data.Token;
             AppSettings.TokenId = login.Data.UserId;
+            AppSettings.TokenDid = "";
             WeakReferenceMessenger.Default.Send(
                 new LoginMessanger(login.Success, login.Data.Token, long.Parse(login.Data.UserId))
             );
@@ -128,6 +132,7 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
         {
             AppSettings.Token = this.Token;
             AppSettings.TokenId = this.TokenId;
+            AppSettings.TokenDid = this.TokenDid;
             var mine = await WavesClient.GetWavesMineAsync(long.Parse(this.TokenId));
             WeakReferenceMessenger.Default.Send(
                 new LoginMessanger(true, Token, long.Parse(TokenId))
