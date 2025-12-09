@@ -19,12 +19,28 @@ partial class SettingViewModel
     [ObservableProperty]
     public partial string FrameworkType { get; set; }
 
+    [ObservableProperty]
+    public partial string RpcToken { get; set; }
+
     void GetAllVersion()
     {
         WebViewVersion = CoreWebView2Environment.GetAvailableBrowserVersionString() ?? "未安装";
-        this.WindowsAppSdkVersion = $"{Release.Major}.{Release.Minor}.{Release.Patch}-{Release.Channel}";
+        this.WindowsAppSdkVersion =
+            $"{Release.Major}.{Release.Minor}.{Release.Patch}-{Release.Channel}";
         this.RunType = RuntimeFeature.IsDynamicCodeCompiled ? "JIT" : "AOT";
         this.FrameworkType = RuntimeInformation.FrameworkDescription;
+    }
+
+    [RelayCommand]
+    void SetRpcToken()
+    {
+        if (string.IsNullOrWhiteSpace(this.RpcToken))
+        {
+            TipShow.ShowMessage("密钥不能为空", Symbol.Clear);
+            return;
+        }
+        AppSettings.RpcToken = Md5Helper.ComputeMd532(RpcToken);
+        TipShow.ShowMessage("密钥已经更新", Symbol.Accept);
     }
 
     [RelayCommand]
@@ -43,11 +59,18 @@ partial class SettingViewModel
     [RelayCommand]
     async Task DeleteWebCacheCommand()
     {
-        if (Directory.Exists(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Haiyu.exe.WebView2")))
+        if (
+            Directory.Exists(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Haiyu.exe.WebView2")
+            )
+        )
         {
             await Task.Run(() =>
             {
-                Directory.Delete(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Haiyu.exe.WebView2"), true);
+                Directory.Delete(
+                    Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Haiyu.exe.WebView2"),
+                    true
+                );
             });
         }
     }
@@ -70,7 +93,10 @@ partial class SettingViewModel
     {
         try
         {
-            var saveDialog = await PickersService.GetFileSavePicker(new List<string>() { ".lnk" },"Haiyu");
+            var saveDialog = await PickersService.GetFileSavePicker(
+                new List<string>() { ".lnk" },
+                "Haiyu"
+            );
             if (saveDialog != null)
             {
                 if (File.Exists(saveDialog.Path))
@@ -92,7 +118,7 @@ partial class SettingViewModel
         }
     }
 
-    public static string CreateUwpShortcut(string filePath,string target)
+    public static string CreateUwpShortcut(string filePath, string target)
     {
         string psScript =
             $@"

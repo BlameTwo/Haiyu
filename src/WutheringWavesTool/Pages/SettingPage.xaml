@@ -351,6 +351,21 @@
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE7AC;" />
                 </ui:SettingsCard.ActionIcon>
             </ui:SettingsCard>
+            <ui:SettingsCard Margin="0,5,0,0" Header="Rpc密钥">
+                <ui:SettingsCard.Content>
+                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                        <TextBox Text="{x:Bind ViewModel.RpcToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button
+                            Command="{x:Bind ViewModel.SetRpcTokenCommand}"
+                            Content="确认"
+                            Style="{ThemeResource TransparentButtonStyle}" />
+                    </StackPanel>
+                </ui:SettingsCard.Content>
+                <ui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE72E;" />
+                </ui:SettingsCard.HeaderIcon>
+
+            </ui:SettingsCard>
             <ui:SettingsCard
                 Margin="0,5,0,0"
                 Command="{x:Bind ViewModel.CreateLinkCommand}"

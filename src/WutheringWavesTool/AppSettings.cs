@@ -7,6 +7,8 @@ public class AppSettings
 
     public static readonly string CloudFolderPath = App.BassFolder + "\\Cloud";
 
+    public const string RpcVersion = "1.0";
+
     // 存储所有设置的内存缓存
     private static List<LocalSettings> _settingsCache;
 
@@ -247,7 +249,12 @@ public class AppSettings
         set => Write(value.ToString());
     }
 
-    public static string TokenDid
+    public static string? TokenDid
+    {
+        get => Read();
+        set => Write(value);
+    }
+    public static string? RpcToken
     {
         get => Read();
         set => Write(value);

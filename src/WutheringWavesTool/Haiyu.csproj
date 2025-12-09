@@ -14,8 +14,6 @@
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<PublishAot>true</PublishAot>
 		<PublishTrimmed>true</PublishTrimmed>
-	
-	
 		<WindowsPackageType>None</WindowsPackageType>
 	</PropertyGroup>
 	<ItemGroup>
@@ -71,7 +69,6 @@
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3537.50" />
-		
 		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.7175" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251106002" />
 		<PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="3.0.0" />
@@ -84,6 +81,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Astronomical\Astronomical.csproj" />
+		<ProjectReference Include="..\Haiyu.ServiceHost\Haiyu.ServiceHost.csproj" />
 		<ProjectReference Include="..\LanguageEditer.Model\LanguageEditer.Model.csproj" />
 		<ProjectReference Include="..\Waves.Api\Waves.Api.csproj" />
 		<ProjectReference Include="..\Waves.Core\Waves.Core.csproj" />

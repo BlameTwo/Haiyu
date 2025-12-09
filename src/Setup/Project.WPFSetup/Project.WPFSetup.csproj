@@ -9,6 +9,7 @@
     <UseWPF>true</UseWPF>
     <PlatformTarget>x64</PlatformTarget>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>appLogo.ico</ApplicationIcon>
 	  
   </PropertyGroup>
 
@@ -30,6 +31,10 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appLogo.ico" />
   </ItemGroup>
 	<ItemGroup>
 
