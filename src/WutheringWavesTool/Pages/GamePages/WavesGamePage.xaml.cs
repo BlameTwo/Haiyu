@@ -24,7 +24,6 @@ namespace Haiyu.Pages.GamePages
         {
             InitializeComponent();
             ViewModel =  Instance.Host.Services.GetRequiredService<WavesGameContextViewModel>();
-            DataContext = this;
         }
 
         public Type PageType => typeof(WavesGamePage);

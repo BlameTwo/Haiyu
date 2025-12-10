@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
+using Waves.Api.Models;
 using Waves.Api.Models.Rpc;
 
 namespace Haiyu.ServiceHost;
@@ -139,7 +140,26 @@ public class RpcService : IHostedService
     }
     #endregion
 
+    /// <summary>
+    /// 获取是否支持远程连接
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Task<bool> GetOpenConnectAsync()
+    {
+        throw new NotImplementedException();
+    }
 
+    /// <summary>
+    /// 设置远程连接
+    /// </summary>
+    /// <param name="value">设置值</param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
+    public Task SetOpenConnect(bool value)
+    {
+        throw new NotImplementedException();
+    }
     private async Task ListenForConnectionsAsync(CancellationToken token)
     {
         try
@@ -150,6 +170,16 @@ public class RpcService : IHostedService
                 try
                 {
                     context = await SocketServer.GetContextAsync().WithCancellation(token);
+                    if (!IsLocalClient(context.Request.RemoteEndPoint))
+                    {
+                        _logger.LogWarning(
+                            "Rejected non-local connection attempt from {RemoteEndPoint}",
+                            context.Request.RemoteEndPoint
+                        );
+                        context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                        context.Response.Close();
+                        continue;
+                    }
                 }
                 catch (OperationCanceledException)
                 {
@@ -206,6 +236,28 @@ public class RpcService : IHostedService
                 _logger.LogCritical(ex, "Critical error in listen loop");
             }
         }
+    }
+
+    private bool IsLocalClient(IPEndPoint remoteEndPoint)
+    {
+        //禁止远程访问
+        if (remoteEndPoint is not IPEndPoint ipEndPoint)
+        {
+            _logger.LogWarning("Unsupported endpoint type: {EndpointType}", remoteEndPoint.GetType().Name);
+            return false;
+        }
+
+        IPAddress clientIp = ipEndPoint.Address;
+
+        bool isLocal = IPAddress.IsLoopback(clientIp);
+
+        _logger.LogDebug(
+            "Client IP: {ClientIp} (IsLocal: {IsLocal})",
+            clientIp,
+            isLocal
+        );
+
+        return isLocal;
     }
 
     private async Task HandleSingleConnectionAsync(

@@ -14,7 +14,7 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext
 {
-    public partial class GameContextBase
+    public partial class KuroGameContextBase
     {
         Process? _gameProcess = null;
         private bool _isStarting;

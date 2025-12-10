@@ -3,7 +3,7 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext.Contexts.PRG;
 
-public class PunishTwGameContext : GameContextBase
+public class PunishTwGameContext : KuroGameContextBase
 {
 
     internal PunishTwGameContext(GameAPIConfig config)

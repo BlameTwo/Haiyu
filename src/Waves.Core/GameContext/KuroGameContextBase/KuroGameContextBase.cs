@@ -15,7 +15,7 @@ using Waves.Core.Services;
 
 namespace Waves.Core.GameContext;
 
-public abstract partial class GameContextBase : IGameContext
+public abstract partial class KuroGameContextBase : IGameContext
 {
     #region _filed
 
@@ -53,7 +53,7 @@ public abstract partial class GameContextBase : IGameContext
     #endregion
 
 
-    internal GameContextBase(GameAPIConfig config, string contextName)
+    internal KuroGameContextBase(GameAPIConfig config, string contextName)
     {
         Logger = new LoggerService();
         Config = config;

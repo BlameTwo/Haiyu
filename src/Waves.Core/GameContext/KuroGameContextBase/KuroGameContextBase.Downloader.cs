@@ -15,7 +15,7 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext;
 
-public partial class GameContextBase
+public partial class KuroGameContextBase
 {
     /// <summary>
     /// 下载校验最大并发数

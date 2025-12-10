@@ -113,6 +113,7 @@
                     <HyperlinkButton Content="鸣潮官网" NavigateUri="https://mc.kurogames.com/" />
                     <HyperlinkButton Content="战双帕弥什官网" NavigateUri="https://pns.kurogames.com/" />
                     <HyperlinkButton Content="下载最新版" NavigateUri="https://github.com/BlameTwo/Haiyu/releases/latest" />
+                    <HyperlinkButton Content="加入开发者的小窝" NavigateUri="https://qm.qq.com/q/4raTeh9MWI" />
                 </StackPanel>
             </Grid>
             <TextBlock

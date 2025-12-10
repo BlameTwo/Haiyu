@@ -6,6 +6,10 @@
 
 通信格式：Json
 
+#### 免责声明
+
+此协议不得使用在爬虫、逆向分析、损坏玩家账号等行为，如若出现账号封禁、计算机软硬件损坏与Haiyu无关。
+
 ## 协议定义
 
 地址：ws://localhost:9084/rpc
@@ -25,10 +29,10 @@
     "method": "methodName",
     "requestId": 2
     "params": [
-        {
-            "key":"paramKey",
-            "value":"paramValue"
-        }
+     {
+          "key":"paramKey",
+          "value":"paramValue"
+     }
     ]
 }
 ```
@@ -51,7 +55,7 @@
 }
 ```
 
-## 云工具调用
+## 云工具
 
 ### 用户列表
 
@@ -62,7 +66,12 @@
 ```json
 {
     "method": "getCloudUsers",
-    "requestId": 14215
+    "requestId": 14215,
+    "params": [
+    {
+          "key":"token",
+          "value":"Haiyu客户端定义token"
+    }
 } 
 ```
 
@@ -93,10 +102,10 @@
 {
     "method": "getCloudRecordKey",
     "requestId": 14215,
-    "params": [
+    "params": [
         {
             "key": "token",
-            "value": "123456"
+            "value": "Haiyu客户端定义的Token"
         },
         {
             "key":"userName",
@@ -113,3 +122,5 @@
     "success": true
 }
 ```
+
+

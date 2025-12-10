@@ -8,7 +8,7 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext.Contexts
 {
-    public class WavesBiliBiliGameContext : GameContextBase
+    public class WavesBiliBiliGameContext : KuroGameContextBase
     {
         internal WavesBiliBiliGameContext(GameAPIConfig config)
             : base(config, nameof(WavesBiliBiliGameContext)) { }

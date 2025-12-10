@@ -23,7 +23,6 @@ public sealed partial class PunishGamePage : Page,IPage
     {
         InitializeComponent();
         ViewModel = Instance.Host.Services.GetRequiredService<PunishGameContextViewModel>();
-        DataContext = this;
     }
 
 

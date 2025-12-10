@@ -7,7 +7,7 @@ namespace Waves.Core.GameContext;
  DLSS帧生成版本管理
  */
 
-partial class GameContextBase
+partial class KuroGameContextBase
 {
 
     public async Task<FileVersion> GetLocalFileVersionAsync(string fileName,string displayName)

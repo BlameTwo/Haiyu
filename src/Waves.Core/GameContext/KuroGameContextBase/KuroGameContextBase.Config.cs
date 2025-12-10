@@ -2,7 +2,7 @@
 
 namespace Waves.Core.GameContext;
 
-partial class GameContextBase
+partial class KuroGameContextBase
 {
     public async Task<bool> SetLimitSpeedAsync(int value, CancellationToken token = default)
     {

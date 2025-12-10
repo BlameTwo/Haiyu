@@ -9,4 +9,5 @@ public interface IRpcMethodService
 {
     public Dictionary<string, Func<string,List<RpcParams>,Task<string>>> Method { get; }
 
+    
 }

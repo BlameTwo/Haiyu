@@ -6,10 +6,23 @@ namespace Haiyu.Services;
 
 public enum RpcMethodKey
 {
-    ping,
-    rpcVersion,
-    getCloudUsers,
-    getCloudRecordKey
+    /// <summary>
+    /// 检查APP是否响应
+    /// </summary>
+    app_ping,
+    /// <summary>
+    /// 检查App Rpc版本
+    /// </summary>
+    app_rpcVersion,
+    /// <summary>
+    /// 检查App 本地存储的云鸣潮账号
+    /// </summary>
+    cloud_getCloudUsers,
+    // <summary>
+    /// 获取云鸣潮账号的记录密钥
+    /// </summary>
+    cloud_getCloudRecordKey,
+    cloud_saveAsCloudRecordResource,
 }
 
 public partial class RpcMethodService : IRpcMethodService
@@ -28,10 +41,11 @@ public partial class RpcMethodService : IRpcMethodService
     public Dictionary<string, Func<string, List<RpcParams>?, Task<string>>> Method =>
         new Dictionary<string, Func<string, List<RpcParams>?, Task<string>>>()
         {
-            { nameof(RpcMethodKey.ping), PingAsync },
-            { nameof(RpcMethodKey.rpcVersion), GetRpcVersionAsync },
-            { nameof(RpcMethodKey.getCloudUsers), GetCloudAccountsAsync },
-            { nameof(RpcMethodKey.getCloudRecordKey), GetReocrdTokenAsync },
+            { nameof(RpcMethodKey.app_ping), PingAsync },
+            { nameof(RpcMethodKey.app_rpcVersion), GetRpcVersionAsync },
+            { nameof(RpcMethodKey.cloud_getCloudUsers), GetCloudAccountsAsync },
+            { nameof(RpcMethodKey.cloud_getCloudRecordKey), GetReocrdTokenAsync },
+            { nameof(RpcMethodKey.cloud_saveAsCloudRecordResource), SaveAsCloudRecordResourceAsync }
         };
 
     public async Task<string> PingAsync(string key, List<RpcParams>? _param = null)
@@ -44,14 +58,16 @@ public partial class RpcMethodService : IRpcMethodService
         MD5 md5 = MD5.Create();
         try
         {
-            if (rpcParams == null)
-                throw new ArgumentException("Verification failed");
-            var token = rpcParams.FirstOrDefault(x => x.Key == "token")?.Value;
-            if (string.IsNullOrWhiteSpace(token))
-                throw new ArgumentException("Verification failed");
-            if (AppSettings.RpcToken != Md5Helper.ComputeMd532(token))
+            if(TryGetValue("token",rpcParams,out var token))
             {
-                throw new ArgumentException("Verification failed");
+                if (AppSettings.RpcToken != Md5Helper.ComputeMd532(token))
+                {
+                    throw new ArgumentException("Verification failed");
+                }
+                else
+                {
+                    return false;
+                }
             }
             return true;
         }
@@ -64,4 +80,68 @@ public partial class RpcMethodService : IRpcMethodService
             md5.Dispose();
         }
     }
+
+    /// <summary>
+    /// 检查获取参数
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="rpcParams"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public bool TryGetValue(string key, List<RpcParams>? rpcParams, out string? value)
+    {
+        try
+        {
+            if (rpcParams == null)
+            {
+                value = null;
+                throw new ArgumentException("Verification failed");
+            }
+            var token = rpcParams.FirstOrDefault(x => x.Key == key)?.Value;
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                value = null;
+                throw new ArgumentException("Verification failed");
+            }
+            value = token;
+            return true;
+        }
+        catch (Exception)
+        {
+            value = null;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// 检查获取多参数
+    /// </summary>
+    /// <param name="keys"></param>
+    /// <param name="rpcParams"></param>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    public bool TryGetValues(IList<string> keys, List<RpcParams>? rpcParams, out List<string?> values)
+    {
+        List<string?> result = [];
+        try
+        {
+            foreach (var item in keys)
+            {
+                if (TryGetValue(item, rpcParams, out var value))
+                {
+                    result.Add(value);
+                }
+            }
+            values = result;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            values = null;
+            return false;
+        }
+    }
+
+    
 }
