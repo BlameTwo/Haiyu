@@ -64,13 +64,12 @@ public class GameLocalConfig
     public GameLocalConfig(string settingPath)
     {
         SettingPath = settingPath;
-        LoadConfig();
     }
 
     /// <summary>
     /// 从JSON文件加载配置到内存
     /// </summary>
-    private void LoadConfig()
+    private async Task LoadConfig()
     {
         if (!File.Exists(SettingPath))
         {
@@ -80,7 +79,7 @@ public class GameLocalConfig
 
         try
         {
-            var jsonString = File.ReadAllText(SettingPath);
+            var jsonString = await File.ReadAllTextAsync(SettingPath);
 
             var loadedSettings = JsonSerializer.Deserialize(jsonString, typeof(Dictionary<string, string>), _jsonContext) as Dictionary<string, string>;
             _settings = loadedSettings ?? new Dictionary<string, string>();
@@ -98,6 +97,8 @@ public class GameLocalConfig
         {
             var jsonString = JsonSerializer.Serialize(_settings, typeof(Dictionary<string, string>), _jsonContext);
             await File.WriteAllTextAsync(SettingPath, jsonString);
+
+            await LoadConfig();
         }
         finally
         {
@@ -130,8 +131,9 @@ public class GameLocalConfig
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public string? GetConfig(string key)
+    public async Task<string?> GetConfigAsync(string key)
     {
+        await LoadConfig();
         if (_settings.TryGetValue(key, out string? value))
         {
             return value;

@@ -76,7 +76,7 @@ public partial class KuroGameContextBase
     public async Task UpdateGameAsync()
     {
         _downloadCTS = new CancellationTokenSource();
-        var folder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
+        var folder = await GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder);
         var launcher = await this.GetGameLauncherSourceAsync(null, _downloadCTS.Token);
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
@@ -116,8 +116,8 @@ public partial class KuroGameContextBase
     {
         if (_downloadState!.IsStop)
             return;
-        var currentVersion = GameLocalConfig.GetConfig(GameLocalSettingName.LocalGameVersion);
-        var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
+        var currentVersion = await GameLocalConfig.GetConfigAsync(GameLocalSettingName.LocalGameVersion);
+        var installFolder = await GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder);
         if (string.IsNullOrWhiteSpace(currentVersion))
         {
             await this.GameLocalConfig.SaveConfigAsync(
@@ -417,7 +417,7 @@ public partial class KuroGameContextBase
 
     async Task UpdateGameResourceAsync(string folder, GameLauncherSource launcher)
     {
-        var currentVersion = GameLocalConfig.GetConfig(GameLocalSettingName.LocalGameVersion);
+        var currentVersion = await GameLocalConfig.GetConfigAsync(GameLocalSettingName.LocalGameVersion);
         var previous = launcher
             .ResourceDefault.Config.PatchConfig.Where(x => x.Version == currentVersion)
             .FirstOrDefault();
@@ -1647,7 +1647,7 @@ public partial class KuroGameContextBase
     public async Task RepirGameAsync()
     {
         Logger.WriteInfo("开始修复游戏");
-        var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
+        var installFolder = await GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder);
         var launcher = await this.GetGameLauncherSourceAsync();
         if (launcher == null)
         {

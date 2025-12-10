@@ -85,16 +85,16 @@ public abstract partial class KuroGameContextBase : IGameContext
     )
     {
         GameContextStatus status = new GameContextStatus();
-        var localVersion = GameLocalConfig.GetConfig(
+        var localVersion = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.LocalGameVersion
         );
-        var gameBaseFolder = GameLocalConfig.GetConfig(
+        var gameBaseFolder = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.GameLauncherBassFolder
         );
-        var gameProgramFile = GameLocalConfig.GetConfig(
+        var gameProgramFile = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.GameLauncherBassProgram
         );
-        var updateing = GameLocalConfig.GetConfig(
+        var updateing = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.LocalGameUpdateing
         );
         if (string.IsNullOrWhiteSpace(gameBaseFolder))
@@ -110,7 +110,7 @@ public abstract partial class KuroGameContextBase : IGameContext
                 status.IsLauncher = true;
             }
         }
-        else
+        else if(Directory.Exists(gameBaseFolder))
         {
             status.IsGameExists = false;
             status.IsGameInstalled = false;
@@ -150,13 +150,13 @@ public abstract partial class KuroGameContextBase : IGameContext
 
     public virtual async Task DeleteResourceAsync()
     {
-        var folder = this.GameLocalConfig.GetConfig(
+        var folder = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.GameLauncherBassFolder
         );
-        await Task.Run(() =>
-        {
-            Directory.Delete(folder, true);
-        });
+        //await Task.Run(() =>
+        //{
+        //    Directory.Delete(folder, true);
+        //});
         await this.GameLocalConfig.SaveConfigAsync(GameLocalSettingName.GameLauncherBassFolder, "");
         await this.GameLocalConfig.SaveConfigAsync(
             GameLocalSettingName.GameLauncherBassProgram,

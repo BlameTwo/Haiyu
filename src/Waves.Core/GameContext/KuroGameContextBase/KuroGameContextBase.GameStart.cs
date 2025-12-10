@@ -28,14 +28,14 @@ namespace Waves.Core.GameContext
         {
             try
             {
-                string gameFolder = GameLocalConfig.GetConfig(
+                string gameFolder = await GameLocalConfig.GetConfigAsync(
                     GameLocalSettingName.GameLauncherBassFolder
                 );
                 Process ps = new();
                 string argument = "";
                 if(this.GameType == GameType.Waves)
                 {
-                    var ixDx11 = this.GameLocalConfig.GetConfig(GameLocalSettingName.IsDx11);
+                    var ixDx11 = await GameLocalConfig.GetConfigAsync(GameLocalSettingName.IsDx11);
                     if (bool.TryParse(ixDx11, out var flag) && flag)
                     {
                         argument = " -dx11";
@@ -130,7 +130,7 @@ namespace Waves.Core.GameContext
             _isStarting = false;
             var realRunTime = GetGameTime();
             Logger.WriteInfo($"游戏已退出，游戏运行时长:{realRunTime:G}");
-            var runGameTime = this.GameLocalConfig.GetConfig(GameLocalSettingName.GameRunTotalTime);
+            var runGameTime = await GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameRunTotalTime);
             double runTime = 0.0;
             if (runGameTime != null)
                 runTime = int.Parse(runGameTime);

@@ -138,8 +138,9 @@ public abstract partial class KuroGameContextViewModel
             GameContext.GameContextOutput -= GameContext_GameContextOutput;
         }
         this.GameContext = Instance.Host.Services.GetRequiredKeyedService<IGameContext>(name);
+        CurrentProgressValue = 0;
         GameContext.GameContextOutput += GameContext_GameContextOutput;
-        var dx11 = this.GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.IsDx11);
+        var dx11 = await GameContext.GameLocalConfig.GetConfigAsync(GameLocalSettingName.IsDx11);
         if (bool.TryParse(dx11, out var flag))
         {
             this.IsDx11Launcher = flag;
@@ -171,7 +172,7 @@ public abstract partial class KuroGameContextViewModel
             }
             else if (!status.IsAction && status.IsGameExists && status.IsGameInstalled)
             {
-                ShowGameLauncherBth(status.IsUpdate, status.DisplayVersion, status.Gameing);
+                await ShowGameLauncherBth(status.IsUpdate, status.DisplayVersion, status.Gameing);
             }
             if (status.IsGameExists && (status.IsPause || status.IsAction))
             {
@@ -215,7 +216,6 @@ public abstract partial class KuroGameContextViewModel
                 );
             }
             this.VersionLogo = new BitmapImage(new(background.Slogan));
-
             await ShowCardAsync(showCard);
             await LoadAfter();
             ProcessAction = false;
@@ -228,7 +228,7 @@ public abstract partial class KuroGameContextViewModel
 
     public abstract Task ShowCardAsync(bool showCard);
 
-    private void ShowGameLauncherBth(bool isUpdate, string version, bool gameing)
+    private async Task ShowGameLauncherBth(bool isUpdate, string version, bool gameing)
     {
         GameInputFolderBthVisibility = Visibility.Collapsed;
         GameInstallBthVisibility = Visibility.Collapsed;
@@ -268,7 +268,7 @@ public abstract partial class KuroGameContextViewModel
                 _bthType = 3;
                 this.CurrentProgressValue = 0;
                 this.MaxProgressValue = 0;
-                var totalTime = GameContext.GameLocalConfig.GetConfig(
+                var totalTime = await GameContext.GameLocalConfig.GetConfigAsync(
                     GameLocalSettingName.GameRunTotalTime
                 );
                 if (totalTime == null)
@@ -317,7 +317,7 @@ public abstract partial class KuroGameContextViewModel
             Logger.WriteInfo($"继续更新触发");
             var launcher = await GameContext.GetGameLauncherSourceAsync(null, this.CTS.Token);
             await this.GameContext.StartDownloadTaskAsync(
-                GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder),
+                await GameContext.GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder),
                 launcher
             );
         }
@@ -353,7 +353,7 @@ public abstract partial class KuroGameContextViewModel
             Logger.WriteInfo($"继续进行下载");
             var launcher = await GameContext.GetGameLauncherSourceAsync(null, this.CTS.Token);
             await this.GameContext.StartDownloadTaskAsync(
-                GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder),
+                await GameContext.GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder)??"",
                 launcher
             );
         }
@@ -378,7 +378,6 @@ public abstract partial class KuroGameContextViewModel
         _bthType = 2;
         if (GameDownloadingBthVisibility == Visibility.Visible)
             return;
-        this.PauseIcon = "\uE769";
         GameInputFolderBthVisibility = Visibility.Collapsed;
         GameInstallBthVisibility = Visibility.Collapsed;
         GameLauncherBthVisibility = Visibility.Collapsed;

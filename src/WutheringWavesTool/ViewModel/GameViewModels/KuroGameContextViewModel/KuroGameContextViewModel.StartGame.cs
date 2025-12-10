@@ -21,7 +21,7 @@ partial class KuroGameContextViewModel
         }
         if (_bthType == 4)
         {
-            var localVersion = GameContext.GameLocalConfig.GetConfig(
+            var localVersion = await GameContext.GameLocalConfig.GetConfigAsync(
                 GameLocalSettingName.LocalGameVersion
             );
             var result = Version.Parse(this.DisplayVersion) > Version.Parse(localVersion);

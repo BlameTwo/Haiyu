@@ -11,6 +11,7 @@ partial class KuroGameContextViewModel
     [ObservableProperty]
     public partial string DownloadSpeedValue { get; set; }
 
+
     private async Task GameContext_GameContextOutput(object sender, GameContextOutputArgs args)
     {
         await AppContext.TryInvokeAsync(async () =>
@@ -81,7 +82,7 @@ partial class KuroGameContextViewModel
                 }
                 if (status.IsLauncher)
                 {
-                    ShowGameLauncherBth(status.IsUpdate, status.DisplayVersion, status.Gameing);
+                    await ShowGameLauncherBth(status.IsUpdate, status.DisplayVersion, status.Gameing);
                 }
                 if (
                     status.IsGameExists

@@ -22,6 +22,9 @@ public enum RpcMethodKey
     /// 获取云鸣潮账号的记录密钥
     /// </summary>
     cloud_getCloudRecordKey,
+    /// <summary>
+    /// 调用保存抽卡记录并输出文件
+    /// </summary>
     cloud_saveAsCloudRecordResource,
 }
 
