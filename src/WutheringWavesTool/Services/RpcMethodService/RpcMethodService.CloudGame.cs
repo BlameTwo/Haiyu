@@ -70,6 +70,7 @@ public partial class RpcMethodService
     {
         try
         {
+            VerifyToken(_param);
             if (TryGetValue("userName", _param, out var userLoginData))
             {
                 var user = await CloudConfigManager.GetUserAsync(userLoginData).ConfigureAwait(false);
