@@ -49,7 +49,7 @@ public partial class RpcMethodService
     public async Task<string> GetCloudAccountsAsync(string key, List<RpcParams>? _param = null)
     {
         VerifyToken(_param);
-        var users = await CloudConfigManager.GetUsersAsync();
+        var users = await CloudConfigManager.GetUsersAsync().ConfigureAwait(false);
         if (users == null || users.Count == 0)
         {
             throw new ArgumentException("user is null！");
@@ -72,26 +72,30 @@ public partial class RpcMethodService
         {
             if (TryGetValue("userName", _param, out var userLoginData))
             {
-                var user = await CloudConfigManager.GetUserAsync(userLoginData);
-                var isLogin = await CloudGameService.OpenUserAsync(user);
+                var user = await CloudConfigManager.GetUserAsync(userLoginData).ConfigureAwait(false);
+                var isLogin = await CloudGameService.OpenUserAsync(user).ConfigureAwait(false);
                 if (!isLogin.Item1)
                 {
                     throw new RpcException(401, false, "登陆过期，请在客户端重新添加账号");
                 }
-                var FiveGroup = await RecordHelper.GetFiveGroupAsync();
-                var AllRole = await RecordHelper.GetAllRoleAsync();
-                var AllWeapon = await RecordHelper.GetAllWeaponAsync();
+                var FiveGroup = await RecordHelper.GetFiveGroupAsync().ConfigureAwait(false);
+                var AllRole = await RecordHelper.GetAllRoleAsync().ConfigureAwait(false);
+                var AllWeapon = await RecordHelper.GetAllWeaponAsync().ConfigureAwait(false);
                 var StartRole = RecordHelper.FormatFiveRoleStar(FiveGroup);
                 Dictionary<int, IList<RecordCardItemWrapper>> @param =
                     new Dictionary<int, IList<RecordCardItemWrapper>>();
                 var url = await CloudGameService.GetRecordAsync();
+                if(url.Code != 0)
+                {
+                    throw new RpcException(401, false, "请求频繁");
+                }
                 for (int i = 1; i < 10; i++)
                 {
                     var player1 = await CloudGameService.GetGameRecordResource(
                         url.Data.RecordId,
                         url.Data.PlayerId.ToString(),
                         i
-                    );
+                    ).ConfigureAwait(false);
                     var WeaponsActivity = player1
                         .Data.Select(x => new RecordCardItemWrapper(x))
                         .ToList();
@@ -115,7 +119,7 @@ public partial class RpcMethodService
                     cache,
                     new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
                 );
-                var result = await RecordHelper.MargeRecordAsync(App.RecordFolder, cache)!;
+                var result = await RecordHelper.MargeRecordAsync(App.RecordFolder, cache)!.ConfigureAwait(false);
                 if (TryGetValue("savePath", _param, out var savePath))
                 {
                     if(File.Exists(savePath))
@@ -125,7 +129,7 @@ public partial class RpcMethodService
                         RecordCacheDetilyContext.Default.RecordCacheDetily
                     );
                     using var fs = File.CreateText(savePath);
-                    await fs.WriteAsync(jsonData);
+                    await fs.WriteAsync(jsonData).ConfigureAwait(false);
                     return JsonSerializer.Serialize(
                         new SaveAsReponse()
                         {

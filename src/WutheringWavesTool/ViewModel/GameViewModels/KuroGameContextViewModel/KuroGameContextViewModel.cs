@@ -13,7 +13,6 @@ public abstract partial class KuroGameContextViewModel
     : ViewModelBase,
         IKuroGameContextViewModelBase
 {
-    public virtual string DefaultServerName { get; }
     public LoggerService Logger { get; }
     public IGameContext GameContext { get; private set; }
     public IDialogManager DialogManager { get; }
@@ -135,8 +134,12 @@ public abstract partial class KuroGameContextViewModel
     {
         if (this.GameContext != null)
         {
+            await this.CTS?.CancelAsync();
+            this.CTS = null;
             GameContext.GameContextOutput -= GameContext_GameContextOutput;
         }
+        GC.Collect();
+        this.CTS = new CancellationTokenSource();
         this.GameContext = Instance.Host.Services.GetRequiredKeyedService<IGameContext>(name);
         CurrentProgressValue = 0;
         GameContext.GameContextOutput += GameContext_GameContextOutput;
