@@ -12,6 +12,7 @@ public sealed partial class PopupMessage : UserControl
         this.InitializeComponent();
         _popup = new Popup();
         _popup.Child = this;
+        this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
         this.Loaded += PopupNoticeLoaded;
     }
 

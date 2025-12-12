@@ -41,10 +41,12 @@ partial class KuroGameContextViewModel
                 {
                     if (args.IsAction && args.IsPause)
                     {
+                        this.PauseIcon = "\uE768";
                         this.BottomBarContent = "下载已经暂停";
                     }
                     else
                     {
+                        this.PauseIcon = "\uE769";
                         this.BottomBarContent =
                             $"下载速度:{Math.Round(args.DownloadSpeed / 1024 / 1024, 2)}MB，剩余：{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
                     }

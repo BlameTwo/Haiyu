@@ -355,7 +355,14 @@
             <ui:SettingsCard Margin="0,5,0,0" Header="Rpc密钥">
                 <ui:SettingsCard.Content>
                     <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                        <TextBox Text="{x:Bind ViewModel.RpcToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <PasswordBox
+                            Width="200"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="18"
+                            Password="{x:Bind ViewModel.RpcToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            PasswordChar="*"
+                            PasswordRevealMode="Peek" />
                         <Button
                             Command="{x:Bind ViewModel.SetRpcTokenCommand}"
                             Content="确认"

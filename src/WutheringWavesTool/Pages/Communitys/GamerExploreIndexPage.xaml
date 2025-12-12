@@ -51,7 +51,7 @@
             <ItemsRepeater ItemsSource="{x:Bind ViewModel.CountrysItems, Mode=OneWay}">
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate x:DataType="wrapper:DataCenterExploreCountryItem">
-                        <Grid>
+                        <Grid Margin="5" CornerRadius="5">
                             <ui:ImageEx
                                 Opacity="1"
                                 Source="{x:Bind AreaPic}"

@@ -174,7 +174,7 @@ public abstract partial class KuroGameContextViewModel
             {
                 await ShowGameLauncherBth(status.IsUpdate, status.DisplayVersion, status.Gameing);
             }
-            if (status.IsGameExists && (status.IsPause || status.IsAction))
+            if ((status.IsPause || status.IsAction))
             {
                 if (status.IsAction && status.IsPause)
                 {
@@ -310,15 +310,25 @@ public abstract partial class KuroGameContextViewModel
                 return;
             }
             Logger.WriteInfo($"选择游戏安装路径：{result.InstallFolder},即将进入通知核心进行下载");
-            await this.GameContext.StartDownloadTaskAsync(result.InstallFolder, result.Launcher);
+            Task.Factory.StartNew(async () =>
+            {
+                await this.GameContext.StartDownloadTaskAsync(
+                    result.InstallFolder,
+                    result.Launcher
+                );
+            });
         }
         else
         {
             Logger.WriteInfo($"继续更新触发");
             var launcher = await GameContext.GetGameLauncherSourceAsync(null, this.CTS.Token);
-            await this.GameContext.StartDownloadTaskAsync(
-                await GameContext.GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder),
-                launcher
+            Task.Factory.StartNew(async () =>
+                await this.GameContext.StartDownloadTaskAsync(
+                    await GameContext.GameLocalConfig.GetConfigAsync(
+                        GameLocalSettingName.GameLauncherBassFolder
+                    ),
+                    launcher
+                )
             );
         }
     }
@@ -338,10 +348,13 @@ public abstract partial class KuroGameContextViewModel
             Logger.WriteInfo($"选择游戏安装文件：{result.InstallFolder}");
             if (File.Exists(result.InstallFolder + $"//{this.GameContext.Config.GameExeName}"))
             {
-                await this.GameContext.StartDownloadTaskAsync(
-                    result.InstallFolder,
-                    result.Launcher
-                );
+                Task.Factory.StartNew(async () =>
+                {
+                    await this.GameContext.StartDownloadTaskAsync(
+                        result.InstallFolder,
+                        result.Launcher
+                    );
+                });
             }
             else
             {
@@ -352,10 +365,15 @@ public abstract partial class KuroGameContextViewModel
         {
             Logger.WriteInfo($"继续进行下载");
             var launcher = await GameContext.GetGameLauncherSourceAsync(null, this.CTS.Token);
-            await this.GameContext.StartDownloadTaskAsync(
-                await GameContext.GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder)??"",
-                launcher
-            );
+            Task.Factory.StartNew(async () =>
+            {
+                await this.GameContext.StartDownloadTaskAsync(
+                    await GameContext.GameLocalConfig.GetConfigAsync(
+                        GameLocalSettingName.GameLauncherBassFolder
+                    ) ?? "",
+                    launcher
+                );
+            });
         }
     }
 
