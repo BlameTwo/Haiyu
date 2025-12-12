@@ -28,6 +28,7 @@ public partial class App : ClientApplication
     private const int PROCESS_PER_MONITOR_DPI_AWARE = 2;
     private AppInstance mainInstance;
 
+    public static string AppVersion => "1.2.16";
     public App()
     {
         this.UnhandledException += App_UnhandledException;

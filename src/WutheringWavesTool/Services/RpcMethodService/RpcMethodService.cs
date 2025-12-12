@@ -4,28 +4,32 @@ using Waves.Api.Models.Rpc;
 
 namespace Haiyu.Services;
 
-public enum RpcMethodKey
+public enum RpcMethodKey:int
 {
     /// <summary>
     /// 检查APP是否响应
     /// </summary>
-    app_ping,
+    app_ping = 0,
     /// <summary>
     /// 检查App Rpc版本
     /// </summary>
-    app_rpcVersion,
+    app_version = 1,
+    /// <summary>
+    /// RPC协议支持接口名称
+    /// </summary>
+    app_methods = 2,
     /// <summary>
     /// 检查App 本地存储的云鸣潮账号
     /// </summary>
-    cloud_getCloudUsers,
+    cloud_getCloudUsers = 3,
     // <summary>
     /// 获取云鸣潮账号的记录密钥
     /// </summary>
-    cloud_getCloudRecordKey,
+    cloud_getCloudRecordKey = 4,
     /// <summary>
     /// 调用保存抽卡记录并输出文件
     /// </summary>
-    cloud_saveAsCloudRecordResource,
+    cloud_saveAsCloudRecordResource = 5,
 }
 
 public partial class RpcMethodService : IRpcMethodService
@@ -45,7 +49,8 @@ public partial class RpcMethodService : IRpcMethodService
         new Dictionary<string, Func<string, List<RpcParams>?, Task<string>>>()
         {
             { nameof(RpcMethodKey.app_ping), PingAsync },
-            { nameof(RpcMethodKey.app_rpcVersion), GetRpcVersionAsync },
+            { nameof(RpcMethodKey.app_version), GetRpcVersionAsync },
+            { nameof(RpcMethodKey.app_methods),GetRpcMethodsAsync },
             { nameof(RpcMethodKey.cloud_getCloudUsers), GetCloudAccountsAsync },
             { nameof(RpcMethodKey.cloud_getCloudRecordKey), GetReocrdTokenAsync },
             { nameof(RpcMethodKey.cloud_saveAsCloudRecordResource), SaveAsCloudRecordResourceAsync }

@@ -3,6 +3,7 @@
     x:Class="Haiyu.Pages.SettingPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:a="using:Haiyu"
     xmlns:controls="using:Haiyu.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ext="using:Haiyu.Plugin.Extensions"
@@ -176,7 +177,7 @@
                 </ui:SettingsCard>
                 <ui:SettingsCard
                     Margin="0,5,0,0"
-                    Description="{ThemeResource AppVersion}"
+                    Description="{x:Bind a:App.AppVersion}"
                     Header="版本">
                     <ui:SettingsCard.HeaderIcon>
                         <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F5DD;" />
@@ -408,18 +409,18 @@
                             </ui:SettingsCard.Content>
                         </ui:SettingsCard>
                         <ui:SettingsCard Header="Web内核版本">
-                            <TextBlock Text="{x:Bind ViewModel.WebViewVersion, Mode=OneWay}" />
+                            <TextBlock IsTextSelectionEnabled="True" Text="{x:Bind ViewModel.WebViewVersion, Mode=OneWay}" />
                         </ui:SettingsCard>
                         <ui:SettingsCard Header="WindowsApp Sdk">
 
-                            <TextBlock Text="{x:Bind ViewModel.WindowsAppSdkVersion, Mode=OneWay}" />
+                            <TextBlock IsTextSelectionEnabled="True" Text="{x:Bind ViewModel.WindowsAppSdkVersion, Mode=OneWay}" />
                         </ui:SettingsCard>
                         <ui:SettingsCard Header="运行类型">
 
-                            <TextBlock Text="{x:Bind ViewModel.RunType, Mode=OneWay}" />
+                            <TextBlock IsTextSelectionEnabled="True" Text="{x:Bind ViewModel.RunType, Mode=OneWay}" />
                         </ui:SettingsCard>
                         <ui:SettingsCard Header="框架版本">
-                            <TextBlock Text="{x:Bind ViewModel.FrameworkType, Mode=OneWay}" />
+                            <TextBlock IsTextSelectionEnabled="True" Text="{x:Bind ViewModel.FrameworkType, Mode=OneWay}" />
                         </ui:SettingsCard>
                     </ui:SettingsExpander.Items>
                 </ui:SettingsExpander>
