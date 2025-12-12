@@ -22,7 +22,8 @@ public sealed partial class ShellViewModel : ViewModelBase
         [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
         IViewFactorys viewFactorys,
         IKuroClient wavesClient,
-        ILauncherTaskService launcherTaskService
+        ILauncherTaskService launcherTaskService,
+        IWallpaperService wallpaperService
     )
     {
         HomeNavigationService = homeNavigationService;
@@ -33,6 +34,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         ViewFactorys = viewFactorys;
         WavesClient = wavesClient;
         LauncherTaskService = launcherTaskService;
+        WallpaperService = wallpaperService;
         RegisterMessanger();
         SystemMenu = new NotifyIconMenu()
         {
@@ -55,6 +57,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     public IViewFactorys ViewFactorys { get; }
     public IKuroClient WavesClient { get; }
     public ILauncherTaskService LauncherTaskService { get; }
+    public IWallpaperService WallpaperService { get; }
 
     private IDirect3DDevice _device;
 
@@ -292,6 +295,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         this.ShowWavesGlobalGame = AppSettings.ShowWavesGlobalGame;
         this.ShowWavesBilibiliGame = AppSettings.ShowWavesBilibiliGame;
         this.ShowTwPGRGame = AppSettings.ShowTwPGRGame;
+        WallpaperService.SetMediaForUrl(WallpaperShowType.Image, AppDomain.CurrentDomain.BaseDirectory+ "Assets\\background.png");
         OpenMain();
         await LauncherTaskService.RunAsync(this.CTS.Token);
     }

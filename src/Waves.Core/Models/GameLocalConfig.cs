@@ -52,11 +52,10 @@ public class GameLocalConfig
     private Dictionary<string, string> _settings = new Dictionary<string, string>();
     private readonly SemaphoreSlim _fileLock = new SemaphoreSlim(1, 1);
 
-    // 创建一个JsonSerializerContext实例，它包含了为AOT预生成的代码
     private readonly LocalSettingsJsonContext _jsonContext = new LocalSettingsJsonContext(
         new JsonSerializerOptions
         {
-            WriteIndented = true // 让输出的JSON更易读
+            WriteIndented = true
         }
     );
 
@@ -65,13 +64,12 @@ public class GameLocalConfig
     public GameLocalConfig(string settingPath)
     {
         SettingPath = settingPath;
-        LoadConfig();
     }
 
     /// <summary>
     /// 从JSON文件加载配置到内存
     /// </summary>
-    private void LoadConfig()
+    private async Task LoadConfig()
     {
         if (!File.Exists(SettingPath))
         {
@@ -81,9 +79,8 @@ public class GameLocalConfig
 
         try
         {
-            var jsonString = File.ReadAllText(SettingPath);
+            var jsonString = await File.ReadAllTextAsync(SettingPath);
 
-            // 使用我们AOT友好的上下文进行反序列化
             var loadedSettings = JsonSerializer.Deserialize(jsonString, typeof(Dictionary<string, string>), _jsonContext) as Dictionary<string, string>;
             _settings = loadedSettings ?? new Dictionary<string, string>();
         }
@@ -93,9 +90,6 @@ public class GameLocalConfig
         }
     }
 
-    /// <summary>
-    /// 将内存中的配置异步保存到JSON文件
-    /// </summary>
     private async Task SaveConfigToFileAsync()
     {
         await _fileLock.WaitAsync();
@@ -103,6 +97,8 @@ public class GameLocalConfig
         {
             var jsonString = JsonSerializer.Serialize(_settings, typeof(Dictionary<string, string>), _jsonContext);
             await File.WriteAllTextAsync(SettingPath, jsonString);
+
+            await LoadConfig();
         }
         finally
         {
@@ -135,8 +131,9 @@ public class GameLocalConfig
     /// </summary>
     /// <param name="key"></param>
     /// <returns></returns>
-    public string? GetConfig(string key)
+    public async Task<string?> GetConfigAsync(string key)
     {
+        await LoadConfig();
         if (_settings.TryGetValue(key, out string? value))
         {
             return value;

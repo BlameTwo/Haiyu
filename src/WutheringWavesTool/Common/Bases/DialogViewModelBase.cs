@@ -10,7 +10,7 @@ public abstract partial class DialogViewModelBase : ViewModelBase
     )
     {
         DialogManager = dialogManager;
-        this.Logger = Instance.Service.GetKeyedService<LoggerService>("AppLog");
+        this.Logger = Instance.Host.Services.GetKeyedService<LoggerService>("AppLog");
     }
 
     public ContentDialogResult? Result { get; set; }

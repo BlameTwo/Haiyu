@@ -37,8 +37,9 @@
                 <ui:FluentButton
                     Grid.Column="1"
                     Margin="10,0,0,0"
-                    Command="{Binding OpenFolderCommand}">
-                    <ui:FontIcon Glyph="SelectAll" />
+                    Command="{Binding OpenFolderCommand}"
+                    ToolTipService.ToolTip="选择安装文件夹">
+                    <ui:FontIcon Glyph="Folder" />
                 </ui:FluentButton>
             </Grid>
             <StackPanel

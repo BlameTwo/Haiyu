@@ -8,7 +8,7 @@ public sealed partial class GamerRoilsPage : Page, IPage,IDisposable
     public GamerRoilsPage()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<GameRoilsViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<GameRoilsViewModel>();
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)

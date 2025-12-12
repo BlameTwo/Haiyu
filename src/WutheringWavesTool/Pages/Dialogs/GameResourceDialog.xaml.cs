@@ -6,6 +6,7 @@ public sealed partial class GameResourceDialog : ContentDialog
     {
         this.InitializeComponent();
         ViewModel = viewModel;
+        this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     public GameResourceViewModel ViewModel { get; }

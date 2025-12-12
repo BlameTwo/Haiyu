@@ -11,7 +11,7 @@ public sealed partial class GamerTowerPage : Page, IPage, IDisposable
     public GamerTowerPage()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<GamerTowerViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<GamerTowerViewModel>();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)

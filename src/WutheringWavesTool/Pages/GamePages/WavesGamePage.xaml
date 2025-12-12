@@ -99,6 +99,8 @@
                     Margin="10,0,10,-1"
                     Padding="5"
                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
+                    BorderThickness="1,1,1,0"
                     CornerRadius="5 5 0 0">
                     <TextBlock
                         Margin="5,0,0,0"
@@ -110,6 +112,8 @@
                 <Grid
                     Grid.Row="1"
                     Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource LayerOnMicaBaseAltFillColorSecondaryBrush}"
+                    BorderThickness="1"
                     CornerRadius="5">
                     <Grid.ChildrenTransitions>
                         <TransitionCollection>

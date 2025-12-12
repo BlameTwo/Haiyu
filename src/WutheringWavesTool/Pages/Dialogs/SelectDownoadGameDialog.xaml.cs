@@ -1,4 +1,5 @@
-﻿using Haiyu.Models.Dialogs;
+﻿using Haiyu.Common;
+using Haiyu.Models.Dialogs;
 using Haiyu.Services.DialogServices;
 
 namespace Haiyu.Pages.Dialogs
@@ -10,10 +11,11 @@ namespace Haiyu.Pages.Dialogs
         public SelectDownoadGameDialog()
         {
             InitializeComponent();
-            this.DialogManager = Instance.Service.GetRequiredKeyedService<IDialogManager>(
+            this.DialogManager = Instance.Host.Services.GetRequiredKeyedService<IDialogManager>(
                 nameof(MainDialogService)
             );
-            this.Pickers = Instance.Service.GetRequiredService<IPickersService>();
+            this.Pickers = Instance.Host.Services.GetRequiredService<IPickersService>();
+            this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
         }
 
         SelectDownloadFolderResult downloadResult = null;
@@ -33,7 +35,7 @@ namespace Haiyu.Pages.Dialogs
             if (data is Type type)
             {
                 var name = type.Name;
-                this.GameContext = Instance.Service.GetRequiredKeyedService<IGameContext>(name);
+                this.GameContext = Instance.Host.Services.GetRequiredKeyedService<IGameContext>(name);
             }
         }
 
@@ -80,6 +82,16 @@ namespace Haiyu.Pages.Dialogs
                 .FirstOrDefault(drive =>
                     drive.Name.Equals(rootPath, StringComparison.OrdinalIgnoreCase)
                 );
+            var isVild = Path.GetPathRoot(folderPath.Path) == folderPath.Path;
+            if(isVild)
+            {
+                layeredGrid.Visibility = Visibility.Visible;
+                layerText.Visibility = Visibility.Collapsed;
+                TipMessage.Text = "请选择一个文件夹，而并非一个磁盘";
+                download.Fill = new SolidColorBrush(Colors.Red);
+                downloadBth.IsEnabled = false;
+                return;
+            }
             if (selectedDrive == null)
                 return;
             double totalSizeMB = (double)selectedDrive.TotalSize / (1024 * 1024 * 1024);

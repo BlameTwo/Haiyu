@@ -8,6 +8,7 @@ namespace Haiyu.Pages.Dialogs
         {
             InitializeComponent();
             this.ViewModel = Instance.GetService<GameLauncherCacheViewModel>();
+            this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
         }
 
         public GameLauncherCacheViewModel ViewModel { get; }

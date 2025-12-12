@@ -11,6 +11,10 @@ public sealed partial class CloudConfigManager
         this.Path = savePath;
     }
 
+    public Dictionary<string, LoginData> cacheData;
+
+
+
     public async Task<ObservableCollection<LoginData>> GetUsersAsync(CancellationToken token = default)
     {
         ObservableCollection<LoginData> logins = new ObservableCollection<LoginData>();
@@ -29,7 +33,21 @@ public sealed partial class CloudConfigManager
                 continue;
             }
         }
+        foreach (var item in logins)
+        {
+            cacheData = logins.ToDictionary(x => x.Username, x => x);
+        }
         return logins;
+    }
+
+    public async Task<LoginData?> GetUserAsync(string userName,CancellationToken token = default)
+    {
+        List<LoginData> items = null;
+        if(cacheData == null || cacheData.Count == 0)
+            items = (await GetUsersAsync()).ToList();
+        else
+            items = cacheData.Values.ToList();
+        return items.Where(x => x.Username == userName).FirstOrDefault();
     }
 
     public async Task<bool> SaveUserAsync(LoginData loginResult)

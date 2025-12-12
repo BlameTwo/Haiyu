@@ -122,12 +122,12 @@
     <value>program.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="InstallName" xml:space="preserve">
-    <value>鸣潮启动器</value>
+    <value>库洛启动器</value>
   </data>
   <data name="ProgramExe" xml:space="preserve">
     <value>Haiyu.exe</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>1.2.4</value>
+    <value>1.2.16</value>
   </data>
 </root>

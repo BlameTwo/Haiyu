@@ -64,6 +64,6 @@ public partial class SelectDownloadGameViewModel : DialogViewModelBase
     internal void SetData(Type type)
     {
         var name = type.Name;
-        this.GameContext = Instance.Service.GetRequiredKeyedService<IGameContext>(name);
+        this.GameContext = Instance.Host.Services.GetRequiredKeyedService<IGameContext>(name);
     }
 }

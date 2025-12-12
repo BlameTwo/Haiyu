@@ -37,16 +37,16 @@ public sealed partial class GameResourceViewModel : DialogViewModelBase
     internal void SetData(string contextName)
     {
         ContextName = contextName;
-        this.GameContext = Instance.Service.GetRequiredKeyedService<IGameContext>(contextName);
+        this.GameContext = Instance.Host.Services.GetRequiredKeyedService<IGameContext>(contextName);
     }
 
     [RelayCommand]
     async Task Loaded()
     {
-        var result = GameContext.GameLocalConfig.GetConfig(
+        var result =  await GameContext.GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.GameLauncherBassFolder
         );
-        var prodFolder = GameContext.GameLocalConfig.GetConfig(
+        var prodFolder = await GameContext.GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.ProdDownloadFolderPath
         );
         long gameSize = 0L;
@@ -99,9 +99,9 @@ public sealed partial class GameResourceViewModel : DialogViewModelBase
     }
 
     [RelayCommand]
-    void OpenFolder()
+    async Task OpenFolder()
     {
-        WindowExtension.ShellExecute(IntPtr.Zero, this.GameContext.GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder), null, null, null, WindowExtension.SW_SHOWNORMAL);
+        WindowExtension.ShellExecute(IntPtr.Zero, await GameContext.GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder)??"", null, null, null, WindowExtension.SW_SHOWNORMAL);
     }
 
     [RelayCommand]

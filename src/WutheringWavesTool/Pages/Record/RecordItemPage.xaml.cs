@@ -5,7 +5,7 @@ public sealed partial class RecordItemPage : Page, IPage
     public RecordItemPage()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<RecordItemViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<RecordItemViewModel>();
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)

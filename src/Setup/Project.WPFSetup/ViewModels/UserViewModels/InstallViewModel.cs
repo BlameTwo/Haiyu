@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -21,10 +22,15 @@ public sealed partial class InstallViewModel : ObservableRecipient
         this.SelectInstallVisibility = Visibility.Visible;
         InstallingVisibility = Visibility.Collapsed;
         InstalledVisibility = Visibility.Collapsed;
-    }
+        this.InstallFolder = Path.Combine(Environment.GetFolderPath(Environment.Is64BitProcess? Environment.SpecialFolder.ProgramFiles: Environment.SpecialFolder.ProgramFilesX86),"Haiyu");    }
 
     [ObservableProperty]
     public partial string InstallFolder { get; set; }
+
+    partial void OnInstallFolderChanged(string value)
+    {
+        SetupProperty.InstallPath = value;
+    }
 
     [ObservableProperty]
     public partial Visibility SelectInstallVisibility { get; set; } = Visibility.Collapsed;
@@ -60,19 +66,35 @@ public sealed partial class InstallViewModel : ObservableRecipient
         dialog.IsFolderPicker = true;
         if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
         {
-            if (dialog.FileName.StartsWith("C"))
+            var isVild =  Path.GetPathRoot(dialog.FileName) == dialog.FileName;
+            if (isVild)
             {
-                MessageBox.Show("本程序不允许安装在C盘");
-                return;
+                InstallFolder = dialog.FileName+"\\Haiyu";
             }
-            InstallFolder = dialog.FileName;
-            this.SetupProperty.InstallPath = InstallFolder;
+            else
+            {
+                InstallFolder = dialog.FileName;
+            }
         }
     }
 
     [RelayCommand]
     async Task InstallAsync()
     {
+        if (string.IsNullOrWhiteSpace(this.SetupProperty.InstallPath))
+        {
+            MessageBox.Show("请选择安装目录！");
+            return;
+        }
+        var isVild = Path.GetPathRoot(SetupProperty.InstallPath) == "C:\\";
+        if (isVild)
+        {
+            var resultMessage = MessageBox.Show("注意！你选择了C盘进行安装，Haiyu不会自动使用管理员权限启动，有可能会导致库街区无法登陆以及云工具无法正常使用的错误！\r\n继续安装请点击确定", "警告", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            if (resultMessage == MessageBoxResult.Cancel)
+            {
+                return;
+            }
+        }
         this.SelectInstallVisibility = Visibility.Collapsed;
         InstalledVisibility = Visibility.Collapsed;
         InstallingVisibility = Visibility.Visible;

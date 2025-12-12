@@ -15,7 +15,7 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext;
 
-public partial class GameContextBase
+public partial class KuroGameContextBase
 {
     /// <summary>
     /// 下载校验最大并发数
@@ -76,7 +76,9 @@ public partial class GameContextBase
     public async Task UpdateGameAsync()
     {
         _downloadCTS = new CancellationTokenSource();
-        var folder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
+        var folder = await GameLocalConfig.GetConfigAsync(
+            GameLocalSettingName.GameLauncherBassFolder
+        );
         var launcher = await this.GetGameLauncherSourceAsync(null, _downloadCTS.Token);
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
@@ -85,7 +87,11 @@ public partial class GameContextBase
     }
 
     #region 核心下载逻辑
-    private async Task<bool> GetGameResourceAsync(string folder, GameLauncherSource source, bool isDelete)
+    private async Task<bool> GetGameResourceAsync(
+        string folder,
+        GameLauncherSource source,
+        bool isDelete
+    )
     {
         try
         {
@@ -116,8 +122,12 @@ public partial class GameContextBase
     {
         if (_downloadState!.IsStop)
             return;
-        var currentVersion = GameLocalConfig.GetConfig(GameLocalSettingName.LocalGameVersion);
-        var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
+        var currentVersion = await GameLocalConfig.GetConfigAsync(
+            GameLocalSettingName.LocalGameVersion
+        );
+        var installFolder = await GameLocalConfig.GetConfigAsync(
+            GameLocalSettingName.GameLauncherBassFolder
+        );
         if (string.IsNullOrWhiteSpace(currentVersion))
         {
             await this.GameLocalConfig.SaveConfigAsync(
@@ -417,7 +427,9 @@ public partial class GameContextBase
 
     async Task UpdateGameResourceAsync(string folder, GameLauncherSource launcher)
     {
-        var currentVersion = GameLocalConfig.GetConfig(GameLocalSettingName.LocalGameVersion);
+        var currentVersion = await GameLocalConfig.GetConfigAsync(
+            GameLocalSettingName.LocalGameVersion
+        );
         var previous = launcher
             .ResourceDefault.Config.PatchConfig.Where(x => x.Version == currentVersion)
             .FirstOrDefault();
@@ -650,15 +662,15 @@ public partial class GameContextBase
                     }
                 );
             }
-            if(!await GetGameResourceAsync(folder, resource, false))
+            if (!await GetGameResourceAsync(folder, resource, false))
             {
                 await UpdateFileProgress(
-                       GameContextActionType.TipMessage,
-                       0,
-                       false,
-                       "更新校验出错，请直接尝试修复游戏，下载缓存需手动删除"
-                   )
-                   .ConfigureAwait(false);
+                        GameContextActionType.TipMessage,
+                        0,
+                        false,
+                        "更新校验出错，请直接尝试修复游戏，下载缓存需手动删除"
+                    )
+                    .ConfigureAwait(false);
                 await SetNoneStatusAsync();
                 return false;
             }
@@ -1061,6 +1073,11 @@ public partial class GameContextBase
             {
                 throw new OperationCanceledException();
             }
+            finally
+            {
+                fs.Close();
+                fs.Dispose();
+            }
         }
     }
 
@@ -1070,10 +1087,11 @@ public partial class GameContextBase
         using var md5 = MD5.Create();
         var memoryPool = ArrayPool<byte>.Shared;
         const long UpdateThreshold = 1048576; // 1MB进度更新阈值
+        FileStream? fs = null;
         try
         {
             using (
-                var fs = new FileStream(
+                fs = new FileStream(
                     filePath,
                     FileMode.Open,
                     FileAccess.Read,
@@ -1152,6 +1170,11 @@ public partial class GameContextBase
             Logger.WriteError(ex.Message);
             return false;
         }
+        finally
+        {
+            fs?.Close();
+            fs?.Dispose();
+        }
     }
 
     #endregion
@@ -1177,85 +1200,97 @@ public partial class GameContextBase
             )
         )
         {
-            long accumulatedBytes = 0;
-            if (start == 0 && end == -1)
+            try
             {
-                Logger.WriteError($"文件{filePath}，分片数据错误，start={start},end={end}");
-            }
-            using var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                _downloadBaseUrl.TrimEnd('/') + "/" + dest.TrimStart('/')
-            );
-            request.Headers.Range = new RangeHeaderValue(start, end);
-            using var response = await HttpClientService.GameDownloadClient.SendAsync(
-                request,
-                HttpCompletionOption.ResponseHeadersRead,
-                _downloadCTS.Token
-            );
-            var stream = await response.Content.ReadAsStreamAsync(_downloadCTS.Token);
-            if (start < 0 || end < start)
-            {
-                Logger.WriteError($"分片范围无效: {start}-{end}");
-                throw new ArgumentException($"分片范围无效: {start}-{end}");
-            }
+                long accumulatedBytes = 0;
+                if (start == 0 && end == -1)
+                {
+                    Logger.WriteError($"文件{filePath}，分片数据错误，start={start},end={end}");
+                }
+                using var request = new HttpRequestMessage(
+                    HttpMethod.Get,
+                    _downloadBaseUrl.TrimEnd('/') + "/" + dest.TrimStart('/')
+                );
+                request.Headers.Range = new RangeHeaderValue(start, end);
+                using var response = await HttpClientService.GameDownloadClient.SendAsync(
+                    request,
+                    HttpCompletionOption.ResponseHeadersRead,
+                    _downloadCTS.Token
+                );
+                var stream = await response.Content.ReadAsStreamAsync(_downloadCTS.Token);
+                if (start < 0 || end < start)
+                {
+                    Logger.WriteError($"分片范围无效: {start}-{end}");
+                    throw new ArgumentException($"分片范围无效: {start}-{end}");
+                }
 
-            long totalWritten = 0;
-            long chunkTotalSize = end - start + 1;
-            var memoryPool = ArrayPool<byte>.Shared;
-            fileStream.Seek(start, SeekOrigin.Begin);
-            bool isBreak = false;
-            while (totalWritten < chunkTotalSize)
-            {
-                if (_downloadCTS.IsCancellationRequested)
+                long totalWritten = 0;
+                long chunkTotalSize = end - start + 1;
+                var memoryPool = ArrayPool<byte>.Shared;
+                fileStream.Seek(start, SeekOrigin.Begin);
+                bool isBreak = false;
+                while (totalWritten < chunkTotalSize)
                 {
-                    throw new OperationCanceledException();
-                }
-                await _downloadState.PauseToken.WaitIfPausedAsync().ConfigureAwait(false); // 暂停检查也异步化
-                int bytesToRead = (int)Math.Min(MaxBufferSize, chunkTotalSize - totalWritten);
-                byte[] buffer = ArrayPool<byte>.Shared.Rent(bytesToRead);
-                try
-                {
-                    int bytesRead = await stream
-                        .ReadAsync(buffer.AsMemory(0, bytesToRead), _downloadCTS.Token)
-                        .ConfigureAwait(false);
-                    if (bytesRead == 0)
+                    if (_downloadCTS.IsCancellationRequested)
                     {
-                        isBreak = true;
-                        break;
+                        throw new OperationCanceledException();
                     }
-                    await _downloadState.SpeedLimiter.LimitAsync(bytesRead).ConfigureAwait(false);
-                    await fileStream
-                        .WriteAsync(buffer.AsMemory(0, bytesRead), _downloadCTS.Token)
-                        .ConfigureAwait(false);
-                    totalWritten += bytesRead;
-                    accumulatedBytes += bytesRead;
-                    if (accumulatedBytes >= UpdateThreshold)
+                    await _downloadState.PauseToken.WaitIfPausedAsync().ConfigureAwait(false); // 暂停检查也异步化
+                    int bytesToRead = (int)Math.Min(MaxBufferSize, chunkTotalSize - totalWritten);
+                    byte[] buffer = ArrayPool<byte>.Shared.Rent(bytesToRead);
+                    try
                     {
-                        await UpdateFileProgress(GameContextActionType.Download, accumulatedBytes)
+                        int bytesRead = await stream
+                            .ReadAsync(buffer.AsMemory(0, bytesToRead), _downloadCTS.Token)
                             .ConfigureAwait(false);
-                        accumulatedBytes = 0;
+                        if (bytesRead == 0)
+                        {
+                            isBreak = true;
+                            break;
+                        }
+                        await _downloadState
+                            .SpeedLimiter.LimitAsync(bytesRead)
+                            .ConfigureAwait(false);
+                        await fileStream
+                            .WriteAsync(buffer.AsMemory(0, bytesRead), _downloadCTS.Token)
+                            .ConfigureAwait(false);
+                        totalWritten += bytesRead;
+                        accumulatedBytes += bytesRead;
+                        if (accumulatedBytes >= UpdateThreshold)
+                        {
+                            await UpdateFileProgress(
+                                    GameContextActionType.Download,
+                                    accumulatedBytes
+                                )
+                                .ConfigureAwait(false);
+                            accumulatedBytes = 0;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteError(ex.Message);
+                    }
+                    finally
+                    {
+                        ArrayPool<byte>.Shared.Return(buffer);
                     }
                 }
-                catch (Exception ex)
+                if (accumulatedBytes > 0 && !isBreak)
                 {
-                    Logger.WriteError(ex.Message);
+                    await UpdateFileProgress(GameContextActionType.Download, accumulatedBytes)
+                        .ConfigureAwait(false);
                 }
-                finally
-                {
-                    ArrayPool<byte>.Shared.Return(buffer);
-                }
+                if (isLast)
+                    fileStream.SetLength(allSize);
+                stream.Close();
+                await stream.DisposeAsync();
             }
-            if (accumulatedBytes > 0 && !isBreak)
+            catch (Exception)
             {
-                await UpdateFileProgress(GameContextActionType.Download, accumulatedBytes)
-                    .ConfigureAwait(false);
+                await fileStream.FlushAsync(_downloadCTS.Token);
+                await fileStream.FlushAsync();
+                await fileStream.DisposeAsync();
             }
-            if (isLast)
-                fileStream.SetLength(allSize);
-            await fileStream.FlushAsync(_downloadCTS.Token);
-            await fileStream.FlushAsync();
-            stream.Close();
-            await stream.DisposeAsync();
         }
     }
 
@@ -1294,19 +1329,19 @@ public partial class GameContextBase
         IndexChunkInfo chunk
     )
     {
-        try
-        {
-            long accumulatedBytes = 0;
-            using (
-                var fileStream = new FileStream(
-                    filePath,
-                    FileMode.OpenOrCreate,
-                    FileAccess.ReadWrite,
-                    FileShare.None,
-                    262144,
-                    true
-                )
+        long accumulatedBytes = 0;
+        using (
+            var fileStream = new FileStream(
+                filePath,
+                FileMode.OpenOrCreate,
+                FileAccess.ReadWrite,
+                FileShare.None,
+                262144,
+                true
             )
+        )
+        {
+            try
             {
                 if (chunk.Start == 0 && chunk.End == -1)
                 {
@@ -1387,35 +1422,39 @@ public partial class GameContextBase
                     throw new IOException($"分片写入不完整: {totalWritten}/{chunkTotalSize}");
                 }
                 fileStream.SetLength(size);
-                await fileStream.FlushAsync();
             }
-        }
-        catch (Exception ex)
-        {
-            Logger.WriteError(ex.Message);
+            catch (Exception ex)
+            {
+                Logger.WriteError($"下载文件{filePath}出现异常"+ex.Message);
+            }
+            finally
+            {
+                await fileStream.FlushAsync().ConfigureAwait(false);
+                await fileStream.DisposeAsync().ConfigureAwait(false);
+            }
         }
     }
 
     private async Task<string?> DownloadFileByKrDiff(string dest, string filePath)
     {
-        try
-        {
-            long accumulatedBytes = 0;
-            using (
-                var fileStream = new FileStream(
-                    filePath,
-                    FileMode.OpenOrCreate,
-                    FileAccess.ReadWrite,
-                    FileShare.None,
-                    262144,
-                    true
-                )
+        long accumulatedBytes = 0;
+        using (
+            var fileStream = new FileStream(
+                filePath,
+                FileMode.OpenOrCreate,
+                FileAccess.ReadWrite,
+                FileShare.None,
+                262144,
+                true
             )
+        )
+        {
+            try
             {
                 using var request = new HttpRequestMessage(
-                    HttpMethod.Get,
-                    _downloadBaseUrl.TrimEnd('/') + "/" + dest.TrimStart('/')
-                );
+                HttpMethod.Get,
+                _downloadBaseUrl.TrimEnd('/') + "/" + dest.TrimStart('/')
+            );
                 using var response = await HttpClientService
                     .GameDownloadClient.SendAsync(
                         request,
@@ -1490,45 +1529,23 @@ public partial class GameContextBase
                 await fileStream.FlushAsync();
                 return filePath;
             }
-        }
-        catch (Exception ex)
-        {
-            Logger.WriteError(ex.Message);
-            return null;
+            catch (Exception ex)
+            {
+                Logger.WriteError(ex.Message);
+                return null;
+            }
+            finally
+            {
+                await fileStream.FlushAsync();
+                await fileStream.DisposeAsync();
+            }
         }
     }
     #endregion
 
     #region 辅助方法
 
-    private async Task FinalValidation(IndexResource file, string filePath)
-    {
-        try
-        {
-            using (
-                var fs = new FileStream(
-                    filePath,
-                    FileMode.Open,
-                    FileAccess.Read,
-                    FileShare.Read,
-                    262144,
-                    true
-                )
-            )
-            {
-                var fullHash = await ComputeFullHash(fs);
-                if (fullHash.ToLower() != file.Md5.ToLower()) { }
-                else
-                {
-                    await fs.FlushAsync();
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Logger.WriteError(ex.Message);
-        }
-    }
+    
 
     private async Task UpdateFileProgress(
         GameContextActionType type,
@@ -1608,12 +1625,6 @@ public partial class GameContextBase
     #endregion
 
     #region 公共辅助方法
-    private static async Task<string> ComputeFullHash(Stream stream)
-    {
-        using var md5 = MD5.Create();
-        var hashBytes = await md5.ComputeHashAsync(stream);
-        return BitConverter.ToString(hashBytes).Replace("-", "");
-    }
 
     private string BuildFilePath(string folder, IndexResource file)
     {
@@ -1647,7 +1658,9 @@ public partial class GameContextBase
     public async Task RepirGameAsync()
     {
         Logger.WriteInfo("开始修复游戏");
-        var installFolder = GameLocalConfig.GetConfig(GameLocalSettingName.GameLauncherBassFolder);
+        var installFolder = await GameLocalConfig.GetConfigAsync(
+            GameLocalSettingName.GameLauncherBassFolder
+        );
         var launcher = await this.GetGameLauncherSourceAsync();
         if (launcher == null)
         {

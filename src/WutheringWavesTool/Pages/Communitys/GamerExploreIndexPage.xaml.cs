@@ -5,7 +5,7 @@ public sealed partial class GamerExploreIndexPage : Page, IPage,IDisposable
     public GamerExploreIndexPage()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<GamerExploreIndexViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<GamerExploreIndexViewModel>();
     }
 
     protected override async void OnNavigatedTo(NavigationEventArgs e)

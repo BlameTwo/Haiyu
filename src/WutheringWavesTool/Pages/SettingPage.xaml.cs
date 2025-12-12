@@ -5,7 +5,7 @@ public sealed partial class SettingPage : Page, IPage
     public SettingPage()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<SettingViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<SettingViewModel>();
     }
 
     public Type PageType => typeof(SettingPage);

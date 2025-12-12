@@ -26,7 +26,7 @@ public class ViewFactorys : IViewFactorys
         where T : UIElement, IWindowPage
     {
         var win = new WindowModelBase(WindowNative.GetWindowHandle(AppContext.App.MainWindow));
-        var page = Instance.Service!.GetRequiredService<T>();
+        var page = Instance.Host.Services!.GetRequiredService<T>();
         if (data != null)
             page.SetData(data);
         page.SetWindow(win);
@@ -37,7 +37,7 @@ public class ViewFactorys : IViewFactorys
     public WindowModelBase ShowAdminDevice()
     {
         var win = new WindowModelBase(WindowNative.GetWindowHandle(AppContext.App.MainWindow));
-        var page = Instance.Service!.GetRequiredService<DeviceInfoPage>();
+        var page = Instance.Host.Services!.GetRequiredService<DeviceInfoPage>();
         page.SetWindow(win);
         win.Content = page;
         win.Manager.MaxHeight = 530;

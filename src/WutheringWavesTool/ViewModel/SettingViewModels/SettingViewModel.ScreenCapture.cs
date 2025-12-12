@@ -45,16 +45,23 @@ partial class SettingViewModel
 
     public void InitCapture()
     {
-        this.IsOn = AppSettings.IsCapture == null ? true : Boolean.Parse(AppSettings.IsCapture);
-        if (string.IsNullOrWhiteSpace(AppSettings.CaptureModifierKey) || string.IsNullOrWhiteSpace(AppSettings.CaptureKey))
+        try
         {
-            this.CaptureModifierKey = this.CaptureModifierKeys.Where(x => x.Name == "Win").First();
-            this.CaptureKey = this.CaptureKeys.Where(x => x.Name == "F12").First();
+            this.IsOn = AppSettings.IsCapture == null ? true : Boolean.Parse(AppSettings.IsCapture);
+            if (string.IsNullOrWhiteSpace(AppSettings.CaptureModifierKey) || string.IsNullOrWhiteSpace(AppSettings.CaptureKey))
+            {
+                this.CaptureModifierKey = this.CaptureModifierKeys.Where(x => x.Name == "Win").First();
+                this.CaptureKey = this.CaptureKeys.Where(x => x.Name == "F12").First();
+            }
+            else
+            {
+                this.CaptureModifierKey = this.CaptureModifierKeys.Where(x => x.Name == AppSettings.CaptureModifierKey).First();
+                this.CaptureKey = this.CaptureKeys.Where(x => x.Name == AppSettings.CaptureKey).First();
+            }
         }
-        else
+        catch (Exception ex)
         {
-            this.CaptureModifierKey = this.CaptureModifierKeys.Where(x => x.Name == AppSettings.CaptureModifierKey).First();
-            this.CaptureKey = this.CaptureKeys.Where(x => x.Name == AppSettings.CaptureKey).First();
+            TipShow.ShowMessage($"注册失败{ex.Message}", Symbol.Clear);
         }
     }
 }

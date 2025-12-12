@@ -10,7 +10,7 @@ public delegate Task GameContextOutputDelegate(object sender, GameContextOutputA
 
 public delegate Task GameContextProdOutputDelegate(object sender, GameContextOutputArgs args);
 
-partial class GameContextBase
+partial class KuroGameContextBase
 {
     private GameContextOutputDelegate? gameContextOutputDelegate;
 

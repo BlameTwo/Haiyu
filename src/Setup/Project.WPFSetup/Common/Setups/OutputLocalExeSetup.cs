@@ -26,7 +26,7 @@ public class OutputLocalExeSetup : ISetup
                 string sourcePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
                 string destinationPath = property.GetUninstallPath();
                 File.Copy(sourcePath, destinationPath, true);
-                property.UninstallString = $"{destinationPath} uninstall";
+                property.UninstallString = $"{destinationPath}";
                 progress.Report((100, "成功"));
                 return ("", true);
             }

@@ -6,7 +6,7 @@ public sealed partial class WebGameLogin : ContentDialog, IDialog
     {
         InitializeComponent();
         this.ViewModel = Instance.GetService<WebGameViewModel>();
-        this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
+        this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     public WebGameViewModel ViewModel { get; }

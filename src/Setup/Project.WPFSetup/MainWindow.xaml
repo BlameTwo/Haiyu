@@ -11,7 +11,7 @@
     xmlns:ui="https://blame/fluentwpf/2023/"
     xmlns:view="clr-namespace:Project.WPFSetup.Views"
     xmlns:vm="clr-namespace:Project.WPFSetup.ViewModels"
-    Title="鸣潮启动器安装程序"
+    Title="Haiyu安装器"
     MinWidth="650"
     MinHeight="400"
     MaxWidth="650"

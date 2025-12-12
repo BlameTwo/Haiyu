@@ -28,6 +28,7 @@ public partial class App : ClientApplication
     private const int PROCESS_PER_MONITOR_DPI_AWARE = 2;
     private AppInstance mainInstance;
 
+    public static string AppVersion => "1.2.16";
     public App()
     {
         this.UnhandledException += App_UnhandledException;
@@ -66,12 +67,12 @@ public partial class App : ClientApplication
     {
         try
         {
-            Instance.Service.GetService<ITipShow>().ShowMessage(e.Message, Symbol.Clear);
-            Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(e.Message);
+            Instance.Host.Services.GetService<ITipShow>().ShowMessage(e.Message, Symbol.Clear);
+            Instance.Host.Services.GetKeyedService<LoggerService>("AppLog").WriteError(e.Message);
         }
         catch (Exception ex)
         {
-            Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteError(ex.Message);
+            Instance.Host.Services.GetKeyedService<LoggerService>("AppLog").WriteError(ex.Message);
         }
         finally
         {
@@ -81,7 +82,7 @@ public partial class App : ClientApplication
 
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
-        Instance.Service.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
+        Instance.Host.Services.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");
        
         var mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(
             "Haiyu_Main"
@@ -97,13 +98,14 @@ public partial class App : ClientApplication
             return;
         }
         await LanguageService.InitAsync();
-        await Instance.Service.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
-        Instance.Service.GetService<IScreenCaptureService>()!.Register();
+        await Instance.Host.Services.GetRequiredService<IAppContext<App>>().LauncherAsync(this);
+        SetTheme();
+        Instance.Host.Services.GetService<IScreenCaptureService>()!.Register();
     }
 
     private void SetTheme()
     {
-        var theme = Instance.Service.GetRequiredService<IThemeService>();
+        var theme = Instance.Host.Services.GetRequiredService<IThemeService>();
         switch (AppSettings.ElementTheme)
         {
             case "Light":

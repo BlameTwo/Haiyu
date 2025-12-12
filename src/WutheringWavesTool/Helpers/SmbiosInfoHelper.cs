@@ -63,29 +63,33 @@ public class HardwareIdGenerator
         public uint ProductIdOffset;
         public uint ProductRevisionOffset;
         public uint SerialNumberOffset;
-        // ... 其他字段
     }
-
-    // ==================== 核心方法 ====================
 
     public static string GenerateUniqueId()
     {
         try
         {
-            string diskSerial = GetHardDiskSerial();
-            string cpuId = GetCpuId();
-
-            string combined = $"{diskSerial}|{cpuId}";
-
-            using (var sha1 = SHA1.Create())
+            if (string.IsNullOrWhiteSpace(AppSettings.TokenDid))
             {
-                byte[] hashBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(combined));
-                StringBuilder sb = new StringBuilder();
-                foreach (byte b in hashBytes)
+                string diskSerial = GetHardDiskSerial();
+                string cpuId = GetCpuId();
+
+                string combined = $"{diskSerial}|{cpuId}";
+
+                using (var sha1 = SHA1.Create())
                 {
-                    sb.Append(b.ToString("X2"));
+                    byte[] hashBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(combined));
+                    StringBuilder sb = new StringBuilder();
+                    foreach (byte b in hashBytes)
+                    {
+                        sb.Append(b.ToString("X2"));
+                    }
+                    return sb.ToString();
                 }
-                return sb.ToString();
+            }
+            else
+            {
+                return AppSettings.TokenDid;
             }
         }
         catch
@@ -153,12 +157,8 @@ public class HardwareIdGenerator
         return "UNKNOWN_SERIAL";
     }
 
-    // ==================== 模拟获取 CPU ID（简化）====================
-    // 注意：真正的 CPUID 需要 x86 汇编或外部库，此处用环境信息代替
     private static string GetCpuId()
     {
-        // 在真实场景中，可通过 __cpuid 或 Native CPUID 调用获取
-        // 这里用处理器数量和系统信息模拟
         return Environment.ProcessorCount.ToString();
     }
 }

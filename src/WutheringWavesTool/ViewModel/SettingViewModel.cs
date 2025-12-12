@@ -58,68 +58,77 @@ public sealed partial class SettingViewModel : ViewModelBase
     [ObservableProperty]
     public partial int SelectCloseIndex { get; set; }
 
+    [ObservableProperty]
+    public partial bool ProgressAction { get; set; }
+
     [RelayCommand]
     async Task Loaded()
     {
-        if (await WavesClient.IsLoginAsync())
+        ProgressAction = true;
+        await AppContext.TryInvokeAsync(async () =>
         {
-            var gamers = await WavesClient.GetGamerAsync(Waves.Core.Models.Enums.GameType.Waves,this.CTS.Token);
-            var punish = await WavesClient.GetGamerAsync(Waves.Core.Models.Enums.GameType.Punish,this.CTS.Token);
-            if (gamers != null &&  punish != null)
-                this.GamerData = gamers.Data.Concat(punish.Data).ToObservableCollection();
-        }
-        var closeWindow = AppSettings.CloseWindow;
-        switch (closeWindow)
-        {
-            case "True":
-                this.SelectCloseIndex = 1;
-                break;
-            case "False":
-                this.SelectCloseIndex = 0;
-                break;
-        }
-        this.OldCursorName = AppSettings.SelectCursor ?? "默认";
-        this.SelectCursorName = Cursors.Find(x => x == AppSettings.SelectCursor) ?? Cursors[0];
-        if (AppSettings.WallpaperType == null)
-        {
-            this.SelectWallpaperName = WallpaperTypes[0];
-        }
-        else
-        {
-            if (AppSettings.WallpaperType == "Video")
+            if (await WavesClient.IsLoginAsync())
+            {
+                var gamers = await WavesClient.GetGamerAsync(Waves.Core.Models.Enums.GameType.Waves, this.CTS.Token);
+                var punish = await WavesClient.GetGamerAsync(Waves.Core.Models.Enums.GameType.Punish, this.CTS.Token);
+                if (gamers != null && punish != null)
+                    this.GamerData = gamers.Data.Concat(punish.Data).ToObservableCollection();
+            }
+            var closeWindow = AppSettings.CloseWindow;
+            switch (closeWindow)
+            {
+                case "True":
+                    this.SelectCloseIndex = 1;
+                    break;
+                case "False":
+                    this.SelectCloseIndex = 0;
+                    break;
+            }
+            this.OldCursorName = AppSettings.SelectCursor ?? "默认";
+            this.SelectCursorName = Cursors.Find(x => x == AppSettings.SelectCursor) ?? Cursors[0];
+            if (AppSettings.WallpaperType == null)
             {
                 this.SelectWallpaperName = WallpaperTypes[0];
             }
             else
             {
-                this.SelectWallpaperName = WallpaperTypes[1];
+                if (AppSettings.WallpaperType == "Video")
+                {
+                    this.SelectWallpaperName = WallpaperTypes[0];
+                }
+                else
+                {
+                    this.SelectWallpaperName = WallpaperTypes[1];
+                }
             }
-        }
-        this.InitCapture();
-        GetAllVersion();
-        if(bool.TryParse(AppSettings.AutoSignCommunity,out var isSign))
-        {
-            this.AutoCommunitySign = isSign;
-        }
-        else
-        {
-            this.AutoCommunitySign = false;
-        }
-        switch (AppSettings.ElementTheme)
-        {
-            case "Light":
-                this.SelectTheme = Themes[1];
-                break;
-            case "Dark":
-                this.SelectTheme = Themes[2];
-                break;
-            case "Default":
-                this.SelectTheme = Themes[0];
-                break;
-            default:
-                this.SelectTheme = Themes[0];
-                break;
-        }
+            if (bool.TryParse(AppSettings.AutoSignCommunity, out var isSign))
+            {
+                this.AutoCommunitySign = isSign;
+            }
+            else
+            {
+                this.AutoCommunitySign = false;
+            }
+            switch (AppSettings.ElementTheme)
+            {
+                case "Light":
+                    this.SelectTheme = Themes[1];
+                    break;
+                case "Dark":
+                    this.SelectTheme = Themes[2];
+                    break;
+                case "Default":
+                    this.SelectTheme = Themes[0];
+                    break;
+                default:
+                    this.SelectTheme = Themes[0];
+                    break;
+            }
+
+            this.InitCapture();
+            GetAllVersion();
+        });
+        ProgressAction = false;
     }
 
     [RelayCommand]

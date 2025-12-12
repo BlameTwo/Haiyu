@@ -41,6 +41,9 @@
     <None Include="ShouAnRen\Text.ani" />
     <None Include="ShouAnRen\Working.ani" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Icon\appLogo.ico" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

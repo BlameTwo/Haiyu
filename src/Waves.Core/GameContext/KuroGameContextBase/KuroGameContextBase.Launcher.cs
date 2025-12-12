@@ -8,7 +8,7 @@ using Waves.Core.Models.Downloader;
 
 namespace Waves.Core.GameContext;
 
-partial class GameContextBase
+partial class KuroGameContextBase
 {
     public virtual async Task<GameLauncherSource?> GetGameLauncherSourceAsync(GameAPIConfig apiConfig = null,
         CancellationToken token = default

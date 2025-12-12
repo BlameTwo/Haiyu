@@ -277,7 +277,10 @@
                 SelectedItem="{x:Bind ViewModel.SelectItem, Mode=OneWay}"
                 Style="{ThemeResource MainNavigationViewStyle}">
                 <NavigationView.MenuItems>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.HomeViewModel" ToolTipService.ToolTip="首页">
+                    <NavigationViewItem
+                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.HomeViewModel"
+                        Content="首页"
+                        ToolTipService.ToolTip="首页">
                         <NavigationViewItem.Icon>
                             <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xEA8A;" />
                         </NavigationViewItem.Icon>

@@ -24,7 +24,7 @@ public sealed partial class GetGeetWindow : WindowModelBase
         }
 
 
-        this.grid.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
+        this.grid.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     private void WebView2_NavigationCompleted(

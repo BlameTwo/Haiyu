@@ -2,7 +2,7 @@
 
 namespace Waves.Core.GameContext;
 
-partial class GameContextBase
+partial class KuroGameContextBase
 {
     public async Task<bool> SetLimitSpeedAsync(int value, CancellationToken token = default)
     {
@@ -37,8 +37,8 @@ partial class GameContextBase
     public async Task<GameContextConfig> ReadContextConfigAsync(CancellationToken token = default)
     {
         GameContextConfig config = new();
-        var speed = GameLocalConfig.GetConfig(GameLocalSettingName.LimitSpeed);
-        var dx11 = GameLocalConfig.GetConfig(GameLocalSettingName.IsDx11);
+        var speed = await GameLocalConfig.GetConfigAsync(GameLocalSettingName.LimitSpeed);
+        var dx11 = await GameLocalConfig.GetConfigAsync(GameLocalSettingName.IsDx11);
         if (int.TryParse(speed, out var rate))
         {
             config.LimitSpeed = rate;

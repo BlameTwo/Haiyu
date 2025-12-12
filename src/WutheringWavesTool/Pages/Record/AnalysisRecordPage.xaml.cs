@@ -8,9 +8,9 @@ public sealed partial class AnalysisRecordPage : Page, IWindowPage
     public AnalysisRecordPage()
     {
         InitializeComponent();
-        this.ViewModel = Instance.Service.GetRequiredService<AnalysisRecordViewModel>();
+        this.ViewModel = Instance.Host.Services.GetRequiredService<AnalysisRecordViewModel>();
 
-        this.RequestedTheme = Instance.Service.GetRequiredService<IThemeService>().CurrentTheme;
+        this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
     public AnalysisRecordViewModel ViewModel { get; }

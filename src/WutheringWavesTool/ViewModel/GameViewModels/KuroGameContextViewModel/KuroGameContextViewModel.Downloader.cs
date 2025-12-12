@@ -11,6 +11,7 @@ partial class KuroGameContextViewModel
     [ObservableProperty]
     public partial string DownloadSpeedValue { get; set; }
 
+
     private async Task GameContext_GameContextOutput(object sender, GameContextOutputArgs args)
     {
         await AppContext.TryInvokeAsync(async () =>
@@ -40,10 +41,12 @@ partial class KuroGameContextViewModel
                 {
                     if (args.IsAction && args.IsPause)
                     {
+                        this.PauseIcon = "\uE768";
                         this.BottomBarContent = "下载已经暂停";
                     }
                     else
                     {
+                        this.PauseIcon = "\uE769";
                         this.BottomBarContent =
                             $"下载速度:{Math.Round(args.DownloadSpeed / 1024 / 1024, 2)}MB，剩余：{Math.Round((double)(args.TotalSize - args.CurrentSize) / 1024 / 1024 / 1024, 2)}GB";
                     }
@@ -81,7 +84,7 @@ partial class KuroGameContextViewModel
                 }
                 if (status.IsLauncher)
                 {
-                    ShowGameLauncherBth(status.IsUpdate, status.DisplayVersion, status.Gameing);
+                    await ShowGameLauncherBth(status.IsUpdate, status.DisplayVersion, status.Gameing);
                 }
                 if (
                     status.IsGameExists

@@ -15,7 +15,7 @@ public partial class ViewModelBase : ObservableRecipient, IDisposable
             : AppSettings.SelectCursor == "卡提西亚" ? CursorName.KaTiXiYa
             : AppSettings.SelectCursor == "守岸人" ? CursorName.ShouAnRen
             : CursorName.None;
-        this.Logger = Instance.Service.GetRequiredKeyedService<LoggerService>("AppLog");
+        this.Logger = Instance.Host.Services.GetRequiredKeyedService<LoggerService>("AppLog");
     }
 
     [ObservableProperty]
