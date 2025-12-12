@@ -167,6 +167,8 @@ public partial class CloudGameViewModel : ViewModelBase
         if (value == null)
             return;
         this.cacheItems = (List<RecordCardItemWrapper>)aLLcacheItems[value.Id];
+        this.PageSize = 10;
+        CurrentPage = 1;
         UpdatePageCount();
         LoadPageItems();
     }

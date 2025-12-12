@@ -25,6 +25,8 @@ public class SetupProperty
 
     public string HelpLink => "https://www.github.com/blametwo/Haiyu.git";
 
+    public string UnInstallArgs { get; internal set; }
+
     public SetupProperty(IList<ISetup> setups, IList<ISetup> unSetups)
     {
         Setups = setups;
@@ -65,5 +67,6 @@ public static class SetupPropertyFactory
             InstallExeName = Resource1.ProgramExe,
             Version = Resource1.Version,
             UninstallName = "uninstall.exe",
+            UnInstallArgs = "uninstall"
         };
 }
