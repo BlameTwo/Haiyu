@@ -14,7 +14,8 @@
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<PublishAot>true</PublishAot>
 		<PublishTrimmed>true</PublishTrimmed>
-		<WindowsPackageType>None</WindowsPackageType>
+		<!--
+		<WindowsPackageType>None</WindowsPackageType>-->
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="AppPackages\**" />
@@ -219,10 +220,13 @@
 		<PackageCertificateThumbprint>9A058084F8990CF8FEAA9817CB4E3FC0A7C56294</PackageCertificateThumbprint>
 		<AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
 		<AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
-		<GenerateTestArtifacts>True</GenerateTestArtifacts>
-		<AppxBundle>Never</AppxBundle>
+		<GenerateTestArtifacts>False</GenerateTestArtifacts>
+		<AppxBundle>Auto</AppxBundle>		
+		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
 		<Win32Resource>D:\WorkSpace\WutheringWavesTool\src\WutheringWavesTool\Assets\Cursor\CursorResource.res</Win32Resource>
+		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+	
 	</PropertyGroup>
 	<ItemGroup>
 	  <PRIResource Remove="AppPackages\**" />
