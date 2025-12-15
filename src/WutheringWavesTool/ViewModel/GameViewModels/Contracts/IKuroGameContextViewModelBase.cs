@@ -42,7 +42,7 @@ public interface IKuroGameContextViewModelBase
     bool EnableStartGameBth { get; set; }
     double MaxProgressValue { get; set; }
     double CurrentProgressValue { get; set; }
-    string DownloadSpeedValue { get; set; }
+    int DownloadSpeedValue { get; set; }
     Color StressShadowColor { get; set; }
 
 

@@ -9,7 +9,7 @@ partial class KuroGameContextViewModel
     public partial double CurrentProgressValue { get; set; }
 
     [ObservableProperty]
-    public partial string DownloadSpeedValue { get; set; }
+    public partial int DownloadSpeedValue { get; set; }
 
 
     private async Task GameContext_GameContextOutput(object sender, GameContextOutputArgs args)
@@ -170,9 +170,6 @@ partial class KuroGameContextViewModel
     async Task SetDownloadSpeedAsync()
     {
         Logger.WriteInfo($"设置下载限速");
-        if (int.TryParse(DownloadSpeedValue, out var result))
-        {
-            await GameContext.SetSpeedLimitAsync(result * 1024 * 1024);
-        }
+        await GameContext.SetSpeedLimitAsync(DownloadSpeedValue * 1024 * 1024);
     }
 }

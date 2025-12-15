@@ -20,13 +20,31 @@ public static class Instance
 
     public static void InitService()
     {
-        Host = AppBuilder().Build();
+        Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder().AppBuilder().Build();
         Task.Run(async () => await Host.RunAsync());
     }
 
-    public static IHostBuilder AppBuilder()
+    public static T? GetService<T>()
+        where T : notnull
     {
-        IHostBuilder builder = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder();
+        if (Host.Services.GetRequiredService<T>() is not T v)
+        {
+            throw new ArgumentException("服务未注入");
+            ;
+        }
+        return v;
+    }
+}
+
+public static class InstanceBuilderExtensions
+{
+    /// <summary>
+    /// 构建容器
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    public static IHostBuilder AppBuilder(this IHostBuilder builder)
+    {
         builder.ConfigureServices(
             (Service) =>
             {
@@ -196,16 +214,5 @@ public static class Instance
             }
         );
         return builder;
-    }
-
-    public static T? GetService<T>()
-        where T : notnull
-    {
-        if (Host.Services.GetRequiredService<T>() is not T v)
-        {
-            throw new ArgumentException("服务未注入");
-            ;
-        }
-        return v;
     }
 }

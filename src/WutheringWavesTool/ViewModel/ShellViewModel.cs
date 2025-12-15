@@ -59,8 +59,6 @@ public sealed partial class ShellViewModel : ViewModelBase
     public ILauncherTaskService LauncherTaskService { get; }
     public IWallpaperService WallpaperService { get; }
 
-    private IDirect3DDevice _device;
-
     [ObservableProperty]
     public partial string ServerName { get; set; }
 

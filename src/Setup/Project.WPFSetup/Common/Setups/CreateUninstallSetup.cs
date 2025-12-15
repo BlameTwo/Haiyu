@@ -32,7 +32,7 @@ namespace Project.WPFSetup.Common.Setups
                     WshShell shell = new WshShell();
                     IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(startMenuExeLine);
                     shortcut.TargetPath = targetPath;
-                    shortcut.Arguments = $"uninstall";
+                    shortcut.Arguments = property.UnInstallArgs;
                     shortcut.WorkingDirectory = property.InstallPath;
                     shortcut.Description = shortcutDescription;
                     shortcut.IconLocation = targetPath;

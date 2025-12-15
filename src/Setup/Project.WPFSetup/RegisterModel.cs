@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using System.IO;
+using Microsoft.Win32;
 using Project.WPFSetup.Common;
 using Project.WPFSetup.Resources;
 
@@ -33,10 +34,23 @@ public class RegisterModel
                 { "EstimatedSize", (RegistryValueKind.DWord, length) },
                 { "DisplayName", (RegistryValueKind.String, property.InstallName) },
                 { "Contact", (RegistryValueKind.String, property.InstallName) },
-                { "UninstallString", (RegistryValueKind.String, property.UninstallString) },
+                {
+                    "UninstallString",
+                    (
+                        RegistryValueKind.String,
+                        property.UninstallString + $" {property.UnInstallArgs}"
+                    )
+                },
                 { "DisplayVersion", (RegistryValueKind.String, property.Version) },
                 { "Publisher", (RegistryValueKind.String, "Blame") },
                 { "InstallLocation", (RegistryValueKind.String, property.InstallPath) },
+                {
+                    "DisplayIcon",
+                    (
+                        RegistryValueKind.String,
+                        $@"{property.InstallPath}\{property.InstallExeName},0"
+                    )
+                },
                 { "InstallDate", (RegistryValueKind.String, DateTime.Now.ToString("yyyyMMdd")) },
                 {
                     "VersionMajor",

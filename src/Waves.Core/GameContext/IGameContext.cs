@@ -51,7 +51,7 @@ public interface IGameContext
         string url,
         CancellationToken token = default
     );
-
+    Task<GameContextConfig> ReadContextConfigAsync(CancellationToken token = default);
     /// <summary>
     /// 开始下载
     /// </summary>

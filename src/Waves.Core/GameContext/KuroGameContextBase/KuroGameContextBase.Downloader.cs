@@ -471,6 +471,7 @@ public partial class KuroGameContextBase
         _totalProgressTotal = 0;
         _totalProgressSize = 0;
         this._downloadState = new DownloadState();
+        await _downloadState.SetSpeedLimitAsync(this.SpeedValue);
         _downloadState.IsActive = true;
         if (
             patch.ApplyTypes != null
@@ -1320,6 +1321,7 @@ public partial class KuroGameContextBase
     public async Task SetSpeedLimitAsync(long bytesPerSecond)
     {
         await _downloadState.SetSpeedLimitAsync(bytesPerSecond);
+        await this.GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LimitSpeed, bytesPerSecond.ToString());
     }
 
     private async Task DownloadFileByFull(
@@ -1641,6 +1643,7 @@ public partial class KuroGameContextBase
         _totalFileTotal = resource.Resource.Count - 1;
         _totalProgressTotal = 0;
         this._downloadState = new DownloadState();
+        await _downloadState.SetSpeedLimitAsync(this.SpeedValue);
         if (gameContextOutputDelegate == null)
             return;
         await gameContextOutputDelegate.Invoke(
