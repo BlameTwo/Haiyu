@@ -9,6 +9,7 @@ using Waves.Api.Models.Launcher;
 using Waves.Core.Common;
 using Waves.Core.GameContext.Contexts;
 using Waves.Core.GameContext.Contexts.PRG;
+using Waves.Core.Helpers;
 using Waves.Core.Models;
 using Waves.Core.Models.Downloader;
 using Waves.Core.Models.Enums;
@@ -167,7 +168,7 @@ public partial class KuroGameContextBase
             Logger.WriteInfo("修复游戏，开始删除本地多余文件");
             var localFile = new DirectoryInfo(folder).GetFiles("*", SearchOption.AllDirectories);
             var serverFileSet = new HashSet<string>(
-                resource.Resource.Select(x => BuildFilePath(folder, x).ToLower())
+                resource.Resource.Select(x => BuildFileHelper.BuildFilePath(folder, x).ToLower())
             );
 
             var filesToDelete = localFile
@@ -270,7 +271,7 @@ public partial class KuroGameContextBase
                         await SetNoneStatusAsync().ConfigureAwait(false);
                         return;
                     }
-                    var filePath = BuildFilePath(folder, item);
+                    var filePath = BuildFileHelper.BuildFilePath(folder, item);
                     if (File.Exists(filePath))
                     {
                         if (item.ChunkInfos == null)
@@ -507,7 +508,7 @@ public partial class KuroGameContextBase
             Dictionary<string, string> newFiles = new();
             for (int i = 0; i < patch.GroupInfos.Count; i++)
             {
-                var filePath = BuildFilePath(folder + "\\Diff", patch.GroupInfos[i]);
+                var filePath = BuildFileHelper.BuildFilePath(folder + "\\Diff", patch.GroupInfos[i]);
                 await DecompressKrdiffFile(
                     folder,
                     filePath,
@@ -518,13 +519,13 @@ public partial class KuroGameContextBase
                 Logger.WriteInfo($"文件{filePath}解压完毕，已经删除");
                 for (int j = 0; j < patch.GroupInfos[i].SrcFiles.Count; j++)
                 {
-                    var deleteFilePath = BuildFilePath(folder, patch.GroupInfos[i].SrcFiles[j]);
+                    var deleteFilePath = BuildFileHelper.BuildFilePath(folder, patch.GroupInfos[i].SrcFiles[j]);
                     Logger.WriteError($"删除源文件{deleteFilePath}");
                     File.Delete(deleteFilePath);
                 }
                 foreach (var file in patch.GroupInfos[i].DstFiles)
                 {
-                    newFiles.Add(BuildFilePath(tempFolder, file), BuildFilePath(folder, file));
+                    newFiles.Add(BuildFileHelper.BuildFilePath(tempFolder, file), BuildFileHelper.BuildFilePath(folder, file));
                 }
                 File.Delete(filePath);
                 Logger.WriteInfo($"删除差异文件：{filePath}");
@@ -693,7 +694,7 @@ public partial class KuroGameContextBase
         for (int i = 0; i < patchInfos.Count(); i++)
         {
             var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
-            var filePath = BuildFilePath(folder, patchInfos[i]);
+            var filePath = BuildFileHelper.BuildFilePath(folder, patchInfos[i]);
             string? krdiffPath = "";
             if (File.Exists(filePath))
             {
@@ -717,7 +718,7 @@ public partial class KuroGameContextBase
         for (int i = 0; i < patchInfos.Count(); i++)
         {
             var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
-            var filePath = BuildFilePath(folder, patchInfos[i]);
+            var filePath = BuildFileHelper.BuildFilePath(folder, patchInfos[i]);
             string? krdiffPath = "";
             if (File.Exists(filePath))
             {
@@ -779,32 +780,6 @@ public partial class KuroGameContextBase
         return result;
     }
 
-    private string BuildFilePath(string folder, PatchInfo item)
-    {
-        var path = Path.Combine(folder, item.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(
-            Path.GetDirectoryName(path) ?? throw new Exception($"文件{item.Dest}创建失败")
-        );
-        return path;
-    }
-
-    private string BuildFilePath(string folder, GroupFileInfo item)
-    {
-        var path = Path.Combine(folder, item.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(
-            Path.GetDirectoryName(path) ?? throw new Exception($"文件{item.Dest}创建失败")
-        );
-        return path;
-    }
-
-    private string BuildFilePath(string folder, string item)
-    {
-        var path = Path.Combine(folder, item.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(
-            Path.GetDirectoryName(path) ?? throw new Exception($"文件{item}创建失败")
-        );
-        return path;
-    }
 
     private async Task<bool> UpdateGameToResources(string folder, List<IndexResource> resource)
     {
@@ -824,7 +799,7 @@ public partial class KuroGameContextBase
                     await SetNoneStatusAsync().ConfigureAwait(false);
                     return false;
                 }
-                var filePath = BuildFilePath(folder, resource[i]);
+                var filePath = BuildFileHelper.BuildFilePath(folder, resource[i]);
                 if (File.Exists(filePath))
                 {
                     if (resource[i].ChunkInfos == null)
@@ -1628,14 +1603,6 @@ public partial class KuroGameContextBase
 
     #region 公共辅助方法
 
-    private string BuildFilePath(string folder, IndexResource file)
-    {
-        var path = Path.Combine(folder, file.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(
-            Path.GetDirectoryName(path) ?? throw new Exception($"文件{file.Dest}创建失败")
-        );
-        return path;
-    }
 
     private async Task InitializeProgress(IndexGameResource resource)
     {
