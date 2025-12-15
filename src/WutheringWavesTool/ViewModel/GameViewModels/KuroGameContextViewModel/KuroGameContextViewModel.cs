@@ -219,6 +219,8 @@ public abstract partial class KuroGameContextViewModel
                 );
             }
             this.VersionLogo = new BitmapImage(new(background.Slogan));
+            var coreConfig = await GameContext.ReadContextConfigAsync(this.CTS.Token);
+            this.DownloadSpeedValue = coreConfig.LimitSpeed/1000/1000;
             await ShowCardAsync(showCard);
             await LoadAfter();
             ProcessAction = false;

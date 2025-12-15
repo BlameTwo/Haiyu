@@ -14,8 +14,9 @@
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<PublishAot>true</PublishAot>
 		<PublishTrimmed>true</PublishTrimmed>
+		<WindowsPackageType>None</WindowsPackageType>
 		<!--
-		<WindowsPackageType>None</WindowsPackageType>-->
+		-->
 	</PropertyGroup>
 	<ItemGroup>
 	  <Compile Remove="AppPackages\**" />
