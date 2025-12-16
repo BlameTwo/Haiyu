@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Haiyu.Pages.GameWikis"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:wikiModel="using:Haiyu.Models.Wrapper.Wiki" xmlns:ui="using:Haiyu.Controls" xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:wikiModel="using:Haiyu.Models.Wrapper.Wiki" xmlns:ui="using:Haiyu.Controls" xmlns:i="using:Microsoft.Xaml.Interactivity" xmlns:labs="using:CommunityToolkit.WinUI.Controls"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
@@ -111,6 +111,230 @@
                  FontWeight="Bold"
                  Text="正在施工中……" />
             </Grid>
+
+            <TextBlock
+                Margin="15,10,0,0"
+                FontFamily="{ThemeResource DefaultFont}"
+                FontSize="20"
+                Text="周常活动"/>
+            <Grid Margin="15,5,15,0" ColumnSpacing="15" RowSpacing="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 幻痛囚笼  -->
+                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    CornerRadius="5"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Vertical" Margin="0,0,0,0">
+                            <TextBlock Margin="10,15,0,0" Text="幻痛囚笼" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                        </StackPanel>
+
+                        <Rectangle Grid.Row="1" Height="1" Fill="{ThemeResource CardStrokeColorDefaultBrush}" Margin="0,0"/>
+
+                        <Grid Grid.Row="2" Margin="15,5,15,5" Background="#1A1A1A" CornerRadius="0">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="4"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="进行中: " Foreground="White" FontSize="16" FontWeight="Bold" Margin="10,0,0,0" />
+                            <TextBlock Text="{x:Bind ViewModel.EveryWeekContent.PunishRemainingTime,Mode=TwoWay}" Foreground="#66CCFF" FontSize="14" Margin="0,0,0,0" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <ProgressBar Grid.Row="1" Value="1000" Maximum="5000" Height="2" Background="Transparent" Foreground="#3399FF" BorderThickness="0"/>
+                        </Grid>
+
+                        <ItemsControl Grid.Row="3" ItemsSource="{x:Bind ViewModel.EveryWeekContent.PunishCageItems, Mode=OneWay}" Margin="10,-20,0,20">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Spacing="15"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="wikiModel:PunishCageItem">
+                                    <Grid CornerRadius="4" >
+                                        <ui:ImageEx Width="130" Source="{x:Bind ImageUrl}" Stretch="Uniform" IsCacheEnabled="True"/>
+
+                                    </Grid>
+
+                                </DataTemplate>
+
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                    </Grid>
+                </Border>
+
+                <StackPanel Margin="115,330,0,0"  Width="100" Height="40">
+                    <TextBlock Text="高级区" Margin="0,-5,0,10" FontSize="30" FontWeight="Bold" />
+                </StackPanel>
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="终极区" Margin="750,325,0,0" FontSize="30" FontWeight="Bold"/>
+
+
+
+                <Border Grid.Row="1" Grid.Column="0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    CornerRadius="5"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15,10">
+                            <TextBlock Text="诺曼复兴战" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Rectangle Grid.Row="1" Height="1" Fill="{ThemeResource CardStrokeColorDefaultBrush}" Margin="15,0"/>
+
+                        <Grid Grid.Row="2" Background="#333333" Margin="15,10,15,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Margin="10,5">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <TextBlock Text="进行中: " Foreground="White" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="{x:Bind ViewModel.EveryWeekContent.NormanRemainingTime, Mode=OneWay}" Foreground="#66CCFF" FontSize="14" Margin="5,0,0,0" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <ProgressBar Grid.Row="1" Value="{x:Bind ViewModel.EveryWeekContent.NormanProgress,Mode=TwoWay}" Maximum="{x:Bind ViewModel.EveryWeekContent.NormanMaxProgress,Mode=TwoWay}" Height="3" Background="Transparent" Foreground="#66CCFF" Margin="0" HorizontalAlignment="Left" Width="300"/>
+                        </Grid>
+
+                        <ui:ImageEx Grid.Row="3"
+                             Source="{x:Bind ViewModel.EveryWeekContent.NormanImageUrl, Mode=OneWay}"
+                             Stretch="UniformToFill"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Stretch"
+                             Margin="15,0,15,15"/>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Grid.Column="1"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    CornerRadius="5"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Margin="15,15,0,10">
+                            <TextBlock Text="历战映射" FontSize="16" FontWeight="Bold"/>
+                        </StackPanel>
+
+                        <Grid Grid.Row="1" Background="#1A1A1A" Margin="15,0,15,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Margin="8,5">
+                                <TextBlock Text="进行中: " Foreground="White" FontWeight="Bold" FontSize="12"/>
+                                <TextBlock Text="{x:Bind ViewModel.EveryWeekContent.WarZoneRemainingTime, Mode=OneWay}" Foreground="#66CCFF" FontWeight="Bold" FontSize="12" Margin="5,0,0,0"/>
+                            </StackPanel>
+                            <ProgressBar Grid.Row="1" Value="{x:Bind ViewModel.EveryWeekContent.WarZoneProgress, Mode=TwoWay}" Maximum="{x:Bind ViewModel.EveryWeekContent.WarZoneMaxProgress, Mode=TwoWay}" Height="2" Background="Transparent" Foreground="#66CCFF" HorizontalAlignment="Stretch" Margin="0"/>
+                        </Grid>
+
+                        <ui:ImageEx Grid.Row="2" Source="{x:Bind ViewModel.EveryWeekContent.WarZoneImageUrl, Mode=OneWay}" Stretch="UniformToFill" Margin="15,10,15,0" Height="90" CornerRadius="2"/>
+
+                        <Border Grid.Row="3" Background="#335577" HorizontalAlignment="Left" Margin="15,10,0,0" Padding="8,4" CornerRadius="2">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{x:Bind ViewModel.EveryWeekContent.WarZoneBuffName, Mode=OneWay}" Foreground="White" FontSize="12" FontWeight="Bold"/>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Grid.Row="4" Text="{x:Bind ViewModel.EveryWeekContent.WarZoneBuffDescription, Mode=OneWay}" TextWrapping="Wrap" Margin="15,10,15,15" FontSize="12" Foreground="Gray" VerticalAlignment="Top"/>
+                    </Grid>
+                </Border>
+
+                <!-- 纷争战区 (Bottom Right) -->
+                <Border Grid.Row="1" Grid.Column="2"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    CornerRadius="5"
+                    BorderThickness="1"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15,10">
+                            <TextBlock Text="纷争战区" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Rectangle Grid.Row="1" Height="1" Fill="{ThemeResource CardStrokeColorDefaultBrush}" Margin="15,0"/>
+
+                        <ItemsControl Grid.Row="2" ItemsSource="{x:Bind ViewModel.EveryWeekContent.DisputeWarZoneItems, Mode=OneWay}" Margin="5">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="wikiModel:DisputeWarZoneItem">
+                                    <Grid Margin="5" Height="51" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" CornerRadius="4" BorderThickness="1" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="55"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <ui:ImageEx Source="{x:Bind ImageUrl}" Stretch="UniformToFill" CornerRadius="4,0,0,4"/>
+
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="8,0,0,0">
+                                            <TextBlock Text="{x:Bind Title}" FontSize="12" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{x:Bind TimeRange}" FontSize="10" Foreground="Gray" TextTrimming="CharacterEllipsis"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <FontIcon Glyph="&#xE916;" FontSize="10" Foreground="Gray" Margin="0,0,3,0"/>
+                                                <TextBlock Text="{x:Bind Status}" FontSize="10" Foreground="Gray"/>
+                                            </StackPanel>
+                                        </StackPanel>
+
+                                        <FontIcon Grid.Column="2" Glyph="&#xE76C;" FontSize="12" Foreground="Gray" Margin="0,0,8,0"/>
+
+                                        <Rectangle Grid.ColumnSpan="3" VerticalAlignment="Bottom" Height="2" Fill="#FF4C4C"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+
+                </Border>
+            </Grid>
+
         </StackPanel>
     </ScrollViewer>
 </Page>
