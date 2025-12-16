@@ -281,7 +281,7 @@
                     </Grid>
                 </Border>
 
-                <!-- 纷争战区 (Bottom Right) -->
+                <!-- 纷争战区  -->
                 <Border Grid.Row="1" Grid.Column="2"
                     Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                     CornerRadius="5"
@@ -319,13 +319,14 @@
                                             <TextBlock Text="{x:Bind TimeRange}" FontSize="10" Foreground="Gray" TextTrimming="CharacterEllipsis"/>
                                             <StackPanel Orientation="Horizontal">
                                                 <FontIcon Glyph="&#xE916;" FontSize="10" Foreground="Gray" Margin="0,0,3,0"/>
-                                                <TextBlock Text="{x:Bind Status}" FontSize="10" Foreground="Gray"/>
+                                                <TextBlock Text="进行中：" FontSize="10" Foreground="Gray"/>
+                                                <TextBlock Text="{x:Bind RemainingTime,Mode=TwoWay}" FontSize="10" Foreground="#66CCFF"/>
                                             </StackPanel>
                                         </StackPanel>
 
                                         <FontIcon Grid.Column="2" Glyph="&#xE76C;" FontSize="12" Foreground="Gray" Margin="0,0,8,0"/>
 
-                                        <Rectangle Grid.ColumnSpan="3" VerticalAlignment="Bottom" Height="2" Fill="#FF4C4C"/>
+                                        <ProgressBar Grid.ColumnSpan="3" VerticalAlignment="Bottom" Height="1" Value="{x:Bind CurrentProgress,Mode=TwoWay}" Maximum="{x:Bind MaxProgress,Mode=TwoWay}" Foreground="{x:Bind ColorVal}"/>
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
