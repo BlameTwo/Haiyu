@@ -27,7 +27,11 @@
         <controls:TitleBar
             x:Name="title"
             IsExtendsContentIntoTitleBar="True"
-            TitleMode="Standard" />
+            TitleMode="Tall">
+            <controls:TitleBar.Title>
+                <TextBlock VerticalAlignment="Center" Text="设备授权" />
+            </controls:TitleBar.Title>
+        </controls:TitleBar>
         <wui:Segmented
             x:Name="select"
             Grid.Row="1"
@@ -39,10 +43,6 @@
                 </DataTemplate>
             </wui:Segmented.ItemTemplate>
         </wui:Segmented>
-        <Button
-            Grid.Row="1"
-            HorizontalAlignment="Right"
-            Content="刷新" />
 
         <ScrollView Grid.Row="2" Visibility="{x:Bind ViewModel.DeviceInfosVisibility, Mode=OneWay}">
             <ItemsRepeater ItemsSource="{x:Bind ViewModel.Devices, Mode=OneWay}">

@@ -11,7 +11,7 @@ namespace Project.WPFSetup.Common.Setups
     /// <summary>
     /// 开始菜单步骤
     /// </summary>
-    internal class StartMenLinkSetup : ISetup
+    internal class StartMenuLinkSetup : ISetup
     {
         public string SetupName => "创建开始菜单";
 

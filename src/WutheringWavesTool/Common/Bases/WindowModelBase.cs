@@ -16,20 +16,20 @@ public partial class WindowModelBase : Window
             IntPtr hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
             Microsoft.UI.WindowId windowId1 = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
             AppWindowApp = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId1);
-            Microsoft.UI.Windowing.OverlappedPresenter presenter = (
-                AppWindowApp.Presenter as Microsoft.UI.Windowing.OverlappedPresenter
-            )!;
+            IntPtr baseHwnd = value;
+            WindowExtension.SetWindowLong(hWnd, WindowExtension.GWL_HWNDPARENT, baseHwnd);
+            Microsoft.UI.Windowing.OverlappedPresenter presenter = OverlappedPresenter.CreateForDialog();
             presenter.IsMaximizable = false;
             presenter.IsMinimizable = false;
             presenter.IsResizable = false;
-            IntPtr baseHwnd = value;
-            WindowExtension.SetWindowLong(hWnd, WindowExtension.GWL_HWNDPARENT, baseHwnd);
             presenter.IsModal = true;
+            this.AppWindow.SetPresenter(presenter);
             this.Closed += (s, e) =>
             {
-                this.Content = null;
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
+                var windowId = Win32Interop.GetWindowIdFromWindow(baseHwnd);
+                var parentAppWindow = AppWindow.GetFromWindowId(windowId);
+                parentAppWindow.Show();
+                WindowExtension.SwitchToThisWindow(baseHwnd,true);
             };
         }
     }

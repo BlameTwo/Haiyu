@@ -210,6 +210,13 @@ public static partial class WindowExtension
     [DllImport("User32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
     public static extern bool EnableWindow(IntPtr hWnd, bool bEnable);
 
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    public static extern bool SwitchToThisWindow(IntPtr hWnd, bool fAltTab);
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    public static extern bool ShowWindow(IntPtr hWnd, short State);
+
+
     public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
     {
         if (IntPtr.Size == 4)

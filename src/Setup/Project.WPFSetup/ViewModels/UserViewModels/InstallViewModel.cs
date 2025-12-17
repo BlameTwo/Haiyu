@@ -101,7 +101,7 @@ public sealed partial class InstallViewModel : ObservableRecipient
 
         if (CreateStartMenuCheck)
         {
-            SetupProperty.Setups.Add(new StartMenLinkSetup());
+            SetupProperty.Setups.Add(new StartMenuLinkSetup());
             SetupProperty.Setups.Add(new CreateUninstallSetup());
         }
         if (CreateDesktopCheck)

@@ -228,7 +228,7 @@
 		<AppxBundle>Auto</AppxBundle>		
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-		<Win32Resource>F:\Code_Project\HaiyuMain\src\WutheringWavesTool\Assets\Cursor\CursorResource.res</Win32Resource>
+		<Win32Resource>./Assets/Cursor/CursorResource.res</Win32Resource>
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
 	
 	</PropertyGroup>
