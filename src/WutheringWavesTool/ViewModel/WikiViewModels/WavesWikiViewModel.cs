@@ -63,12 +63,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase
         if (wikiPage.Code == 0 || (wikiPage.Result != null && wikiPage.Result.Data.ContentJson.Shortcuts != null))
         {
             Sides = GameWikiClient.GetEventData(wikiPage.Result).Format()??[];
-            //var content = wikiPage.Result.Data.ContentJson.MainModules.Where(x => x.Type == "catalogue").FirstOrDefault().Content;
-            //if(content is JsonElement contentElement)
-            //{
-            //    WikiCatalogue catalogue = contentElement.Deserialize(WikiContext.Default.WikiCatalogue);
-            //    this.CatalogueChildren = catalogue.Childrens.ToObservableCollection();
-            //}
+        
         }
         else
         {
