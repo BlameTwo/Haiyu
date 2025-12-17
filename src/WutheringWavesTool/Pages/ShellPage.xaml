@@ -317,6 +317,11 @@
                             <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x2601;" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
+                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.ToolViewModel" Content="工具">
+                        <NavigationViewItem.Icon>
+                            <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F9F0;" />
+                        </NavigationViewItem.Icon>
+                    </NavigationViewItem>
                 </NavigationView.MenuItems>
                 <NavigationView.PaneFooter>
                     <Button

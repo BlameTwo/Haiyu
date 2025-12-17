@@ -67,6 +67,7 @@ public static class InstanceBuilderExtensions
                     .AddSingleton<ShellViewModel>()
                     .AddSingleton<OOBEPage>()
                     .AddSingleton<OOBEViewModel>()
+                    .AddTransient<ToolViewModel>()
                     .AddTransient<PlayerRecordPage>()
                     .AddTransient<PlayerRecordViewModel>()
                     .AddTransient<SettingViewModel>()

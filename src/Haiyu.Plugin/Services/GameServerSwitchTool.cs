@@ -17,7 +17,6 @@ namespace Haiyu.Plugin.Services;
 /// 1. 服务器备份转换，两个输入服务器与输出服务器之间必须有共存文件夹
 /// 2. 开始转换不能停止，否则则清楚上下文的本地配置缓存
 /// 3. 工具需要提前输出共存文件夹位置。
-///
 /// 第一步：计算差异，标记删除，标记新增
 /// 第二部：补全差异
 /// 第三步：合并
@@ -29,6 +28,12 @@ public class GameServerSwitchTool : ITool
 
     public string ToolWaringString => "GameServerSwitchWaringString";
 
+    /// <summary>
+    /// 执行合并
+    /// </summary>
+    /// <param name="progress"></param>
+    /// <returns></returns>
+    /// <exception cref="NotImplementedException"></exception>
     public Task InvokeAsync(IProgress<ToolOutputArgs> progress)
     {
         throw new NotImplementedException();
@@ -112,25 +117,19 @@ public class GameServerSwitchTool : ITool
             TotalScoreThreshold = 35,   // 总分阈值：超过则不建议转换
             ExtremeRatioThreshold = 0.8 // 极端占比阈值（80%）
         };
-
         double newFileRatio = outputResource.Resource.Count == 0 ? 0 : (double)newFiles.Count / outputResource.Resource.Count;
         double rewriteFileRatio = outputResource.Resource.Count == 0 ? 0 : (double)rewriteFiles.Count / outputResource.Resource.Count;
         double deleteFileRatio = inputResource.Resource.Count == 0 ? 0 : (double)deleteFiles.Count / inputResource.Resource.Count;
-
         double newFileScore = newFileRatio * config.NewFileRatioWeight;
         double rewriteFileScore = rewriteFileRatio * config.RewriteFileRatioWeight;
         double deleteFileScore = deleteFileRatio * config.DeleteFileRatioWeight;
-
         double penaltyScore = 0;
         if (newFileRatio > config.ExtremeRatioThreshold || rewriteFileRatio > config.ExtremeRatioThreshold || deleteFileRatio > config.ExtremeRatioThreshold)
         {
             penaltyScore = config.ExtremeCountPenalty;
         }
-
         double totalScore = newFileScore + rewriteFileScore + deleteFileScore + penaltyScore;
-
         totalScore = Math.Min(totalScore, 100);
-
         bool suggestConvert = totalScore <= config.TotalScoreThreshold;
         return new ServerAnalyseModel(newFiles, rewriteFiles, deleteFiles, unchangedFiles, suggestConvert,totalScore);
     }

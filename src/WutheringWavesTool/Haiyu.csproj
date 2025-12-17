@@ -196,6 +196,9 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\ToolPage.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\Languages\" />
@@ -242,5 +245,6 @@
 	  <None Remove="Assets\appLogo.ico" />
 	  <None Remove="Assets\appLogo.png" />
 	  <None Remove="Assets\background.png" />
+	  <None Remove="Pages\ToolPage.xaml" />
 	</ItemGroup>
 </Project>

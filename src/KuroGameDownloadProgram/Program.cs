@@ -40,5 +40,5 @@ await biliContext.InitAsync();
 GameServerSwitchTool tool = new GameServerSwitchTool();
 var result = await tool.AnalyseAsync(mainContext, biliContext);
 Console.WriteLine(
-    $"分析结果\r\n新增文件个数:{result.AddFiles.Count}，重写文件个数：{result.RewriterFiles.Count},删除文件个数：{result.DeleteFiles.Count},无变化文件个数:{result.UnchangedFiles.Count}，\r\n转换度:{result.ScoreValue}，评判:{result.IsSwitch}"
+    $"分析结果\r\n新增文件个数:{result.AddFiles.Count}，重写文件个数：{result.RewriterFiles.Count},删除文件个数：{result.DeleteFiles.Count},无变化文件个数:{result.UnchangedFiles.Count}，\r\n转换度:{Math.Round(result.ScoreValue,2)}，评判:{result.IsSwitch}"
 );
