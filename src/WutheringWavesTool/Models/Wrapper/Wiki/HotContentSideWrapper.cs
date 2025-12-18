@@ -28,6 +28,8 @@ namespace Haiyu.Models.Wrapper.Wiki
 
         [ObservableProperty]
         public partial string JumpUrl { get; set; }
+        [ObservableProperty]
+        public partial string Color { get; set; }
 
         public IAsyncRelayCommand JumpWebCommand => new AsyncRelayCommand(async () =>
         {
@@ -58,6 +60,7 @@ namespace Haiyu.Models.Wrapper.Wiki
             if (elapsed <= 0)
             {
                 Message = "已结束";
+                this.Color = "Red";
                 this.CurrentProgress = this.MaxProgress;
                 return;
             }
@@ -66,18 +69,21 @@ namespace Haiyu.Models.Wrapper.Wiki
             {
                 Message = "未开始";
                 this.CurrentProgress = 0;
+                this.Color = "Gray";
                 return;
             }
 
             if (_totalDurationTimeSpan.TotalDays >= LONG_CONTENT_TIME)
             {
                 Message = "长期活动";
-                this.CurrentProgress = 0;
+                this.CurrentProgress = this.MaxProgress;
+                this.Color = "Black";
                 return;
             }
 
             Message = "进行中";
             this.CurrentProgress = _overCountdownTimeSpace.TotalSeconds;
+            this.Color = "#3399FF";
             TotalSpan = $"剩余{_endCountdownTimeSpan.Days}天" +
                         $"{_endCountdownTimeSpan.Hours}小时" +
                         $"{_endCountdownTimeSpan.Minutes}分";
