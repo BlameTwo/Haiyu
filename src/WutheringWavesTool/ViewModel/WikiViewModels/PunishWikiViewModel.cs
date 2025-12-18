@@ -13,8 +13,10 @@ public partial class PunishWikiViewModel : WikiViewModelBase
     public partial ObservableCollection<HotContentSideWrapper> Sides { get; set; }
 
     [ObservableProperty]
-    public partial PunishEveryWeekContent EveryWeekContent { get; set; } = new();
+    public partial PunishEveryweekContentWrapper EveryWeekContent { get; set; }
 
+    [ObservableProperty]
+    public partial PunishBannerWrapper BannerListContentWrapper { get; set; }
     [RelayCommand]
     async Task Loaded()
     {
@@ -24,12 +26,13 @@ public partial class PunishWikiViewModel : WikiViewModelBase
         if (wikiPage.Code == 0 || (wikiPage.Result != null && wikiPage.Result.Data.ContentJson.Shortcuts != null))
         {
             Sides = GameWikiClient.GetEventData(wikiPage.Result).Format() ?? [];
+            if (EveryWeekContent == null) EveryWeekContent = new();
+            if (BannerListContentWrapper == null) BannerListContentWrapper = new();
 
-            var normanModule = wikiPage.Result.Data.ContentJson.SideModules;
+            var sideModule = wikiPage.Result.Data.ContentJson.SideModules;
             var mainModule = wikiPage.Result.Data.ContentJson.MainModules;
-            EveryWeekContent.InitWeekContent(normanModule, mainModule);
-            EveryWeekContent.UpdatePunishCageContent();
-
+            EveryWeekContent.InitWeekContent(sideModule, mainModule);
+            BannerListContentWrapper.InitBanner(sideModule);
         }
         else
         {
@@ -43,21 +46,25 @@ public partial class PunishWikiViewModel : WikiViewModelBase
         {
             foreach (var value in wikiPage.result.Data.ContentJson.SideModules)
             {
-                sw.WriteLine(value.Title);
-                sw.WriteLine(value.Content);
-                sw.WriteLine("\n");
-            }
-            sw.WriteLine("\n\n\n");
-            sw.WriteLine("MainModule:\n");
-            foreach (var value in wikiPage.result.Data.ContentJson.MainModules)
-            {
-                sw.WriteLine(value.Content);
+                if (value == null) return;
+                if (value.Title.Contains("池"))
+                {
+                    sw.WriteLine(value.Title);
+                    sw.WriteLine(value.Content);
+                    sw.WriteLine("\n");
+                }
+                continue;
+
             }
         }
     }
     public override void Dispose()
     {
         Sides.Clear();
+        EveryWeekContent.Dispose();
+        BannerListContentWrapper.Dispose();
+        if (EveryWeekContent != null) EveryWeekContent = null;
+        if (BannerListContentWrapper != null) BannerListContentWrapper = null;
         WeakReferenceMessenger.Default.UnregisterAll(this);
         base.Dispose();
     }
