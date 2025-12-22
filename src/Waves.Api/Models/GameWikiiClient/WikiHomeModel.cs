@@ -306,19 +306,19 @@ namespace Waves.Api.Models.GameWikiiClient
         public object? Content { get; set; }
     }
 
-    public class WeekContentJsonContent
+    public class SideModuleContentJson
     {
 
 
         [JsonPropertyName("tabs")]
-        public List<WeekContentTab>? Tabs { get; set; }
+        public List<SideModuleContentTab>? Tabs { get; set; }
 
     }
 
-    public class WeekContentTab
+    public class SideModuleContentTab
     {
         [JsonPropertyName("imgs")]
-        public List<WeekContentImg> Imgs { get; set; }
+        public List<SideModuleContentImg> Imgs { get; set; }
 
         [JsonPropertyName("innerTabs")]
         public List<WeekContentInnerTab> InnerTabs { get; set; }
@@ -342,7 +342,7 @@ namespace Waves.Api.Models.GameWikiiClient
         public WeekContentCountDown CountDown { get; set; }
     }
 
-    public class WeekContentImg
+    public class SideModuleContentImg
     {
         [JsonPropertyName("linkConfig")]
         public LinkConfig LinkConfig { get; set; }

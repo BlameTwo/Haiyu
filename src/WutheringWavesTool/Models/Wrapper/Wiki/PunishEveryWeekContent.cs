@@ -8,7 +8,7 @@ using WinUIEx.Messaging;
 
 namespace Haiyu.Models.Wrapper.Wiki
 {
-    public partial class PunishEveryWeekContent : ObservableObject
+    public partial class PunishEveryweekContentWrapper : ObservableObject
     {
         [ObservableProperty]
         public partial string NormanRemainingTime { get; set; }
@@ -42,7 +42,7 @@ namespace Haiyu.Models.Wrapper.Wiki
         public partial ObservableCollection<DisputeWarZoneItem> DisputeWarZoneItems { get; set; } = new();
 
         [ObservableProperty]
-        public partial ObservableCollection<PunishCageItem> PunishCageItems { get; set; } = new();
+        public partial ObservableCollection<ImageUrlItem> PunishCageItems { get; set; } = new();
 
         [ObservableProperty]
         public partial string PunishRemainingTime { get; set; }
@@ -54,6 +54,26 @@ namespace Haiyu.Models.Wrapper.Wiki
 
 
         private Dictionary<string, PunishCageCacheItem> _punishCageCache = new();
+
+
+        public void Dispose()
+        {
+
+            this.NormanMaxProgress = 0;
+            this.NormanProgress = 0;
+            this.NormanImageUrl = null;
+            this.WarZoneRemainingTime = null;
+            this.WarZoneProgress = 0;
+            this.WarZoneMaxProgress = 0;
+            this.WarZoneImageUrl = null;
+            this.WarZoneBuffName = null;
+            this.WarZoneBuffDescription = null;
+
+            DisputeWarZoneItems.Clear();
+            PunishCageItems.Clear();
+            _punishCageCache.Clear();
+            NormanRemainingTime = null;
+        }
 
         public void InitWeekContent(List<SideModule> modules, List<MainModule> mainModules = null)
         {
@@ -70,9 +90,9 @@ namespace Haiyu.Models.Wrapper.Wiki
                 }
             }
 
-            if (norman != null) SetNormanData(norman);
-            if (warzone != null) SetWarZoneData(warzone);
-            if (cage != null) SetPunishCageData(cage);
+            if (norman != null) SetData(ref norman, SetNormanDataInternal, null);
+            if (warzone != null) SetData(ref warzone, SetWarZoneDataInternal, null, true);
+            if (cage != null) SetData(ref cage, SetPunishCageDataInternal, SetPunishCageData, true);
 
             if (mainModules != null)
             {
@@ -85,8 +105,112 @@ namespace Haiyu.Models.Wrapper.Wiki
                     }
                 }
             }
+            UpdatePunishCageContent();
         }
 
+
+
+
+
+        private (double currVal, double maxVal, string msg) SetDataDisplay(SideModuleContentTab item, double currVal, double maxVal, string msg, int days = 14)
+        {
+            if (item == null) return (0, 0, null);
+
+
+            if (item.CountDown != null && item.CountDown.Repeat != null && item.CountDown.Repeat.DataRanges != null)
+            {
+                var dataRange = item.CountDown.Repeat.DataRanges.FirstOrDefault();
+                if (dataRange != null && dataRange.DataRange != null && dataRange.DataRange.Count >= 2)
+                {
+
+                    if (DateTime.TryParse(dataRange.DataRange[0], out var start) &&
+                        DateTime.TryParse(dataRange.DataRange[1], out var end))
+                    {
+                        var res = CalculateLatestDayCycle(start.ToString(), days);
+                        start = res[0];
+                        end = res[1];
+                        var now = DateTime.Now;
+                        TimeSpan _endCountdownTimeSpan = end - now;
+                        TimeSpan _totalDurationTimeSpan = end - start;
+                        TimeSpan _overCountdownTimeSpace = now - start;
+                        maxVal = _totalDurationTimeSpan.TotalSeconds;
+                        double elapsed = _endCountdownTimeSpan.TotalSeconds;
+
+                        if (elapsed <= 0)
+                        {
+                            currVal = maxVal;
+                            msg = "已结束";
+                            return (currVal, maxVal, msg);
+                        }
+
+
+
+                        currVal = _overCountdownTimeSpace.TotalSeconds;
+                        msg = $"剩余{_endCountdownTimeSpan.Days}天" +
+                                    $"{_endCountdownTimeSpan.Hours}小时" +
+                                    $"{_endCountdownTimeSpan.Minutes}分";
+                        return (currVal, maxVal, msg);
+                    }
+                    return (0, 0, string.Empty);
+                }
+            }
+            return (0, 0, string.Empty);
+        }
+
+        private void SetWarZoneDataInternal(SideModuleContentTab item)
+        {
+            if (item == null) return;
+
+            if (item.Imgs != null && item.Imgs.Count > 0)
+            {
+                WarZoneImageUrl = item.Imgs[0].Img;
+            }
+
+            if (item.InnerTabs != null && item.InnerTabs.Count > 0)
+            {
+                var buff = item.InnerTabs.FirstOrDefault();
+                if (buff != null)
+                {
+                    WarZoneBuffName = buff.Name;
+                    WarZoneBuffDescription = buff.Description;
+                }
+            }
+
+
+
+            var result = SetDataDisplay(item, WarZoneProgress, WarZoneMaxProgress, WarZoneRemainingTime);
+            WarZoneMaxProgress = result.maxVal;
+            WarZoneProgress = result.currVal;
+            WarZoneRemainingTime = result.msg;
+        }
+
+
+        private void SetNormanDataInternal(SideModuleContentTab item)
+        {
+
+            if (item == null) return;
+
+            if (item.Imgs != null && item.Imgs.Count > 0)
+            {
+                NormanImageUrl = item.Imgs[0].Img;
+            }
+
+            var result = SetDataDisplay(item, NormanProgress, NormanMaxProgress, NormanRemainingTime);
+            NormanMaxProgress = (double)result.maxVal;
+            NormanProgress = (double)result.currVal;
+            NormanRemainingTime = result.msg;
+        }
+
+        private void SetPunishCageDataInternal(SideModuleContentTab item)
+        {
+            if (item == null) return;
+
+
+            var result = SetDataDisplay(item, PunishCageProgress, PunishCageMaxProgress, PunishRemainingTime, 7);
+            PunishCageMaxProgress = result.maxVal;
+            PunishCageProgress = result.currVal;
+            PunishRemainingTime = result.msg;
+        }
         public void SetDisputeDataFromMain(MainModule module)
         {
             if (module == null) return;
@@ -175,231 +299,90 @@ namespace Haiyu.Models.Wrapper.Wiki
                 }
             }
         }
-
-        public void SetWarZoneData(SideModule module)
+        public void SetPunishCageData(SideModuleContentJson content)
         {
-            if (module == null) return;
-
-            if (module.Content is JsonElement element)
+            var items = new List<ImageUrlItem>();
+            foreach (var tab in content.Tabs)
             {
-                try
+
+                if (tab.Imgs != null)
                 {
-                    var options = new JsonSerializerOptions
+                    foreach (var img in tab.Imgs)
                     {
-                        PropertyNameCaseInsensitive = true,
-                        TypeInfoResolver = WikiContext.Default
-                    };
-                    WeekContentJsonContent? content = null;
-
-                    if (element.ValueKind == JsonValueKind.Array)
-                    {
-                        var list = element.Deserialize<List<WeekContentJsonContent>>(options);
-                        content = list?.FirstOrDefault();
-                    }
-                    else
-                    {
-                        content = element.Deserialize<WeekContentJsonContent>(options);
-                    }
-
-                    if (content != null && content.Tabs != null && content.Tabs.Count > 0)
-                    {
-                        var tab = content.Tabs.FirstOrDefault(t => (bool)t.Active) ?? content.Tabs.First();
-                        SetWarZoneDataInternal(tab);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Error parsing WarZone data: {ex.Message}");
-                }
-            }
-        }
-
-        private (double currVal, double maxVal, string msg) SetDataInternal(WeekContentTab item, double currVal, double maxVal, string msg, int days = 14)
-        {
-
-            if (item.CountDown != null && item.CountDown.Repeat != null && item.CountDown.Repeat.DataRanges != null)
-            {
-                var dataRange = item.CountDown.Repeat.DataRanges.FirstOrDefault();
-                if (dataRange != null && dataRange.DataRange != null && dataRange.DataRange.Count >= 2)
-                {
-
-                    if (DateTime.TryParse(dataRange.DataRange[0], out var start) &&
-                        DateTime.TryParse(dataRange.DataRange[1], out var end))
-                    {
-                        var res = CalculateLatestDayCycle(start.ToString(), days);
-                        start = res[0];
-                        end = res[1];
-                        var now = DateTime.Now;
-                        TimeSpan _endCountdownTimeSpan = end - now;
-                        TimeSpan _totalDurationTimeSpan = end - start;
-                        TimeSpan _overCountdownTimeSpace = now - start;
-                        maxVal = _totalDurationTimeSpan.TotalSeconds;
-                        double elapsed = _endCountdownTimeSpan.TotalSeconds;
-
-                        if (elapsed <= 0)
+                        items.Add(new ImageUrlItem
                         {
-                            currVal = maxVal;
-                            msg = "已结束";
-                            return (currVal, maxVal, msg);
-                        }
-
-
-
-                        currVal = _overCountdownTimeSpace.TotalSeconds;
-                        msg = $"剩余{_endCountdownTimeSpan.Days}天" +
-                                    $"{_endCountdownTimeSpan.Hours}小时" +
-                                    $"{_endCountdownTimeSpan.Minutes}分";
-                        return (currVal, maxVal, msg);
+                            ImageUrl = img.Img
+                        });
                     }
-                    return (0, 0, string.Empty);
                 }
-            }
-            return (0, 0, string.Empty);
-        }
-
-        private void SetWarZoneDataInternal(WeekContentTab item)
-        {
-            if (item == null) return;
-
-            if (item.Imgs != null && item.Imgs.Count > 0)
-            {
-                WarZoneImageUrl = item.Imgs[0].Img;
-            }
-
-            if (item.InnerTabs != null && item.InnerTabs.Count > 0)
-            {
-                var buff = item.InnerTabs.FirstOrDefault();
-                if (buff != null)
+                if (!string.IsNullOrEmpty(tab.Name))
                 {
-                    WarZoneBuffName = buff.Name;
-                    WarZoneBuffDescription = buff.Description;
+                    var key = tab.Name.Trim();
+                    var cacheItem = new PunishCageCacheItem { Items = items };
+
+                    _punishCageCache[key] = cacheItem;
                 }
             }
 
-
-
-            var result = SetDataInternal(item, WarZoneProgress, WarZoneMaxProgress, WarZoneRemainingTime);
-            WarZoneMaxProgress = result.maxVal;
-            WarZoneProgress = result.currVal;
-            WarZoneRemainingTime = result.msg;
         }
-        public void SetNormanData(SideModule module)
+
+
+        private void SetData(ref SideModule module, Action<SideModuleContentTab> callback, Action<SideModuleContentJson> call_2 = null, bool isOptions = false)
         {
-            if (module == null) return;
 
             if (module.Content is JsonElement element)
             {
+                JsonSerializerOptions options = null;
                 try
                 {
-                    WeekContentJsonContent? content = null;
+                    if (isOptions)
+                    {
+                        options = new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true,
+                            TypeInfoResolver = WikiContext.Default
+                        };
+                    }
+                    SideModuleContentJson? content = null;
 
                     if (element.ValueKind == JsonValueKind.Array)
                     {
-                        var list = JsonSerializer.Deserialize(element, WikiContext.Default.ListWeekContentJsonContent);
+                        List<SideModuleContentJson> list = null;
+                        if (isOptions) list = element.Deserialize<List<SideModuleContentJson>>(options);
+                        else list = JsonSerializer.Deserialize(element, WikiContext.Default.ListSideModuleContentJson);
+
                         content = list?.FirstOrDefault();
                     }
                     else
                     {
-                        content = JsonSerializer.Deserialize(element, WikiContext.Default.WeekContentJsonContent);
+                        if (isOptions) content = element.Deserialize<SideModuleContentJson>(options);
+                        else content = JsonSerializer.Deserialize(element, WikiContext.Default.SideModuleContentJson);
                     }
 
                     if (content != null && content.Tabs != null && content.Tabs.Count > 0)
                     {
                         var tab = content.Tabs.FirstOrDefault(t => (bool)t.Active) ?? content.Tabs.First();
-                        SetNormanDataInternal(tab);
+                        callback(tab);
+                        if (call_2 != null) call_2(content);
                     }
+
+
+
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"Error parsing Norman data: {ex.Message}");
                 }
             }
+            return;
         }
 
-        private void SetNormanDataInternal(WeekContentTab item)
+
+
+
+        private void FillDisputeItems(List<SideModuleContentTab> tabs)
         {
 
-            if (item == null) return;
-
-            if (item.Imgs != null && item.Imgs.Count > 0)
-            {
-                NormanImageUrl = item.Imgs[0].Img;
-            }
-
-            var result = SetDataInternal(item, NormanProgress, NormanMaxProgress, NormanRemainingTime);
-            NormanMaxProgress = (double)result.maxVal;
-            NormanProgress = (double)result.currVal;
-            NormanRemainingTime = result.msg;
-        }
-
-        private void SetPunishCageDataInternal(WeekContentTab item)
-        {
-
-            if (item == null) return;
-
-
-            var result = SetDataInternal(item, PunishCageProgress, PunishCageMaxProgress, PunishRemainingTime, 7);
-            PunishCageMaxProgress = result.maxVal;
-            PunishCageProgress = result.currVal;
-            PunishRemainingTime = result.msg;
-        }
-
-        public void SetDisputeData(SideModule module)
-        {
-            if (module == null) return;
-            if (module.Content is JsonElement element)
-            {
-                try
-                {
-                    var options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true,
-                        TypeInfoResolver = WikiContext.Default
-                    };
-
-                    if (element.ValueKind == JsonValueKind.Array)
-                    {
-
-                        try
-                        {
-                            var tabs = element.Deserialize<List<WeekContentTab>>(options);
-                            if (tabs != null && tabs.Count > 0 && (!string.IsNullOrEmpty(tabs[0].Name) || tabs[0].Imgs?.Count > 0))
-                            {
-                                FillDisputeItems(tabs);
-                                return;
-                            }
-                        }
-                        catch
-                        {
-
-                        }
-
-                        var list = element.Deserialize<List<WeekContentJsonContent>>(options);
-                        var content = list?.FirstOrDefault();
-                        if (content != null && content.Tabs != null)
-                        {
-                            FillDisputeItems(content.Tabs);
-                        }
-                    }
-                    else
-                    {
-                        var content = element.Deserialize<WeekContentJsonContent>(options);
-                        if (content != null && content.Tabs != null)
-                        {
-                            FillDisputeItems(content.Tabs);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Error parsing Dispute data: {ex.Message}");
-                }
-            }
-        }
-
-        private void FillDisputeItems(List<WeekContentTab> tabs)
-        {
-            DisputeWarZoneItems.Clear();
             foreach (var tab in tabs)
             {
                 var item = new DisputeWarZoneItem();
@@ -434,69 +417,6 @@ namespace Haiyu.Models.Wrapper.Wiki
                 DisputeWarZoneItems.Add(item);
             }
         }
-
-        public void SetPunishCageData(SideModule module)
-        {
-            if (module == null) return;
-            if (module.Content is JsonElement element)
-            {
-                try
-                {
-                    var options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true,
-                        TypeInfoResolver = WikiContext.Default
-                    };
-
-                    WeekContentJsonContent? content = null;
-                    if (element.ValueKind == JsonValueKind.Array)
-                    {
-                        var list = element.Deserialize<List<WeekContentJsonContent>>(options);
-                        content = list?.FirstOrDefault();
-                    }
-                    else
-                    {
-                        content = element.Deserialize<WeekContentJsonContent>(options);
-                    }
-
-                    if (content != null && content.Tabs != null)
-                    {
-                        var atab = content.Tabs.First();
-                        SetPunishCageDataInternal(atab);
-
-                        var items = new List<PunishCageItem>();
-                        _punishCageCache.Clear();
-                        foreach (var tab in content.Tabs)
-                        {
-
-                            if (tab.Imgs != null)
-                            {
-                                foreach (var img in tab.Imgs)
-                                {
-                                    items.Add(new PunishCageItem
-                                    {
-                                        ImageUrl = img.Img
-                                    });
-                                }
-                            }
-                            if (!string.IsNullOrEmpty(tab.Name))
-                            {
-                                var key = tab.Name.Trim();
-                                var cacheItem = new PunishCageCacheItem { Items = items };
-
-                                _punishCageCache[key] = cacheItem;
-                            }
-                        }
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine($"Error parsing Punish Cage data: {ex.Message}");
-                }
-            }
-        }
-
         public void UpdatePunishCageContent()
         {
             var key = "高级区";
@@ -511,7 +431,12 @@ namespace Haiyu.Models.Wrapper.Wiki
                 PunishCageProgress = cacheItem.Progress;
             }
         }
-
+        /// <summary>
+        /// 计算活动周期
+        /// </summary>
+        /// <param name="startDateString"></param>
+        /// <param name="days"></param>
+        /// <returns></returns>
         public DateTime[] CalculateLatestDayCycle(string startDateString, int days = 7)
         {
             DateTime startDate = DateTime.Parse(startDateString);
@@ -526,7 +451,7 @@ namespace Haiyu.Models.Wrapper.Wiki
 
 
 
-            DateTime latestFutureDate = startDate.AddDays((completeCycles + 1) * days).AddHours(6);
+            DateTime latestFutureDate = startDate.AddDays((completeCycles + 1) * days);
             DateTime latestPastDate = latestFutureDate.AddDays(-days);
 
             // 返回数组
@@ -538,12 +463,12 @@ namespace Haiyu.Models.Wrapper.Wiki
 
     public class PunishCageCacheItem
     {
-        public List<PunishCageItem> Items { get; set; } = new();
+        public List<ImageUrlItem> Items { get; set; } = new();
         public string? Status { get; set; }
         public double Progress { get; set; }
     }
 
-    public class PunishCageItem
+    public class ImageUrlItem
     {
         public string? ImageUrl { get; set; }
     }
