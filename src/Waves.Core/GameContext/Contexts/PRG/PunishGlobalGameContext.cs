@@ -3,8 +3,11 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext.Contexts;
 
-public class PunishGlobalGameContext:KuroGameContextBase
+public sealed class PunishGlobalGameContext:KuroGameContextBase
 {
+
+
+    public override string GameContextNameKey => nameof(PunishGlobalGameContext);
     public PunishGlobalGameContext(GameAPIConfig config)
     : base(config, nameof(PunishGlobalGameContext)) { }
 

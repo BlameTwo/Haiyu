@@ -1,4 +1,5 @@
 ﻿using Haiyu.Plugin.Models;
+using Haiyu.Plugin.Models.Enums;
 using System;
 using System.Threading.Tasks;
 
@@ -11,12 +12,7 @@ public interface ITool
     /// </summary>
     public string ToolName { get; }
 
-    /// <summary>
-    /// 开始执行
-    /// </summary>
-    /// <param name="progress"></param>
-    /// <returns></returns>
-    public Task InvokeAsync(IProgress<ToolOutputArgs> progress);
+    public ToolType Status { get; }
 
     /// <summary>
     /// 工具警告提示信息

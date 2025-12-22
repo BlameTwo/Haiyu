@@ -1,11 +1,13 @@
 ﻿using Haiyu.Contracts;
 using Haiyu.Helpers;
+using Haiyu.Pages.Tools;
 using Haiyu.ServiceHost;
 using Haiyu.Services.DialogServices;
 using Haiyu.Services.Navigations.NavigationViewServices;
 using Haiyu.ViewModel.GameViewModels;
 using Haiyu.ViewModel.GameViewModels.GameContexts;
 using Haiyu.ViewModel.OOBEViewModels;
+using Haiyu.ViewModel.ToolViewModels;
 using Haiyu.ViewModel.WikiViewModels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -67,7 +69,6 @@ public static class InstanceBuilderExtensions
                     .AddSingleton<ShellViewModel>()
                     .AddSingleton<OOBEPage>()
                     .AddSingleton<OOBEViewModel>()
-                    .AddTransient<ToolViewModel>()
                     .AddTransient<PlayerRecordPage>()
                     .AddTransient<PlayerRecordViewModel>()
                     .AddTransient<SettingViewModel>()
@@ -107,8 +108,8 @@ public static class InstanceBuilderExtensions
                     .AddTransient<GamerTowerViewModel>()
                     .AddTransient<GamerSkinViewModel>()
                     .AddTransient<GamerSlashDetailViewModel>()
-                    #endregion
-                    #region Record
+                #endregion
+                #region Record
                     .AddTransient<RecordItemViewModel>()
                     #endregion
                     #region Roil

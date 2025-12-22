@@ -12,6 +12,7 @@ namespace Waves.Core.GameContext;
 /// </summary>
 public interface IGameContext
 {
+    public string GameContextNameKey { get; }
     public IHttpClientService HttpClientService { get; set; }
 
     public Task InitAsync();

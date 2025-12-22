@@ -4,8 +4,9 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext.Contexts;
 
-public class PunishBiliBiliGameContext: KuroGameContextBase
+public sealed class PunishBiliBiliGameContext: KuroGameContextBase
 {
+    public override string GameContextNameKey => nameof(PunishBiliBiliGameContext);
     public PunishBiliBiliGameContext(GameAPIConfig config)
     : base(config, nameof(PunishBiliBiliGameContext)) { }
 

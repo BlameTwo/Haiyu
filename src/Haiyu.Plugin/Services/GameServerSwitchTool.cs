@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Haiyu.Plugin.Contracts;
 using Haiyu.Plugin.Models;
+using Haiyu.Plugin.Models.Enums;
 using Waves.Core.GameContext;
 using Waves.Core.Helpers;
 using Waves.Core.Models;
@@ -28,15 +29,17 @@ public class GameServerSwitchTool : ITool
 
     public string ToolWaringString => "GameServerSwitchWaringString";
 
+    public ToolType Status { get; private set; }
+
     /// <summary>
     /// 执行合并
     /// </summary>
     /// <param name="progress"></param>
     /// <returns></returns>
     /// <exception cref="NotImplementedException"></exception>
-    public Task InvokeAsync(IProgress<ToolOutputArgs> progress)
+    public async Task InvokeAsync(ServerAnalyseModel analyResult, IProgress<ToolOutputArgs> progress)
     {
-        throw new NotImplementedException();
+
     }
 
     /// <summary>

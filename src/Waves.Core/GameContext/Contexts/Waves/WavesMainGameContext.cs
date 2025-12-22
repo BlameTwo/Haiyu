@@ -3,8 +3,9 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext.Contexts;
 
-public class WavesMainGameContext : KuroGameContextBase
+public sealed class WavesMainGameContext : KuroGameContextBase
 {
+    public override string GameContextNameKey => nameof(WavesMainGameContext);
     internal WavesMainGameContext(GameAPIConfig config)
         : base(config, nameof(WavesMainGameContext)) { }
 

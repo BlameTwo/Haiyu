@@ -1,9 +1,11 @@
 ﻿using Haiyu.Pages.GamePages;
 using Haiyu.Pages.GameWikis;
 using Haiyu.Pages.OOBE;
+using Haiyu.Pages.Tools;
 using Haiyu.ViewModel.GameViewModels;
 using Haiyu.ViewModel.GameViewModels.GameContexts;
 using Haiyu.ViewModel.OOBEViewModels;
+using Haiyu.ViewModel.ToolViewModels;
 using Haiyu.ViewModel.WikiViewModels;
 
 namespace Haiyu.Services;
@@ -18,7 +20,6 @@ public sealed partial class PageService : IPageService
         this.RegisterView<SettingPage, SettingViewModel>();
         this.RegisterView<CommunityPage, CommunityViewModel>();
         this.RegisterView<HomePage, HomeViewModel>();
-        this.RegisterView<ToolPage, ToolViewModel>();
         #region GameContext
         this.RegisterView<WavesGamePage, WavesGameContextViewModel>();
         this.RegisterView<PunishGamePage, PunishGameContextViewModel>();
@@ -44,6 +45,7 @@ public sealed partial class PageService : IPageService
         #region OOBE
         this.RegisterView<LanguageSelectPage, LanguageSelectViewModel>();
         #endregion
+
     }
 
     public Type GetPage(string key)

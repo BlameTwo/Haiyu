@@ -3,9 +3,10 @@ using Waves.Core.Models.Enums;
 
 namespace Waves.Core.GameContext.Contexts.PRG;
 
-public class PunishTwGameContext : KuroGameContextBase
+public sealed class PunishTwGameContext : KuroGameContextBase
 {
 
+    public override string GameContextNameKey => nameof(PunishTwGameContext);
     internal PunishTwGameContext(GameAPIConfig config)
         : base(config, nameof(PunishTwGameContext)) { }
 

@@ -10,7 +10,20 @@ public static class GameContextFactory
 {
     public static string GameBassPath { get; set; }
 
-
+    /// <summary>
+    /// 获得全部支持的游戏上下文名称
+    /// </summary>
+    /// <returns></returns>
+    public static IReadOnlyCollection<String> GameAllContext() =>
+        [
+            nameof(WavesMainGameContext),
+            nameof(WavesBiliBiliGameContext),
+            nameof(WavesGlobalGameContext),
+            nameof(PunishMainGameContext),
+            nameof(PunishBiliBiliGameContext),
+            nameof(PunishGlobalGameContext),
+            nameof(PunishTwGameContext),
+        ];
 
     internal static WavesBiliBiliGameContext GetBilibiliGameContext() =>
         new WavesBiliBiliGameContext(GameAPIConfig.BilibiliConfig)

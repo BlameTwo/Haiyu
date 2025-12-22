@@ -31,7 +31,10 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ui:NotifyIconWinUI x:Name="notify" ContextMenu="{x:Bind ViewModel.SystemMenu, Mode=OneWay}" />
+        <ui:NotifyIconWinUI
+            x:Name="notify"
+            ContextMenu="{x:Bind ViewModel.SystemMenu, Mode=OneWay}"
+            LeftDoubleClick="notify_LeftDoubleClick" />
         <Border x:Name="titleback" Grid.RowSpan="1" />
         <ui:TitleBar
             x:Name="titlebar"
@@ -315,11 +318,6 @@
                     <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CloudGameViewModel" Content="云工具">
                         <NavigationViewItem.Icon>
                             <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x2601;" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.ToolViewModel" Content="工具">
-                        <NavigationViewItem.Icon>
-                            <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F9F0;" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
                 </NavigationView.MenuItems>

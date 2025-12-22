@@ -54,4 +54,9 @@ public sealed partial class ShellPage : Page
     {
         this.titlebar.UpDate();
     }
+
+    private void notify_LeftDoubleClick(object sender, EventArgs args)
+    {
+        this.ViewModel.ShowWindowCommand.Execute(null);
+    }
 }
