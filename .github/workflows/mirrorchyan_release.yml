@@ -12,7 +12,7 @@ on:
 jobs:
   mirrorchyan:
     runs-on: macos-latest
-    # if: ${{ github.repository_owner == 'BlameTwo' }}
+    if: ${{ github.repository_owner == 'BlameTwo' }}
     env:
       owner: BlameTwo
       repo: Haiyu
@@ -30,4 +30,5 @@ jobs:
           repo: ${{ env.repo }}
           github_token: ${{ env.github_token }}
           upload_token: ${{ secrets.MirrorChyanUploadToken }}
+
 
