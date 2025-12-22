@@ -4,5 +4,5 @@ using System.Text;
 
 namespace Haiyu.Models.Messanger
 {
-    public record ToolNavigationMessager(ToolItem item);
+    public record ToolNavigationMessager();
 }
