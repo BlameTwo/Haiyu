@@ -21,11 +21,14 @@ public static class WikiExtensions
             {
                 Title = item.Title,
                 ImageUrl = item.ContentUrl,
-                StartTime = item.CountDown.DateRange[0],
-                EndTime = item.CountDown.DateRange[1],
+                StartTime = item.CountDown == null ? DateTime.Now.ToString() : item.CountDown.DateRange[0],
+                EndTime = item.CountDown == null ? DateTime.Now.AddYears(1).ToString() : item.CountDown.DateRange[1],
                 JumpUrl = item.LinkConfig.LinkUrl
             };
-            var spanResult = (DateTime.Parse(item.CountDown.DateRange[1]) - DateTime.Now);
+            if(item.CountDown != null)
+            {
+                var spanResult = (DateTime.Parse(item.CountDown.DateRange[1]) - DateTime.Now);
+            }
             value.Cali();
             wrappers.Add(value);
         }

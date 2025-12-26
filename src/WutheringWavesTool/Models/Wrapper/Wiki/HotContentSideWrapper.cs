@@ -23,6 +23,9 @@ namespace Haiyu.Models.Wrapper.Wiki
         public partial string Message { get; set; }
 
         [ObservableProperty]
+        public partial Visibility TimeVisibility { get; set; } = Visibility.Visible;
+
+        [ObservableProperty]
         public partial double CurrentProgress { get; set; }
 
 
@@ -75,6 +78,7 @@ namespace Haiyu.Models.Wrapper.Wiki
 
             if (_totalDurationTimeSpan.TotalDays >= LONG_CONTENT_TIME)
             {
+                TimeVisibility = Visibility.Collapsed;
                 Message = "长期活动";
                 this.CurrentProgress = this.MaxProgress;
                 this.Color = "Black";

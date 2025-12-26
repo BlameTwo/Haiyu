@@ -56,12 +56,16 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="wikiModel:HotContentSideWrapper">
                                 <ui:DraggableCardControl
-                                    Margin="5"
+                                    Width="330"
+                                    Margin="3"
+                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                                    BorderThickness="1"
                                     Command="{x:Bind JumpWebCommand}"
                                     CornerRadius="5">
                                     <Grid Padding="5" BorderThickness="2">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="auto" />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -89,17 +93,29 @@
                                                 Grid.Row="1"
                                                 Margin="0,10,0,0"
                                                 FontSize="15"
-                                                Text="{x:Bind StartTime}" />
+                                                Text="{x:Bind StartTime}"
+                                                Visibility="{x:Bind TimeVisibility}" />
                                             <TextBlock
                                                 Grid.Row="2"
                                                 Margin="0,10,0,0"
                                                 FontSize="15"
-                                                Text="{x:Bind EndTime}" />
-                                            <TextBlock Grid.Row="3" VerticalAlignment="Bottom">
-                                                <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind Message, Mode=OneWay}" />
-                                                <Run Text="" />
-                                                <Run Text="{x:Bind TotalSpan}" />
-                                            </TextBlock>
+                                                Text="{x:Bind EndTime}"
+                                                Visibility="{x:Bind TimeVisibility}" />
+                                            <StackPanel
+                                                Grid.Row="3"
+                                                VerticalAlignment="Bottom"
+                                                Orientation="Horizontal">
+                                                <TextBlock
+                                                    Margin="0,3,0,0"
+                                                    FontFamily="Segoe Fluent Icons"
+                                                    Text="&#xEC92;" />
+                                                <TextBlock
+                                                    Margin="3,0,0,0"
+                                                    Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                    Text="{x:Bind Message, Mode=OneWay}" />
+                                                <TextBlock Text="" />
+                                                <TextBlock Text="{x:Bind TotalSpan}" />
+                                            </StackPanel>
                                         </Grid>
                                         <ProgressBar
                                             Grid.Row="1"

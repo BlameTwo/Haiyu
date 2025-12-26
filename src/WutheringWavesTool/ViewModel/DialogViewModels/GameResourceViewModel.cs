@@ -101,7 +101,9 @@ public sealed partial class GameResourceViewModel : DialogViewModelBase
     [RelayCommand]
     async Task OpenFolder()
     {
-        WindowExtension.ShellExecute(IntPtr.Zero, await GameContext.GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder)??"", null, null, null, WindowExtension.SW_SHOWNORMAL);
+        var path = await GameContext.GameLocalConfig.GetConfigAsync(GameLocalSettingName.GameLauncherBassFolder) ?? "";
+
+        WindowExtension.ShellExecute(IntPtr.Zero, "open", path, null, null, WindowExtension.SW_SHOWNORMAL);
     }
 
     [RelayCommand]
