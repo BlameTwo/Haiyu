@@ -28,22 +28,11 @@ public class RisgrayKeyWriterSetup : ISetup
                         .Keys
                 )
                 {
-                    if (item.Value.Item1 == Microsoft.Win32.RegistryValueKind.DWord)
-                    {
-                        productKey.SetValue(
-                            item.Key,
-                            Convert.ToInt32(item.Value.Item2),
-                            Microsoft.Win32.RegistryValueKind.DWord
-                        );
-                    }
-                    else if (item.Value.Item1 == Microsoft.Win32.RegistryValueKind.String)
-                    {
-                        productKey.SetValue(
+                    productKey.SetValue(
                             item.Key,
                             item.Value.Item2,
-                            Microsoft.Win32.RegistryValueKind.String
+                            item.Value.Item1
                         );
-                    }
                     count++;
                     progress.Report((count, "成功"));
                 }

@@ -82,6 +82,7 @@ namespace Waves.Api.Models.GameWikiiClient
         public string MobileImgUrl { get; set; }
     }
 
+
     public class ContentJson
     {
         [JsonPropertyName("feedback")]
@@ -302,8 +303,120 @@ namespace Waves.Api.Models.GameWikiiClient
         public string Title { get; set; }
 
         [JsonPropertyName("content")]
-        public object Content { get; set; }
+        public object? Content { get; set; }
     }
 
+    public class SideModuleContentJson
+    {
 
+
+        [JsonPropertyName("tabs")]
+        public List<SideModuleContentTab>? Tabs { get; set; }
+
+    }
+
+    public class SideModuleContentTab
+    {
+        [JsonPropertyName("imgs")]
+        public List<SideModuleContentImg> Imgs { get; set; }
+
+        [JsonPropertyName("innerTabs")]
+        public List<WeekContentInnerTab> InnerTabs { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("imgMode")]
+        public string ImgMode { get; set; }
+
+        [JsonPropertyName("active")]
+        public bool Active { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        [JsonPropertyName("innerTabsVisbile")]
+        public bool? InnerTabsVisbile { get; set; }
+
+        [JsonPropertyName("countDown")]
+        public WeekContentCountDown CountDown { get; set; }
+    }
+
+    public class SideModuleContentImg
+    {
+        [JsonPropertyName("linkConfig")]
+        public LinkConfig LinkConfig { get; set; }
+
+        [JsonPropertyName("img")]
+        public string Img { get; set; }
+
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+    }
+
+    public class WeekContentInnerTab
+    {
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("active")]
+        public bool Active { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+    }
+
+    public class WeekContentCountDown
+    {
+        [JsonPropertyName("dateRange")]
+        public List<string> DateRange { get; set; }
+
+        [JsonPropertyName("repeat")]
+        public WeekContentRepeat Repeat { get; set; }
+
+        [JsonPropertyName("precision")]
+        public string Precision { get; set; }
+
+        [JsonPropertyName("type")]
+        public string Type { get; set; }
+    }
+
+    public class WeekContentRepeat
+    {
+        [JsonPropertyName("endDate")]
+        public string EndDate { get; set; }
+
+        [JsonPropertyName("isNeverEnd")]
+        public bool IsNeverEnd { get; set; }
+
+        [JsonPropertyName("repeatInterval")]
+        public int RepeatInterval { get; set; }
+
+        [JsonPropertyName("dataRanges")]
+        public List<WeekContentDataRange> DataRanges { get; set; }
+    }
+
+    public class WeekContentDataRange
+    {
+        [JsonPropertyName("progressType")]
+        public int ProgressType { get; set; }
+
+        [JsonPropertyName("dataRange")]
+        public List<string> DataRange { get; set; }
+
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+    }
+
+    public class DisputeJsonItem
+    {
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+
+        [JsonPropertyName("contentUrl")]
+        public string ContentUrl { get; set; }
+
+        [JsonPropertyName("countDown")]
+        public WeekContentCountDown CountDown { get; set; }
+    }
 }

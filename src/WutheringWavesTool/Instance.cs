@@ -106,8 +106,8 @@ public static class InstanceBuilderExtensions
                     .AddTransient<GamerTowerViewModel>()
                     .AddTransient<GamerSkinViewModel>()
                     .AddTransient<GamerSlashDetailViewModel>()
-                    #endregion
-                    #region Record
+                #endregion
+                #region Record
                     .AddTransient<RecordItemViewModel>()
                     #endregion
                     #region Roil

@@ -12,6 +12,7 @@ namespace Waves.Core.GameContext;
 /// </summary>
 public interface IGameContext
 {
+    public string GameContextNameKey { get; }
     public IHttpClientService HttpClientService { get; set; }
 
     public Task InitAsync();
@@ -93,7 +94,7 @@ public interface IGameContext
     Task<List<KRSDKLauncherCache>?> GetLocalGameOAuthAsync(CancellationToken token);
 
     Task<bool> StartGameAsync();
-    Task UpdateGameAsync();
+    Task UpdataGameAsync();
     Task StopGameAsync();
     Task DeleteResourceAsync();
     #endregion

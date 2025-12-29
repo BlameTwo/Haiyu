@@ -196,6 +196,9 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Controls\Styles\HeaderTileCard.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 	</ItemGroup>
 	<ItemGroup>
 	  <Folder Include="Assets\Languages\" />
@@ -225,7 +228,7 @@
 		<AppxBundle>Auto</AppxBundle>		
 		<AppxBundlePlatforms>x64</AppxBundlePlatforms>
 		<HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-		<Win32Resource>D:\WorkSpace\WutheringWavesTool\src\WutheringWavesTool\Assets\Cursor\CursorResource.res</Win32Resource>
+		<Win32Resource>./Assets/Cursor/CursorResource.res</Win32Resource>
 		<AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
 	
 	</PropertyGroup>
@@ -242,5 +245,6 @@
 	  <None Remove="Assets\appLogo.ico" />
 	  <None Remove="Assets\appLogo.png" />
 	  <None Remove="Assets\background.png" />
+	  <None Remove="Controls\Styles\HeaderTileCard.xaml" />
 	</ItemGroup>
 </Project>

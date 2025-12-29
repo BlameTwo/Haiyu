@@ -6,8 +6,9 @@ namespace Waves.Core.GameContext.Contexts;
 /// <summary>
 /// 战双国服
 /// </summary>
-public class PunishMainGameContext : KuroGameContextBase
+public sealed class PunishMainGameContext : KuroGameContextBase
 {
+    public override string GameContextNameKey => nameof(PunishMainGameContext);
     public PunishMainGameContext(GameAPIConfig config)
         : base(config, nameof(PunishMainGameContext)) { }
 

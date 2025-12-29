@@ -6,8 +6,10 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Haiyu.Pages.GameWikis"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:media="using:CommunityToolkit.WinUI.Media"
     xmlns:source="using:Waves.Api.Models.Communitys.DataCenter"
     xmlns:ui="using:Haiyu.Controls"
+    xmlns:ui1="using:CommunityToolkit.WinUI"
     xmlns:wiki="using:Waves.Api.Models.GameWikiiClient"
     xmlns:wikiModel="using:Haiyu.Models.Wrapper.Wiki"
     xmlns:wrapper="using:Haiyu.Models.Wrapper"
@@ -18,9 +20,15 @@
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
         </i:EventTriggerBehavior>
     </i:Interaction.Behaviors>
-
+    <Page.Resources>
+        <media:AttachedCardShadow
+            x:Key="CommonShadow"
+            BlurRadius="10"
+            Opacity="1"
+            Offset="4"
+            Color="Black" />
+    </Page.Resources>
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="185" />
             <RowDefinition />
@@ -47,7 +55,7 @@
                     HorizontalScrollBarVisibility="Visible"
                     HorizontalScrollMode="Enabled"
                     VerticalScrollMode="Disabled">
-                    <ItemsControl ItemsSource="{x:Bind ViewModel.Sides, Mode=OneWay}">
+                    <ItemsControl ItemsSource="{x:Bind ViewModel.Actives, Mode=OneWay}">
                         <ItemsControl.ItemContainerTransitions>
                             <TransitionCollection>
                                 <AddDeleteThemeTransition />
@@ -55,13 +63,17 @@
                         </ItemsControl.ItemContainerTransitions>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="wikiModel:HotContentSideWrapper">
-                                <ui:DraggableCardControl
-                                    Margin="5"
+                                <ui:HeaderTileCard
+                                    Width="350"
+                                    Margin="3"
+                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                                    BorderThickness="1"
                                     Command="{x:Bind JumpWebCommand}"
                                     CornerRadius="5">
                                     <Grid Padding="5" BorderThickness="2">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="auto" />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -89,17 +101,29 @@
                                                 Grid.Row="1"
                                                 Margin="0,10,0,0"
                                                 FontSize="15"
-                                                Text="{x:Bind StartTime}" />
+                                                Text="{x:Bind StartTime}"
+                                                Visibility="{x:Bind TimeVisibility}" />
                                             <TextBlock
                                                 Grid.Row="2"
                                                 Margin="0,10,0,0"
                                                 FontSize="15"
-                                                Text="{x:Bind EndTime}" />
-                                            <TextBlock Grid.Row="3" VerticalAlignment="Bottom">
-                                                <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind Message, Mode=OneWay}" />
-                                                <Run Text="" />
-                                                <Run Text="{x:Bind TotalSpan}" />
-                                            </TextBlock>
+                                                Text="{x:Bind EndTime}"
+                                                Visibility="{x:Bind TimeVisibility}" />
+                                            <StackPanel
+                                                Grid.Row="3"
+                                                VerticalAlignment="Bottom"
+                                                Orientation="Horizontal">
+                                                <TextBlock
+                                                    Margin="0,3,0,0"
+                                                    FontFamily="Segoe Fluent Icons"
+                                                    Text="&#xEC92;" />
+                                                <TextBlock
+                                                    Margin="3,0,0,0"
+                                                    Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                    Text="{x:Bind Message, Mode=OneWay}" />
+                                                <TextBlock Text="" />
+                                                <TextBlock Text="{x:Bind TotalSpan}" TextTrimming="CharacterEllipsis" />
+                                            </StackPanel>
                                         </Grid>
                                         <ProgressBar
                                             Grid.Row="1"
@@ -109,7 +133,7 @@
                                             Maximum="{x:Bind MaxProgress, Mode=OneWay}"
                                             Value="{x:Bind CurrentProgress, Mode=OneWay}" />
                                     </Grid>
-                                </ui:DraggableCardControl>
+                                </ui:HeaderTileCard>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                         <ItemsControl.ItemsPanel>
@@ -121,7 +145,8 @@
                 </ScrollViewer>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1" Visibility="{x:Bind ViewModel.Loading, Mode=OneWay, Converter={StaticResource BoolToVisibilityReversalConverter}}">
+        <Border Grid.Row="1" Visibility="{x:Bind ViewModel.Loading, Mode=OneWay, Converter={StaticResource BoolToVisibilityReversalConverter}}">
+
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="4*" />
@@ -148,7 +173,17 @@
                     BorderThickness="1"
                     CornerRadius="4"
                     Visibility="{x:Bind ViewModel.KuroLogin, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Border.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Command="{x:Bind ViewModel.RefreshUserCommand}" Text="刷新">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE72C;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </Border.ContextFlyout>
                     <FlipView
+                        Grid.Row="1"
                         Grid.Column="0"
                         ItemsSource="{x:Bind ViewModel.Staminas, Mode=OneWay}"
                         Style="{ThemeResource DefaultFlipViewStyle}">
@@ -168,10 +203,12 @@
                                     <Grid
                                         Margin="5,5,5,0"
                                         Padding="8"
+                                        ui1:Effects.Shadow="{StaticResource CommonShadow}"
                                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
                                         BorderThickness="1"
                                         CornerRadius="5">
+
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="auto" />
                                             <ColumnDefinition />
@@ -445,73 +482,159 @@
                         </FlipView.ItemTemplate>
                     </FlipView>
                 </Border>
-                <Grid Grid.Column="1" Margin="0,5,5,5">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+                <Grid
+                    Grid.Column="1"
+                    Margin="0,5,5,5"
+                    CornerRadius="3">
+                    <Grid.ChildrenTransitions>
+                        <TransitionCollection>
+                            <AddDeleteThemeTransition />
+                        </TransitionCollection>
+                    </Grid.ChildrenTransitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="300" />
+                    </Grid.ColumnDefinitions>
                     <Grid
-                        Grid.RowSpan="2"
-                        Padding="5"
                         Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                         BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
                         BorderThickness="1"
-                        CornerRadius="4">
-                        <Grid.ChildrenTransitions>
-                            <TransitionCollection>
-                                <AddDeleteThemeTransition />
-                            </TransitionCollection>
-                        </Grid.ChildrenTransitions>
-                        <StackPanel
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Orientation="Vertical">
-                            <TextBlock
-                                FontFamily="{ThemeResource DefaultFont}"
-                                FontSize="18"
-                                Text="更多请查看鸣潮Wiki" />
-                            <HyperlinkButton
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                Content="前往"
-                                NavigateUri="https://wiki.kurobbs.com/mc/home" />
-                        </StackPanel>
-                        <!--
-                         <Grid.RowDefinitions>
-     <RowDefinition Height="auto" />
-     <RowDefinition />
- </Grid.RowDefinitions>
- <TextBlock
-     Margin="10"
-     FontFamily="{ThemeResource DefaultFont}"
-     FontSize="18"
-     Text="图鉴" />
- <ItemsControl
-     Grid.Row="1"
-     Margin="5,5,0,0"
-     ItemsSource="{x:Bind ViewModel.CatalogueChildren, Mode=OneWay}">
-     <ItemsControl.ItemContainerTransitions>
-         <TransitionCollection>
-             <AddDeleteThemeTransition />
-         </TransitionCollection>
-     </ItemsControl.ItemContainerTransitions>
-     <ItemsControl.ItemTemplate>
-         <DataTemplate x:DataType="wiki:WikiCatalogueChildren">
-             <HyperlinkButton Content="{x:Bind Name}" NavigateUri="{x:Bind WebUri}" />
-         </DataTemplate>
-     </ItemsControl.ItemTemplate>
-     <ItemsControl.ItemsPanel>
-         <ItemsPanelTemplate>
-             <wuc:WrapPanel />
-         </ItemsPanelTemplate>
-     </ItemsControl.ItemsPanel>
- </ItemsControl>
+                        CornerRadius="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <FlipView Grid.Row="1" ItemsSource="{x:Bind ViewModel.RoleActive, Mode=OneWay}">
+                            <FlipView.ItemTemplate>
+                                <DataTemplate x:DataType="wikiModel:EventContentSideWrapper">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel
+                                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                                            BorderThickness="0.5">
+                                            <TextBlock Margin="5" FontSize="18">
+                                                <Run FontWeight="Bold" Text="{x:Bind Title}" />
+                                                <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind DisplayTime}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <ProgressBar
+                                            Grid.Row="1"
+                                            HorizontalAlignment="Stretch"
+                                            Background="Transparent"
+                                            Maximum="{x:Bind MaxProgress}"
+                                            Value="{x:Bind CurrentProgress}" />
+                                        <Grid Grid.Row="2" Margin="0,3,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <ui:ImageEx Grid.Row="1" Source="{x:Bind Image1}" />
+                                            <Grid Grid.Row="1" Grid.Column="1">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <ui:ImageEx Grid.Row="0" Source="{x:Bind Image2}" />
+                                                <ui:ImageEx Grid.Row="1" Source="{x:Bind Image3}" />
+                                                <ui:ImageEx Grid.Row="2" Source="{x:Bind Image4}" />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </FlipView.ItemTemplate>
+                        </FlipView>
 
-                        -->
+                    </Grid>
+                    <Grid
+                        Grid.Column="1"
+                        Margin="5,0,0,0"
+                        CornerRadius="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="130" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <FlipView
+                            Grid.Row="0"
+                            VerticalAlignment="Top"
+                            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                            BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                            BorderThickness="1"
+                            ItemsSource="{x:Bind ViewModel.WeaponActive, Mode=OneWay}">
+                            <FlipView.ItemTemplate>
+                                <DataTemplate x:DataType="wikiModel:EventContentSideWrapper">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <StackPanel
+                                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                                            BorderThickness="0.5">
+                                            <TextBlock Margin="5" FontSize="18">
+                                                <Run FontWeight="Bold" Text="{x:Bind Title}" />
+                                                <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind DisplayTime}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                        <ProgressBar
+                                            Grid.Row="1"
+                                            HorizontalAlignment="Stretch"
+                                            Background="Transparent"
+                                            Maximum="{x:Bind MaxProgress}"
+                                            Value="{x:Bind CurrentProgress}" />
+                                        <Grid
+                                            Grid.Row="2"
+                                            Margin="0,3,0,0"
+                                            Padding="5">
+                                            <Grid Grid.Row="1" Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <ui:ImageEx Grid.Column="0" Source="{x:Bind Image1}" />
+                                                <ui:ImageEx Grid.Column="1" Source="{x:Bind Image2}" />
+                                                <ui:ImageEx Grid.Column="2" Source="{x:Bind Image3}" />
+                                                <ui:ImageEx Grid.Column="3" Source="{x:Bind Image4}" />
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </FlipView.ItemTemplate>
+                        </FlipView>
+                        <Grid
+                            Grid.Row="1"
+                            Margin="0,5,0,0"
+                            Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                            BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                            BorderThickness="1"
+                            CornerRadius="5">
+                            <StackPanel VerticalAlignment="Center" Orientation="Vertical">
+
+                                <HyperlinkButton
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="数据终端"
+                                    NavigateUri="https://web-static.kurobbs.com/mcbox/index.html#/mc-role-box/web"
+                                    Visibility="Collapsed" />
+                                <HyperlinkButton
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Content="前往库街区" />
+                            </StackPanel>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+        </Border>
         <ui:Shimmer
             Margin="0,10,0,0"
             Style="{ThemeResource DefaultShimmerStyle}"

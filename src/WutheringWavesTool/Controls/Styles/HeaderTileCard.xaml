@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Haiyu.Controls">
+    <Style BasedOn="{StaticResource DefaultHeaderTileStyle}" TargetType="local:HeaderTileCard" />
+    <Style x:Key="DefaultHeaderTileStyle" TargetType="local:HeaderTileCard">
+        <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:HeaderTileCard">
+                    <Grid
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                        BorderBrush="{ThemeResource SurfaceStrokeColorFlyoutBrush}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.ThemeDictionaries>
+                                    <ResourceDictionary x:Key="Light">
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrush" Color="{ThemeResource ControlStrokeColorDefault}" />
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrushPointerOver" Color="{ThemeResource ControlStrokeColorSecondary}" />
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrushPressed" Color="{ThemeResource ControlStrokeColorDefault}" />
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrushDisabled" Color="{ThemeResource ControlStrokeColorDefault}" />
+                                    </ResourceDictionary>
+                                    <ResourceDictionary x:Key="Default">
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrush" Color="{ThemeResource ControlStrokeColorDefault}" />
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrushPointerOver" Color="{ThemeResource ControlStrokeColorSecondary}" />
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrushPressed" Color="{ThemeResource ControlStrokeColorDefault}" />
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrushDisabled" Color="{ThemeResource ControlStrokeColorDefault}" />
+                                    </ResourceDictionary>
+                                    <ResourceDictionary x:Key="HighContrast">
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrush" Color="{ThemeResource SystemColorButtonTextColor}" />
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrushPointerOver" Color="{ThemeResource SystemColorButtonTextColor}" />
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrushPressed" Color="{ThemeResource SystemColorButtonTextColor}" />
+                                        <SolidColorBrush x:Key="HyperlinkButtonBorderBrushDisabled" Color="{ThemeResource SystemColorButtonTextColor}" />
+                                    </ResourceDictionary>
+                                </ResourceDictionary.ThemeDictionaries>
+                            </ResourceDictionary>
+                        </Grid.Resources>
+                        <HyperlinkButton
+                            x:Name="PART_HyperLink"
+                            Padding="-1"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            AutomationProperties.LabeledBy="{Binding ElementName=TitleText}"
+                            Command="{TemplateBinding Command}"
+                            CornerRadius="{StaticResource OverlayCornerRadius}">
+                            <ContentPresenter Content="{TemplateBinding Content}" />
+                        </HyperlinkButton>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

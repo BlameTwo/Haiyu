@@ -6,6 +6,7 @@ public sealed partial class DeviceInfoPage : Page, IWindowPage
     {
         InitializeComponent();
         this.ViewModel = Instance.GetService<DeviceInfoViewModel>();
+        this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
 

@@ -13,10 +13,7 @@ partial class KuroGameContextViewModel
             if( await GameContext.StartGameAsync())
             {
                 this.AppContext.MinToTaskbar();
-                AppNotification notify = new AppNotificationBuilder()
-                    .AddText($"游戏已经启动，程序已最小化到任务栏")
-                    .BuildNotification();
-                AppNotificationManager.Default.Show(notify);
+                
             }
         }
         if (_bthType == 4)
@@ -25,7 +22,7 @@ partial class KuroGameContextViewModel
                 GameLocalSettingName.LocalGameVersion
             );
             var result = Version.Parse(this.DisplayVersion) > Version.Parse(localVersion);
-            await GameContext.UpdateGameAsync();
+            await GameContext.UpdataGameAsync();
         }
         if (_bthType == 5)
         {

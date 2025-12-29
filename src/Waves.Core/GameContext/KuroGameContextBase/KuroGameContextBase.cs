@@ -50,6 +50,8 @@ public abstract partial class KuroGameContextBase : IGameContext
 
     public virtual GameType GameType { get; }
 
+    public virtual string GameContextNameKey { get; }
+
     #endregion
 
 

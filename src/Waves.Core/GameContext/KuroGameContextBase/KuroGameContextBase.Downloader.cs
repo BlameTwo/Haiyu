@@ -9,6 +9,7 @@ using Waves.Api.Models.Launcher;
 using Waves.Core.Common;
 using Waves.Core.GameContext.Contexts;
 using Waves.Core.GameContext.Contexts.PRG;
+using Waves.Core.Helpers;
 using Waves.Core.Models;
 using Waves.Core.Models.Downloader;
 using Waves.Core.Models.Enums;
@@ -73,7 +74,7 @@ public partial class KuroGameContextBase
     #endregion
 
 
-    public async Task UpdateGameAsync()
+    public async Task UpdataGameAsync()
     {
         _downloadCTS = new CancellationTokenSource();
         var folder = await GameLocalConfig.GetConfigAsync(
@@ -83,7 +84,7 @@ public partial class KuroGameContextBase
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
-        await UpdateGameResourceAsync(folder, launcher);
+        await UpdataGameResourceAsync(folder, launcher);
     }
 
     #region 核心下载逻辑
@@ -102,11 +103,13 @@ public partial class KuroGameContextBase
             _downloadBaseUrl =
                 source.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
                 + source.ResourceDefault.Config.BaseUrl;
-
             HttpClientService.BuildClient();
             await InitializeProgress(resource);
             await Task.Run(() => StartDownloadAsync(folder, resource, isDelete));
-            await DownloadComplate(source);
+            if (!_isDownload)
+            {
+                await DownloadComplate(source);
+            }
             await SetNoneStatusAsync().ConfigureAwait(false);
             return true;
         }
@@ -167,7 +170,7 @@ public partial class KuroGameContextBase
             Logger.WriteInfo("修复游戏，开始删除本地多余文件");
             var localFile = new DirectoryInfo(folder).GetFiles("*", SearchOption.AllDirectories);
             var serverFileSet = new HashSet<string>(
-                resource.Resource.Select(x => BuildFilePath(folder, x).ToLower())
+                resource.Resource.Select(x => BuildFileHelper.BuildFilePath(folder, x).ToLower())
             );
 
             var filesToDelete = localFile
@@ -270,7 +273,7 @@ public partial class KuroGameContextBase
                         await SetNoneStatusAsync().ConfigureAwait(false);
                         return;
                     }
-                    var filePath = BuildFilePath(folder, item);
+                    var filePath = BuildFileHelper.BuildFilePath(folder, item);
                     if (File.Exists(filePath))
                     {
                         if (item.ChunkInfos == null)
@@ -425,7 +428,7 @@ public partial class KuroGameContextBase
     }
     #endregion
 
-    async Task UpdateGameResourceAsync(string folder, GameLauncherSource launcher)
+    async Task UpdataGameResourceAsync(string folder, GameLauncherSource launcher)
     {
         var currentVersion = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.LocalGameVersion
@@ -507,7 +510,7 @@ public partial class KuroGameContextBase
             Dictionary<string, string> newFiles = new();
             for (int i = 0; i < patch.GroupInfos.Count; i++)
             {
-                var filePath = BuildFilePath(folder + "\\Diff", patch.GroupInfos[i]);
+                var filePath = BuildFileHelper.BuildFilePath(folder + "\\Diff", patch.GroupInfos[i]);
                 await DecompressKrdiffFile(
                     folder,
                     filePath,
@@ -518,13 +521,13 @@ public partial class KuroGameContextBase
                 Logger.WriteInfo($"文件{filePath}解压完毕，已经删除");
                 for (int j = 0; j < patch.GroupInfos[i].SrcFiles.Count; j++)
                 {
-                    var deleteFilePath = BuildFilePath(folder, patch.GroupInfos[i].SrcFiles[j]);
+                    var deleteFilePath = BuildFileHelper.BuildFilePath(folder, patch.GroupInfos[i].SrcFiles[j]);
                     Logger.WriteError($"删除源文件{deleteFilePath}");
                     File.Delete(deleteFilePath);
                 }
                 foreach (var file in patch.GroupInfos[i].DstFiles)
                 {
-                    newFiles.Add(BuildFilePath(tempFolder, file), BuildFilePath(folder, file));
+                    newFiles.Add(BuildFileHelper.BuildFilePath(tempFolder, file), BuildFileHelper.BuildFilePath(folder, file));
                 }
                 File.Delete(filePath);
                 Logger.WriteInfo($"删除差异文件：{filePath}");
@@ -532,6 +535,7 @@ public partial class KuroGameContextBase
             var resource = await GetGameResourceAsync(launcher.ResourceDefault);
             if (resource == null)
             {
+                this._isDownload = false;
                 Logger.WriteInfo($"下载差异组文件失败，请尝试修复游戏！");
                 await UpdateFileProgress(
                         GameContextActionType.TipMessage,
@@ -545,6 +549,7 @@ public partial class KuroGameContextBase
             }
             if (!await CheckApplyFilesMd5(resource.Resource, folder, tempFolder, newFiles))
             {
+                this._isDownload = false;
                 Logger.WriteInfo($"下载差异组文件失败，请尝试修复游戏！");
                 await UpdateFileProgress(
                         GameContextActionType.TipMessage,
@@ -572,7 +577,7 @@ public partial class KuroGameContextBase
         }
         if (!result)
         {
-            Logger.WriteInfo($"下载差异组文件失败，请联系开发者");
+            Logger.WriteInfo($"下载差异组文件失败，请使用游戏修复进行更新游戏");
             await SetNoneStatusAsync().ConfigureAwait(false);
             await UpdateFileProgress(
                 GameContextActionType.TipMessage,
@@ -580,6 +585,7 @@ public partial class KuroGameContextBase
                 false,
                 "下载差异文件失败，请直接进行修复游戏"
             );
+            this._isDownload = false;
             return;
         }
         else
@@ -648,21 +654,6 @@ public partial class KuroGameContextBase
             }
             var resource = await this.GetGameLauncherSourceAsync();
             var resourceOne = await this.GetGameResourceAsync(resource.ResourceDefault);
-            _totalfileSize = list.Sum(x => x.Size);
-            _totalFileTotal = list.Count - 1;
-            _totalProgressTotal = 0;
-            if (gameContextOutputDelegate != null)
-            {
-                await gameContextOutputDelegate.Invoke(
-                    this,
-                    new GameContextOutputArgs
-                    {
-                        CurrentSize = 0,
-                        TotalSize = list.Sum(x => x.Size),
-                        Type = GameContextActionType.Download,
-                    }
-                );
-            }
             if (!await GetGameResourceAsync(folder, resource, false))
             {
                 await UpdateFileProgress(
@@ -693,7 +684,7 @@ public partial class KuroGameContextBase
         for (int i = 0; i < patchInfos.Count(); i++)
         {
             var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
-            var filePath = BuildFilePath(folder, patchInfos[i]);
+            var filePath = BuildFileHelper.BuildFilePath(folder, patchInfos[i]);
             string? krdiffPath = "";
             if (File.Exists(filePath))
             {
@@ -717,7 +708,7 @@ public partial class KuroGameContextBase
         for (int i = 0; i < patchInfos.Count(); i++)
         {
             var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
-            var filePath = BuildFilePath(folder, patchInfos[i]);
+            var filePath = BuildFileHelper.BuildFilePath(folder, patchInfos[i]);
             string? krdiffPath = "";
             if (File.Exists(filePath))
             {
@@ -779,32 +770,6 @@ public partial class KuroGameContextBase
         return result;
     }
 
-    private string BuildFilePath(string folder, PatchInfo item)
-    {
-        var path = Path.Combine(folder, item.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(
-            Path.GetDirectoryName(path) ?? throw new Exception($"文件{item.Dest}创建失败")
-        );
-        return path;
-    }
-
-    private string BuildFilePath(string folder, GroupFileInfo item)
-    {
-        var path = Path.Combine(folder, item.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(
-            Path.GetDirectoryName(path) ?? throw new Exception($"文件{item.Dest}创建失败")
-        );
-        return path;
-    }
-
-    private string BuildFilePath(string folder, string item)
-    {
-        var path = Path.Combine(folder, item.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(
-            Path.GetDirectoryName(path) ?? throw new Exception($"文件{item}创建失败")
-        );
-        return path;
-    }
 
     private async Task<bool> UpdateGameToResources(string folder, List<IndexResource> resource)
     {
@@ -824,7 +789,7 @@ public partial class KuroGameContextBase
                     await SetNoneStatusAsync().ConfigureAwait(false);
                     return false;
                 }
-                var filePath = BuildFilePath(folder, resource[i]);
+                var filePath = BuildFileHelper.BuildFilePath(folder, resource[i]);
                 if (File.Exists(filePath))
                 {
                     if (resource[i].ChunkInfos == null)
@@ -1628,14 +1593,6 @@ public partial class KuroGameContextBase
 
     #region 公共辅助方法
 
-    private string BuildFilePath(string folder, IndexResource file)
-    {
-        var path = Path.Combine(folder, file.Dest.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(
-            Path.GetDirectoryName(path) ?? throw new Exception($"文件{file.Dest}创建失败")
-        );
-        return path;
-    }
 
     private async Task InitializeProgress(IndexGameResource resource)
     {

@@ -71,7 +71,7 @@ namespace Project.WPFSetup.Resources {
         }
         
         /// <summary>
-        ///   查找类似 库洛启动器 的本地化字符串。
+        ///   查找类似 Haiyu 的本地化字符串。
         /// </summary>
         internal static string InstallName {
             get {
@@ -89,7 +89,7 @@ namespace Project.WPFSetup.Resources {
         }
         
         /// <summary>
-        ///   查找类似 1.2.16 的本地化字符串。
+        ///   查找类似 1.2.17 的本地化字符串。
         /// </summary>
         internal static string Version {
             get {

@@ -30,6 +30,9 @@ namespace Waves.Api.Models.GameWikiiClient
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
+        [JsonPropertyName("imgMode")]
+        public string ImgMode { get; set; }
+
         [JsonPropertyName("imgs")]
         public List<EventSideImage> Images { get; set; }
     }

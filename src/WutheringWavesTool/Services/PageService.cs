@@ -43,6 +43,7 @@ public sealed partial class PageService : IPageService
         #region OOBE
         this.RegisterView<LanguageSelectPage, LanguageSelectViewModel>();
         #endregion
+
     }
 
     public Type GetPage(string key)

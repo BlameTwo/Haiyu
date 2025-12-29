@@ -1,4 +1,5 @@
 ﻿using Waves.Core.Models.Enums;
+using Windows.Media;
 using Windows.Media.Playback;
 
 namespace Haiyu.Controls;
@@ -6,7 +7,7 @@ namespace Haiyu.Controls;
 [TemplateVisualState(GroupName = "CommonStates", Name = "ShowMedia")]
 [TemplateVisualState(GroupName = "CommonStates", Name = "ShowImage")]
 [TemplateVisualState(GroupName = "CommonStates", Name = "MediaLoading")]
-[TemplateVisualState(GroupName ="CommonStates",Name = "ImageLoading")]
+[TemplateVisualState(GroupName = "CommonStates", Name = "ImageLoading")]
 [TemplatePart(Name = "MediaControl", Type = typeof(MediaPlayerPresenter))]
 [TemplatePart(Name = "MediaBorder", Type = typeof(Border))]
 [TemplatePart(Name = "ImageControl", Type = typeof(ImageEx))]
@@ -18,7 +19,6 @@ public partial class ApplicationBackgroundControl : Control
         this.ImageControl = (ImageEx)GetTemplateChild("ImageControl");
         this.MediaControl = (MediaPlayerPresenter)GetTemplateChild("MediaControl");
     }
-    
 
     public ApplicationBackgroundControl()
     {
@@ -54,36 +54,41 @@ public partial class ApplicationBackgroundControl : Control
             return;
         try
         {
-            if (MediaControl.MediaPlayer != null)
-            {
-                MediaControl.MediaPlayer.MediaOpened -= Player_MediaOpened;
-                MediaControl.MediaPlayer.Dispose();
-                MediaControl.MediaPlayer = null;
-                GC.Collect();
-            }
+            
             if (this.ShowType == WallpaperShowType.Image)
             {
+                if (MediaControl.MediaPlayer != null)
+                {
+                    MediaControl.MediaPlayer.MediaOpened -= Player_MediaOpened;
+                    MediaControl.MediaPlayer.Dispose();
+                    MediaControl.MediaPlayer = null;
+                }
                 this.ImageControl.Source = new BitmapImage(new(this.ImageSource));
+                MediaControl.MediaPlayer = null;
                 VisualStateManager.GoToState(this, "ShowImage", false);
             }
             else
             {
-                var MediaPlayer = new MediaPlayer() { IsLoopingEnabled = true, AutoPlay = true };
-                MediaPlayer.CommandManager.IsEnabled = false;
-                MediaPlayer.MediaOpened += Player_MediaOpened;
+                if(this.MediaControl.MediaPlayer == null)
+                {
+                    var MediaPlayer = new MediaPlayer() { IsLoopingEnabled = true, AutoPlay = true };
+                    MediaPlayer.CommandManager.IsEnabled = false;
+                    MediaPlayer.MediaOpened += Player_MediaOpened;
+                    this.MediaControl.MediaPlayer = MediaPlayer;
+                }
                 var source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(MediaSource));
-                MediaPlayer.Source = source;
-                MediaControl.MediaPlayer = MediaPlayer;
-                VisualStateManager.GoToState(this, "MediaLoading", false);
+                this.MediaControl.MediaPlayer?.Source = source;
+                this.DispatcherQueue.TryEnqueue(() =>
+                {
+                    VisualStateManager.GoToState(this, "MediaLoading", false);
+                });
             }
         }
         catch (Exception) { }
     }
 
-
     private void Player_MediaOpened(MediaPlayer sender, object args)
     {
-
         this.DispatcherQueue.TryEnqueue(async () =>
         {
             VisualStateManager.GoToState(this, "ShowMedia", false);
@@ -168,7 +173,7 @@ public partial class ApplicationBackgroundControl : Control
 
     public void SetMediaSource(string backgroundFile)
     {
-        if(this.MediaBackground != backgroundFile)
+        if (this.MediaBackground != backgroundFile)
             this.MediaSource = backgroundFile;
     }
 

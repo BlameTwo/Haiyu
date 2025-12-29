@@ -1,12 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Page
     x:Class="Haiyu.Pages.GameWikis.PunishWikiPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Haiyu.Pages.GameWikis"
+    xmlns:converter="using:Haiyu.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:wikiModel="using:Haiyu.Models.Wrapper.Wiki" xmlns:ui="using:Haiyu.Controls" xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:labs="using:CommunityToolkit.WinUI.Controls"
+    xmlns:local="using:Haiyu.Pages.GameWikis"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:selector="using:Haiyu.Controls.Selector"
+    xmlns:ui="using:Haiyu.Controls"
+    xmlns:wikiModel="using:Haiyu.Models.Wrapper.Wiki"
     mc:Ignorable="d">
+
+    <Page.Resources>
+
+        <converter:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
+
+    </Page.Resources>
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior EventName="Loaded">
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
@@ -16,23 +28,30 @@
 
         <StackPanel>
             <TextBlock
-             Margin="15,0,0,0"
-             FontFamily="{ThemeResource DefaultFont}"
-             FontSize="20"
-             Text="当前活动" />
+                Margin="15,0,0,0"
+                FontFamily="{ThemeResource DefaultFont}"
+                FontSize="20"
+                Text="当前活动" />
             <ScrollViewer
-             Padding="10"
-             VerticalAlignment="Top"
-             HorizontalScrollBarVisibility="Visible"
-             HorizontalScrollMode="Enabled"
-             VerticalScrollMode="Disabled">
+                Padding="10"
+                VerticalAlignment="Top"
+                HorizontalScrollBarVisibility="Visible"
+                HorizontalScrollMode="Enabled"
+                VerticalScrollMode="Disabled">
                 <ItemsControl ItemsSource="{x:Bind ViewModel.Sides, Mode=OneWay}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="wikiModel:HotContentSideWrapper">
-                            <ui:DraggableCardControl Margin="5" CornerRadius="5">
+                            <ui:DraggableCardControl
+                                Width="350"
+                                Margin="5"
+                                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                                BorderThickness="1"
+                                Command="{x:Bind JumpWebCommand}"
+                                CornerRadius="3">
                                 <Grid Padding="5" BorderThickness="2">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="auto" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
@@ -40,14 +59,13 @@
                                         <RowDefinition Height="auto" />
                                     </Grid.RowDefinitions>
                                     <ui:ImageEx
-                                     Width="120"
-                                     Height="120"
-                                     CornerRadius="5"
-                                     Source="{x:Bind ImageUrl}"
-                                     Stretch="UniformToFill"
-                                     HorizontalAlignment="Center"
-                                     VerticalAlignment="Center"
-                                        />
+                                        Width="120"
+                                        Height="120"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        CornerRadius="5"
+                                        Source="{x:Bind ImageUrl}"
+                                        Stretch="UniformToFill" />
                                     <Grid Grid.Column="1" Margin="8,0,0,0">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
@@ -56,32 +74,45 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <TextBlock
-                                         FontFamily="{ThemeResource DefaultFont}"
-                                         FontSize="17"
-                                         Text="{x:Bind Title}" />
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="17"
+                                            Text="{x:Bind Title}" />
                                         <TextBlock
-                                         Grid.Row="1"
-                                         Margin="0,10,0,0"
-                                         FontSize="15"
-                                         Text="{x:Bind StartTime}" />
+                                            Grid.Row="1"
+                                            Margin="0,10,0,0"
+                                            FontSize="15"
+                                            Text="{x:Bind StartTime}"
+                                            Visibility="{x:Bind TimeVisibility, Mode=OneWay}" />
                                         <TextBlock
-                                         Grid.Row="2"
-                                         Margin="0,10,0,0"
-                                         FontSize="15"
-                                         Text="{x:Bind EndTime}" />
-                                        <TextBlock Grid.Row="3" VerticalAlignment="Bottom">
-                                         <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind Message, Mode=OneWay}" />
-                                         <Run Text="" />
-                                         <Run Text="{x:Bind TotalSpan}" />
-                                        </TextBlock>
+                                            Grid.Row="2"
+                                            Margin="0,10,0,0"
+                                            FontSize="15"
+                                            Text="{x:Bind EndTime}"
+                                            Visibility="{x:Bind TimeVisibility, Mode=OneWay}" />
+                                        <StackPanel
+                                            Grid.Row="3"
+                                            VerticalAlignment="Bottom"
+                                            Orientation="Horizontal">
+                                            <TextBlock
+                                                Margin="0,3,0,0"
+                                                FontFamily="Segoe Fluent Icons"
+                                                Text="&#xEC92;" />
+                                            <TextBlock
+                                                Margin="3,0,0,0"
+                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                Text="{x:Bind Message, Mode=OneWay}" />
+                                            <TextBlock Text="" />
+                                            <TextBlock Text="{x:Bind TotalSpan}" />
+                                        </StackPanel>
                                     </Grid>
                                     <ProgressBar
-                                     Grid.Row="1"
-                                     Grid.ColumnSpan="2"
-                                     Margin="0,5,0,0"
-                                     HorizontalAlignment="Stretch"
-                                     Maximum="{x:Bind MaxProgress, Mode=OneWay}"
-                                     Value="{x:Bind CurrentProgress, Mode=OneWay}" />
+                                        Grid.Row="1"
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,5,0,0"
+                                        HorizontalAlignment="Stretch"
+                                        Foreground="{x:Bind Color}"
+                                        Maximum="{x:Bind MaxProgress, Mode=OneWay}"
+                                        Value="{x:Bind CurrentProgress, Mode=OneWay}" />
                                 </Grid>
                             </ui:DraggableCardControl>
                         </DataTemplate>
@@ -94,23 +125,589 @@
                 </ItemsControl>
             </ScrollViewer>
             <TextBlock
-             Margin="15,0,0,0"
-             FontFamily="{ThemeResource DefaultFont}"
-             FontSize="20"
-             Text="唤取活动" />
+                Margin="15,0,0,0"
+                FontFamily="{ThemeResource DefaultFont}"
+                FontSize="20"
+                Text="研发池" />
             <Grid
-             Margin="15,5,15,0"
-             Padding="120"
-             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-             CornerRadius="5">
-                <TextBlock
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Center"
-                 FontFamily="{ThemeResource DefaultFont}"
-                 FontSize="25"
-                 FontWeight="Bold"
-                 Text="正在施工中……" />
+                Margin="15,5,15,0"
+                HorizontalAlignment="Center"
+                CornerRadius="5">
+                <ScrollViewer
+                    VerticalAlignment="Top"
+                    HorizontalScrollBarVisibility="Visible"
+                    HorizontalScrollMode="Enabled"
+                    VerticalScrollMode="Disabled">
+                    <ItemsControl ItemsSource="{x:Bind ViewModel.BannerListContentWrapper.Items, Mode=OneWay}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="wikiModel:PunishBannerWrapperItem">
+                                <ui:DraggableCardControl
+                                    Width="400"
+                                    Height="300"
+                                    Margin="5"
+                                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="5">
+                                    <Grid Padding="5" BorderThickness="2">
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+
+
+
+
+                                        <ui:ImageEx
+                                            x:Name="SingleImagePanel"
+                                            Width="390"
+                                            Height="210"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Bottom"
+                                            CornerRadius="5"
+                                            Source="{x:Bind ImageUrl, Mode=OneWay}"
+                                            Stretch="UniformToFill"
+                                            Visibility="{x:Bind ImageUrlCount, Converter={StaticResource IntToVisibilityConverter}, ConverterParameter='1', Mode=OneWay}" />
+
+
+                                        <StackPanel
+                                            x:Name="TripleImagePanel"
+                                            Width="390"
+                                            Height="270"
+                                            Margin="0,0,-40,-45"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Bottom"
+                                            Orientation="Horizontal"
+                                            Scale="0.9,0.9,1"
+                                            Spacing="5"
+                                            Visibility="{x:Bind ImageUrlCount, Converter={StaticResource IntToVisibilityConverter}, ConverterParameter='3', Mode=OneWay}">
+                                            <ui:ImageEx
+                                                Width="125"
+                                                Height="230"
+                                                CornerRadius="5"
+                                                Source="{x:Bind ImageUrls[0], Mode=OneWay}"
+                                                Stretch="UniformToFill" />
+                                            <ui:ImageEx
+                                                Width="125"
+                                                Height="230"
+                                                CornerRadius="5"
+                                                Source="{x:Bind ImageUrls[1], Mode=OneWay}"
+                                                Stretch="UniformToFill" />
+                                            <ui:ImageEx
+                                                Width="125"
+                                                Height="230"
+                                                CornerRadius="5"
+                                                Source="{x:Bind ImageUrls[2], Mode=OneWay}"
+                                                Stretch="UniformToFill" />
+                                        </StackPanel>
+
+
+
+                                        <TextBlock
+                                            Grid.Row="0"
+                                            Grid.ColumnSpan="2"
+                                            Margin="0,0,0,0"
+                                            HorizontalAlignment="Center"
+                                            CharacterSpacing="500"
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="26"
+                                            Text="{x:Bind Title, Mode=OneWay}" />
+                                        <StackPanel
+                                            Height="40"
+                                            Margin="0,40,0,0"
+                                            HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Top"
+                                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                                            BorderThickness="0.5"
+                                            CornerRadius="3 3 0 0">
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.ColumnSpan="2"
+                                                Margin="10,5,0,0"
+                                                HorizontalAlignment="Left"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Foreground="White"
+                                                Text="进行中：" />
+                                            <TextBlock
+                                                Grid.Row="0"
+                                                Grid.ColumnSpan="2"
+                                                Margin="0,-22,0,0"
+                                                HorizontalAlignment="Center"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                Text="{x:Bind RemianTime}" />
+                                            <ProgressBar
+                                                Margin="0,8,0,0"
+                                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                Maximum="{x:Bind MaxProgress}"
+                                                Value="{x:Bind CurrentProgress}" />
+                                        </StackPanel>
+                                        <!--
+                                        <ui:ImageEx Width="390" Height="210" CornerRadius="5"
+                                        Source="{x:Bind ImageUrl,Mode=TwoWay}"
+                                        Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>-->
+
+
+
+
+
+
+
+
+
+
+
+                                    </Grid>
+                                </ui:DraggableCardControl>
+                            </DataTemplate>
+
+
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation=" Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                </ScrollViewer>
+
             </Grid>
+
+
+
+            <TextBlock
+                Margin="15,10,0,0"
+                FontFamily="{ThemeResource DefaultFont}"
+                FontSize="20"
+                Text="周常活动" />
+            <Grid
+                Margin="15,5,15,0"
+                ColumnSpacing="15"
+                RowSpacing="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  幻痛囚笼  -->
+                <Border
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel
+                            Grid.Row="0"
+                            Margin="0,0,0,0"
+                            Orientation="Vertical">
+                            <TextBlock
+                                Margin="10,15,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Text="幻痛囚笼" />
+
+                        </StackPanel>
+
+                        <Rectangle
+                            Grid.Row="1"
+                            Height="1"
+                            Margin="0,0"
+                            Fill="{ThemeResource CardStrokeColorDefaultBrush}" />
+
+                        <Grid
+                            Grid.Row="2"
+                            Margin="15,5,15,5"
+                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                            BorderThickness="0.5"
+                            CornerRadius="2">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="4" />
+                            </Grid.RowDefinitions>
+                            <TextBlock
+                                Margin="10,0,0,0"
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Foreground="White"
+                                Text="进行中: " />
+                            <TextBlock
+                                Margin="0,3,0,0"
+                                HorizontalAlignment="Center"
+                                FontSize="14"
+                                FontWeight="Bold"
+                                Foreground="#66CCFF"
+                                Text="{x:Bind ViewModel.EveryWeekContent.PunishRemainingTime, Mode=TwoWay}" />
+                            <ProgressBar
+                                Grid.Row="1"
+                                Height="2"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                Foreground="#3399FF"
+                                Maximum="5000"
+                                Value="1000" />
+                        </Grid>
+
+                        <ItemsControl
+                            Grid.Row="3"
+                            Margin="10,-20,0,20"
+                            ItemsSource="{x:Bind ViewModel.EveryWeekContent.PunishCageItems, Mode=OneWay}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel
+                                        HorizontalAlignment="Left"
+                                        Orientation="Horizontal"
+                                        Spacing="15" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="wikiModel:ImageUrlItem">
+                                    <Grid CornerRadius="4">
+                                        <ui:ImageEx
+                                            Width="130"
+                                            IsCacheEnabled="True"
+                                            Source="{x:Bind ImageUrl}"
+                                            Stretch="Uniform" />
+
+                                    </Grid>
+
+                                </DataTemplate>
+
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                    </Grid>
+                </Border>
+
+                <StackPanel
+                    Width="100"
+                    Height="40"
+                    Margin="115,330,0,0">
+                    <TextBlock
+                        Margin="0,-5,0,10"
+                        FontSize="30"
+                        FontWeight="Bold"
+                        Text="高级区" />
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    Margin="750,325,0,0"
+                    FontSize="30"
+                    FontWeight="Bold"
+                    Text="终极区" />
+
+
+
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel
+                            Grid.Row="0"
+                            Margin="15,10"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Text="诺曼复兴战" />
+                        </StackPanel>
+
+                        <Rectangle
+                            Grid.Row="1"
+                            Height="1"
+                            Margin="15,0"
+                            Fill="{ThemeResource CardStrokeColorDefaultBrush}" />
+
+                        <Grid
+                            Grid.Row="2"
+                            Margin="15,10,15,0"
+                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                            BorderThickness="0.5"
+                            CornerRadius="3 3 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Margin="10,5">
+                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                    <TextBlock
+                                        FontSize="14"
+                                        FontWeight="Bold"
+                                        Text="进行中: " />
+                                    <TextBlock
+                                        Margin="5,0,0,0"
+                                        FontSize="14"
+                                        FontWeight="Bold"
+                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                        Text="{x:Bind ViewModel.EveryWeekContent.NormanRemainingTime, Mode=OneWay}" />
+                                </StackPanel>
+                            </Grid>
+
+                            <ProgressBar
+                                Grid.Row="1"
+                                Width="300"
+                                Height="3"
+                                Margin="0"
+                                HorizontalAlignment="Left"
+                                Background="Transparent"
+                                Foreground="#66CCFF"
+                                Maximum="{x:Bind ViewModel.EveryWeekContent.NormanMaxProgress, Mode=TwoWay}"
+                                Value="{x:Bind ViewModel.EveryWeekContent.NormanProgress, Mode=TwoWay}" />
+                        </Grid>
+
+                        <ui:ImageEx
+                            Grid.Row="3"
+                            Margin="15,0,15,15"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Source="{x:Bind ViewModel.EveryWeekContent.NormanImageUrl, Mode=OneWay}"
+                            Stretch="UniformToFill" />
+                    </Grid>
+                </Border>
+
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Margin="15,10,0,10" Orientation="Horizontal">
+                            <TextBlock
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Text="历战映射" />
+                        </StackPanel>
+
+                        <Grid
+                            Grid.Row="1"
+                            Margin="15,0,15,0"
+                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                            BorderThickness="0.5"
+                            CornerRadius="3 3 0 0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <StackPanel Margin="8,5" Orientation="Horizontal">
+                                <TextBlock
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Text="进行中: " />
+                                <TextBlock
+                                    Margin="5,0,0,0"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                    Text="{x:Bind ViewModel.EveryWeekContent.WarZoneRemainingTime, Mode=OneWay}" />
+                            </StackPanel>
+                            <ProgressBar
+                                Grid.Row="1"
+                                Height="2"
+                                Margin="0"
+                                HorizontalAlignment="Stretch"
+                                Background="Transparent"
+                                Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                Maximum="{x:Bind ViewModel.EveryWeekContent.WarZoneMaxProgress, Mode=TwoWay}"
+                                Value="{x:Bind ViewModel.EveryWeekContent.WarZoneProgress, Mode=TwoWay}" />
+                        </Grid>
+
+                        <ui:ImageEx
+                            Grid.Row="2"
+                            Height="155"
+                            Margin="15,0,15,0"
+                            CornerRadius="2"
+                            Source="{x:Bind ViewModel.EveryWeekContent.WarZoneImageUrl, Mode=OneWay}"
+                            Stretch="UniformToFill" />
+
+                        <Border
+                            Grid.Row="3"
+                            Margin="15,10,0,0"
+                            Padding="8,5"
+                            HorizontalAlignment="Left"
+                            Background="{ThemeResource AccentAAFillColorDefaultBrush}"
+                            CornerRadius="2">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock
+                                    FontSize="13"
+                                    FontWeight="Bold"
+                                    Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                                    Text="{x:Bind ViewModel.EveryWeekContent.WarZoneBuffName, Mode=OneWay}" />
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock
+                            Grid.Row="4"
+                            Margin="15,10,15,15"
+                            VerticalAlignment="Top"
+                            FontSize="12"
+                            Foreground="Gray"
+                            Text="{x:Bind ViewModel.EveryWeekContent.WarZoneBuffDescription, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                    </Grid>
+                </Border>
+
+                <!--  纷争战区  -->
+                <Border
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel
+                            Grid.Row="0"
+                            Margin="15,10"
+                            Orientation="Horizontal">
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Text="纷争战区" />
+                        </StackPanel>
+
+                        <Rectangle
+                            Grid.Row="1"
+                            Height="1"
+                            Margin="15,0"
+                            Fill="{ThemeResource CardStrokeColorDefaultBrush}" />
+
+                        <ItemsControl
+                            Grid.Row="2"
+                            Margin="5"
+                            ItemsSource="{x:Bind ViewModel.EveryWeekContent.DisputeWarZoneItems, Mode=OneWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="wikiModel:DisputeWarZoneItem">
+                                    <Grid
+                                        Margin="5"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="55" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <ui:ImageEx
+                                            CornerRadius="4,0,0,4"
+                                            Source="{x:Bind ImageUrl}"
+                                            Stretch="UniformToFill" />
+
+                                        <StackPanel
+                                            Grid.Column="1"
+                                            Margin="8,0,0,0"
+                                            VerticalAlignment="Center">
+                                            <TextBlock
+                                                FontSize="12"
+                                                FontWeight="Bold"
+                                                Text="{x:Bind Title}"
+                                                TextTrimming="CharacterEllipsis" />
+                                            <TextBlock
+                                                FontSize="10"
+                                                Foreground="Gray"
+                                                Text="{x:Bind TimeRange}"
+                                                TextTrimming="CharacterEllipsis" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <FontIcon
+                                                    Margin="0,0,3,0"
+                                                    FontSize="10"
+                                                    Foreground="{ThemeResource SystemColorGrayTextBrush}"
+                                                    Glyph="&#xE916;" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    Foreground="{ThemeResource SystemColorGrayTextBrush}"
+                                                    Text="进行中：" />
+                                                <TextBlock
+                                                    FontSize="10"
+                                                    Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
+                                                    Text="{x:Bind RemainingTime, Mode=TwoWay}" />
+                                            </StackPanel>
+                                        </StackPanel>
+
+
+                                        <ProgressBar
+                                            Grid.ColumnSpan="3"
+                                            Height="1"
+                                            VerticalAlignment="Bottom"
+                                            Foreground="{x:Bind ColorVal}"
+                                            Maximum="{x:Bind MaxProgress, Mode=TwoWay}"
+                                            Value="{x:Bind CurrentProgress, Mode=TwoWay}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+
+                </Border>
+            </Grid>
+
         </StackPanel>
     </ScrollViewer>
+
 </Page>

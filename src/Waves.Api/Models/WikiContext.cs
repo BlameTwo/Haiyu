@@ -18,7 +18,17 @@ namespace Waves.Api.Models
     [JsonSerializable(typeof(EventSideImage))]
     [JsonSerializable(typeof(WikiCatalogue))]
     [JsonSerializable(typeof(WikiCatalogueChildren))]
-    public partial class WikiContext:JsonSerializerContext
+    [JsonSerializable(typeof(SideModuleContentJson))]
+    [JsonSerializable(typeof(List<SideModuleContentJson>))]
+    [JsonSerializable(typeof(SideModuleContentTab))]
+    [JsonSerializable(typeof(List<SideModuleContentTab>))]
+    [JsonSerializable(typeof(SideModuleContentImg))]
+    [JsonSerializable(typeof(WeekContentInnerTab))]
+    [JsonSerializable(typeof(WeekContentCountDown))]
+    [JsonSerializable(typeof(WeekContentRepeat))]
+    [JsonSerializable(typeof(WeekContentDataRange))]
+    [JsonSerializable(typeof(List<DisputeJsonItem>))]
+    public partial class WikiContext : JsonSerializerContext
     {
     }
 }
