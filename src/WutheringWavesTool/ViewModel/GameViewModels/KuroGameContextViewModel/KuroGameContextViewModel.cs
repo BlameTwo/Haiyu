@@ -250,10 +250,8 @@ public abstract partial class KuroGameContextViewModel
             DisplayVersion = version;
             EnableStartGameBth = true;
             LauncherIcon = "\uE898";
-            AppNotification notify = new AppNotificationBuilder()
-                .AddText($"游戏有更新：{version}版本")
-                .BuildNotification();
-            AppNotificationManager.Default.Show(notify);
+           
+            
         }
         else
         {

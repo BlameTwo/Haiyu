@@ -36,6 +36,8 @@ namespace Haiyu.Models.Wrapper.Wiki
 
         public IAsyncRelayCommand JumpWebCommand => new AsyncRelayCommand(async () =>
         {
+            if (string.IsNullOrWhiteSpace(JumpUrl))
+                return;
             await Launcher.LaunchUriAsync(new(JumpUrl));
         });
 

@@ -74,7 +74,7 @@ public partial class KuroGameContextBase
     #endregion
 
 
-    public async Task UpdateGameAsync()
+    public async Task UpdataGameAsync()
     {
         _downloadCTS = new CancellationTokenSource();
         var folder = await GameLocalConfig.GetConfigAsync(
@@ -84,7 +84,7 @@ public partial class KuroGameContextBase
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
-        await UpdateGameResourceAsync(folder, launcher);
+        await UpdataGameResourceAsync(folder, launcher);
     }
 
     #region 核心下载逻辑
@@ -103,11 +103,13 @@ public partial class KuroGameContextBase
             _downloadBaseUrl =
                 source.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
                 + source.ResourceDefault.Config.BaseUrl;
-
             HttpClientService.BuildClient();
             await InitializeProgress(resource);
             await Task.Run(() => StartDownloadAsync(folder, resource, isDelete));
-            await DownloadComplate(source);
+            if (!_isDownload)
+            {
+                await DownloadComplate(source);
+            }
             await SetNoneStatusAsync().ConfigureAwait(false);
             return true;
         }
@@ -426,7 +428,7 @@ public partial class KuroGameContextBase
     }
     #endregion
 
-    async Task UpdateGameResourceAsync(string folder, GameLauncherSource launcher)
+    async Task UpdataGameResourceAsync(string folder, GameLauncherSource launcher)
     {
         var currentVersion = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.LocalGameVersion
@@ -533,6 +535,7 @@ public partial class KuroGameContextBase
             var resource = await GetGameResourceAsync(launcher.ResourceDefault);
             if (resource == null)
             {
+                this._isDownload = false;
                 Logger.WriteInfo($"下载差异组文件失败，请尝试修复游戏！");
                 await UpdateFileProgress(
                         GameContextActionType.TipMessage,
@@ -546,6 +549,7 @@ public partial class KuroGameContextBase
             }
             if (!await CheckApplyFilesMd5(resource.Resource, folder, tempFolder, newFiles))
             {
+                this._isDownload = false;
                 Logger.WriteInfo($"下载差异组文件失败，请尝试修复游戏！");
                 await UpdateFileProgress(
                         GameContextActionType.TipMessage,
@@ -573,7 +577,7 @@ public partial class KuroGameContextBase
         }
         if (!result)
         {
-            Logger.WriteInfo($"下载差异组文件失败，请联系开发者");
+            Logger.WriteInfo($"下载差异组文件失败，请使用游戏修复进行更新游戏");
             await SetNoneStatusAsync().ConfigureAwait(false);
             await UpdateFileProgress(
                 GameContextActionType.TipMessage,
@@ -581,6 +585,7 @@ public partial class KuroGameContextBase
                 false,
                 "下载差异文件失败，请直接进行修复游戏"
             );
+            this._isDownload = false;
             return;
         }
         else
@@ -649,21 +654,6 @@ public partial class KuroGameContextBase
             }
             var resource = await this.GetGameLauncherSourceAsync();
             var resourceOne = await this.GetGameResourceAsync(resource.ResourceDefault);
-            _totalfileSize = list.Sum(x => x.Size);
-            _totalFileTotal = list.Count - 1;
-            _totalProgressTotal = 0;
-            if (gameContextOutputDelegate != null)
-            {
-                await gameContextOutputDelegate.Invoke(
-                    this,
-                    new GameContextOutputArgs
-                    {
-                        CurrentSize = 0,
-                        TotalSize = list.Sum(x => x.Size),
-                        Type = GameContextActionType.Download,
-                    }
-                );
-            }
             if (!await GetGameResourceAsync(folder, resource, false))
             {
                 await UpdateFileProgress(

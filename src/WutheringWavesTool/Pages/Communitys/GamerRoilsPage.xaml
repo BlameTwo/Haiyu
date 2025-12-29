@@ -47,13 +47,11 @@
                 <ItemsRepeater.ItemTemplate>
                     <DataTemplate x:DataType="uModel:DataCenterRoilItemWrapper">
                         <ui:DraggableCardControl
-                            Margin="2,2"
-                            Padding="0"
+                            Margin="2"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             Command="{x:Bind ClickShowCommand}"
                             CornerRadius="5">
-
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -121,7 +119,7 @@
                         ItemsStretch="Uniform"
                         MinColumnSpacing="2"
                         MinItemHeight="130"
-                        MinItemWidth="100" />
+                        MinItemWidth="110" />
                 </ItemsRepeater.Layout>
 
             </ItemsRepeater>

@@ -394,6 +394,7 @@ namespace Haiyu.Models.Wrapper.Wiki
 
                 if (tab.CountDown != null)
                 {
+                    
                     List<string> range = null;
                     if (tab.CountDown.DateRange != null && tab.CountDown.DateRange.Count >= 2)
                     {

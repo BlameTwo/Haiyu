@@ -94,7 +94,7 @@ public interface IGameContext
     Task<List<KRSDKLauncherCache>?> GetLocalGameOAuthAsync(CancellationToken token);
 
     Task<bool> StartGameAsync();
-    Task UpdateGameAsync();
+    Task UpdataGameAsync();
     Task StopGameAsync();
     Task DeleteResourceAsync();
     #endregion

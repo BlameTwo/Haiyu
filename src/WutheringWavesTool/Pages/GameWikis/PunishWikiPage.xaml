@@ -42,7 +42,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="wikiModel:HotContentSideWrapper">
                             <ui:DraggableCardControl
-                                Width="330"
+                                Width="350"
                                 Margin="5"
                                 Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                                 BorderBrush="{ThemeResource SystemColorGrayTextBrush}"
@@ -131,17 +131,13 @@
                 Text="研发池" />
             <Grid
                 Margin="15,5,15,0"
-                Padding="10"
                 HorizontalAlignment="Center"
                 CornerRadius="5">
                 <ScrollViewer
-                    Padding="10"
                     VerticalAlignment="Top"
                     HorizontalScrollBarVisibility="Visible"
                     HorizontalScrollMode="Enabled"
                     VerticalScrollMode="Disabled">
-
-
                     <ItemsControl ItemsSource="{x:Bind ViewModel.BannerListContentWrapper.Items, Mode=OneWay}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate x:DataType="wikiModel:PunishBannerWrapperItem">
@@ -219,10 +215,13 @@
                                             Text="{x:Bind Title, Mode=OneWay}" />
                                         <StackPanel
                                             Height="40"
+                                            Margin="0,40,0,0"
                                             HorizontalAlignment="Stretch"
                                             VerticalAlignment="Top"
-                                            Background="#1A1A1A"
-                                            CornerRadius="2 2 0 0">
+                                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                                            BorderThickness="0.5"
+                                            CornerRadius="3 3 0 0">
                                             <TextBlock
                                                 Grid.Row="0"
                                                 Grid.ColumnSpan="2"
@@ -341,7 +340,9 @@
                         <Grid
                             Grid.Row="2"
                             Margin="15,5,15,5"
-                            Background="Black"
+                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                            BorderThickness="0.5"
                             CornerRadius="2">
 
                             <Grid.RowDefinitions>
@@ -447,7 +448,7 @@
                             Orientation="Horizontal">
                             <TextBlock
                                 VerticalAlignment="Center"
-                                FontSize="18"
+                                FontSize="16"
                                 FontWeight="Bold"
                                 Text="诺曼复兴战" />
                         </StackPanel>
@@ -461,8 +462,10 @@
                         <Grid
                             Grid.Row="2"
                             Margin="15,10,15,0"
-                            Background="#333333"
-                            CornerRadius="2 2 0 0">
+                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                            BorderThickness="0.5"
+                            CornerRadius="3 3 0 0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -473,13 +476,12 @@
                                     <TextBlock
                                         FontSize="14"
                                         FontWeight="Bold"
-                                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                         Text="进行中: " />
                                     <TextBlock
                                         Margin="5,0,0,0"
                                         FontSize="14"
                                         FontWeight="Bold"
-                                        Foreground="#66CCFF"
+                                        Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
                                         Text="{x:Bind ViewModel.EveryWeekContent.NormanRemainingTime, Mode=OneWay}" />
                                 </StackPanel>
                             </Grid>
@@ -524,7 +526,7 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <StackPanel Margin="15,15,0,10" Orientation="Horizontal">
+                        <StackPanel Margin="15,10,0,10" Orientation="Horizontal">
                             <TextBlock
                                 FontSize="16"
                                 FontWeight="Bold"
@@ -534,21 +536,22 @@
                         <Grid
                             Grid.Row="1"
                             Margin="15,0,15,0"
-                            Background="#1A1A1A"
-                            CornerRadius="2 2 0 0">
+                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
+                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
+                            BorderThickness="0.5"
+                            CornerRadius="3 3 0 0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <StackPanel Margin="8,5" Orientation="Horizontal">
                                 <TextBlock
-                                    FontSize="12"
+                                    FontSize="16"
                                     FontWeight="Bold"
-                                    Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
                                     Text="进行中: " />
                                 <TextBlock
                                     Margin="5,0,0,0"
-                                    FontSize="12"
+                                    FontSize="16"
                                     FontWeight="Bold"
                                     Foreground="{ThemeResource AccentAAFillColorDefaultBrush}"
                                     Text="{x:Bind ViewModel.EveryWeekContent.WarZoneRemainingTime, Mode=OneWay}" />
@@ -567,7 +570,7 @@
                         <ui:ImageEx
                             Grid.Row="2"
                             Height="155"
-                            Margin="15,10,15,0"
+                            Margin="15,0,15,0"
                             CornerRadius="2"
                             Source="{x:Bind ViewModel.EveryWeekContent.WarZoneImageUrl, Mode=OneWay}"
                             Stretch="UniformToFill" />
@@ -622,7 +625,7 @@
                             Orientation="Horizontal">
                             <TextBlock
                                 VerticalAlignment="Center"
-                                FontSize="18"
+                                FontSize="16"
                                 FontWeight="Bold"
                                 Text="纷争战区" />
                         </StackPanel>
@@ -687,12 +690,6 @@
                                             </StackPanel>
                                         </StackPanel>
 
-                                        <FontIcon
-                                            Grid.Column="2"
-                                            Margin="0,0,8,0"
-                                            FontSize="12"
-                                            Foreground="Gray"
-                                            Glyph="&#xE76C;" />
 
                                         <ProgressBar
                                             Grid.ColumnSpan="3"

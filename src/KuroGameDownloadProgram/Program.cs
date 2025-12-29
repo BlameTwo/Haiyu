@@ -1,10 +1,16 @@
-﻿using Haiyu.Plugin.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Haiyu.Plugin.Services;
 using KuroGameDownloadProgram;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
+using Waves.Api.Models;
+using Waves.Api.Models.GameWikiiClient;
 using Waves.Core;
+using Waves.Core.Contracts;
 using Waves.Core.GameContext;
 using Waves.Core.GameContext.Contexts;
 using Waves.Core.Models.Downloader;
+using Waves.Core.Services;
 
 #region 高速下载测试
 
@@ -26,19 +32,25 @@ using Waves.Core.Models.Downloader;
 //Console.WriteLine("下载完成！");
 #endregion
 
-GameContextFactory.GameBassPath =
-    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Waves";
-IServiceProvider serviceProvider = new ServiceCollection().AddGameContext().BuildServiceProvider();
-var mainContext = serviceProvider.GetRequiredKeyedService<IGameContext>(
-    nameof(WavesMainGameContext)
-);
-await mainContext.InitAsync();
-var biliContext = serviceProvider.GetRequiredKeyedService<IGameContext>(
-    nameof(WavesBiliBiliGameContext)
-);
-await biliContext.InitAsync();
-GameServerSwitchTool tool = new GameServerSwitchTool();
-var result = await tool.AnalyseAsync(mainContext, biliContext);
-Console.WriteLine(
-    $"分析结果\r\n新增文件个数:{result.AddFiles.Count}，重写文件个数：{result.RewriterFiles.Count},删除文件个数：{result.DeleteFiles.Count},无变化文件个数:{result.UnchangedFiles.Count}，\r\n转换度:{Math.Round(result.ScoreValue,2)}%，评判:{result.IsSwitch}"
-);
+//GameContextFactory.GameBassPath =
+//    Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Waves";
+//IServiceProvider serviceProvider = new ServiceCollection().AddGameContext().BuildServiceProvider();
+//var mainContext = serviceProvider.GetRequiredKeyedService<IGameContext>(
+//    nameof(WavesMainGameContext)
+//);
+//await mainContext.InitAsync();
+//var biliContext = serviceProvider.GetRequiredKeyedService<IGameContext>(
+//    nameof(WavesBiliBiliGameContext)
+//);
+//await biliContext.InitAsync();
+//GameServerSwitchTool tool = new GameServerSwitchTool();
+//var result = await tool.AnalyseAsync(mainContext, biliContext);
+//Console.WriteLine(
+//    $"分析结果\r\n新增文件个数:{result.AddFiles.Count}，重写文件个数：{result.RewriterFiles.Count},删除文件个数：{result.DeleteFiles.Count},无变化文件个数:{result.UnchangedFiles.Count}，\r\n转换度:{Math.Round(result.ScoreValue,2)}%，评判:{result.IsSwitch}"
+//);
+
+IGameWikiClient wiki = new GameWikiClient();
+var result = await  wiki.GetHomePageAsync( Waves.Api.Models.Enums.WikiType.Waves);
+
+
+Console.ReadKey();
