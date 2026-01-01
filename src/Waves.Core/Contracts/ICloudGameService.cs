@@ -1,6 +1,6 @@
 ﻿using Waves.Api.Models.CloudGame;
 
-namespace Haiyu.Contracts;
+namespace Waves.Core.Contracts;
 
 /// <summary>
 /// 云鸣潮接口会话

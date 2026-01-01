@@ -120,7 +120,7 @@ public partial class RpcMethodService
                     cache,
                     new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
                 );
-                var result = await RecordHelper.MargeRecordAsync(App.RecordFolder, cache)!.ConfigureAwait(false);
+                var result = await RecordHelper.MargeRecordAsync(AppSettings.RecordFolder, cache)!.ConfigureAwait(false);
                 if (TryGetValue("savePath", _param, out var savePath))
                 {
                     if(File.Exists(savePath))

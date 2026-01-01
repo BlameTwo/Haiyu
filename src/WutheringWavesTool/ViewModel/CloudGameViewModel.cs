@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using Haiyu.Contracts;
 using Haiyu.Services.DialogServices;
 using LiveChartsCore.Defaults;
 using MemoryPack;
@@ -307,7 +306,7 @@ public partial class CloudGameViewModel : ViewModelBase
                     new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
                 );
 
-                var result = await RecordHelper.MargeRecordAsync(App.RecordFolder, cache)!;
+                var result = await RecordHelper.MargeRecordAsync(AppSettings.RecordFolder, cache)!;
                 TipShow.ShowMessage(
                     $"抽卡合并，数据总量{result.Item2},二进制大小{result.Item1 / 1024}KB",
                     Symbol.Accept

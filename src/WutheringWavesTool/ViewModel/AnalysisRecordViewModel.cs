@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Haiyu.Contracts;
 using HarfBuzzSharp;
 using LiveChartsCore.Defaults;
 using LiveChartsCore.Kernel;
@@ -190,7 +189,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
         {
             LoadingVisibility = Visibility.Visible;
             DataVisibility = Visibility.Collapsed;
-            var cachePath = App.RecordFolder + $"\\{this.LoginData.Username}.json";
+            var cachePath = AppSettings.RecordFolder + $"\\{this.LoginData.Username}.json";
             int lastCount = 0;
             if (cachePath == null)
             {

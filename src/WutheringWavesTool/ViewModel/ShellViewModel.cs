@@ -100,7 +100,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     {
         if (value == null)
             return;
-        this.WavesClient.CurrentRoil = value;
+        this.WavesClient.CurrentRoil = value.Item;
         if (value.Type == Waves.Core.Models.Enums.GameType.Waves)
         {
             this.WavesCommunitySelectItemVisiblity = Visibility.Visible;

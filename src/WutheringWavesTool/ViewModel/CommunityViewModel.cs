@@ -56,49 +56,49 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
         {
             case "DataGamer":
                 NavigationService.NavigationTo<GameRoilsViewModel>(
-                    WavesClient.CurrentRoil.Item,
+                    WavesClient.CurrentRoil,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "DataDock":
                 NavigationService.NavigationTo<GamerDockViewModel>(
-                    WavesClient.CurrentRoil.Item,
+                    WavesClient.CurrentRoil,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "DataChallenge":
                 NavigationService.NavigationTo<GamerChallengeViewModel>(
-                    WavesClient.CurrentRoil.Item,
+                    WavesClient.CurrentRoil,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "DataAbyss":
                 NavigationService.NavigationTo<GamerTowerViewModel>(
-                    WavesClient.CurrentRoil.Item,
+                    WavesClient.CurrentRoil,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "DataWorld":
                 NavigationService.NavigationTo<GamerExploreIndexViewModel>(
-                    WavesClient.CurrentRoil.Item,
+                    WavesClient.CurrentRoil,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "Skin":
                 NavigationService.NavigationTo<GamerSkinViewModel>(
-                    WavesClient.CurrentRoil.Item,
+                    WavesClient.CurrentRoil,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "Boss2":
                 NavigationService.NavigationTo<GamerSlashDetailViewModel>(
-                    WavesClient.CurrentRoil.Item,
+                    WavesClient.CurrentRoil,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "Resource":
                 NavigationService.NavigationTo<ResourceBriefViewModel>(
-                    WavesClient.CurrentRoil.Item,
+                    WavesClient.CurrentRoil,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;

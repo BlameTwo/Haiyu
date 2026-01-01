@@ -1,6 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
-namespace Haiyu.Helpers;
+using Waves.Core;
+namespace Waves.Core.Helpers;
 
 public class HardwareIdGenerator
 {

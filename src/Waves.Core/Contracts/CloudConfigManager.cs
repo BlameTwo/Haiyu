@@ -1,6 +1,9 @@
-﻿using Waves.Api.Models.CloudGame;
+﻿using System.Collections.ObjectModel;
+using System.Text.Json;
+using Waves.Api.Models;
+using Waves.Api.Models.CloudGame;
 
-namespace Haiyu.Services;
+namespace Waves.Core.Contracts;
 
 public sealed partial class CloudConfigManager
 {

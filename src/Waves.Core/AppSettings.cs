@@ -1,11 +1,28 @@
-﻿namespace Haiyu;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Json;
+using Waves.Core.Models;
+
+namespace Waves.Core;
 
 public class AppSettings
 {
-    private static readonly string SettingsFilePath = Path.Combine(App.BassFolder, "System.json");
-    public static readonly string LogPath = App.BassFolder + "\\appLogs\\appLog.log";
+    public static string BassFolder =>
+        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Waves";
 
-    public static readonly string CloudFolderPath = App.BassFolder + "\\Cloud";
+    public static string RecordFolder => BassFolder + "\\RecordCache";
+
+    public static string WrallpaperFolder => BassFolder + "\\WallpaperImages";
+
+    public static string ScreenCaptures => BassFolder + "\\ScreenCaptures";
+
+    public static string ColorGameFolder => BassFolder + "\\ColorGameFolder";
+
+    public string ToolsPosionFilePath => BassFolder + "\\ToolsPostion.json";
+
+    private static readonly string SettingsFilePath = Path.Combine(BassFolder, "System.json");
+    public static readonly string LogPath = BassFolder + "\\appLogs\\appLog.log";
+
+    public static readonly string CloudFolderPath = BassFolder + "\\Cloud";
 
     public const string RpcVersion = "1.0";
 
