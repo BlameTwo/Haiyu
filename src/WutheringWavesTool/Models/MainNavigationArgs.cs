@@ -22,21 +22,5 @@ public class MainNavigationArgs
     /// </summary>
     public string NavigationValue { get; set; }
 
-    public ObservableCollection<MainNavigationArgs> GetDefault()
-    {
-        ObservableCollection<MainNavigationArgs> args = new();
-        if (AppSettings.ShowWavesMainGame == true)
-        {
-            args.Add(
-                new()
-                {
-                    Icon = "ms-appx:///Assets/GameIcons/global.ico",
-                    Title = "鸣潮（官方）",
-                    NavigationKey = "Haiyu.ViewModel.GameViewModels.MainGameViewModel",
-                    NavigationValue = null,
-                }
-            );
-        }
-        return args;
-    }
+  
 }

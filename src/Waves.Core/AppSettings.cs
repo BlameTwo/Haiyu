@@ -150,121 +150,6 @@ public class AppSettings
         set => Write(value);
     }
 
-    #region 鸣潮
-    public static bool? ShowWavesMainGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowWavesBilibiliGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowWavesGlobalGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    #endregion
-
-    #region 战双帕弥什
-    public static bool? ShowPGRMainGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowPGRBilibiliGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowPGRGlobalGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowTwPGRGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
 
     public static string? TokenDid
     {
@@ -276,8 +161,17 @@ public class AppSettings
         get => Read();
         set => Write(value);
     }
+    public static string? WavesAutoOpenContext
+    {
+        get => Read();
+        set => Write(value);
+    }
+    public static string? PunishAutoOpenContext
+    {
+        get => Read();
+        set => Write(value);
+    }
 
-    #endregion
 
     internal static string? Read([CallerMemberName] string key = null)
     {

@@ -33,7 +33,10 @@ public abstract partial class KuroGameContextViewModel
             this.GameType == GameType.Waves
                 ? ServerDisplay.GetWavesGames
                 : ServerDisplay.GetPunishGames;
-        this.SelectServer = Servers[0];
+        var openService = this.GameType == GameType.Waves?AppSettings.WavesAutoOpenContext:AppSettings.PunishAutoOpenContext;
+
+        var selectServer = Servers.Where(x=>x.Key == openService).FirstOrDefault();
+        this.SelectServer = selectServer == null ? Servers[0] : selectServer;
         this.AppContext.WallpaperService.WallpaperPletteChanged +=
             WallpaperService_WallpaperPletteChanged;
         this.StressShadowColor = AppContext.StressShadowColor;
@@ -147,6 +150,14 @@ public abstract partial class KuroGameContextViewModel
         if (bool.TryParse(dx11, out var flag))
         {
             this.IsDx11Launcher = flag;
+        }
+        if(this.GameContext.GameType == GameType.Waves)
+        {
+            AppSettings.WavesAutoOpenContext = this.GameContext.ContextName;
+        }
+        else if(this.GameContext.GameType == GameType.Punish)
+        {
+            AppSettings.PunishAutoOpenContext = this.GameContext.ContextName;
         }
         await RefreshCoreAsync(showCard);
     }
