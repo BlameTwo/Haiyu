@@ -301,15 +301,13 @@
                         </Button>
 
                     </StackPanel>
-                    <StackPanel
-                        Margin="3"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal"
-                        Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
+                    <Grid Margin="3" Visibility="{x:Bind ViewModel.GameLauncherBthVisibility, Mode=OneWay}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
                         <Button
-                            Width="140"
                             Height="60"
-                            Padding="0"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
                             property:CursorProperty.CursorName="{x:Bind ViewModel.CursorName}"
@@ -358,6 +356,7 @@
 
                         </Button>
                         <Button
+                            Grid.Column="1"
                             Width="60"
                             Margin="3,0,0,0"
                             HorizontalAlignment="Stretch"
@@ -410,7 +409,7 @@
                                 </MenuFlyout>
                             </Button.Flyout>
                         </Button>
-                    </StackPanel>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>
