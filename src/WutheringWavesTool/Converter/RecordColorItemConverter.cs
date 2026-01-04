@@ -34,9 +34,9 @@ public partial class RecordColorItemConverter : IValueConverter
         return new SolidColorBrush(
                     new Color()
                     {
-                        R = 99,
-                        G = 126,
-                        B = 127,
+                        R = 68,
+                        G = 161,
+                        B = 164,
                         A = 255,
                     }
                 );

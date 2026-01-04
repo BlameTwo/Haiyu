@@ -127,6 +127,8 @@ public static class InstanceBuilderExtensions
                     .AddTransient<SelectDownloadGameViewModel>()
                     .AddTransient<QRLoginDialog>()
                     .AddTransient<QrLoginViewModel>()
+                    .AddTransient<UpdateGameDialog>()
+                    .AddTransient<UpdateGameViewModel>()
                     #endregion
                 #endregion
                     #region More

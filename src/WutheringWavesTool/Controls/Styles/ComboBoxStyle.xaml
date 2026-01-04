@@ -207,7 +207,7 @@
                                 BackgroundSizing="InnerBorderEdge"
                                 BorderBrush="{ThemeResource ComboBoxDropDownBorderBrush}"
                                 BorderThickness="{ThemeResource ComboBoxDropdownBorderThickness}"
-                                CornerRadius="{ThemeResource OverlayCornerRadius}">
+                                CornerRadius="10 3 10 3">
                                 <ScrollViewer
                                     x:Name="ScrollViewer"
                                     MinWidth="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplateSettings.DropDownContentMinWidth}"

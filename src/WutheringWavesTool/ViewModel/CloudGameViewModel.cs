@@ -74,6 +74,9 @@ public partial class CloudGameViewModel : ViewModelBase
     public partial LoginData SelectedUser { get; set; }
 
     [ObservableProperty]
+    public partial bool IsLoading { get; set; }
+
+    [ObservableProperty]
     public partial Visibility LoadVisibility { get; set; } = Visibility.Collapsed;
 
     [ObservableProperty]
@@ -139,6 +142,7 @@ public partial class CloudGameViewModel : ViewModelBase
         var url = await TryInvokeAsync(async () =>
             await CloudGameService.GetRecordAsync(this.CTS.Token)
         );
+        IsLoading = true;
         NoLoginVisibility = Visibility.Collapsed;
         this.LoadVisibility = Visibility.Visible;
         this.DataVisibility = Visibility.Collapsed;
@@ -159,6 +163,8 @@ public partial class CloudGameViewModel : ViewModelBase
             this.PageSize = 10;
             this.CurrentPage = 1;
         }
+
+        IsLoading = false;
     }
 
     async partial void OnSelectRecordTypeChanged(GameRecordNavigationItem value)

@@ -103,7 +103,7 @@ public static class RecordHelper
                 }
             }
             lastCount = 0;
-            return (result, count - 1);
+            return (result, count);
         }
         foreach (var item in items)
         {

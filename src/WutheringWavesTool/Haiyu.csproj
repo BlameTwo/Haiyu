@@ -196,6 +196,15 @@
 		<None Update="Assets\HpatchzResource\hpatchz.exe">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<Page Update="Pages\Dialogs\UpdateGameDialog.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="Controls\Styles\Colors.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="Controls\Styles\LoadingCard.xaml">
+		  <Generator>MSBuild:Compile</Generator>
+		</Page>
 		<Page Update="Controls\Styles\HeaderTileCard.xaml">
 		  <Generator>MSBuild:Compile</Generator>
 		</Page>
@@ -245,6 +254,9 @@
 	  <None Remove="Assets\appLogo.ico" />
 	  <None Remove="Assets\appLogo.png" />
 	  <None Remove="Assets\background.png" />
+	  <None Remove="Controls\Styles\Colors.xaml" />
 	  <None Remove="Controls\Styles\HeaderTileCard.xaml" />
+	  <None Remove="Controls\Styles\LoadingCard.xaml" />
+	  <None Remove="Pages\Dialogs\UpdateGameDialog.xaml" />
 	</ItemGroup>
 </Project>

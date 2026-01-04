@@ -28,6 +28,9 @@ public partial class AnalysisRecordViewModel : ViewModelBase
 
     [ObservableProperty]
     public partial Visibility DataVisibility { get; set; }
+
+    [ObservableProperty]
+    public partial bool IsLoading { get; set;  }
     public ICloudGameService CloudGameService { get; }
     public LoginData LoginData { get; internal set; }
 
@@ -169,9 +172,9 @@ public partial class AnalysisRecordViewModel : ViewModelBase
                 {
                     Icon = null,
                     Flage = false,
-                    Count = lastCount - 1,
+                    Count = lastCount,
                     ShowFlage = Visibility.Collapsed,
-                    Name = $"已经垫了{lastCount - 1}发",
+                    Name = $"已经垫了{lastCount}发",
                 }
             );
             AvgCount = Math.Round(StarItems.Select(x => x.Count).Average(), 2);
@@ -187,6 +190,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
     {
         try
         {
+            IsLoading = true;
             LoadingVisibility = Visibility.Visible;
             DataVisibility = Visibility.Collapsed;
             var cachePath = AppSettings.RecordFolder + $"\\{this.LoginData.Username}.json";
@@ -201,6 +205,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
                     "数据错误",
                     0
                 );
+                IsLoading = false;
                 return;
             }
             var datas = MemoryPackSerializer.Deserialize<RecordCacheDetily>(
@@ -217,6 +222,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
                     "数据错误",
                     0
                 );
+                IsLoading = false;
                 return;
             }
             #region 刷新数据源
@@ -360,6 +366,7 @@ public partial class AnalysisRecordViewModel : ViewModelBase
             DataVisibility = Visibility.Visible;
             this.SelectNavigationItem = null;
             this.SelectNavigationItem = this.RecordNavigationItems[0];
+            IsLoading = false;
         }
         catch (Exception ex)
         {
@@ -368,23 +375,4 @@ public partial class AnalysisRecordViewModel : ViewModelBase
     }
 }
 
-public partial class PieData : ObservableObject
-{
-    [ObservableProperty]
-    public partial string Name { get; set; }
 
-    [ObservableProperty]
-    public partial double[] Values { get; set; }
-
-    [ObservableProperty]
-    public partial double Offset { get; set; }
-
-    public Func<ChartPoint, string> Formatter { get; set; } =
-        point =>
-        {
-            var pv = point.Coordinate.PrimaryValue;
-            var sv = point.StackedValue!;
-
-            return $"{Math.Round(pv / sv.Total * 100, 2)}%";
-        };
-}

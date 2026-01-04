@@ -21,12 +21,10 @@ partial class KuroGameContextViewModel
             var localVersion = await GameContext.GameLocalConfig.GetConfigAsync(
                 GameLocalSettingName.LocalGameVersion
             );
-            var result = Version.Parse(this.DisplayVersion) > Version.Parse(localVersion);
-            await GameContext.UpdataGameAsync();
-        }
-        if (_bthType == 5)
-        {
-            //await GameContext.StopGameAsync();
+            var result = await DialogManager.ShowUpateGameDialogAsync(this.GameContext.ContextName);
+            if (result == null)
+                return;
+            await GameContext.UpdataGameAsync(result.DiffSavePath);
         }
     }
 }

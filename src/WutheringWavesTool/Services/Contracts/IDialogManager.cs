@@ -17,6 +17,8 @@ public interface IDialogManager
     public Task<SelectDownloadFolderResult> ShowSelectDownloadFolderAsync(Type type);
     public Task<CloseWindowResult> ShowCloseWindowResult();
     public Task<QRScanResult> GetQRLoginResultAsync();
+    public Task<UpdateGameResult> ShowUpateGameDialogAsync(string contextName);
+
     public void CloseDialog();
 
     public Task<ContentDialogResult> ShowMessageDialog(string header, string content, string closeText);
