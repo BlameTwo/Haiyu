@@ -25,9 +25,12 @@
             Orientation="Horizontal">
             <ComboBox
                 Width="100"
+                Padding="10,5"
                 HorizontalAlignment="Stretch"
+                CornerRadius="10 3 10 3"
                 ItemsSource="{x:Bind ViewModel.GamerFilter, Mode=OneWay}"
-                SelectedItem="{x:Bind ViewModel.SelectFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                SelectedItem="{x:Bind ViewModel.SelectFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Style="{ThemeResource AcrylicComboBoxStyle}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="vModel:GamerRoleFilter">
                         <StackPanel Orientation="Horizontal">

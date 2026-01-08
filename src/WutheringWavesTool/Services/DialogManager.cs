@@ -87,6 +87,9 @@ public abstract class DialogManager : IDialogManager
     public async Task<SelectDownloadFolderResult> ShowSelectGameFolderAsync(Type type) =>
         await GetDialogResultAsync<SelectGameFolderDialog, SelectDownloadFolderResult>(type);
 
+    public async Task<UpdateGameResult> ShowUpateGameDialogAsync(string contextName)=>
+        await GetDialogResultAsync<UpdateGameDialog, UpdateGameResult>(contextName);
+
     public async Task<SelectDownloadFolderResult> ShowSelectDownloadFolderAsync(Type type) =>
         await GetDialogResultAsync<SelectDownoadGameDialog, SelectDownloadFolderResult>(type);
 

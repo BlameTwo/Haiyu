@@ -9,18 +9,7 @@ namespace Haiyu;
 
 public partial class App : ClientApplication
 {
-    public static string BassFolder =>
-        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Waves";
-
-    public static string RecordFolder => BassFolder + "\\RecordCache";
-
-    public static string WrallpaperFolder => BassFolder + "\\WallpaperImages";
-
-    public static string ScreenCaptures => BassFolder + "\\ScreenCaptures";
-
-    public static string ColorGameFolder => BassFolder + "\\ColorGameFolder";
-
-    public string ToolsPosionFilePath => App.BassFolder + "\\ToolsPostion.json";
+    
 
     [DllImport("shcore.dll", SetLastError = true)]
     private static extern int SetProcessDpiAwareness(int dpiAwareness);
@@ -32,11 +21,11 @@ public partial class App : ClientApplication
     public App()
     {
         this.UnhandledException += App_UnhandledException;
-        Directory.CreateDirectory(BassFolder);
-        Directory.CreateDirectory(RecordFolder);
-        Directory.CreateDirectory(ColorGameFolder);
-        Directory.CreateDirectory(WrallpaperFolder);
-        Directory.CreateDirectory(ScreenCaptures);
+        Directory.CreateDirectory(Waves.Core.AppSettings.BassFolder);
+        Directory.CreateDirectory(Waves.Core.AppSettings.RecordFolder);
+        Directory.CreateDirectory(Waves.Core.AppSettings.ColorGameFolder);
+        Directory.CreateDirectory(Waves.Core.AppSettings.WrallpaperFolder);
+        Directory.CreateDirectory(Waves.Core.AppSettings.ScreenCaptures);
         Directory.CreateDirectory(Path.GetDirectoryName(AppSettings.LogPath));
         Directory.CreateDirectory(AppSettings.CloudFolderPath);
         if (AppSettings.WallpaperType == null)
@@ -50,7 +39,7 @@ public partial class App : ClientApplication
         #region PE DPI Resource
         SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         #endregion
-        GameContextFactory.GameBassPath = BassFolder;
+        GameContextFactory.GameBassPath = Waves.Core.AppSettings.BassFolder;
         Instance.InitService();
         this.InitializeComponent();
     }

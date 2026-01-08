@@ -68,7 +68,7 @@ public class ScreenCaptureService : IScreenCaptureService
             rawPixels,
             width,
             height,
-            App.ScreenCaptures + "\\" + DateTime.Now.ToString("yyyyMMddHHmmssff") + ".png",
+            AppSettings.ScreenCaptures + "\\" + DateTime.Now.ToString("yyyyMMddHHmmssff") + ".png",
             BitmapEncoder.PngEncoderId
         );
     }

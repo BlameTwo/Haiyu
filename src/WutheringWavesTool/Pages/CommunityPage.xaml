@@ -65,9 +65,12 @@
                 </Grid.RowDefinitions>
                 <ComboBox
                     Margin="4,0,0,0"
+                    Padding="10,5"
                     HorizontalAlignment="Left"
+                    CornerRadius="10 3 10 3"
                     ItemsSource="{x:Bind ViewModel.Pages, Mode=OneWay}"
-                    SelectedItem="{x:Bind ViewModel.SelectPageItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    SelectedItem="{x:Bind ViewModel.SelectPageItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{ThemeResource AcrylicComboBoxStyle}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="wrapper:CommunitySwitchPageWrapper">
                             <StackPanel Orientation="Horizontal">

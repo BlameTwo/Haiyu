@@ -79,7 +79,9 @@
                     </Button>
                     <ComboBox
                         Margin="10,0,0,0"
+                        Padding="10,5"
                         VerticalAlignment="Center"
+                        CornerRadius="10 3 10 3"
                         ItemsSource="{x:Bind ViewModel.Roles, Mode=OneWay}"
                         SelectedItem="{x:Bind ViewModel.SelectRoles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SizeChanged="ComboBox_SizeChanged"

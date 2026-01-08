@@ -49,7 +49,7 @@ partial class SettingViewModel
         WindowExtension.ShellExecute(
             IntPtr.Zero,
             "open",
-            App.BassFolder,
+            AppSettings.BassFolder,
             null,
             null,
             WindowExtension.SW_SHOWNORMAL
@@ -81,7 +81,7 @@ partial class SettingViewModel
         WindowExtension.ShellExecute(
             IntPtr.Zero,
             "open",
-            App.ScreenCaptures,
+            AppSettings.ScreenCaptures,
             null,
             null,
             WindowExtension.SW_SHOWNORMAL

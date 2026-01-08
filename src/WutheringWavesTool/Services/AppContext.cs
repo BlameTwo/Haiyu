@@ -112,7 +112,7 @@ public class AppContext<T> : IAppContext<T>
         {
             LoggerService.WriteError(ex.Message);
             WindowExtension.MessageBox(IntPtr.Zero,"出现故障性错误，请检查网络连接和日志！关闭当前消息自动打开日志文件夹","Haiyu",0);
-            WindowExtension.ShellExecute(IntPtr.Zero, "open", Haiyu.App.BassFolder+"\\appLogs", null, null, WindowExtension.SW_SHOWNORMAL);
+            WindowExtension.ShellExecute(IntPtr.Zero, "open", AppSettings.BassFolder+"\\appLogs", null, null, WindowExtension.SW_SHOWNORMAL);
             Process.GetCurrentProcess().Kill();
         }
 

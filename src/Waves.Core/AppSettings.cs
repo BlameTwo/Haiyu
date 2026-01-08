@@ -1,11 +1,28 @@
-﻿namespace Haiyu;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Json;
+using Waves.Core.Models;
+
+namespace Waves.Core;
 
 public class AppSettings
 {
-    private static readonly string SettingsFilePath = Path.Combine(App.BassFolder, "System.json");
-    public static readonly string LogPath = App.BassFolder + "\\appLogs\\appLog.log";
+    public static string BassFolder =>
+        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Waves";
 
-    public static readonly string CloudFolderPath = App.BassFolder + "\\Cloud";
+    public static string RecordFolder => BassFolder + "\\RecordCache";
+
+    public static string WrallpaperFolder => BassFolder + "\\WallpaperImages";
+
+    public static string ScreenCaptures => BassFolder + "\\ScreenCaptures";
+
+    public static string ColorGameFolder => BassFolder + "\\ColorGameFolder";
+
+    public string ToolsPosionFilePath => BassFolder + "\\ToolsPostion.json";
+
+    private static readonly string SettingsFilePath = Path.Combine(BassFolder, "System.json");
+    public static readonly string LogPath = BassFolder + "\\appLogs\\appLog.log";
+
+    public static readonly string CloudFolderPath = BassFolder + "\\Cloud";
 
     public const string RpcVersion = "1.0";
 
@@ -133,121 +150,6 @@ public class AppSettings
         set => Write(value);
     }
 
-    #region 鸣潮
-    public static bool? ShowWavesMainGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowWavesBilibiliGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowWavesGlobalGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    #endregion
-
-    #region 战双帕弥什
-    public static bool? ShowPGRMainGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowPGRBilibiliGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowPGRGlobalGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
-
-    public static bool? ShowTwPGRGame
-    {
-        get
-        {
-            try
-            {
-                return Convert.ToBoolean(Read());
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-        set => Write(value.ToString());
-    }
 
     public static string? TokenDid
     {
@@ -259,8 +161,17 @@ public class AppSettings
         get => Read();
         set => Write(value);
     }
+    public static string? WavesAutoOpenContext
+    {
+        get => Read();
+        set => Write(value);
+    }
+    public static string? PunishAutoOpenContext
+    {
+        get => Read();
+        set => Write(value);
+    }
 
-    #endregion
 
     internal static string? Read([CallerMemberName] string key = null)
     {

@@ -317,7 +317,6 @@
                             <RowDefinition Height="40" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-
                         <StackPanel
                             Grid.Row="0"
                             Margin="0,0,0,0"
@@ -372,10 +371,7 @@
                                 Value="1000" />
                         </Grid>
 
-                        <ItemsControl
-                            Grid.Row="3"
-                            Margin="10,-20,0,20"
-                            ItemsSource="{x:Bind ViewModel.EveryWeekContent.PunishCageItems, Mode=OneWay}">
+                        <ItemsControl Grid.Row="3" ItemsSource="{x:Bind ViewModel.EveryWeekContent.PunishCageItems, Mode=OneWay}">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel
@@ -405,20 +401,22 @@
                 </Border>
 
                 <StackPanel
-                    Width="100"
-                    Height="40"
-                    Margin="115,330,0,0">
+                    Grid.Row="0"
+                    Margin="0,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Canvas.ZIndex="5">
                     <TextBlock
-                        Margin="0,-5,0,10"
                         FontSize="30"
                         FontWeight="Bold"
                         Text="高级区" />
                 </StackPanel>
                 <TextBlock
                     Grid.Row="0"
-                    Grid.Column="0"
+                    Grid.Column="2"
                     Grid.ColumnSpan="3"
-                    Margin="750,325,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
                     FontSize="30"
                     FontWeight="Bold"
                     Text="终极区" />

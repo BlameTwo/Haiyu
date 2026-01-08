@@ -74,7 +74,7 @@ public partial class KuroGameContextBase
     #endregion
 
 
-    public async Task UpdataGameAsync()
+    public async Task UpdataGameAsync(string diffSavePath = null)
     {
         _downloadCTS = new CancellationTokenSource();
         var folder = await GameLocalConfig.GetConfigAsync(
@@ -84,7 +84,7 @@ public partial class KuroGameContextBase
         if (string.IsNullOrWhiteSpace(folder) || launcher == null)
             return;
         await GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LocalGameUpdateing, "True");
-        await UpdataGameResourceAsync(folder, launcher);
+        await UpdataGameResourceAsync(folder, launcher, diffSavePath);
     }
 
     #region 核心下载逻辑
@@ -104,7 +104,7 @@ public partial class KuroGameContextBase
                 source.ResourceDefault.CdnList.Where(x => x.P != 0).OrderBy(x => x.P).First().Url
                 + source.ResourceDefault.Config.BaseUrl;
             HttpClientService.BuildClient();
-            await InitializeProgress(resource);
+            await InitializeProgress(resource.Resource);
             await Task.Run(() => StartDownloadAsync(folder, resource, isDelete));
             if (!_isDownload)
             {
@@ -428,7 +428,11 @@ public partial class KuroGameContextBase
     }
     #endregion
 
-    async Task UpdataGameResourceAsync(string folder, GameLauncherSource launcher)
+    async Task UpdataGameResourceAsync(
+        string folder,
+        GameLauncherSource launcher,
+        string diffSavePath
+    )
     {
         var currentVersion = await GameLocalConfig.GetConfigAsync(
             GameLocalSettingName.LocalGameVersion
@@ -483,7 +487,27 @@ public partial class KuroGameContextBase
             && patch.PatchInfos.Count > 0
         )
         {
-            result = await Task.Run(() => DownloadPatcheToResource(folder + "\\Diff", patch));
+            var count = patch.Resource.Where(x => x.Dest.EndsWith(".krdiff"));
+            var size = count.Sum(x => x.Size);
+            _totalfileSize = size;
+            _totalFileTotal = count.Count() - 1;
+            _totalProgressTotal = 0;
+            this._downloadState = new DownloadState();
+            await _downloadState.SetSpeedLimitAsync(this.SpeedValue);
+            result = await Task.Run(() => DownloadPatcheToResource(diffSavePath, patch));
+            if (result == false)
+            {
+                Logger.WriteInfo($"下载差异文件失败，请检查网络之后，重启启动器再次更新");
+                await SetNoneStatusAsync().ConfigureAwait(false);
+                await UpdateFileProgress(
+                        GameContextActionType.TipMessage,
+                        0,
+                        false,
+                        "下载差异组文件失败，请尝试修复游戏！"
+                    )
+                    .ConfigureAwait(false);
+                return;
+            }
         }
         else if (
             patch.ApplyTypes != null
@@ -492,7 +516,15 @@ public partial class KuroGameContextBase
             && patch.GroupInfos.Count > 0
         )
         {
-            result = await Task.Run(() => DownloadGroupPatcheToResource(folder + "\\Diff", patch));
+            //2.8.0_3.0.0_group_27_1766046101203.krpdiff
+            var count = patch.Resource.Where(x => x.Dest.EndsWith(".krpdiff"));
+            var size = count.Sum(x => x.Size);
+            _totalfileSize = size;
+            _totalFileTotal = count.Count() - 1;
+            _totalProgressTotal = 0;
+            this._downloadState = new DownloadState();
+            await _downloadState.SetSpeedLimitAsync(this.SpeedValue);
+            result = await Task.Run(() => DownloadGroupPatcheToResource(diffSavePath, patch));
             if (result == false)
             {
                 Logger.WriteInfo($"下载差异组文件失败，请检查网络之后，重启启动器再次更新");
@@ -510,7 +542,7 @@ public partial class KuroGameContextBase
             Dictionary<string, string> newFiles = new();
             for (int i = 0; i < patch.GroupInfos.Count; i++)
             {
-                var filePath = BuildFileHelper.BuildFilePath(folder + "\\Diff", patch.GroupInfos[i]);
+                var filePath = BuildFileHelper.BuildFilePath(diffSavePath, patch.GroupInfos[i]);
                 await DecompressKrdiffFile(
                     folder,
                     filePath,
@@ -521,13 +553,19 @@ public partial class KuroGameContextBase
                 Logger.WriteInfo($"文件{filePath}解压完毕，已经删除");
                 for (int j = 0; j < patch.GroupInfos[i].SrcFiles.Count; j++)
                 {
-                    var deleteFilePath = BuildFileHelper.BuildFilePath(folder, patch.GroupInfos[i].SrcFiles[j]);
+                    var deleteFilePath = BuildFileHelper.BuildFilePath(
+                        folder,
+                        patch.GroupInfos[i].SrcFiles[j]
+                    );
                     Logger.WriteError($"删除源文件{deleteFilePath}");
                     File.Delete(deleteFilePath);
                 }
                 foreach (var file in patch.GroupInfos[i].DstFiles)
                 {
-                    newFiles.Add(BuildFileHelper.BuildFilePath(tempFolder, file), BuildFileHelper.BuildFilePath(folder, file));
+                    newFiles.Add(
+                        BuildFileHelper.BuildFilePath(tempFolder, file),
+                        BuildFileHelper.BuildFilePath(folder, file)
+                    );
                 }
                 File.Delete(filePath);
                 Logger.WriteInfo($"删除差异文件：{filePath}");
@@ -590,8 +628,6 @@ public partial class KuroGameContextBase
         }
         else
         {
-            var diffFolder = folder + "\\Diff";
-            var decompressFolder = folder + "\\decompressFolder";
             Logger.WriteInfo("删除缓存文件夹");
         }
         #region Update Resource
@@ -652,6 +688,7 @@ public partial class KuroGameContextBase
                     )
                     .ConfigureAwait(false);
             }
+            await InitializeProgress(list);
             var resource = await this.GetGameLauncherSourceAsync();
             var resourceOne = await this.GetGameResourceAsync(resource.ResourceDefault);
             if (!await GetGameResourceAsync(folder, resource, false))
@@ -670,6 +707,14 @@ public partial class KuroGameContextBase
         }
         catch (Exception ex)
         {
+            await SetNoneStatusAsync().ConfigureAwait(false);
+            await UpdateFileProgress(
+                GameContextActionType.TipMessage,
+                0,
+                false,
+                ex.Message
+            );
+            this._isDownload = false;
             Logger.WriteError(ex.Message);
             return false;
         }
@@ -680,25 +725,35 @@ public partial class KuroGameContextBase
         PatchIndexGameResource patch
     )
     {
-        var patchInfos = patch.GroupInfos.ToList();
-        for (int i = 0; i < patchInfos.Count(); i++)
+        var patchInfos = patch.Resource.Where(x=>x.Dest.EndsWith("krpdiff")).ToList();
+        ParallelOptions options = new ParallelOptions()
         {
-            var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
-            var filePath = BuildFileHelper.BuildFilePath(folder, patchInfos[i]);
-            string? krdiffPath = "";
-            if (File.Exists(filePath))
-            {
-                continue;
-                //File.Delete(filePath);
-            }
-            krdiffPath = await DownloadFileByKrDiff(patchInfos[i].Dest, filePath);
-            if (krdiffPath == null)
-            {
-                Logger.WriteError("下载差异文件取消或出现异常");
-                return false;
-            }
+            MaxDegreeOfParallelism = MAX_Concurrency_Count,
+            CancellationToken = _downloadCTS.Token,
+        };
+        if (!(await ParallelDownloadAsync(patchInfos, options, folder)))
+        {
+            Logger.WriteError("下载差异文件取消或出现异常");
+            return false;
         }
+
         return true;
+        //for (int i = 0; i < patchInfos.Count(); i++)
+        //{
+        //    var downloadUrl = _downloadBaseUrl + patchInfos[i].Dest;
+        //    var filePath = BuildFileHelper.BuildFilePath(folder, patchInfos[i]);
+        //    string? krdiffPath = "";
+        //    if (File.Exists(filePath))
+        //    {
+        //        continue;
+        //        //File.Delete(filePath);
+        //    }
+
+        //    krdiffPath = await DownloadFileByKrDiff(patchInfos[i].Dest, filePath);
+        //    if (krdiffPath == null)
+        //    {
+        //    }
+        //}
     }
 
     private async Task<bool> DownloadPatcheToResource(string folder, PatchIndexGameResource patch)
@@ -769,7 +824,6 @@ public partial class KuroGameContextBase
         Logger.WriteInfo($"解压程序结果{result}");
         return result;
     }
-
 
     private async Task<bool> UpdateGameToResources(string folder, List<IndexResource> resource)
     {
@@ -1286,7 +1340,10 @@ public partial class KuroGameContextBase
     public async Task SetSpeedLimitAsync(long bytesPerSecond)
     {
         await _downloadState.SetSpeedLimitAsync(bytesPerSecond);
-        await this.GameLocalConfig.SaveConfigAsync(GameLocalSettingName.LimitSpeed, bytesPerSecond.ToString());
+        await this.GameLocalConfig.SaveConfigAsync(
+            GameLocalSettingName.LimitSpeed,
+            bytesPerSecond.ToString()
+        );
     }
 
     private async Task DownloadFileByFull(
@@ -1392,7 +1449,7 @@ public partial class KuroGameContextBase
             }
             catch (Exception ex)
             {
-                Logger.WriteError($"下载文件{filePath}出现异常"+ex.Message);
+                Logger.WriteError($"下载文件{filePath}出现异常" + ex.Message);
             }
             finally
             {
@@ -1419,9 +1476,9 @@ public partial class KuroGameContextBase
             try
             {
                 using var request = new HttpRequestMessage(
-                HttpMethod.Get,
-                _downloadBaseUrl.TrimEnd('/') + "/" + dest.TrimStart('/')
-            );
+                    HttpMethod.Get,
+                    _downloadBaseUrl.TrimEnd('/') + "/" + dest.TrimStart('/')
+                );
                 using var response = await HttpClientService
                     .GameDownloadClient.SendAsync(
                         request,
@@ -1440,11 +1497,6 @@ public partial class KuroGameContextBase
                 var memoryPool = ArrayPool<byte>.Shared;
                 fileStream.Seek(0, SeekOrigin.Begin);
                 bool isBreak = false;
-                _totalfileSize = chunkTotalSize;
-                _totalProgressTotal = chunkTotalSize;
-                _totalProgressSize = 0;
-                _totalVerifiedBytes = 0;
-                _totalDownloadedBytes = 0;
                 while (totalWritten < chunkTotalSize)
                 {
                     if (_downloadCTS.IsCancellationRequested)
@@ -1512,7 +1564,6 @@ public partial class KuroGameContextBase
 
     #region 辅助方法
 
-    
 
     private async Task UpdateFileProgress(
         GameContextActionType type,
@@ -1594,11 +1645,14 @@ public partial class KuroGameContextBase
     #region 公共辅助方法
 
 
-    private async Task InitializeProgress(IndexGameResource resource)
+    private async Task InitializeProgress(List<IndexResource> resource)
     {
-        _totalfileSize = resource.Resource.Sum(x => x.Size);
-        _totalFileTotal = resource.Resource.Count - 1;
-        _totalProgressTotal = 0;
+        _totalfileSize = resource.Sum(x => x.Size);
+        _totalFileTotal = resource.Count - 1;
+        _totalProgressSize = 0L;
+        _totalProgressTotal = 0L;
+         _totalVerifiedBytes = 0;
+        _totalDownloadedBytes = 0;
         this._downloadState = new DownloadState();
         await _downloadState.SetSpeedLimitAsync(this.SpeedValue);
         if (gameContextOutputDelegate == null)
@@ -1608,7 +1662,7 @@ public partial class KuroGameContextBase
             new GameContextOutputArgs
             {
                 CurrentSize = 0,
-                TotalSize = resource.Resource.Sum(x => x.Size),
+                TotalSize = resource.Sum(x => x.Size),
                 Type = GameContextActionType.Download,
             }
         );

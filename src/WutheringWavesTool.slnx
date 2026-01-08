@@ -17,6 +17,9 @@
     <Project Path="Extensions/GameFileDiffTool/GameFileDiffTool.csproj" Id="7e92e004-3edc-46fe-83e9-402bdb530d81">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
+    <Project Path="Extensions/Haiyu.RpcClient/Haiyu.RpcClient.csproj" Id="6f2d195d-bb29-4532-8aa5-0b0878dc0188">
+      <BuildType Solution="All|*" Project="Debug" />
+    </Project>
     <Project Path="Extensions/MemoryCleaner/MemoryCleaner.csproj" Id="3a89e5c0-1918-4ac2-a091-634d8e2c6673">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
@@ -45,6 +48,11 @@
       <BuildType Solution="All|x86" Project="Debug" />
     </Project>
   </Folder>
+  <Folder Name="/Plugins/">
+    <Project Path="Plugins/GameModelApplication/GameModelApplication.csproj">
+      <BuildType Solution="All|*" Project="Debug" />
+    </Project>
+  </Folder>
   <Folder Name="/Setup/">
     <Project Path="Setup/FluentWPF/FluentWPF.csproj">
       <BuildType Solution="All|*" Project="Debug" />
@@ -65,6 +73,9 @@
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
   </Folder>
+  <Project Path="Haiyu.Config/Haiyu.Config.csproj" Id="e012abb1-1039-41e6-bc54-64984ffbe1b4">
+    <BuildType Solution="All|*" Project="Debug" />
+  </Project>
   <Project Path="Project.Test/Project.Test.csproj">
     <BuildType Solution="All|Any CPU" Project="Release" />
     <BuildType Solution="All|x64" Project="Debug" />

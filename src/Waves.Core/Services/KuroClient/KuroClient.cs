@@ -1,9 +1,17 @@
-﻿using Haiyu.Helpers;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using Waves.Api.Models;
+using Waves.Api.Models.Communitys;
 using Waves.Api.Models.QRLogin;
+using Waves.Core;
+using Waves.Core.Contracts;
+using Waves.Core.Helpers;
 using Waves.Core.Services;
-using Windows.System.Profile;
+using WavesLauncher.Core.Contracts;
 
-namespace Haiyu.Services;
+namespace Waves.Core.Services;
 
 public sealed partial class KuroClient : IKuroClient
 {
@@ -13,7 +21,7 @@ public sealed partial class KuroClient : IKuroClient
 
     public IHttpClientService HttpClientService { get; }
     public LoggerService LoggerService { get; }
-    public GameRoilDataWrapper CurrentRoil { get; set; }
+    public GameRoilDataItem CurrentRoil { get; set; }
     public string? BAT { get; private set; }
     public string Ip { get; private set; }
 
@@ -27,23 +35,6 @@ public sealed partial class KuroClient : IKuroClient
         HttpClientService.BuildClient();
     }
 
-    public string GetPackageSpecificId()
-    {
-        try
-        {
-            var token = HardwareIdentification.GetPackageSpecificToken(null);
-            var hardwareId = token.Id;
-            var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(hardwareId);
-            byte[] bytes = new byte[hardwareId.Length];
-            dataReader.ReadBytes(bytes);
-            return BitConverter.ToString(bytes).Replace("-", "");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Error: " + ex.Message);
-            return string.Empty;
-        }
-    }
 
     private Dictionary<string, string> GetDeviceHeader(bool isNeedToken, bool isNeedBAT = true)
     {

@@ -1,5 +1,4 @@
-﻿using Haiyu.Contracts;
-using Haiyu.Helpers;
+﻿using Haiyu.Helpers;
 using Haiyu.ServiceHost;
 using Haiyu.Services.DialogServices;
 using Haiyu.Services.Navigations.NavigationViewServices;
@@ -128,6 +127,8 @@ public static class InstanceBuilderExtensions
                     .AddTransient<SelectDownloadGameViewModel>()
                     .AddTransient<QRLoginDialog>()
                     .AddTransient<QrLoginViewModel>()
+                    .AddTransient<UpdateGameDialog>()
+                    .AddTransient<UpdateGameViewModel>()
                     #endregion
                 #endregion
                     #region More
@@ -159,7 +160,7 @@ public static class InstanceBuilderExtensions
                         (s) =>
                         {
                             var service = new WallpaperService(s.GetRequiredService<ITipShow>());
-                            service.RegisterHostPath(App.WrallpaperFolder);
+                            service.RegisterHostPath(AppSettings.WrallpaperFolder);
                             return service;
                         }
                     )

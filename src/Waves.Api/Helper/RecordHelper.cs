@@ -103,7 +103,7 @@ public static class RecordHelper
                 }
             }
             lastCount = 0;
-            return (result, count - 1);
+            return (result, count);
         }
         foreach (var item in items)
         {
@@ -491,61 +491,26 @@ public static class RecordHelper
     }
 
     public static List<RecordCardItemWrapper> SyncCompareLists(
-        IList<RecordCardItemWrapper> list1,
-        IList<RecordCardItemWrapper> list2
-    )
+     IList<RecordCardItemWrapper> oldRecords,
+     IList<RecordCardItemWrapper> newRecords)
     {
-        if (list1 == null)
-            return new(list2);
-        if (list2 == null)
-            return new(list1);
-        var result = new List<RecordCardItemWrapper>();
-        int maxCount = Math.Max(list1.Count, list2.Count);
-        int i = 0;
-        while (i < maxCount)
-        {
-            RecordCardItemWrapper item1 = i < list1.Count ? list1[i] : null;
-            RecordCardItemWrapper item2 = i < list2.Count ? list2[i] : null;
+        var safeOldRecords = oldRecords ?? new List<RecordCardItemWrapper>();
+        var safeNewRecords = newRecords ?? new List<RecordCardItemWrapper>();
 
-            if (item1 != null && item2 != null)
+        var mergedResult = new List<RecordCardItemWrapper>();
+
+        mergedResult.AddRange(safeOldRecords);
+
+        foreach (var newItem in safeNewRecords)
+        {
+            bool isExistInOld = safeOldRecords.Any(oldItem => AreItemsEqual(oldItem, newItem));
+            if (!isExistInOld)
             {
-                if (AreItemsEqual(item1, item2))
-                {
-                    result.Add(item1);
-                    i++;
-                }
-                else
-                {
-                    result.Add(item1);
-                    i++;
-                    while (i < list1.Count && i < list2.Count && !AreItemsEqual(list1[i], list2[i]))
-                    {
-                        if (AreItemsEqual(list1[i], list2[i]))
-                        {
-                            result.Add(list1[i]);
-                            i++;
-                        }
-                        else
-                        {
-                            result.Add(list1[i]);
-                            i++;
-                        }
-                    }
-                }
-            }
-            else if (item1 != null)
-            {
-                result.Add(item1);
-                i++;
-            }
-            else if (item2 != null)
-            {
-                result.Add(item2);
-                i++;
+                mergedResult.Add(newItem);
             }
         }
 
-        return result;
+        return mergedResult;
     }
 
     private static bool AreItemsEqual(RecordCardItemWrapper item1, RecordCardItemWrapper item2)

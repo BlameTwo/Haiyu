@@ -73,34 +73,27 @@
                             Height="45"
                             Margin="5"
                             Source="ms-appx:///Assets/GameIcons/global.ico" />
+
                         <controls:ImageEx
                             Grid.Column="1"
-                            Width="45"
-                            Height="45"
-                            Margin="5"
-                            Source="ms-appx:///Assets/GameIcons/bilibili.ico" />
-                        <controls:ImageEx
-                            Grid.Row="1"
                             Width="45"
                             Height="45"
                             Margin="5"
                             Source="ms-appx:///Assets/GameIcons/pgr.ico" />
                         <controls:ImageEx
                             Grid.Row="1"
-                            Grid.Column="1"
+                            Grid.ColumnSpan="2"
                             Width="45"
                             Height="45"
                             Margin="5"
                             Source="ms-appx:///Assets/appLogo.png" />
                     </Grid>
-                    <controls:ImageEx
+                    <Border
                         Grid.RowSpan="3"
                         Grid.ColumnSpan="2"
+                        Background="{ThemeResource CardGradient2Brush}"
                         Canvas.ZIndex="-1"
-                        CornerRadius="10"
-                        Opacity="0.4"
-                        Source="ms-appx:///Assets/Settingbackground.png"
-                        Stretch="UniformToFill" />
+                        CornerRadius="5" />
                     <TextBlock
                         Grid.Column="1"
                         Margin="15,20,0,0"

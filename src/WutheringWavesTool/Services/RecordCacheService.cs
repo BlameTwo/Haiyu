@@ -8,8 +8,8 @@ public sealed partial class RecordCacheService : IRecordCacheService
     {
         if (recordCacheDetily == null)
             return false;
-        var filePath = $"{App.RecordFolder}\\{recordCacheDetily.Name}.json";
-        if (File.Exists($"{App.RecordFolder}"))
+        var filePath = $"{AppSettings.RecordFolder}\\{recordCacheDetily.Name}.json";
+        if (File.Exists($"{AppSettings.RecordFolder}"))
         {
             File.Delete(filePath);
         }
@@ -40,7 +40,7 @@ public sealed partial class RecordCacheService : IRecordCacheService
     public async Task<IEnumerable<RecordCacheDetily?>> GetRecordCacheDetilyAsync()
     {
         List<RecordCacheDetily?> list = new List<RecordCacheDetily?>();
-        var dirinfo = new DirectoryInfo(App.RecordFolder);
+        var dirinfo = new DirectoryInfo(AppSettings.RecordFolder);
         foreach (var filePath in dirinfo.EnumerateFiles("*.json"))
         {
             using (var fs = new FileStream(filePath.FullName, FileMode.Open, FileAccess.Read))
@@ -70,7 +70,7 @@ public sealed partial class RecordCacheService : IRecordCacheService
     public async Task<IEnumerable<(RecordCacheDetily?, string?)>> GetRecordCacheDetilyAndPathAsync()
     {
         List<(RecordCacheDetily?, string?)> list = new List<(RecordCacheDetily?, string?)>();
-        var dirinfo = new DirectoryInfo(App.RecordFolder);
+        var dirinfo = new DirectoryInfo(AppSettings.RecordFolder);
         foreach (var filePath in dirinfo.EnumerateFiles("*.json"))
         {
             using (var fs = new FileStream(filePath.FullName, FileMode.Open, FileAccess.Read))

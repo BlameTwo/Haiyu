@@ -100,7 +100,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     {
         if (value == null)
             return;
-        this.WavesClient.CurrentRoil = value;
+        this.WavesClient.CurrentRoil = value.Item;
         if (value.Type == Waves.Core.Models.Enums.GameType.Waves)
         {
             this.WavesCommunitySelectItemVisiblity = Visibility.Visible;
@@ -286,13 +286,6 @@ public sealed partial class ShellViewModel : ViewModelBase
             await this.RefreshRoleLists();
         }
         this.AppContext.MainTitle.UpDate();
-        this.ShowPGRBilibiliGame = AppSettings.ShowPGRBilibiliGame;
-        this.ShowPGRGlobalGame = AppSettings.ShowPGRGlobalGame;
-        this.ShowPGRMainGame = AppSettings.ShowPGRMainGame;
-        this.ShowWavesMainGame = AppSettings.ShowWavesMainGame;
-        this.ShowWavesGlobalGame = AppSettings.ShowWavesGlobalGame;
-        this.ShowWavesBilibiliGame = AppSettings.ShowWavesBilibiliGame;
-        this.ShowTwPGRGame = AppSettings.ShowTwPGRGame;
         WallpaperService.SetMediaForUrl(WallpaperShowType.Image, AppDomain.CurrentDomain.BaseDirectory+ "Assets\\background.png");
         OpenMain();
         await LauncherTaskService.RunAsync(this.CTS.Token);
@@ -339,63 +332,4 @@ public sealed partial class ShellViewModel : ViewModelBase
         SelectItem = page;
     }
 
-    #region 鸣潮
-    [ObservableProperty]
-    public partial bool? ShowWavesMainGame { get; set; }
-
-    partial void OnShowWavesMainGameChanged(bool? value)
-    {
-        AppSettings.ShowWavesMainGame = value;
-    }
-
-    [ObservableProperty]
-    public partial bool? ShowWavesBilibiliGame { get; set; }
-
-    partial void OnShowWavesBilibiliGameChanged(bool? value)
-    {
-        AppSettings.ShowWavesBilibiliGame = value;
-    }
-
-    [ObservableProperty]
-    public partial bool? ShowWavesGlobalGame { get; set; }
-
-    partial void OnShowWavesGlobalGameChanged(bool? value)
-    {
-        AppSettings.ShowWavesGlobalGame = value;
-    }
-    #endregion
-
-    #region 战双帕弥什
-    [ObservableProperty]
-    public partial bool? ShowPGRMainGame { get; set; }
-
-    partial void OnShowPGRMainGameChanged(bool? value)
-    {
-        AppSettings.ShowPGRMainGame = value;
-    }
-
-    [ObservableProperty]
-    public partial bool? ShowPGRBilibiliGame { get; set; }
-
-    partial void OnShowPGRBilibiliGameChanged(bool? value)
-    {
-        AppSettings.ShowPGRBilibiliGame = value;
-    }
-
-    [ObservableProperty]
-    public partial bool? ShowPGRGlobalGame { get; set; }
-
-    partial void OnShowPGRGlobalGameChanged(bool? value)
-    {
-        AppSettings.ShowPGRGlobalGame = value;
-    }
-
-    [ObservableProperty]
-    public partial bool? ShowTwPGRGame { get; set; }
-
-    partial void OnShowTwPGRGameChanged(bool? value)
-    {
-        AppSettings.ShowTwPGRGame = value;
-    }
-    #endregion
 }

@@ -34,7 +34,7 @@ public class ColorGameManager : IColorGameManager
         }
         else
         {
-            var file = App.ColorGameFolder + $"\\{info.GameFile}.json";
+            var file = AppSettings.ColorGameFolder + $"\\{info.GameFile}.json";
             if (File.Exists(file))
             {
                 return (false, "游戏文件已经存在，请重新命名！");

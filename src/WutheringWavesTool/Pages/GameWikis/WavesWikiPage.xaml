@@ -513,10 +513,7 @@
                                             <RowDefinition Height="auto" />
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
-                                        <StackPanel
-                                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
-                                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
-                                            BorderThickness="0.5">
+                                        <StackPanel Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}">
                                             <TextBlock Margin="5" FontSize="18">
                                                 <Run FontWeight="Bold" Text="{x:Bind Title}" />
                                                 <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind DisplayTime}" />
@@ -574,10 +571,7 @@
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="auto" />
                                         </Grid.RowDefinitions>
-                                        <StackPanel
-                                            Background="{ThemeResource SystemControlPageBackgroundAltMediumBrush}"
-                                            BorderBrush="{ThemeResource ScrollBarButtonForegroundThemeBrush}"
-                                            BorderThickness="0.5">
+                                        <StackPanel>
                                             <TextBlock Margin="5" FontSize="18">
                                                 <Run FontWeight="Bold" Text="{x:Bind Title}" />
                                                 <Run Foreground="{ThemeResource AccentAAFillColorDefaultBrush}" Text="{x:Bind DisplayTime}" />

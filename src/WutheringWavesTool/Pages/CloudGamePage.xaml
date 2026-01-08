@@ -23,276 +23,259 @@
     <Page.Resources>
         <converter:RecordColorItemConverter x:Key="RecordColorItemConverter" />
     </Page.Resources>
-    <Grid Margin="25">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <Grid
-            Grid.RowSpan="2"
-            Width="210"
-            Height="210"
-            Padding="10"
-            Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
-            BorderThickness="2"
-            CornerRadius="10"
-            Visibility="{x:Bind ViewModel.LoadVisibility, Mode=OneWay}">
-            <StackPanel
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Orientation="Vertical">
-                <Viewbox Width="35" Height="35">
-                    <ProgressRing IsActive="True" />
-                </Viewbox>
-                <TextBlock
-                    Margin="0,10,0,0"
-                    FontSize="12"
-                    Text="创建登陆会话" />
-            </StackPanel>
-        </Grid>
-
-        <Grid
-            Grid.RowSpan="2"
-            Width="300"
-            Height="210"
-            Padding="10"
-            Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
-            CornerRadius="10"
-            Visibility="{x:Bind ViewModel.NoLoginVisibility, Mode=OneWay}">
-            <StackPanel
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Orientation="Vertical">
-                <StackPanel Orientation="Vertical">
-                    <Image
-                        Height="70"
-                        Source="ms-appx:///Assets/Images/Error.gif"
-                        Stretch="Uniform" />
-                    <TextBlock
-                        Margin="0,10,0,0"
-                        VerticalAlignment="Center"
-                        FontFamily="{ThemeResource DefaultFont}"
-                        Text="无登陆会话，请点击右侧添加账号图标" />
-                </StackPanel>
-            </StackPanel>
-        </Grid>
-        <StackPanel Orientation="Horizontal">
-            <StackPanel.ChildrenTransitions>
-                <TransitionCollection>
-                    <RepositionThemeTransition />
-                </TransitionCollection>
-            </StackPanel.ChildrenTransitions>
-            <ComboBox
+    <ui:LoadingCard
+        IsLoading="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+        Message="刷新数据中……"
+        Style="{ThemeResource DefaultLoadingCardStyle}">
+        <Grid Margin="25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid
+                Grid.RowSpan="2"
+                Width="300"
+                Height="210"
                 Padding="10"
-                VerticalContentAlignment="Center"
-                IsEnabled="{x:Bind ViewModel.IsLoginUser, Mode=OneWay}"
-                ItemsSource="{x:Bind ViewModel.Users, Mode=OneWay}"
-                SelectedItem="{x:Bind ViewModel.SelectedUser, Mode=TwoWay}">
-                <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="m3:LoginData">
-                        <Grid VerticalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <ui:ImageEx
-                                Width="20"
-                                Height="20"
-                                Source="https://mc.kurogames.com/cloud/assets/avatar-cb06ab22.png" />
-                            <TextBlock
-                                Grid.Column="1"
-                                Margin="5,-3,0,0"
-                                VerticalAlignment="Center"
-                                Text="{x:Bind Phone}" />
-                        </Grid>
-                    </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
-            <TextBlock
-                Margin="15,0,0,0"
-                VerticalAlignment="Center"
-                FontFamily="{ThemeResource DefaultFont}"
-                FontSize="18"
-                Text="唤取记录" />
-
-        </StackPanel>
-        <StackPanel
-            Padding="5"
-            HorizontalAlignment="Right"
-            Orientation="Horizontal">
-            <StackPanel
-                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
-                BorderThickness="1"
-                CornerRadius="5"
-                Orientation="Horizontal">
-                <Button
-                    Command="{x:Bind ViewModel.ShowAddCommand}"
-                    Style="{ThemeResource TransparentButtonStyle}"
-                    ToolTipService.ToolTip="添加账号">
-                    <FontIcon
-                        FontFamily="Segoe Fluent Icons"
-                        FontSize="13.5"
-                        Glyph="&#xE8FA;" />
-                </Button>
-                <Button
-                    Command="{x:Bind ViewModel.LoadedCommand}"
-                    Style="{ThemeResource TransparentButtonStyle}"
-                    ToolTipService.ToolTip="刷新会话">
-                    <FontIcon
-                        FontFamily="Segoe Fluent Icons"
-                        FontSize="13.5"
-                        Glyph="&#xE72C;" />
-                </Button>
-                <Button
-                    Command="{x:Bind ViewModel.SaveAsPlayCardDataCommand}"
-                    Style="{ThemeResource TransparentButtonStyle}"
-                    ToolTipService.ToolTip="另存抽卡记录">
-                    <FontIcon
-                        FontFamily="Segoe Fluent Icons"
-                        FontSize="13.5"
-                        Glyph="&#xE74E;" />
-                </Button>
-                <Button Style="{ThemeResource TransparentButtonStyle}" ToolTipService.ToolTip="云工具为云鸣潮账户数据">
-                    <FontIcon
-                        FontFamily="Segoe Fluent Icons"
-                        FontSize="13.5"
-                        Glyph="&#xE7BA;" />
-                </Button>
-
-            </StackPanel>
-            <StackPanel
-                Margin="5,0,0,0"
-                Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
-                BorderThickness="1"
-                CornerRadius="5"
-                Orientation="Horizontal">
-                <Button
-                    Margin="0,0,0,0"
-                    Command="{x:Bind ViewModel.ShowAnalysisCommand}"
-                    Style="{ThemeResource TransparentButtonStyle}"
-                    ToolTipService.ToolTip="分析面板">
-                    <FontIcon
-                        VerticalAlignment="Center"
-                        FontFamily="Segoe Fluent Icons"
-                        FontSize="13.5"
-                        Glyph="&#xEC43;" />
-                </Button>
-            </StackPanel>
-
-        </StackPanel>
-        <Grid
-            Grid.Row="1"
-            Margin="0,0,0,0"
-            Visibility="{x:Bind ViewModel.DataVisibility, Mode=OneWay}">
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock
+                Background="{ThemeResource AcrylicBackgroundFillColorBaseBrush}"
+                CornerRadius="10"
+                Visibility="{x:Bind ViewModel.NoLoginVisibility, Mode=OneWay}">
+                <StackPanel
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    FontFamily="{ThemeResource DefaultFont}"
-                    Text="唤取类型：" />
+                    Orientation="Vertical">
+                    <StackPanel Orientation="Vertical">
+                        <Image
+                            Height="70"
+                            Source="ms-appx:///Assets/Images/Error.gif"
+                            Stretch="Uniform" />
+                        <TextBlock
+                            Margin="0,10,0,0"
+                            VerticalAlignment="Center"
+                            FontFamily="{ThemeResource DefaultFont}"
+                            Text="无登陆会话，请点击右侧添加账号图标" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel.ChildrenTransitions>
+                    <TransitionCollection>
+                        <RepositionThemeTransition />
+                    </TransitionCollection>
+                </StackPanel.ChildrenTransitions>
                 <ComboBox
-                    x:Name="selectComboBox"
-                    Grid.Column="1"
-                    Padding="10"
-                    HorizontalAlignment="Stretch"
-                    x:Load="{x:Bind ViewModel.IsLoadCardItem, Mode=OneWay}"
-                    ItemsSource="{x:Bind ViewModel.RecordNavigationItems, Mode=OneWay}"
-                    SelectedItem="{x:Bind ViewModel.SelectRecordType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    Padding="10,10"
+                    VerticalContentAlignment="Center"
+                    CornerRadius="10 3 10 3"
+                    IsEnabled="{x:Bind ViewModel.IsLoginUser, Mode=OneWay}"
+                    ItemsSource="{x:Bind ViewModel.Users, Mode=OneWay}"
+                    SelectedItem="{x:Bind ViewModel.SelectedUser, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
-                        <DataTemplate x:DataType="m2:GameRecordNavigationItem">
-                            <TextBlock FontFamily="{ThemeResource DefaultFont}" Text="{x:Bind DisplayName}" />
+                        <DataTemplate x:DataType="m3:LoginData">
+                            <Grid VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <ui:ImageEx
+                                    Width="20"
+                                    Height="20"
+                                    Source="https://mc.kurogames.com/cloud/assets/avatar-cb06ab22.png" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    Margin="5,-3,0,0"
+                                    VerticalAlignment="Center"
+                                    Text="{x:Bind Phone}" />
+                            </Grid>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-                <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3">
-                    <ItemsControl ItemsSource="{x:Bind ViewModel.ResourceItems, Mode=OneWay}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate x:DataType="m:RecordCardItemWrapper">
-                                <Grid
-                                    Margin="0,3,0,0"
-                                    Padding="8.5"
-                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock
-                                        FontFamily="{ThemeResource DefaultFont}"
-                                        FontSize="15"
-                                        Foreground="{x:Bind QualityLevel, Mode=OneWay, Converter={StaticResource RecordColorItemConverter}}"
-                                        Text="{x:Bind Name}" />
-                                    <TextBlock
-                                        Grid.Column="1"
-                                        HorizontalAlignment="Center"
-                                        FontFamily="{ThemeResource DefaultFont}"
-                                        FontSize="15"
-                                        Foreground="{x:Bind QualityLevel, Mode=OneWay, Converter={StaticResource RecordColorItemConverter}}"
-                                        Text="{x:Bind ResourceType}" />
-                                    <TextBlock
-                                        Grid.Column="2"
-                                        HorizontalAlignment="Right"
-                                        FontFamily="{ThemeResource DefaultFont}"
-                                        FontSize="15"
-                                        Foreground="{x:Bind QualityLevel, Mode=OneWay, Converter={StaticResource RecordColorItemConverter}}"
-                                        Text="{x:Bind Time}" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                        <ItemsControl.ItemContainerTransitions>
-                            <TransitionCollection>
-                                <ContentThemeTransition />
-                                <RepositionThemeTransition />
-                            </TransitionCollection>
-                        </ItemsControl.ItemContainerTransitions>
-                    </ItemsControl>
+                <TextBlock
+                    Margin="15,0,0,0"
+                    VerticalAlignment="Center"
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="18"
+                    Text="唤取记录" />
 
-                </ScrollViewer>
-
+            </StackPanel>
+            <StackPanel
+                Padding="5"
+                HorizontalAlignment="Right"
+                Orientation="Horizontal">
                 <StackPanel
-                    Grid.Row="2"
-                    Grid.ColumnSpan="3"
-                    HorizontalAlignment="Center"
+                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
+                    BorderThickness="1"
+                    CornerRadius="5"
                     Orientation="Horizontal">
-                    <Button Command="{x:Bind ViewModel.PrevPageCommand}" Style="{ThemeResource TransparentButtonStyle}">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76B;" />
-                    </Button>
-                    <TextBlock
-                        Margin="10,0,0,0"
-                        VerticalAlignment="Center"
-                        FontFamily="{ThemeResource DefaultFont}"
-                        FontSize="15">
-                        <Run Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" />
-                        <Run FontWeight="Bold" Text="/" />
-                        <Run Text="{x:Bind ViewModel.TotalPages, Mode=OneWay}" />
-                    </TextBlock>
                     <Button
-                        Margin="10,0,0,0"
-                        Command="{x:Bind ViewModel.NextPageCommand}"
-                        Style="{ThemeResource TransparentButtonStyle}">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76C;" />
+                        Command="{x:Bind ViewModel.ShowAddCommand}"
+                        Style="{ThemeResource TransparentButtonStyle}"
+                        ToolTipService.ToolTip="添加账号">
+                        <FontIcon
+                            FontFamily="Segoe Fluent Icons"
+                            FontSize="13.5"
+                            Glyph="&#xE8FA;" />
+                    </Button>
+                    <Button
+                        Command="{x:Bind ViewModel.LoadedCommand}"
+                        Style="{ThemeResource TransparentButtonStyle}"
+                        ToolTipService.ToolTip="刷新会话">
+                        <FontIcon
+                            FontFamily="Segoe Fluent Icons"
+                            FontSize="13.5"
+                            Glyph="&#xE72C;" />
+                    </Button>
+                    <Button
+                        Command="{x:Bind ViewModel.SaveAsPlayCardDataCommand}"
+                        Style="{ThemeResource TransparentButtonStyle}"
+                        ToolTipService.ToolTip="另存抽卡记录">
+                        <FontIcon
+                            FontFamily="Segoe Fluent Icons"
+                            FontSize="13.5"
+                            Glyph="&#xE74E;" />
+                    </Button>
+                    <Button Style="{ThemeResource TransparentButtonStyle}" ToolTipService.ToolTip="云工具为云鸣潮账户数据">
+                        <FontIcon
+                            FontFamily="Segoe Fluent Icons"
+                            FontSize="13.5"
+                            Glyph="&#xE7BA;" />
                     </Button>
 
                 </StackPanel>
-            </Grid>
+                <StackPanel
+                    Margin="5,0,0,0"
+                    Background="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
+                    BorderThickness="1"
+                    CornerRadius="5"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="0,0,0,0"
+                        Command="{x:Bind ViewModel.ShowAnalysisCommand}"
+                        Style="{ThemeResource TransparentButtonStyle}"
+                        ToolTipService.ToolTip="分析面板">
+                        <FontIcon
+                            VerticalAlignment="Center"
+                            FontFamily="Segoe Fluent Icons"
+                            FontSize="13.5"
+                            Glyph="&#xEC43;" />
+                    </Button>
+                </StackPanel>
 
+            </StackPanel>
+            <Grid
+                Grid.Row="1"
+                Margin="0,0,0,0"
+                Visibility="{x:Bind ViewModel.DataVisibility, Mode=OneWay}">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        FontFamily="{ThemeResource DefaultFont}"
+                        Text="唤取类型：" />
+                    <ComboBox
+                        x:Name="selectComboBox"
+                        Grid.Column="1"
+                        Padding="10,5"
+                        HorizontalAlignment="Stretch"
+                        x:Load="{x:Bind ViewModel.IsLoadCardItem, Mode=OneWay}"
+                        CornerRadius="10 3 10 3"
+                        ItemsSource="{x:Bind ViewModel.RecordNavigationItems, Mode=OneWay}"
+                        SelectedItem="{x:Bind ViewModel.SelectRecordType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="m2:GameRecordNavigationItem">
+                                <TextBlock FontFamily="{ThemeResource DefaultFont}" Text="{x:Bind DisplayName}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3">
+                        <ItemsControl ItemsSource="{x:Bind ViewModel.ResourceItems, Mode=OneWay}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="m:RecordCardItemWrapper">
+                                    <Grid
+                                        Margin="0,3,0,0"
+                                        Padding="8.5"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="15"
+                                            Foreground="{x:Bind QualityLevel, Mode=OneWay, Converter={StaticResource RecordColorItemConverter}}"
+                                            Text="{x:Bind Name}" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Center"
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="15"
+                                            Foreground="{x:Bind QualityLevel, Mode=OneWay, Converter={StaticResource RecordColorItemConverter}}"
+                                            Text="{x:Bind ResourceType}" />
+                                        <TextBlock
+                                            Grid.Column="2"
+                                            HorizontalAlignment="Right"
+                                            FontFamily="{ThemeResource DefaultFont}"
+                                            FontSize="15"
+                                            Foreground="{x:Bind QualityLevel, Mode=OneWay, Converter={StaticResource RecordColorItemConverter}}"
+                                            Text="{x:Bind Time}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemContainerTransitions>
+                                <TransitionCollection>
+                                    <ContentThemeTransition />
+                                    <RepositionThemeTransition />
+                                </TransitionCollection>
+                            </ItemsControl.ItemContainerTransitions>
+                        </ItemsControl>
+
+                    </ScrollViewer>
+
+                    <StackPanel
+                        Grid.Row="2"
+                        Grid.ColumnSpan="3"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button Command="{x:Bind ViewModel.PrevPageCommand}" Style="{ThemeResource TransparentButtonStyle}">
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76B;" />
+                        </Button>
+                        <TextBlock
+                            Margin="10,0,0,0"
+                            VerticalAlignment="Center"
+                            FontFamily="{ThemeResource DefaultFont}"
+                            FontSize="15">
+                            <Run Text="{x:Bind ViewModel.CurrentPage, Mode=OneWay}" />
+                            <Run FontWeight="Bold" Text="/" />
+                            <Run Text="{x:Bind ViewModel.TotalPages, Mode=OneWay}" />
+                        </TextBlock>
+                        <Button
+                            Margin="10,0,0,0"
+                            Command="{x:Bind ViewModel.NextPageCommand}"
+                            Style="{ThemeResource TransparentButtonStyle}">
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE76C;" />
+                        </Button>
+
+                    </StackPanel>
+                </Grid>
+
+            </Grid>
+            <Grid />
         </Grid>
-        <Grid />
-    </Grid>
+    </ui:LoadingCard>
 </Page>

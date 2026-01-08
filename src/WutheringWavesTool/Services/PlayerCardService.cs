@@ -8,7 +8,7 @@ public class PlayerCardService : IPlayerCardService
     public async Task<RecordCacheDetily> GetRecordAsync(string name)
     {
         foreach (
-               var item in Directory.GetFiles(App.RecordFolder, "*.json", SearchOption.TopDirectoryOnly)
+               var item in Directory.GetFiles(AppSettings.RecordFolder, "*.json", SearchOption.TopDirectoryOnly)
            )
         {
             try
@@ -32,7 +32,7 @@ public class PlayerCardService : IPlayerCardService
     {
         List<RecordCacheDetily> values = [];
         foreach (
-               var item in Directory.GetFiles(App.RecordFolder, "*.json", SearchOption.TopDirectoryOnly)
+               var item in Directory.GetFiles(AppSettings.RecordFolder, "*.json", SearchOption.TopDirectoryOnly)
            )
         {
             try

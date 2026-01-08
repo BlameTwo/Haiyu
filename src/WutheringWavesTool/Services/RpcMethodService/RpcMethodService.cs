@@ -1,5 +1,4 @@
-﻿using Haiyu.Contracts;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using Waves.Api.Models.Rpc;
 
 namespace Haiyu.Services;

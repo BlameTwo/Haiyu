@@ -119,7 +119,7 @@ partial class ColorFullViewModel
         var result = await ColorGameManager.SaveGameAsync(info, this.CurrentFile, this.CTS.Token);
         if (result.Item1)
         {
-            WindowExtension.ShellExecute(IntPtr.Zero, "open", App.ColorGameFolder, null, null, WindowExtension.SW_SHOWNORMAL);
+            WindowExtension.ShellExecute(IntPtr.Zero, "open", AppSettings.ColorGameFolder, null, null, WindowExtension.SW_SHOWNORMAL);
             await DialogManager.ShowOKDialogAsync("保存", $"保存成功");
         }
         else

@@ -41,6 +41,8 @@
             IsIndeterminate="{x:Bind ViewModel.ProcessAction, Mode=OneWay}" />
         <ComboBox
             Margin="10,0,0,0"
+            Padding="10,5"
+            CornerRadius="10 3 10 3"
             ItemsSource="{x:Bind ViewModel.Servers, Mode=OneWay}"
             SelectedItem="{x:Bind ViewModel.SelectServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Style="{ThemeResource AcrylicComboBoxStyle}">
