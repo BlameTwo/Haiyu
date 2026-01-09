@@ -17,6 +17,9 @@ public class AppSettings
 
     public static string ColorGameFolder => BassFolder + "\\ColorGameFolder";
 
+    public static string LocalUserFolder=>BassFolder+"\\LocalUser";
+
+
     public string ToolsPosionFilePath => BassFolder + "\\ToolsPostion.json";
 
     private static readonly string SettingsFilePath = Path.Combine(BassFolder, "System.json");
@@ -68,11 +71,7 @@ public class AppSettings
         File.WriteAllText(SettingsFilePath, json);
     }
 #nullable enable
-    public static string? Token
-    {
-        get => Read();
-        set => Write(value);
-    }
+   
 
     public static string? WallpaperType
     {
@@ -81,12 +80,6 @@ public class AppSettings
     }
 
     public static string? AreaCounterPostion
-    {
-        get => Read();
-        set => Write(value);
-    }
-
-    public static string? TokenId
     {
         get => Read();
         set => Write(value);

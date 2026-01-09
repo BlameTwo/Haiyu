@@ -70,62 +70,38 @@
                         Command="{x:Bind ViewModel.LoginCommand}"
                         CornerRadius="5"
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        ToolTipService.ToolTip="登录"
-                        Visibility="{x:Bind ViewModel.LoginBthVisibility, Mode=OneWay}">
+                        ToolTipService.ToolTip="登录">
+
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"
                             FontSize="14"
-                            Glyph="&#xE631;" />
+                            Glyph="&#xE710;" />
                     </Button>
-                    <ComboBox
-                        Margin="10,0,0,0"
-                        Padding="10,5"
+                    <Button
+                        Margin="5,0,0,0"
                         VerticalAlignment="Center"
-                        CornerRadius="10 3 10 3"
-                        ItemsSource="{x:Bind ViewModel.Roles, Mode=OneWay}"
-                        SelectedItem="{x:Bind ViewModel.SelectRoles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        SizeChanged="ComboBox_SizeChanged"
-                        Style="{ThemeResource AcrylicComboBoxStyle}"
-                        ToolTipService.ToolTip="选择角色"
-                        Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate x:DataType="wrapper:GameRoilDataWrapper">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Border CornerRadius="5">
-                                        <Image
-                                            Width="25"
-                                            Height="25"
-                                            Source="{x:Bind GameHeadUrl}" />
-                                    </Border>
-                                    <Grid
-                                        Grid.Column="1"
-                                        Margin="10,0,0,0"
-                                        VerticalAlignment="Center">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{x:Bind RoleName}" />
-                                        <TextBlock
-                                            Grid.Column="1"
-                                            VerticalAlignment="Center"
-                                            FontSize="10">
-                                            <Run Text="-" />
-                                            <Run Text="{x:Bind ServerName}" />
-                                        </TextBlock>
-                                    </Grid>
-                                </Grid>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
+                        Command="{x:Bind ViewModel.OpenCommunityCommand}"
+                        CornerRadius="5"
+                        Style="{ThemeResource DefaultAcrylicButtonStyle}"
+                        ToolTipService.ToolTip="添加账户">
+                        <FontIcon
+                            Margin="0,-5,0,0"
+                            FontFamily="Segoe UI Emoji"
+                            FontSize="14"
+                            Glyph="&#x1F9F0;" />
+                    </Button>
+                    <Button
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Command="{x:Bind ViewModel.ShowOpenLocalUserCommand}"
+                        CornerRadius="5"
+                        Style="{ThemeResource DefaultAcrylicButtonStyle}"
+                        ToolTipService.ToolTip="本地账号管理">
+                        <FontIcon
+                            FontFamily="Segoe Fluent Icons"
+                            FontSize="14"
+                            Glyph="&#xEC7A;" />
+                    </Button>
                     <Button
                         Margin="5,0,0,0"
                         Padding="8"
@@ -150,12 +126,12 @@
                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
                         <Button.Flyout>
                             <MenuFlyout Placement="Bottom">
-                                <MenuFlyoutItem Command="{x:Bind ViewModel.OpenSignWindowCommand}" Text="签到">
+                                <!--<MenuFlyoutItem Command="{x:Bind ViewModel.OpenSignWindowCommand}" Text="签到">
 
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE929;" />
                                     </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
+                                </MenuFlyoutItem>-->
                                 <MenuFlyoutSeparator />
                                 <MenuFlyoutItem Command="{x:Bind ViewModel.OpenScreenCaptureCommand}" Text="扫描屏幕登录游戏">
                                     <MenuFlyoutItem.Icon>

@@ -1,4 +1,5 @@
 ﻿using Haiyu.Services.DialogServices;
+using Waves.Core.Helpers;
 
 namespace Haiyu.ViewModel.DialogViewModels;
 
@@ -10,14 +11,16 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
         IAppContext<App> appContext,
         IViewFactorys viewFactorys,
         IKuroClient wavesClient,
-        [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager
+        [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
+        IKuroAccountService kuroAccountService
     )
         : base(dialogManager)
     {
         AppContext = appContext;
         ViewFactorys = viewFactorys;
         WavesClient = wavesClient;
-
+        KuroAccountService = kuroAccountService;
+        this.IdV2 = HardwareIdGenerator.GenerateUniqueId();
         RegisterMessanger();
     }
 
@@ -25,6 +28,8 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
     {
         this.Messenger.Register<GeeSuccessMessanger>(this, GeeSuccessMethod);
     }
+
+    public string IdV2 { get; private set; }
 
     [ObservableProperty]
     public partial Visibility PhoneVisibility { get; set; }
@@ -55,6 +60,8 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
     public IViewFactorys ViewFactorys { get; }
     public IKuroClient WavesClient { get; }
 
+    public IKuroAccountService KuroAccountService { get; }
+
     private async void GeeSuccessMethod(object recipient, GeeSuccessMessanger message)
     {
         if (message.Type == GeetType.Login)
@@ -62,7 +69,7 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
             this.GeetValue = message.Result;
             if (string.IsNullOrWhiteSpace(GeetValue))
                 return;
-            var sendSMS = await WavesClient.SendSMSAsync(Phone, GeetValue);
+            var sendSMS = await WavesClient.SendSMSAsync(Phone, GeetValue,IdV2);
             if (sendSMS == null)
             {
                 TipMessage = "验证失败！";
@@ -79,7 +86,7 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
             }
             else
             {
-                TipMessage = "请再次点击获取验证码";
+                TipMessage = "";
             }
         }
     }
@@ -113,25 +120,28 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
     {
         if (_loginType == "Phone")
         {
-            var login = await WavesClient.LoginAsync(mobile: Phone, code: Code);
+            var login = await WavesClient.LoginAsync(mobile: Phone, code: Code,IdV2);
             if (!login.Success)
             {
                 TipMessage = login.Msg;
                 await Task.Delay(2000);
                 return;
             }
-            AppSettings.Token = login.Data.Token;
-            AppSettings.TokenId = login.Data.UserId;
             AppSettings.TokenDid = "";
+            // 多账号代码
+            LocalAccount account = new LocalAccount();
+            account.Token = login.Data.Token;
+            account.TokenId = login.Data.UserId;
+            account.TokenDid = IdV2;
+            await KuroAccountService.SaveUserAsync(account);
             WeakReferenceMessenger.Default.Send(
                 new LoginMessanger(login.Success, login.Data.Token, long.Parse(login.Data.UserId))
             );
+            
             DialogManager.CloseDialog();
         }
         else
         {
-            AppSettings.Token = this.Token;
-            AppSettings.TokenId = this.TokenId;
             AppSettings.TokenDid = this.TokenDid;
             var mine = await WavesClient.GetWavesMineAsync(long.Parse(this.TokenId));
             WeakReferenceMessenger.Default.Send(

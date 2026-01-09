@@ -145,7 +145,7 @@ public sealed partial class SettingViewModel : ViewModelBase
         if (await WavesClient.IsLoginAsync())
         {
             DataPackage package = new();
-            package.SetText(WavesClient.Token);
+            package.SetText("NULL");
             Clipboard.SetContent(package);
         }
     }

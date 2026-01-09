@@ -96,6 +96,8 @@ public abstract class DialogManager : IDialogManager
     public async Task<CloseWindowResult> ShowCloseWindowResult() =>
         await GetDialogResultAsync<CloseDialog, CloseWindowResult>(null);
 
+    public async Task ShowLocalUserManagerAsync()=>
+        await ShowDialogAsync<LocalUserManagerDialog>();
 
 
     public async Task<QRScanResult> GetQRLoginResultAsync() => await GetDialogResultAsync<QRLoginDialog, QRScanResult>(null);

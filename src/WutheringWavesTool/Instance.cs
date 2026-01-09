@@ -66,6 +66,7 @@ public static class InstanceBuilderExtensions
                     .AddSingleton<ShellViewModel>()
                     .AddSingleton<OOBEPage>()
                     .AddSingleton<OOBEViewModel>()
+                    .AddTransient<CommunityPage>()
                     .AddTransient<PlayerRecordPage>()
                     .AddTransient<PlayerRecordViewModel>()
                     .AddTransient<SettingViewModel>()
@@ -129,9 +130,11 @@ public static class InstanceBuilderExtensions
                     .AddTransient<QrLoginViewModel>()
                     .AddTransient<UpdateGameDialog>()
                     .AddTransient<UpdateGameViewModel>()
-                    #endregion
+                    .AddTransient<LocalUserManagerDialog>()
+                    .AddTransient<LocalUserManagerViewModel>()
                 #endregion
-                    #region More
+                #endregion
+                #region More
                     .AddTransient<IPageService, PageService>()
                     .AddTransient<IPickersService, PickersService>()
                     .AddSingleton<ITipShow, TipShow>()
@@ -148,6 +151,7 @@ public static class InstanceBuilderExtensions
                     .AddSingleton<IGameWikiClient, GameWikiClient>()
                     .AddTransient<IViewFactorys, ViewFactorys>()
                     .AddSingleton<IThemeService, ThemeService>()
+                    .AddSingleton<IKuroAccountService,KuroAccountService>()
                     .AddTransient<ILauncherTaskService, LauncherTaskService>()
                     .AddSingleton<CloudConfigManager>(
                         (s) =>

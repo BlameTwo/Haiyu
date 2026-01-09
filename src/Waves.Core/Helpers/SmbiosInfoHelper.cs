@@ -67,6 +67,12 @@ public class HardwareIdGenerator
         public uint SerialNumberOffset;
     }
 
+    /// <summary>
+    /// 生成基于本机的唯一硬件ID V1版本
+    /// </summary>
+    /// <param name="length"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static string GenerateUniqueId()
     {
         try
@@ -98,6 +104,39 @@ public class HardwareIdGenerator
         {
             return "UNKNOWN_HARDWARE_ID";
         }
+    }
+
+    /// <summary>
+    /// 生成模拟硬件ID V2版本
+    /// </summary>
+    /// <param name="length"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public static string GenerateUniqueIdV2(int length = 40)
+    {
+        if (length <= 0 || length % 2 != 0)
+        {
+            throw new ArgumentException("字符串长度必须是正偶数", nameof(length));
+        }
+        int byteCount = length / 2;
+        byte[] randomBytes = new byte[byteCount];
+        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(randomBytes);
+        }
+        long timeTicks = DateTime.UtcNow.Ticks;
+        byte[] timeBytes = BitConverter.GetBytes(timeTicks);
+
+        for (int i = 0; i < Math.Min(timeBytes.Length, randomBytes.Length); i++)
+        {
+            randomBytes[i] ^= timeBytes[i];
+        }
+        StringBuilder sb = new StringBuilder(length);
+        foreach (byte b in randomBytes)
+        {
+            sb.Append(b.ToString("X2"));
+        }
+        return sb.ToString().ToUpper();
     }
 
     private static string GetHardDiskSerial()

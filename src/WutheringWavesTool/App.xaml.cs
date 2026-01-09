@@ -17,17 +17,11 @@ public partial class App : ClientApplication
     private const int PROCESS_PER_MONITOR_DPI_AWARE = 2;
     private AppInstance mainInstance;
 
-    public static string AppVersion => "1.2.18-preview1";
+    public static string AppVersion => "1.2.18-preview2";
     public App()
     {
         this.UnhandledException += App_UnhandledException;
-        Directory.CreateDirectory(Waves.Core.AppSettings.BassFolder);
-        Directory.CreateDirectory(Waves.Core.AppSettings.RecordFolder);
-        Directory.CreateDirectory(Waves.Core.AppSettings.ColorGameFolder);
-        Directory.CreateDirectory(Waves.Core.AppSettings.WrallpaperFolder);
-        Directory.CreateDirectory(Waves.Core.AppSettings.ScreenCaptures);
-        Directory.CreateDirectory(Path.GetDirectoryName(AppSettings.LogPath));
-        Directory.CreateDirectory(AppSettings.CloudFolderPath);
+        CreateFolder();
         if (AppSettings.WallpaperType == null)
         {
             AppSettings.WallpaperType = "Video";
@@ -49,6 +43,18 @@ public partial class App : ClientApplication
         if (e.Kind == Microsoft.Windows.AppLifecycle.ExtendedActivationKind.File) { }
     }
 
+    void CreateFolder()
+    {
+
+        Directory.CreateDirectory(Waves.Core.AppSettings.BassFolder);
+        Directory.CreateDirectory(Waves.Core.AppSettings.RecordFolder);
+        Directory.CreateDirectory(Waves.Core.AppSettings.ColorGameFolder);
+        Directory.CreateDirectory(Waves.Core.AppSettings.WrallpaperFolder);
+        Directory.CreateDirectory(Waves.Core.AppSettings.ScreenCaptures);
+        Directory.CreateDirectory(Waves.Core.AppSettings.LocalUserFolder);
+        Directory.CreateDirectory(Path.GetDirectoryName(AppSettings.LogPath));
+        Directory.CreateDirectory(AppSettings.CloudFolderPath);
+    }
     private void App_UnhandledException(
         object sender,
         Microsoft.UI.Xaml.UnhandledExceptionEventArgs e

@@ -83,36 +83,15 @@ public sealed partial class ShellViewModel : ViewModelBase
     public Border BackControl { get; internal set; }
 
     [ObservableProperty]
-    public partial ObservableCollection<GameRoilDataWrapper> Roles { get; set; }
-
-    [ObservableProperty]
     public partial CollectionViewSource RoleViewSource { get; set; }
 
-    [ObservableProperty]
-    public partial GameRoilDataWrapper SelectRoles { get; set; }
 
     private void RegisterMessanger()
     {
         this.Messenger.Register<LoginMessanger>(this, LoginMessangerMethod);
     }
 
-    partial void OnSelectRolesChanged(GameRoilDataWrapper value)
-    {
-        if (value == null)
-            return;
-        this.WavesClient.CurrentRoil = value.Item;
-        if (value.Type == Waves.Core.Models.Enums.GameType.Waves)
-        {
-            this.WavesCommunitySelectItemVisiblity = Visibility.Visible;
-            this.PunishCommunitySelectItemVisiblity = Visibility.Collapsed;
-        }
-        else if (value.Type == Waves.Core.Models.Enums.GameType.Punish)
-        {
-            this.WavesCommunitySelectItemVisiblity = Visibility.Collapsed;
-            this.PunishCommunitySelectItemVisiblity = Visibility.Visible;
-        }
-        WeakReferenceMessenger.Default.Send<SwitchRoleMessager>(new SwitchRoleMessager(value));
-    }
+   
 
     [RelayCommand]
     void OpenMain()
@@ -146,6 +125,12 @@ public sealed partial class ShellViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    async Task ShowOpenLocalUser()
+    {
+        await DialogManager.ShowLocalUserManagerAsync();
+    }
+
+    [RelayCommand]
     void BackPage()
     {
         if (HomeNavigationService.CanGoBack)
@@ -176,16 +161,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         Environment.Exit(0);
     }
 
-    [RelayCommand]
-    void OpenCommunity()
-    {
-        this.HomeNavigationService.NavigationTo<CommunityViewModel>(
-            "Community",
-            new EntranceNavigationTransitionInfo()
-        );
-
-        ServerName = "库街区";
-    }
 
     [RelayCommand]
     void OpenSetting()
@@ -245,20 +220,6 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     public async Task RefreshRoleLists()
     {
-        var gamers = await WavesClient.GetGamerAsync(GameType.Waves,this.CTS.Token);
-        var punishs = await WavesClient.GetGamerAsync(GameType.Punish,this.CTS.Token);
-        if (gamers == null || gamers.Code != 200 || punishs == null || punishs.Code != 200)
-            return;
-        this.Roles = gamers
-            .Data.FormatRoil(Waves.Core.Models.Enums.GameType.Waves)
-            .Concat(punishs.Data.FormatRoil(Waves.Core.Models.Enums.GameType.Punish))
-            .ToObservableCollection();
-        if (Roles != null)
-        {
-            if (Roles.Count > 0)
-                this.SelectRoles = Roles[0];
-        }
-        this.GamerRoleListsVisibility = Visibility.Visible;
         this.AppContext.MainTitle.UpDate();
     }
 
@@ -301,29 +262,17 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     async Task UnLogin()
     {
-        AppSettings.Token = "";
-        AppSettings.TokenId = "";
-        WeakReferenceMessenger.Default.Send<UnLoginMessager>();
-        this.GamerRoleListsVisibility = Visibility.Collapsed;
-        
-
-        await Loaded();
-    }
-
-    [RelayCommand]
-    void OpenSignWindow()
-    {
-        var win = ViewFactorys.ShowSignWindow(this.SelectRoles.Item);
-        win.Manager.MaxHeight = 350;
-        win.Manager.MaxWidth = 350;
-        (win.AppWindow.Presenter as OverlappedPresenter)!.IsMaximizable = false;
-        (win.AppWindow.Presenter as OverlappedPresenter)!.IsMinimizable = false;
-        win.AppWindowApp.Show();
+       await Task.CompletedTask;
     }
 
     [RelayCommand]
     void OpenCounter(RoutedEventArgs args) { }
 
+    [RelayCommand]
+    void OpenCommunity()
+    {
+        this.ViewFactorys.ShowCommunityWindow().AppWindow.Show();
+    }
     private void ComputerWin_Closed(object sender, WindowEventArgs args) { }
 
     internal void SetSelectItem(Type sourcePageType)

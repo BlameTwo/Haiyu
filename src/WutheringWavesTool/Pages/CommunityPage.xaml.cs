@@ -1,6 +1,7 @@
-﻿namespace Haiyu.Pages;
+﻿
+namespace Haiyu.Pages;
 
-public sealed partial class CommunityPage : Page, IPage, IDisposable
+public sealed partial class CommunityPage : Page, IPage, IDisposable,IWindowPage
 {
     private bool disposedValue;
 
@@ -92,5 +93,27 @@ public sealed partial class CommunityPage : Page, IPage, IDisposable
     {
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
+    }
+
+    public void SetWindow(Window window)
+    {
+        this.ViewModel.Window = window;
+        this.ViewModel.Window.Closed+=Window_Closed;
+    }
+
+    private void Window_Closed(object sender, WindowEventArgs args)
+    {
+        this.ViewModel.Window.Closed -= Window_Closed;
+        if (this.frame.Content is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
+        this.Dispose();
+        GC.Collect();
+    }
+
+    public void SetData(object value)
+    {
+
     }
 }

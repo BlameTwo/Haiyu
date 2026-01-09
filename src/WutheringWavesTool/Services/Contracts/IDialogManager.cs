@@ -12,7 +12,7 @@ public interface IDialogManager
     public Task<Result> GetDialogResultAsync<T, Result>(object? data)
         where T : ContentDialog, IResultDialog<Result>, new()
         where Result : new();
-
+    public Task ShowLocalUserManagerAsync();
     public Task<SelectDownloadFolderResult> ShowSelectGameFolderAsync(Type type);
     public Task<SelectDownloadFolderResult> ShowSelectDownloadFolderAsync(Type type);
     public Task<CloseWindowResult> ShowCloseWindowResult();
