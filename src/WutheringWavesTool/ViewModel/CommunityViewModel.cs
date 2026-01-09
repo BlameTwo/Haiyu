@@ -41,7 +41,7 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
 
     private void RegisterMessanger()
     {
-        this.Messenger.Register<LoginMessanger>(this, LoginMessangerMethod);
+        this.Messenger.Register<SelectUserMessanger>(this, LoginMessangerMethod);
         this.Messenger.Register<UnLoginMessager>(this, UnLoginMethod);
         this.Messenger.Register<ShowRoleData>(this, ShowRoleMethod);
     }
@@ -111,7 +111,7 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
         ViewFactorys.ShowRolesDataWindow(message).Activate();
     }
 
-    private async void LoginMessangerMethod(object recipient, LoginMessanger message)
+    private async void LoginMessangerMethod(object recipient, SelectUserMessanger message)
     {
         await LoadedAsync();
     }

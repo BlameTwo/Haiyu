@@ -40,7 +40,7 @@
             Background="Transparent"
             IsIndeterminate="{x:Bind ViewModel.ProcessAction, Mode=OneWay}" />
         <ComboBox
-            Margin="10,0,0,0"
+            Margin="10,10,0,0"
             Padding="10,5"
             CornerRadius="10 3 10 3"
             ItemsSource="{x:Bind ViewModel.Servers, Mode=OneWay}"

@@ -64,97 +64,108 @@
                             Source="ms-appx:///Assets/appLogo.ico"
                             Stretch="UniformToFill" />
                     </Button>
-                    <Button
-                        Margin="10,0,0,0"
-                        VerticalAlignment="Center"
-                        Command="{x:Bind ViewModel.LoginCommand}"
-                        CornerRadius="5"
-                        Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        ToolTipService.ToolTip="登录">
 
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="14"
-                            Glyph="&#xE710;" />
-                    </Button>
-                    <Button
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Command="{x:Bind ViewModel.OpenCommunityCommand}"
+                    <StackPanel
+                        Margin="5,5,0,0"
+                        Padding="5"
+                        Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource AccentAAFillColorDisabled}"
+                        BorderThickness="1"
                         CornerRadius="5"
-                        Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        ToolTipService.ToolTip="添加账户">
-                        <FontIcon
-                            Margin="0,-5,0,0"
-                            FontFamily="Segoe UI Emoji"
-                            FontSize="14"
-                            Glyph="&#x1F9F0;" />
-                    </Button>
-                    <Button
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Command="{x:Bind ViewModel.ShowOpenLocalUserCommand}"
-                        CornerRadius="5"
-                        Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        ToolTipService.ToolTip="本地账号管理">
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="14"
-                            Glyph="&#xEC7A;" />
-                    </Button>
-                    <Button
-                        Margin="5,0,0,0"
-                        Padding="8"
-                        VerticalAlignment="Center"
-                        Command="{x:Bind ViewModel.RefreshRoleListsCommand}"
-                        CornerRadius="5"
-                        Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
-                        <FontIcon
-                            FontFamily="Segoe Fluent Icons"
-                            FontSize="18"
-                            Glyph="&#xE72C;" />
-                    </Button>
-                    <Button
-                        Margin="5,0,0,0"
-                        Padding="7"
-                        VerticalAlignment="Center"
-                        CornerRadius="3"
-                        Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        ToolTipService.ToolTip="工具箱"
-                        Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
-                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
-                        <Button.Flyout>
-                            <MenuFlyout Placement="Bottom">
-                                <!--<MenuFlyoutItem Command="{x:Bind ViewModel.OpenSignWindowCommand}" Text="签到">
+                        Orientation="Horizontal">
+                        <StackPanel.ChildrenTransitions>
+                            <TransitionCollection>
+                                <RepositionThemeTransition />
+                            </TransitionCollection>
+                        </StackPanel.ChildrenTransitions>
+                        <Button
+                            Width="40"
+                            Height="40"
+                            Padding="5"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            CornerRadius="48"
+                            Style="{ThemeResource TransparentButtonStyle}">
+                            <ui:ImageEx CornerRadius="40">
+                                <ui:ImageEx.Source>
+                                    <BitmapImage UriSource="{x:Bind ViewModel.HeaderCover, Mode=OneWay}" />
+                                </ui:ImageEx.Source>
+                            </ui:ImageEx>
 
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE929;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>-->
-                                <MenuFlyoutSeparator />
-                                <MenuFlyoutItem Command="{x:Bind ViewModel.OpenScreenCaptureCommand}" Text="扫描屏幕登录游戏">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xED14;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                                <MenuFlyoutItem Command="{x:Bind ViewModel.ShowDeviceInfoCommand}" Text="授权管理">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8CC;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                                <MenuFlyoutSeparator />
-                                <MenuFlyoutItem
-                                    Command="{x:Bind ViewModel.UnLoginCommand}"
-                                    Foreground="{ThemeResource SystemFillColorCriticalBrush}"
-                                    Text="退出登录">
-                                    <MenuFlyoutItem.Icon>
-                                        <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF3B1;" />
-                                    </MenuFlyoutItem.Icon>
-                                </MenuFlyoutItem>
-                            </MenuFlyout>
-                        </Button.Flyout>
-                    </Button>
+                        </Button>
+                        <Button
+                            Width="40"
+                            VerticalAlignment="Center"
+                            Command="{x:Bind ViewModel.LoginCommand}"
+                            CornerRadius="5"
+                            Style="{ThemeResource TransparentButtonStyle}"
+                            ToolTipService.ToolTip="添加账号">
+
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="14"
+                                Glyph="&#xE710;" />
+                        </Button>
+                        <Button
+                            Width="40"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Command="{x:Bind ViewModel.OpenCommunityCommand}"
+                            CornerRadius="5"
+                            Style="{ThemeResource TransparentButtonStyle}"
+                            ToolTipService.ToolTip="数据面板">
+                            <FontIcon
+                                Margin="0,-5,0,0"
+                                FontFamily="Segoe UI Emoji"
+                                FontSize="14"
+                                Glyph="&#x1F9F0;" />
+                        </Button>
+                        <Button
+                            Width="40"
+                            Padding="0"
+                            Command="{x:Bind ViewModel.ShowOpenLocalUserCommand}"
+                            CornerRadius="5"
+                            Style="{ThemeResource TransparentButtonStyle}"
+                            ToolTipService.ToolTip="本地账号管理">
+
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="14"
+                                Glyph="&#xEC7A;" />
+                        </Button>
+                        <Button
+                            CornerRadius="5"
+                            Style="{ThemeResource TransparentButtonStyle}"
+                            ToolTipService.ToolTip="工具箱"
+                            Visibility="{x:Bind ViewModel.GamerRoleListsVisibility, Mode=OneWay}">
+                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE712;" />
+                            <Button.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem Command="{x:Bind ViewModel.OpenScreenCaptureCommand}" Text="扫描屏幕登录游戏">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xED14;" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutItem Command="{x:Bind ViewModel.ShowDeviceInfoCommand}" Text="授权管理">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE8CC;" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem
+                                        Command="{x:Bind ViewModel.UnLoginCommand}"
+                                        Foreground="{ThemeResource SystemFillColorCriticalBrush}"
+                                        Text="退出登录">
+                                        <MenuFlyoutItem.Icon>
+                                            <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xF3B1;" />
+                                        </MenuFlyoutItem.Icon>
+                                    </MenuFlyoutItem>
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+                    </StackPanel>
+
                 </StackPanel>
             </ui:TitleBar.Header>
             <ui:TitleBar.Footer>
@@ -204,7 +215,8 @@
                         Command="{x:Bind ViewModel.MinCommand}"
                         CornerRadius="40"
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        ToolTipService.ToolTip="最小化">
+                        ToolTipService.ToolTip="最小化"
+                        Visibility="Visible">
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"
                             FontSize="12"
@@ -217,7 +229,8 @@
                         Command="{x:Bind ViewModel.CloseWindowCommand}"
                         CornerRadius="40"
                         Style="{ThemeResource DefaultAcrylicButtonStyle}"
-                        ToolTipService.ToolTip="关闭">
+                        ToolTipService.ToolTip="关闭"
+                        Visibility="Visible">
 
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"

@@ -77,27 +77,20 @@ public class HardwareIdGenerator
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(AppSettings.TokenDid))
+            string diskSerial = GetHardDiskSerial();
+            string cpuId = GetCpuId();
+
+            string combined = $"{diskSerial}|{cpuId}";
+
+            using (var sha1 = SHA1.Create())
             {
-                string diskSerial = GetHardDiskSerial();
-                string cpuId = GetCpuId();
-
-                string combined = $"{diskSerial}|{cpuId}";
-
-                using (var sha1 = SHA1.Create())
+                byte[] hashBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(combined));
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in hashBytes)
                 {
-                    byte[] hashBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(combined));
-                    StringBuilder sb = new StringBuilder();
-                    foreach (byte b in hashBytes)
-                    {
-                        sb.Append(b.ToString("X2"));
-                    }
-                    return sb.ToString();
+                    sb.Append(b.ToString("X2"));
                 }
-            }
-            else
-            {
-                return AppSettings.TokenDid;
+                return sb.ToString();
             }
         }
         catch

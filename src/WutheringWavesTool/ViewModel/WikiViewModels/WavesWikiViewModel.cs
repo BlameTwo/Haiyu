@@ -11,10 +11,10 @@ public partial class WavesWikiViewModel : WikiViewModelBase
 {
     public WavesWikiViewModel()
     {
-        this.Messenger.Register<LoginMessanger>(this, LoginMessangerMethod);
+        this.Messenger.Register<SelectUserMessanger>(this, LoginMessangerMethod);
     }
 
-    private async void LoginMessangerMethod(object recipient, LoginMessanger message)
+    private async void LoginMessangerMethod(object recipient, SelectUserMessanger message)
     {
         await Loaded();
     }

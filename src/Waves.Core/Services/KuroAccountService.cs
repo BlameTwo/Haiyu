@@ -1,6 +1,9 @@
-﻿using System.Buffers;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using MemoryPack;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using System.Buffers;
+using Waves.Api.Models.Messanger;
 using Waves.Core.Contracts;
 using Waves.Core.Models;
 
@@ -15,11 +18,11 @@ public class KuroAccountService : IKuroAccountService
 
     const int BufferSize = 1024 * 1024;
 
-    readonly Dictionary<string,Tuple<string,LocalAccount>> _cache = new();
+    readonly Dictionary<string, Tuple<string, LocalAccount>> _cache = new();
 
     public LoggerService LoggerService { get; }
 
-    public LocalAccount? Current { get; private  set; }
+    public LocalAccount? Current { get; private set; }
 
     public async Task<LocalAccount?> GetUserAsync(string userId)
     {
@@ -31,14 +34,13 @@ public class KuroAccountService : IKuroAccountService
         }
         else
         {
-            if(_cache.TryGetValue(userId,out var value))
+            if (_cache.TryGetValue(userId, out var value))
             {
                 return value.Item2;
             }
             LoggerService.WriteError("未找到本地账号");
             return null;
         }
-
     }
 
     public async Task<List<LocalAccount>?> GetUsersAsync()
@@ -67,11 +69,11 @@ public class KuroAccountService : IKuroAccountService
                         buffer.AsSpan(),
                         new MemoryPackSerializerOptions() { StringEncoding = StringEncoding.Utf8 }
                     );
-                    if(model == null)
+                    if (model == null)
                     {
                         continue;
                     }
-                    if (Current != null&& model.TokenId == Current.TokenId)
+                    if (Current != null && model.TokenId == Current.TokenId)
                     {
                         model.IsSelect = true;
                     }
@@ -79,7 +81,7 @@ public class KuroAccountService : IKuroAccountService
                     {
                         model.IsSelect = false;
                     }
-                    if(model != null)
+                    if (model != null)
                     {
                         values.Add(model);
                         _cache.Add(model.TokenId, Tuple.Create(item.FullName, model));
@@ -103,18 +105,20 @@ public class KuroAccountService : IKuroAccountService
         try
         {
             await GetUsersAsync();
-            if (_cache.TryGetValue(localAccount.TokenId,out var tuple))
+            if (_cache.TryGetValue(localAccount.TokenId, out var tuple))
             {
                 File.Delete(tuple.Item1);
             }
-            using (var fs = new FileStream(
-                Path.Combine(AppSettings.LocalUserFolder, $"{localAccount.TokenId}.dat"),
-                FileMode.Create,
-                FileAccess.Write,
-                FileShare.Read,
-                4096,
-                true
-            ))
+            using (
+                var fs = new FileStream(
+                    Path.Combine(AppSettings.LocalUserFolder, $"{localAccount.TokenId}.dat"),
+                    FileMode.Create,
+                    FileAccess.Write,
+                    FileShare.Read,
+                    4096,
+                    true
+                )
+            )
             {
                 await MemoryPackSerializer.SerializeAsync(
                     fs,
@@ -136,7 +140,7 @@ public class KuroAccountService : IKuroAccountService
         try
         {
             await GetUsersAsync();
-            if (_cache.TryGetValue(userId,out var tuple))
+            if (_cache.TryGetValue(userId, out var tuple))
             {
                 File.Delete(tuple.Item1);
             }
@@ -153,12 +157,44 @@ public class KuroAccountService : IKuroAccountService
     {
         if (this._cache.TryGetValue(userId, out var value))
         {
+            AppSettings.LastSelectUser = value.Item2.TokenId;
             this.Current = value.Item2;
+
+            WeakReferenceMessenger.Default.Send(
+                new SelectUserMessanger(true)
+            );
         }
     }
 
     public void SetCurrentUser(LocalAccount localAccount)
     {
         this.Current = localAccount;
+        AppSettings.LastSelectUser = localAccount.TokenId;
+        WeakReferenceMessenger.Default.Send(
+            new SelectUserMessanger(true)
+        );
+    }
+
+    public async Task SetAutoUser()
+    {
+        await GetUsersAsync();
+        if (AppSettings.LastSelectUser == null)
+        {
+            if (_cache == null)
+            {
+                // 无用户
+                return;
+            }
+            return;
+        }
+        else
+        {
+            this.SetCurrentUser(
+               _cache
+                   .Where(x => x.Value.Item2.TokenId == AppSettings.LastSelectUser)
+                   .FirstOrDefault()
+                   .Value.Item2
+           );
+        }
     }
 }

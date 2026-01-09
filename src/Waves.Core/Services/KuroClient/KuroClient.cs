@@ -270,7 +270,7 @@ public sealed partial class KuroClient : IKuroClient
         {
             return false;
         }
-        if (long.TryParse(AccountService.Current.Token, out var result))
+        if (long.TryParse(AccountService.Current.TokenId, out var result))
         {
             var mine = await GetWavesMineAsync(
                 result,

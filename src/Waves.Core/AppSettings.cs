@@ -90,6 +90,12 @@ public class AppSettings
         get => Read();
         set => Write(value);
     }
+    
+    public static string? LastSelectUser
+    {
+        get => Read();
+        set=>Write(value);
+    }
 
     public static string? WallpaperPath
     {
@@ -143,12 +149,6 @@ public class AppSettings
         set => Write(value);
     }
 
-
-    public static string? TokenDid
-    {
-        get => Read();
-        set => Write(value);
-    }
     public static string? RpcToken
     {
         get => Read();

@@ -127,38 +127,45 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
                 await Task.Delay(2000);
                 return;
             }
-            AppSettings.TokenDid = "";
             // 多账号代码
             LocalAccount account = new LocalAccount();
             account.Token = login.Data.Token;
             account.TokenId = login.Data.UserId;
             account.TokenDid = IdV2;
             await KuroAccountService.SaveUserAsync(account);
-            WeakReferenceMessenger.Default.Send(
-                new LoginMessanger(login.Success, login.Data.Token, long.Parse(login.Data.UserId))
-            );
-            
+            this.KuroAccountService.SetCurrentUser(account);
             DialogManager.CloseDialog();
         }
         else
         {
-            AppSettings.TokenDid = this.TokenDid;
-            var mine = await WavesClient.GetWavesMineAsync(long.Parse(this.TokenId));
-            WeakReferenceMessenger.Default.Send(
-                new LoginMessanger(true, Token, long.Parse(TokenId))
-            );
-            if (mine != null && mine.Code == 200)
+            if(long.TryParse(TokenId,out var _tokenID)) 
             {
-                DialogManager.CloseDialog();
-            }
-            else if (mine != null)
-            {
-                TipMessage = mine.Msg;
+                var mine = await WavesClient.GetWavesMineAsync(_tokenID, TokenDid, Token);
+                if (mine != null && mine.Code == 200)
+                {
+                    LocalAccount account = new LocalAccount();
+                    account.Token = Token;
+                    account.TokenId = TokenId;
+                    account.TokenDid = TokenDid;
+                    await KuroAccountService.SaveUserAsync(account);
+                    this.KuroAccountService.SetCurrentUser(account);
+                    DialogManager.CloseDialog();
+                }
+                else if (mine != null)
+                {
+                    TipMessage = mine.Msg;
+                }
+                else
+                {
+                    TipMessage = "错误！请反馈开发者";
+                }
             }
             else
             {
-                TipMessage = "错误！请反馈开发者";
+                TipMessage = "TokenId格式错误！";
+                return;
             }
+            
         }
     }
 }

@@ -40,5 +40,6 @@ public interface IKuroAccountService
     /// </summary>
     /// <param name="localAccount"></param>
     public void SetCurrentUser(string userId);
-
+    public void SetCurrentUser(LocalAccount user);
+    Task SetAutoUser();
 }

@@ -23,7 +23,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         IViewFactorys viewFactorys,
         IKuroClient wavesClient,
         ILauncherTaskService launcherTaskService,
-        IWallpaperService wallpaperService
+        IWallpaperService wallpaperService,IKuroClient kuroClient
     )
     {
         HomeNavigationService = homeNavigationService;
@@ -35,6 +35,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         WavesClient = wavesClient;
         LauncherTaskService = launcherTaskService;
         WallpaperService = wallpaperService;
+        KuroClient = kuroClient;
         RegisterMessanger();
         SystemMenu = new NotifyIconMenu()
         {
@@ -58,7 +59,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     public IKuroClient WavesClient { get; }
     public ILauncherTaskService LauncherTaskService { get; }
     public IWallpaperService WallpaperService { get; }
-
+    public IKuroClient KuroClient { get; }
     [ObservableProperty]
     public partial string ServerName { get; set; }
 
@@ -83,12 +84,18 @@ public sealed partial class ShellViewModel : ViewModelBase
     public Border BackControl { get; internal set; }
 
     [ObservableProperty]
+    public partial string HeaderCover { get; set; } = "https://prod-alicdn-community.kurobbs.com/newHead/aki/yangyang.png?x-oss-process=image/resize,w_240,h_240";
+
+    [ObservableProperty]
+    public partial string HeaderUserName { get; set; }
+
+    [ObservableProperty]
     public partial CollectionViewSource RoleViewSource { get; set; }
 
 
     private void RegisterMessanger()
     {
-        this.Messenger.Register<LoginMessanger>(this, LoginMessangerMethod);
+        this.Messenger.Register<SelectUserMessanger>(this, LoginMessangerMethod);
     }
 
    
@@ -208,18 +215,37 @@ public sealed partial class ShellViewModel : ViewModelBase
         await DialogManager.ShowWebGameDialogAsync();
     }
 
-    private async void LoginMessangerMethod(object recipient, LoginMessanger message)
+    private async void LoginMessangerMethod(object recipient, SelectUserMessanger message)
     {
         this.LoginBthVisibility = Visibility.Collapsed;
         WavesCommunitySelectItemVisiblity = Visibility.Visible;
-        await RefreshRoleLists();
+        await RefreshHeaderUser();
         await Task.Delay(800);
         this.AppContext.MainTitle.UpDate();
     }
 
     [RelayCommand]
-    public async Task RefreshRoleLists()
+    public async Task RefreshHeaderUser()
     {
+        if (KuroClient.AccountService.Current == null)
+            return;
+        var current = KuroClient.AccountService.Current;
+        if(long.TryParse(current.TokenId,out var _id))
+        {
+            var result = await KuroClient.GetWavesMineAsync(_id, current.TokenId, current.Token, this.CTS.Token);
+            if(result == null)
+            {
+                TipShow.ShowMessage("检查一下你的网络", Symbol.Clear);
+                return;
+            }
+            if (!result.Success)
+            {
+                TipShow.ShowMessage(result.Msg, Symbol.Clear);
+                return;
+            }
+            HeaderUserName = result.Data.Mine.UserName;
+            HeaderCover = result.Data.Mine.HeadUrl;
+        }
         this.AppContext.MainTitle.UpDate();
     }
 
@@ -232,6 +258,7 @@ public sealed partial class ShellViewModel : ViewModelBase
             Logger.WriteError($"检查库洛CDN服务器失败！，地址为:{GameAPIConfig.BaseAddress[0]}");
             Environment.Exit(0);
         }
+        await KuroClient.AccountService.SetAutoUser();
         var result = await WavesClient.IsLoginAsync(this.CTS.Token);
         if (!result)
         {
@@ -244,12 +271,11 @@ public sealed partial class ShellViewModel : ViewModelBase
             this.LoginBthVisibility = Visibility.Collapsed;
             WavesCommunitySelectItemVisiblity = Visibility.Visible;
             this.GamerRoleListsVisibility = Visibility.Visible;
-            await this.RefreshRoleLists();
+            await this.RefreshHeaderUser();
         }
         this.AppContext.MainTitle.UpDate();
         WallpaperService.SetMediaForUrl(WallpaperShowType.Image, AppDomain.CurrentDomain.BaseDirectory+ "Assets\\background.png");
         OpenMain();
-        await LauncherTaskService.RunAsync(this.CTS.Token);
     }
 
     [RelayCommand]
@@ -273,7 +299,6 @@ public sealed partial class ShellViewModel : ViewModelBase
     {
         this.ViewFactorys.ShowCommunityWindow().AppWindow.Show();
     }
-    private void ComputerWin_Closed(object sender, WindowEventArgs args) { }
 
     internal void SetSelectItem(Type sourcePageType)
     {
