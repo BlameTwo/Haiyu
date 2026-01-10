@@ -144,6 +144,7 @@ public class KuroAccountService : IKuroAccountService
             {
                 File.Delete(tuple.Item1);
             }
+            await GetUsersAsync();
             return true;
         }
         catch (Exception ex)

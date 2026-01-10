@@ -54,6 +54,13 @@ public sealed partial class LocalUserManagerViewModel : DialogViewModelBase
             if (long.TryParse(item.TokenId, out var id))
             {
                 var value = await KuroClient.GetWavesMineAsync(id, item.TokenDid,item.Token,this.CTS.Token);
+                if (value == null)
+                    continue;
+                if(value.Success  == false)
+                {
+                    await KuroAccountService.DeleteUserAsync(item.TokenId);
+                    continue;
+                }
                 item.Cover = value.Data.Mine.HeadUrl;
                 item.DisplayName = value.Data.Mine.UserName;
                 item.Phone = value.Data.Mine.Mobile;
