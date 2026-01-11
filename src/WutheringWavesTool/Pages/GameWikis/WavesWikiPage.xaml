@@ -227,8 +227,10 @@
                             Margin="0,5,0,0"
                             Padding="5"
                             CornerRadius="4"
+                            HorizontalAlignment="Center" 
                             Orientation="Horizontal">
                             <Button Content="数据面板" Command="{x:Bind ViewModel.OpenDataCenterCommand}"/>
+                            <Button Margin="5 0 0 0" Content="游戏签到" Command="{x:Bind ViewModel.OpenGameSignCommand}"/>
                         </StackPanel>
                     </Grid>
                     <Grid

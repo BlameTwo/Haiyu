@@ -85,4 +85,8 @@ public class ViewFactorys : IViewFactorys
     public WindowModelBase ShowStartColorGame()
         => ShowWindowBase<StartColorFullGamePage>(null);
 
+    public WindowModelBase ShowWavesDataCenter(GameRoilDataItem item)
+    {
+        return this.ShowWindowBase<CommunityPage>(item);
+    }
 }

@@ -275,23 +275,7 @@
                             <ImageIcon Source="ms-appx:///Assets/GameIcons/pgr.ico" />
                         </NavigationViewItem.Icon>
                     </NavigationViewItem>
-                    <NavigationViewItem
-                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CommunityViewModel"
-                        Content="鸣潮数据"
-                        Visibility="{x:Bind ViewModel.WavesCommunitySelectItemVisiblity, Mode=OneWay}">
-                        <NavigationViewItem.Icon>
-                            <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F4E6;" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
-                    <NavigationViewItem
-                        property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CommunityViewModel"
-                        Content="战双数据"
-                        IsEnabled="False"
-                        Visibility="{x:Bind ViewModel.PunishCommunitySelectItemVisiblity, Mode=OneWay}">
-                        <NavigationViewItem.Icon>
-                            <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x1F4E6;" />
-                        </NavigationViewItem.Icon>
-                    </NavigationViewItem>
+                    
                     <NavigationViewItem property:NavigationItemClickHelper.NavigationKey="Haiyu.ViewModel.CloudGameViewModel" Content="云工具">
                         <NavigationViewItem.Icon>
                             <FontIcon FontFamily="Segoe UI Emoji" Glyph="&#x2601;" />

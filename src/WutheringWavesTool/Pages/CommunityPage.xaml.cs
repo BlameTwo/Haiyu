@@ -1,7 +1,8 @@
 ﻿
+
 namespace Haiyu.Pages;
 
-public sealed partial class CommunityPage : Page, IPage, IDisposable
+public sealed partial class CommunityPage : Page, IPage, IDisposable,IWindowPage
 {
     private bool disposedValue;
 
@@ -33,6 +34,7 @@ public sealed partial class CommunityPage : Page, IPage, IDisposable
     public Type PageType => typeof(CommunityPage);
 
     public CommunityViewModel ViewModel { get; private set; }
+    public Window Window { get; private set; }
 
     private void dataSelect_SelectionChanged(
         SelectorBar sender,
@@ -65,6 +67,22 @@ public sealed partial class CommunityPage : Page, IPage, IDisposable
 
     public void SetData(object value)
     {
+        if (value is GameRoilDataItem item)
+        {
+            this.ViewModel.Item = item;
+            this.title.Title = $"{item.RoleName}-{item.ServerName}";
+        }
+    }
 
+    public void SetWindow(Window window)
+    {
+        this.Window = window;
+        this.Window.AppWindow.Closing += AppWindow_Closing;
+    }
+
+    private void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
+    {
+        Dispose();
+        this.Window.AppWindow.Closing -= AppWindow_Closing;
     }
 }

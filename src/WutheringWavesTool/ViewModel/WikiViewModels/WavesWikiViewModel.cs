@@ -114,9 +114,23 @@ public partial class WavesWikiViewModel : WikiViewModelBase
     [RelayCommand]
     void OpenDataCenter()
     {
-        Instance.Host.Services.GetKeyedService<INavigationService>(nameof(HomeNavigationService))?.NavigationTo<CommunityViewModel>(
-                    this.SelectGamer,
-                    new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo());
+        //Instance.Host.Services.GetKeyedService<INavigationService>(nameof(HomeNavigationService))?.NavigationTo<CommunityViewModel>(
+        //            this.SelectGamer,
+        //            new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo());
+        var win = Instance.Host.Services.GetRequiredService<IViewFactorys>()!.ShowWavesDataCenter(this.SelectGamer);
+        win.ExtendsContentIntoTitleBar = true;
+        win.AppWindow.Show();
+    }
+
+    [RelayCommand]
+    void OpenGameSign()
+    {
+
+        var win = Instance.Host.Services.GetRequiredService<IViewFactorys>()!.ShowSignWindow(this.SelectGamer);
+        win.Manager.MaxHeight = 400;
+        win.Manager.MaxWidth = 400;
+        win.ExtendsContentIntoTitleBar = true;
+        win.AppWindow.Show();
     }
     async partial void OnSelectGamerChanged(GameRoilDataItem value)
     {
