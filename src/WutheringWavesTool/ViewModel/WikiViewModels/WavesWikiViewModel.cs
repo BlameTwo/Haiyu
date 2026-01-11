@@ -110,6 +110,14 @@ public partial class WavesWikiViewModel : WikiViewModelBase
             return [];
     }
 
+
+    [RelayCommand]
+    void OpenDataCenter()
+    {
+        Instance.Host.Services.GetKeyedService<INavigationService>(nameof(HomeNavigationService))?.NavigationTo<CommunityViewModel>(
+                    this.SelectGamer,
+                    new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo());
+    }
     async partial void OnSelectGamerChanged(GameRoilDataItem value)
     {
         if (value == null)

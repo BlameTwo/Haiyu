@@ -94,7 +94,11 @@
                                     Margin="0,8,0,0"
                                     VerticalAlignment="Stretch"
                                     CornerRadius="5">
-                                    <ui:ImageEx Source="{x:Bind RoleIconUrl}" Stretch="Uniform" />
+                                    <ui:ImageEx Stretch="Uniform" >
+                                        <ui:ImageEx.Source>
+                                            <BitmapImage UriSource="{x:Bind RoleIconUrl}" DecodePixelWidth="120" DecodePixelHeight="120" />
+                                        </ui:ImageEx.Source>
+                                    </ui:ImageEx>
                                 </Border>
                                 <Border
                                     Grid.Row="1"

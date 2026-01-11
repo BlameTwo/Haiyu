@@ -228,7 +228,7 @@
                             Padding="5"
                             CornerRadius="4"
                             Orientation="Horizontal">
-                            <Button Content="数据面板" />
+                            <Button Content="数据面板" Command="{x:Bind ViewModel.OpenDataCenterCommand}"/>
                         </StackPanel>
                     </Grid>
                     <Grid

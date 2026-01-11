@@ -64,16 +64,6 @@ public class ViewFactorys : IViewFactorys
         return window;
     }
 
-    public WindowModelBase ShowCommunityWindow()
-    {
-        var window = this.ShowWindowBase<CommunityPage>(null);
-        window.Manager.MaxHeight = 650;
-        window.Manager.MinHeight = 650;
-        window.Manager.MaxWidth = 1100;
-        window.Manager.MinWidth = 1100;
-        return window;
-    }
-    
 
     public Window ShowAnalysisRecord(LoginData data)
 

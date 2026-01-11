@@ -294,12 +294,6 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     void OpenCounter(RoutedEventArgs args) { }
 
-    [RelayCommand]
-    void OpenCommunity()
-    {
-        this.ViewFactorys.ShowCommunityWindow().AppWindow.Show();
-    }
-
     internal void SetSelectItem(Type sourcePageType)
     {
         var page = this.HomeNavigationViewService.GetSelectItem(sourcePageType);

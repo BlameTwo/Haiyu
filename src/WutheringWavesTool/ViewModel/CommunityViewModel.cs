@@ -37,8 +37,8 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
 
     [ObservableProperty]
     public partial bool DataLoad { get; set; } = false;
-    public Window Window { get; internal set; }
 
+    public GameRoilDataItem Item { get; set; }
     private void RegisterMessanger()
     {
         this.Messenger.Register<SelectUserMessanger>(this, LoginMessangerMethod);
@@ -57,19 +57,19 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
         {
             case "DataGamer":
                 NavigationService.NavigationTo<GameRoilsViewModel>(
-                    null,
+                    Item,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "DataDock":
                 NavigationService.NavigationTo<GamerDockViewModel>(
-                    null,
+                    Item,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "DataChallenge":
                 NavigationService.NavigationTo<GamerChallengeViewModel>(
-                    null,
+                    Item,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
@@ -81,25 +81,25 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
                 break;
             case "DataWorld":
                 NavigationService.NavigationTo<GamerExploreIndexViewModel>(
-                    null,
+                    Item,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "Skin":
                 NavigationService.NavigationTo<GamerSkinViewModel>(
-                    null,
+                    Item,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "Boss2":
                 NavigationService.NavigationTo<GamerSlashDetailViewModel>(
-                    null,
+                    Item,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
             case "Resource":
                 NavigationService.NavigationTo<ResourceBriefViewModel>(
-                    null,
+                    Item,
                     new Microsoft.UI.Xaml.Media.Animation.DrillInNavigationTransitionInfo()
                 );
                 break;
@@ -123,9 +123,6 @@ public partial class CommunityViewModel : ViewModelBase, IDisposable
             this.NavigationService.RegisterView(frame);
         this.IsLogin = (await WavesClient.IsLoginAsync());
         if (!IsLogin)
-            return;
-        var gamers = await WavesClient.GetGamerAsync(Waves.Core.Models.Enums.GameType.Waves,this.CTS.Token);
-        if (gamers == null || gamers.Code != 200)
             return;
         this.SelectPageItem = Pages[0];
         this.DataLoad = true;
