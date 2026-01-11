@@ -108,20 +108,6 @@
                         </Button>
                         <Button
                             Width="40"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch"
-                            Command="{x:Bind ViewModel.OpenCommunityCommand}"
-                            CornerRadius="5"
-                            Style="{ThemeResource TransparentButtonStyle}"
-                            ToolTipService.ToolTip="数据面板">
-                            <FontIcon
-                                Margin="0,-5,0,0"
-                                FontFamily="Segoe UI Emoji"
-                                FontSize="14"
-                                Glyph="&#x1F9F0;" />
-                        </Button>
-                        <Button
-                            Width="40"
                             Padding="0"
                             Command="{x:Bind ViewModel.ShowOpenLocalUserCommand}"
                             CornerRadius="5"
