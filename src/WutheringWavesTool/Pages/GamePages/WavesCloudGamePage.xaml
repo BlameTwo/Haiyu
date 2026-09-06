@@ -313,7 +313,8 @@
                         BorderThickness="0"
                         Command="{x:Bind ViewModel.InvokeTaskCommand}"
                         CornerRadius="4"
-                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}">
+                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                        Style="{StaticResource LauncherButtonStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
@@ -364,13 +365,13 @@
             VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal">
                 <Button
-                    Padding="10"
+                    Padding="8"
                     Command="{x:Bind ViewModel.ShowWavesAnalysisCommand}"
                     Style="{ThemeResource TitleBarButtonStyle}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"
-                            FontSize="15"
+                            FontSize="14"
                             Glyph="&#xF133;" />
                         <TextBlock FontSize="14" Text="{x:Bind helper:LanguageService.GetString('Display_DrawAnalysis')}" />
                     </StackPanel>

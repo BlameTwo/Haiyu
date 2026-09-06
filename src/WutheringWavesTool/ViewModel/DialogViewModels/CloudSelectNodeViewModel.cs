@@ -54,6 +54,11 @@ public sealed partial class CloudSelectNodeViewModel : DialogViewModelBase
     [RelayCommand]
     private async Task Invoke()
     {
+        this.Result = new LauncheNodeConfig()
+        {
+            Nodes = Nodes,
+            SelectNode = SelectNode
+        };
         await this.Close();
     }
 
