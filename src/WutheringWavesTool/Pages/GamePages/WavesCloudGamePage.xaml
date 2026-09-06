@@ -13,6 +13,7 @@
     xmlns:local="using:Haiyu.Pages.GamePages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:Haiyu.Controls"
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior>

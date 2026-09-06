@@ -5,13 +5,14 @@ using Microsoft.UI.Xaml.Hosting;
 
 namespace Haiyu.Pages;
 
-public sealed partial class ShellPage : Page
+public sealed partial class ShellPage : Page, IDisposable
 {
-    public ShellPage()
+    private bool _disposed;
+
+    public ShellPage(ShellViewModel viewModel)
     {
         this.InitializeComponent();
-        this.ViewModel =
-            Instance.GetService<ShellViewModel>() ?? throw new ArgumentException(LanguageService.GetStringByText("服务注册错误"));
+        this.ViewModel = viewModel;
         this.Loaded += ShellPage_Loaded;
         this.ViewModel.HomeNavigationService.Navigated += HomeNavigationService_Navigated;
         this.ViewModel.HomeNavigationService.RegisterView(this.frame);
@@ -51,12 +52,6 @@ public sealed partial class ShellPage : Page
     private void ShellPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
         this.ViewModel.WindowManager.Shell.DialogManager.RegisterRoot(this.XamlRoot);
-        this.notify.RegisterWin(new WindowEx());
-        this.notify.CreateTrayIcon(
-            AppDomain.CurrentDomain.BaseDirectory + "\\Assets\\appLogo.ico",
-            "Haiyu"
-        );
-
     }
 
     private void ComboBox_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -72,5 +67,21 @@ public sealed partial class ShellPage : Page
     private void OpenMessagePane(object sender, RoutedEventArgs e)
     {
         view.IsPaneOpen = !view.IsPaneOpen;
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
+        Loaded -= ShellPage_Loaded;
+        ViewModel.HomeNavigationService.Navigated -= HomeNavigationService_Navigated;
+        ViewModel.HomeNavigationService.UnRegisterView();
+        ViewModel.HomeNavigationViewService.UnRegister();
+        ViewModel.AppContext.WallpaperService.UnregisterMediaHost(mediaControl);
+        Bindings.StopTracking();
     }
 }

@@ -23,6 +23,7 @@
     xmlns:wrapper="using:Haiyu.Models.Wrapper"
     xmlns:wui="using:CommunityToolkit.WinUI"
     Background="Transparent"
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d">
 
     <i:Interaction.Behaviors>
@@ -35,11 +36,6 @@
             <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ui:NotifyIconWinUI
-            x:Name="notify"
-            ContextMenu="{x:Bind ViewModel.SystemMenu, Mode=OneWay}"
-            LeftDoubleClick="notify_LeftDoubleClick" />
-        <Border x:Name="titleback" Grid.RowSpan="1" />
         <ui:TitleBar
             x:Name="titlebar"
             x:FieldModifier="public"

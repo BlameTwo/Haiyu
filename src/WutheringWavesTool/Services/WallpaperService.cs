@@ -117,6 +117,14 @@ public class WallpaperService : IWallpaperService
         this.Media = media;
     }
 
+    public void UnregisterMediaHost(ApplicationBackgroundControl media)
+    {
+        if (ReferenceEquals(Media, media))
+        {
+            Media = null;
+        }
+    }
+
     public void SetMediaForUrl(
         WallpaperShowType type,
         string backgroundFile,

@@ -8,7 +8,7 @@ public sealed partial class WavesCloudGamePage : Page,IPage
     public WavesCloudGamePage()
     {
         InitializeComponent();
-        this.ViewModel = Instance.Host.Services.GetRequiredService<WavesCloudGameViewModel>();
+        this.ViewModel = Instance.GetService<WavesCloudGameViewModel>()!;
     }
 
     public Type PageType => typeof(WavesCloudGamePage);

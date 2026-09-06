@@ -22,6 +22,8 @@ public interface IWindowManager
     /// </summary>
     public Task CreateShellWindowAsync();
 
+    public Task RemoveShellWindowAsync();
+
     public bool IsWindowShow(string key);
 
     /// <summary>

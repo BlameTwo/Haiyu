@@ -43,11 +43,13 @@ public class AppContext<T> : IAppContext<T>
     public IAppActivation AppActivation { get; }
     public ABIRuntimeService ABIRuntimeService { get; }
 
+    public NotifyIconWinUI NotifyIcon { get; private set; }
+
     public async Task LauncherAsync(T app)
     {
         try
         {
-            
+            RegisterNotifyIcon();
             var xboxConfig = Instance.Host.Services.GetRequiredService<XBoxConfig>();
             if ((await xboxConfig.GetIsEnableAsync()) == true)
             {
@@ -94,6 +96,60 @@ public class AppContext<T> : IAppContext<T>
             Process.GetCurrentProcess().Kill();
         }
     }
+
+    private void RegisterNotifyIcon()
+    {
+        this.NotifyIcon = new();
+        this.NotifyIcon.RegisterWin(new WindowEx());
+        this.NotifyIcon.CreateTrayIcon(
+            AppDomain.CurrentDomain.BaseDirectory + "\\Assets\\appLogo.ico",
+            "Haiyu"
+        );
+        this.NotifyIcon.ContextMenu = new NotifyIconMenu()
+        {
+            Items = new List<NotifyIconMenuItem>()
+            {
+                new()
+                {
+                    Header = LanguageService.GetStringByText("显示主界面"),
+                    Command = this.ShowWindowCommand,
+                },
+                new()
+                {
+                    Header = LanguageService.GetStringByText("关闭主窗口"),
+                    Command = this.LowPowerModeCommand,
+                },
+                new()
+                {
+                    Header = LanguageService.GetStringByText("退出启动器"),
+                    Command = this.ExitWindowCommand,
+                },
+            },
+        };
+    }
+
+    IAsyncRelayCommand ShowWindowCommand => new AsyncRelayCommand(async () =>
+    {
+        if(WindowManager.GetWindowContext(IWindowManager.ShellKey) == null)
+        {
+            await WindowManager.CreateShellWindowAsync();
+        }
+        else
+        {
+            WindowManager.GetWindowContext(IWindowManager.ShellKey)!.Show();
+        }
+    });
+
+    IAsyncRelayCommand LowPowerModeCommand => new AsyncRelayCommand(async () =>
+    {
+        await WindowManager.RemoveShellWindowAsync();
+    });
+
+    IRelayCommand ExitWindowCommand => new RelayCommand(() =>
+    {
+        Process.GetCurrentProcess().Kill();
+    });
+
 
     private async Task InitGameCoreAsync()
     {

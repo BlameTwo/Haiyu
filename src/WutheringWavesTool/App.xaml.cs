@@ -21,7 +21,7 @@ public partial class App : ClientApplication
     private const int PROCESS_PER_MONITOR_DPI_AWARE = 2;
     private AppInstance mainInstance;
 
-    public static string AppVersion => "1.3.8";
+    public static string AppVersion => "1.4.0";
 
     public AppSettings AppSettings { get; private set; }
 
@@ -77,17 +77,19 @@ public partial class App : ClientApplication
         try
         {
             Instance
-                .Host.Services.GetRequiredService<IWindowManager>()
-                .Shell.TipShow.ShowMessage(e.Message, Symbol.Clear);
-            Instance
                 .Host.Services.GetRequiredKeyedService<LoggerService>("AppLog")
-                .WriteError(e.Message);
+                .WriteError($"{e.Exception}\n{e.Exception.StackTrace}");
+
+            var windowManager = Instance.Host.Services.GetRequiredService<IWindowManager>();
+            windowManager
+                .GetWindowContext(IWindowManager.ShellKey)
+                ?.TipShow.ShowMessage(e.Message, Symbol.Clear);
         }
         catch (Exception ex)
         {
             Instance
                 .Host.Services.GetRequiredKeyedService<LoggerService>("AppLog")
-                .WriteError(ex.Message);
+                .WriteError($"UnhandledException 处理失败：{ex}");
         }
         finally
         {
@@ -117,7 +119,6 @@ public partial class App : ClientApplication
         {
             await AppSettings.SetWallpaperTypeAsync("video");
         }
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         GameContextFactory.GameBassPath = AppSettings.BassFolder;
 
         Instance.Host.Services.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");

@@ -4,6 +4,7 @@ using Haiyu.ViewModel.GameViewModels;
 using Haiyu.ViewModel.GameViewModels.GameContexts;
 using Waves.Api.Models.KuroClient;
 using Waves.Api.Models.KuroClient.Options;
+using Waves.Core.Contracts.Events;
 using Waves.Core.Models.Enums;
 using Waves.Core.Services;
 using Windows.ApplicationModel.DataTransfer;
@@ -15,6 +16,7 @@ public sealed partial class ShellViewModel : ViewModelBase
 {
     private bool computerShow;
     private CancellationTokenSource? _messageCts = new();
+    private IGameEventSubscription? _systemEventSubscription;
 
     public ShellViewModel(
         [FromKeyedServices(nameof(HomeNavigationService))] INavigationService homeNavigationService,
@@ -41,22 +43,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         SystemEventPublisher = systemEventPublisher;
         TaskManager = taskManager;
         RegisterMessanger();
-        SystemMenu = new NotifyIconMenu()
-        {
-            Items = new List<NotifyIconMenuItem>()
-            {
-                new()
-                {
-                    Header = LanguageService.GetStringByText("显示主界面"),
-                    Command = this.ShowWindowCommand,
-                },
-                new()
-                {
-                    Header = LanguageService.GetStringByText("退出启动器"),
-                    Command = this.ExitWindowCommand,
-                },
-            },
-        };
     }
 
     [ObservableProperty]
@@ -262,7 +248,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     void ShowWindow()
     {
-        this.AppContext.WindowManager.Shell.GetWindow().Show();
+        this.AppContext.WindowManager.Shell.Show();
     }
 
     [RelayCommand]
@@ -373,7 +359,14 @@ public sealed partial class ShellViewModel : ViewModelBase
         await RefreshHeaderUser();
         await OpenMain();
         await AppContext.UpdateAppAsync();
-        await SystemEventPublisher.SubscribeAsync(OnMessageChanged);
+        var subscription = await SystemEventPublisher.SubscribeAsync(OnMessageChanged);
+        if (IsDisposed)
+        {
+            subscription.Dispose();
+            return;
+        }
+
+        _systemEventSubscription = subscription;
         _ = Task.Run(async () => await TaskManager.InitializeAutoLaunchTasksAsync());
     }
 
@@ -473,5 +466,25 @@ public sealed partial class ShellViewModel : ViewModelBase
             this.Logger.WriteError(ex.Message + ex.StackTrace);
             return;
         }
+    }
+
+    protected override void OnDisposing()
+    {
+        _systemEventSubscription?.Dispose();
+        _systemEventSubscription = null;
+
+        var messageCts = Interlocked.Exchange(ref _messageCts, null);
+        if (messageCts is not null)
+        {
+            try
+            {
+                messageCts.Cancel();
+            }
+            catch (ObjectDisposedException) { }
+
+            messageCts.Dispose();
+        }
+
+        base.OnDisposing();
     }
 }

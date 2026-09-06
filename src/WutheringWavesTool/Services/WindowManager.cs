@@ -42,7 +42,6 @@ public sealed class WindowManager : IWindowManager
             IWindowManager.ShellKey
         );
         shell.SetWindow(winEx);
-        shell.GetWindow().AppWindow.Closing += AppWindow_Closing;
         this._windowContext.Add(shell.Key, shell);
         #region Config
         var mainSizeConfig = await this.AppSettings.GetMainWindowSettingsAsync();
@@ -54,14 +53,14 @@ public sealed class WindowManager : IWindowManager
         #region Page
         if (await AppSettings.GetAutoOOBEAsync() == true)
         {
-            var page = Instance.Host.Services.GetRequiredService<OOBEPage>();
+            var page = shell.Service.ServiceProvider.GetRequiredService<OOBEPage>();
             page.titlebar.Window = this.Shell.GetWindow();
             this.Shell.GetWindow().Content = page;
             this.Shell.GetWindow().ApplyWindowsOption(WindowsOption.OOBEWindowOption);
         }
         else
         {
-            var page = Instance.Host.Services!.GetRequiredService<ShellPage>();
+            var page = shell.Service.ServiceProvider.GetRequiredService<ShellPage>();
             page.titlebar.Window = this.Shell.GetWindow();
             this.Shell.GetWindow().Content = page;
             var defaultOption = WindowsOption.DefaultWindowsOption;
@@ -85,11 +84,42 @@ public sealed class WindowManager : IWindowManager
                 );
         }
         #endregion
+
+        winEx.Activate();
     }
 
-    private void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
+
+
+    public Task RemoveShellWindowAsync()
     {
-        args.Cancel = true;
+        if (!_windowContext.TryGetValue(IWindowManager.ShellKey, out var context))
+            return Task.CompletedTask;
+
+        var window = context.GetWindow();
+
+        try
+        {
+            // Tear down the managed/XAML graph while the Window and its dispatcher
+            // are still valid. Disposing the scope from Closed runs too late for
+            // controls that detach XAML events or compiled bindings in Dispose().
+            if (window.Content is IDisposable disposableContent)
+            {
+                disposableContent.Dispose();
+            }
+
+            window.Content = null;
+            context.Dispose();
+            _windowContext.Remove(IWindowManager.ShellKey);
+            window.Close();
+        }
+        catch
+        {
+            _windowContext.Remove(IWindowManager.ShellKey);
+            context.Dispose();
+            throw;
+        }
+
+        return Task.CompletedTask;
     }
 
     public void CreateWindow<T>(WindowManagerOption managerOption)
@@ -135,7 +165,7 @@ public sealed class WindowManager : IWindowManager
             {
                 Option = managerOption,
             };
-           
+
             context.SetWindow(window);
 
             if (!_windowContext.TryAdd(context.Key, context))

@@ -22,7 +22,7 @@ namespace Haiyu.Pages.OOBE
         public LanguageSelectPage()
         {
             InitializeComponent();
-            this.ViewModel = Instance.Host.Services.GetRequiredService<LanguageSelectViewModel>();
+            this.ViewModel = Instance.GetService<LanguageSelectViewModel>()!;
         }
 
         public Type PageType => typeof(Page);

@@ -57,13 +57,22 @@ public static class Instance
         MemoryPackFormatterProvider.Register<LocalAccount>();
     }
 
+    /// <summary>
+    /// 主窗口获取Service位置
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static T? GetService<T>()
         where T : notnull
     {
-        if (Host.Services.GetRequiredService<T>() is not T v)
+        var windowManager = Host.Services.GetService<IWindowManager>();
+        var shellContext = windowManager?.GetWindowContext(IWindowManager.ShellKey);
+        var provider = shellContext?.Service.ServiceProvider ?? Host.Services;
+
+        if (provider.GetRequiredService<T>() is not T v)
         {
             throw new ArgumentException(LanguageService.GetStringByText("服务未注入"));
-            ;
         }
         return v;
     }
@@ -106,10 +115,10 @@ public static class InstanceBuilderExtensions
                     .AddSingleton<XBoxService>()
                     #endregion
                     .AddTransient<IRpcMethodService, RpcMethodService>()
-                    .AddSingleton<ShellPage>()
-                    .AddSingleton<ShellViewModel>()
-                    .AddSingleton<OOBEPage>()
-                    .AddSingleton<OOBEViewModel>()
+                    .AddTransient<ShellPage>()
+                    .AddTransient<ShellViewModel>()
+                    .AddTransient<OOBEPage>()
+                    .AddTransient<OOBEViewModel>()
                     .AddTransient<WavesAnalysisRecordPage>()
                     .AddTransient<WavesAnalysisRecordViewModel>()
                     .AddTransient<SettingViewModel>()

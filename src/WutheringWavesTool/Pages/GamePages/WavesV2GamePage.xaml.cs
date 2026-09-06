@@ -8,7 +8,7 @@ public sealed partial class WavesV2GamePage : Page,IPage
     public WavesV2GamePage()
     {
         InitializeComponent();
-        ViewModel = Instance.Host.Services.GetRequiredService<WavesV2GameContextViewModel>();
+        ViewModel = Instance.GetService<WavesV2GameContextViewModel>()!;
     }
 
     public WavesV2GameContextViewModel? ViewModel { get; set; }
