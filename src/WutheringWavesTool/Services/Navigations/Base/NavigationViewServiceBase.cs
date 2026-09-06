@@ -1,4 +1,4 @@
-﻿namespace Haiyu.Services.Navigations.Base;
+namespace Haiyu.Services.Navigations.Base;
 
 public class NavigationViewServiceBase : INavigationViewService
 {
@@ -37,7 +37,7 @@ public class NavigationViewServiceBase : INavigationViewService
         else
         {
             var selectedItem = eventArgs.InvokedItemContainer as NavigationViewItem;
-            var paramter = selectedItem?.GetValue(NavigationItemClickHelper.ParamterProperty);
+            var paramter = selectedItem?.GetValue(NavigationItemClickHelper.ParameterProperty);
             if (
                 selectedItem?.GetValue(NavigationItemClickHelper.NavigationKeyProperty)
                 is string pageKey

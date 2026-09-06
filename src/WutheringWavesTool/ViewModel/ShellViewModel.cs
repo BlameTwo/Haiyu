@@ -234,9 +234,29 @@ public sealed partial class ShellViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    void CloseWindow()
+    async Task CloseWindow()
     {
-        //this.AppContext.WindowManager.Shell.Close();
+        var close = await AppSettings.GetCloseWindowAsync();
+        if (close == "True")
+        {
+            Environment.Exit(0);
+        }
+        else if (close == "False")
+        {
+            this.AppContext.WindowManager.Shell.Hide();
+        }
+        else
+        {
+            var result = await AppContext.WindowManager.Shell.DialogManager.ShowCloseWindowResult();
+            if (result.IsExit)
+            {
+                Environment.Exit(0);
+            }
+            else
+            {
+                this.AppContext.WindowManager.Shell.Hide();
+            }
+        }
     }
 
     [RelayCommand]

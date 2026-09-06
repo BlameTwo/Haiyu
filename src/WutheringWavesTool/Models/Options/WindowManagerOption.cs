@@ -9,7 +9,7 @@ public class WindowManagerOption
 {
     public string Key { get; init; }
 
-    public object Paramter { get; init; }
+    public object Parameter { get; init; }
 
     public required WindowsOption WindowConfig { get; init; }
 }

@@ -88,9 +88,12 @@ public sealed class DialogManager : IDialogManager
 
     public void CloseDialog()
     {
-        if (_dialog == null)
+        var dialog = _dialog;
+        _dialog = null;
+
+        if (dialog == null)
             return;
-        _dialog.Hide();
+        dialog.Hide();
         //if (context is ViewModelBase viewModel)
         //{
         //    if (!viewModel.IsDisposed)

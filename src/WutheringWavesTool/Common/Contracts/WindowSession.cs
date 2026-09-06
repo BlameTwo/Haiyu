@@ -10,7 +10,7 @@ public sealed class WindowSession : IDisposable
     private readonly object _syncRoot = new();
 
     private Window? _window;
-    private WindowContext.WindowContext _winContext;
+    private WindowContext.WindowContext? _winContext;
 
     public WindowContext.WindowContext Context =>
         _winContext ?? throw new InvalidOperationException("WindowSession 尚未绑定窗口上下文。");
@@ -90,7 +90,7 @@ public sealed class WindowSession : IDisposable
 
     public TParameter GetParameter<TParameter>()
     {
-        if (Context.Paramter is TParameter parameter)
+        if (Context.Parameter is TParameter parameter)
         {
             return parameter;
         }

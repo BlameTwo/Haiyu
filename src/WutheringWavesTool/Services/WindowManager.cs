@@ -11,7 +11,7 @@ public sealed class WindowManager : IWindowManager
         AppSettings = appSettings;
     }
 
-    public readonly Dictionary<string, WindowContext> _windowContext = new();
+    private readonly Dictionary<string, WindowContext> _windowContext = new();
 
     public ShellWindowContext Shell
     {
@@ -95,6 +95,20 @@ public sealed class WindowManager : IWindowManager
     public void CreateWindow<T>(WindowManagerOption managerOption)
         where T : UIElement
     {
+        CreateWindowCore<T>(managerOption);
+    }
+
+    public async Task<TResult?> CreateWindowAsync<T, TResult>(
+        WindowManagerOption managerOption)
+        where T : UIElement
+    {
+        var session = CreateWindowCore<T>(managerOption);
+        return await session.GetResultAsync<TResult>();
+    }
+
+    private WindowSession CreateWindowCore<T>(WindowManagerOption managerOption)
+        where T : UIElement
+    {
         ArgumentNullException.ThrowIfNull(managerOption);
         ArgumentException.ThrowIfNullOrWhiteSpace(managerOption.Key);
 
@@ -102,7 +116,7 @@ public sealed class WindowManager : IWindowManager
         {
             existingContext.Show();
             existingContext.GetWindow().Activate();
-            return;
+            return existingContext.Service.ServiceProvider.GetRequiredService<WindowSession>();
         }
 
         var scope = Instance.Host.Services.CreateAsyncScope();
@@ -139,14 +153,23 @@ public sealed class WindowManager : IWindowManager
             window.Closed += Window_Closed;
             window.Activate();
 
+            return session;
+
             void Window_Closed(object sender, WindowEventArgs args)
             {
-                window.Closed -= Window_Closed;
-                session.Detach();
-
-                if (_windowContext.Remove(context.Key, out var removedContext))
+                try
                 {
-                    removedContext.Dispose();
+                    if (window is IWindowInitializable initializable)
+                    {
+                        initializable.Dispose();
+                    }
+                }
+                finally
+                {
+                    window.Closed -= Window_Closed;
+                    session.Detach();
+                    _windowContext.Remove(context.Key);
+                    context.Dispose();
                 }
             }
         }
@@ -157,14 +180,37 @@ public sealed class WindowManager : IWindowManager
                 _windowContext.Remove(context.Key);
             }
 
-            session?.Detach();
-            window?.Close();
-            scope.Dispose();
+            try
+            {
+                session?.Detach();
+                window?.Close();
+            }
+            finally
+            {
+                scope.Dispose();
+            }
             throw;
         }
     }
 
     public void CreateWindowBase<T>(WindowManagerOption managerOption, nint ownerId)
+        where T : UIElement
+    {
+        CreateWindowBaseCore<T>(managerOption, ownerId);
+    }
+
+    public async Task<TResult?> CreateWindowBaseAsync<T, TResult>(
+        WindowManagerOption managerOption,
+        nint ownerId)
+        where T : UIElement
+    {
+        var session = CreateWindowBaseCore<T>(managerOption, ownerId);
+        return await session.GetResultAsync<TResult>();
+    }
+
+    private WindowSession CreateWindowBaseCore<T>(
+        WindowManagerOption managerOption,
+        nint ownerId)
         where T : UIElement
     {
         ArgumentNullException.ThrowIfNull(managerOption);
@@ -174,7 +220,7 @@ public sealed class WindowManager : IWindowManager
         {
             existingContext.Show();
             existingContext.GetWindow().Activate();
-            return;
+            return existingContext.Service.ServiceProvider.GetRequiredService<WindowSession>();
         }
 
         var scope = Instance.Host.Services.CreateAsyncScope();
@@ -210,14 +256,19 @@ public sealed class WindowManager : IWindowManager
             window.Closed += Window_Closed;
             window.AppWindow.Show();
 
+            return session;
+
             void Window_Closed(object sender, WindowEventArgs args)
             {
-                window.Closed -= Window_Closed;
-                session.Detach();
-
-                if (_windowContext.Remove(context.Key, out var removedContext))
+                try
                 {
-                    removedContext.Dispose();
+                    window.Closed -= Window_Closed;
+                    session.Detach();
+                }
+                finally
+                {
+                    _windowContext.Remove(context.Key);
+                    context.Dispose();
                 }
             }
         }
@@ -228,15 +279,35 @@ public sealed class WindowManager : IWindowManager
                 _windowContext.Remove(context.Key);
             }
 
-            session?.Detach();
-            window?.Close();
-            scope.Dispose();
+            try
+            {
+                session?.Detach();
+                window?.Close();
+            }
+            finally
+            {
+                scope.Dispose();
+            }
             throw;
         }
     }
 
     public void CreateOriginWindow<T>(WindowManagerOption managerOption)
         where T :Window
+    {
+        CreateOriginWindowCore<T>(managerOption);
+    }
+
+    public async Task<TResult?> CreateOriginWindowAsync<T, TResult>(
+        WindowManagerOption managerOption)
+        where T : Window
+    {
+        var session = CreateOriginWindowCore<T>(managerOption);
+        return await session.GetResultAsync<TResult>();
+    }
+
+    private WindowSession CreateOriginWindowCore<T>(WindowManagerOption managerOption)
+        where T : Window
     {
         ArgumentNullException.ThrowIfNull(managerOption);
         ArgumentException.ThrowIfNullOrWhiteSpace(managerOption.Key);
@@ -245,7 +316,7 @@ public sealed class WindowManager : IWindowManager
         {
             existingContext.Show();
             existingContext.GetWindow().Activate();
-            return;
+            return existingContext.Service.ServiceProvider.GetRequiredService<WindowSession>();
         }
 
         var scope = Instance.Host.Services.CreateAsyncScope();
@@ -279,31 +350,43 @@ public sealed class WindowManager : IWindowManager
 
             window.Closed += Window_Closed;
             window.Activate();
+
+            return session;
+
             void Window_Closed(object sender, WindowEventArgs args)
             {
-                if (window is IWindowInitializable initializable)
+                try
                 {
-                    initializable.Dispose();
+                    if (window is IWindowInitializable initializable)
+                    {
+                        initializable.Dispose();
+                    }
                 }
-                window.Closed -= Window_Closed;
-                session.Detach();
-
-                if (_windowContext.Remove(context.Key, out var removedContext))
+                finally
                 {
-                    removedContext.Dispose();
+                    window.Closed -= Window_Closed;
+                    session.Detach();
+                    _windowContext.Remove(context.Key);
+                    context.Dispose();
                 }
             }
         }
-        catch(Exception ex)
+        catch
         {
             if (context is not null)
             {
                 _windowContext.Remove(context.Key);
             }
 
-            session?.Detach();
-            window?.Close();
-            scope.Dispose();
+            try
+            {
+                session?.Detach();
+                window?.Close();
+            }
+            finally
+            {
+                scope.Dispose();
+            }
             throw;
         }
     }

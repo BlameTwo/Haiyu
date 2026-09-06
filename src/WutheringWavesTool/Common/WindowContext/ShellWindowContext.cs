@@ -7,6 +7,4 @@ public class ShellWindowContext:WindowContext
     }
 
     public Controls.TitleBar MainTitle { get; set; }
-
-
 }

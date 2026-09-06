@@ -32,6 +32,9 @@ public interface IWindowManager
     public void CreateWindow<T>(WindowManagerOption managerOption)
         where T : UIElement;
 
+    public Task<TResult?> CreateWindowAsync<T, TResult>(WindowManagerOption managerOption)
+        where T : UIElement;
+
     /// <summary>
     /// 创建模态窗口
     /// </summary>
@@ -41,6 +44,11 @@ public interface IWindowManager
     public void CreateWindowBase<T>(WindowManagerOption managerOption, nint ownerId)
         where T : UIElement;
 
+    public Task<TResult?> CreateWindowBaseAsync<T, TResult>(
+        WindowManagerOption managerOption,
+        nint ownerId)
+        where T : UIElement;
+
     /// <summary>
     /// 原始窗口创建
     /// </summary>
@@ -48,5 +56,9 @@ public interface IWindowManager
     /// <param name="managerOption"></param>
     public void CreateOriginWindow<T>(WindowManagerOption managerOption)
         where T : Window;
+
+    public Task<TResult?> CreateOriginWindowAsync<T, TResult>(WindowManagerOption managerOption)
+        where T : Window;
+
     public WindowContext? GetWindowContext(string key);
 }

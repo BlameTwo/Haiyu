@@ -17,25 +17,4 @@ public sealed partial class GamerSignPage : Page
 
     public GamerSignViewModel? ViewModel { get; private set; }
 
-
-    public void SetWindow(Window window)
-    {
-        //TODO Window
-    }
-
-    public void Dispose()
-    {
-        if (_disposed)
-            return;
-        _disposed = true;
-        try
-        {
-            this.Bindings.StopTracking();
-            this.ViewModel?.Dispose();
-        }
-        finally
-        {
-            this.ViewModel = null;
-        }
-    }
 }

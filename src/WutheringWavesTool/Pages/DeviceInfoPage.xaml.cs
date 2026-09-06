@@ -15,25 +15,4 @@ public sealed partial class DeviceInfoPage : Page
 
     public DeviceInfoViewModel? ViewModel { get; private set; }
 
-    public void SetData(object value)
-    {
-    }
-
-
-    public void Dispose()
-    {
-        if (_disposed)
-            return;
-        _disposed = true;
-        try
-        {
-            this.Bindings.StopTracking();
-            this.ViewModel?.Dispose();
-        }
-        finally
-        {
-            title.Window = null;
-            this.ViewModel = null;
-        }
-    }
 }

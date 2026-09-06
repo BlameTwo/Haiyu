@@ -10,6 +10,8 @@ namespace Haiyu.Common.WindowContext;
 /// </summary>
 public class WindowContext : IDisposable
 {
+    private int _disposed;
+
     /// <summary>
     /// Key
     /// </summary>
@@ -34,9 +36,9 @@ public class WindowContext : IDisposable
         Key = key;
     }
 
-    public object Paramter
+    public object Parameter
     {
-        get => this.Option.Paramter;
+        get => this.Option.Parameter;
     }
 
     /// <summary>
@@ -140,6 +142,11 @@ public class WindowContext : IDisposable
 
     public void Dispose()
     {
+        if (Interlocked.Exchange(ref _disposed, 1) != 0)
+        {
+            return;
+        }
+
         this.Service.Dispose();
     }
 }

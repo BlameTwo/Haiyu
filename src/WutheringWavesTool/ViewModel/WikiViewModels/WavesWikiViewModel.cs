@@ -332,7 +332,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
         {
              WindowConfig = CommunityWindowOption,
              Key = context.Id,
-             Paramter = context
+             Parameter = context
         });
     }
 

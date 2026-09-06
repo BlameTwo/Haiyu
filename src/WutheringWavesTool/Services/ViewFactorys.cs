@@ -87,7 +87,7 @@ public class ViewFactorys : IViewFactorys
             {
                 WindowConfig = SignWindowOption,
                 Key = role.GetSignId,
-                Paramter = role,
+                Parameter = role,
             }
         );
     }
@@ -99,7 +99,7 @@ public class ViewFactorys : IViewFactorys
             {
                 WindowConfig = DeviceInfoWindowOption,
                 Key = "KuroDevice",
-                Paramter = null,
+                Parameter = null,
             },
             WindowNative.GetWindowHandle(AppContext.WindowManager.Shell.GetWindow())
         );
@@ -112,7 +112,7 @@ public class ViewFactorys : IViewFactorys
             {
                 WindowConfig = WindowsOptionAnalysisRecord,
                 Key = $"{selectLogin.GetId()}:CloudWaves",
-                Paramter = selectLogin,
+                Parameter = selectLogin,
             },
             WindowNative.GetWindowHandle(AppContext.WindowManager.Shell.GetWindow())
         );
@@ -125,7 +125,7 @@ public class ViewFactorys : IViewFactorys
             {
                 WindowConfig = WindowsOptionAutoToken,
                 Key = $"AutoKuroToken",
-                Paramter = null,
+                Parameter = null,
             }
         );
     }

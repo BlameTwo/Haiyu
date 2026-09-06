@@ -28,6 +28,7 @@ public partial class App : ClientApplication
     public App()
     {
         this.InitializeComponent();
+        this.DispatcherShutdownMode = DispatcherShutdownMode.OnExplicitShutdown;
         mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(
             "Haiyu_Main"
         );

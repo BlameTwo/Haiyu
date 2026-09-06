@@ -9,7 +9,7 @@ public class NavigationServiceBase : INavigationService
         PageService = pageService;
     }
 
-    public object? Paramter { get; set; }
+    public object? Parameter { get; set; }
 
     public IPageService PageService { get; }
 
@@ -58,17 +58,17 @@ public class NavigationServiceBase : INavigationService
         {
             if (
                 RootFrame != null
-                && (OrginpageType.PageType != pageType || args != null && !args.Equals(Paramter))
+                && (OrginpageType.PageType != pageType || args != null && !args.Equals(Parameter))
             )
             {
-                Paramter = args;
-                return RootFrame.Navigate(pageType, Paramter, transitionInfo);
+                Parameter = args;
+                return RootFrame.Navigate(pageType, Parameter, transitionInfo);
             }
         }
         else if (RootFrame.Content == null)
         {
-            Paramter = args;
-            return RootFrame.Navigate(pageType, Paramter, transitionInfo);
+            Parameter = args;
+            return RootFrame.Navigate(pageType, Parameter, transitionInfo);
         }
         return false;
     }
