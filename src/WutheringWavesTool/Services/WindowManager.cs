@@ -235,6 +235,80 @@ public sealed class WindowManager : IWindowManager
         }
     }
 
+    public void CreateOriginWindow<T>(WindowManagerOption managerOption)
+        where T :Window
+    {
+        ArgumentNullException.ThrowIfNull(managerOption);
+        ArgumentException.ThrowIfNullOrWhiteSpace(managerOption.Key);
+
+        if (_windowContext.TryGetValue(managerOption.Key, out var existingContext))
+        {
+            existingContext.Show();
+            existingContext.GetWindow().Activate();
+            return;
+        }
+
+        var scope = Instance.Host.Services.CreateAsyncScope();
+        WindowContext? context = null;
+        WindowSession? session = null;
+        Window? window = null;
+        try
+        {
+
+            window = scope.ServiceProvider.GetRequiredService<T>();
+            window.ApplyWindowsOption(managerOption.WindowConfig);
+
+            context = new WindowContext(scope, managerOption.Key)
+            {
+                Option = managerOption,
+            };
+            context.SetWindow(window);
+
+            session = scope.ServiceProvider.GetRequiredService<WindowSession>();
+            session.Attach(window, context);
+
+            if (!_windowContext.TryAdd(context.Key, context))
+            {
+                throw new InvalidOperationException($"窗口 Key 已存在：{context.Key}");
+            }
+
+            if (window is IWindowInitializable initializable)
+            {
+                initializable.Initialize();
+            }
+
+            window.Closed += Window_Closed;
+            window.Activate();
+            void Window_Closed(object sender, WindowEventArgs args)
+            {
+                if (window is IWindowInitializable initializable)
+                {
+                    initializable.Dispose();
+                }
+                window.Closed -= Window_Closed;
+                session.Detach();
+
+                if (_windowContext.Remove(context.Key, out var removedContext))
+                {
+                    removedContext.Dispose();
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            if (context is not null)
+            {
+                _windowContext.Remove(context.Key);
+            }
+
+            session?.Detach();
+            window?.Close();
+            scope.Dispose();
+            throw;
+        }
+    }
+
+
     public Task<IEnumerable<WindowContext>> GetWindowContextsAsync() =>
         Task.FromResult(_windowContext.Values.AsEnumerable());
 

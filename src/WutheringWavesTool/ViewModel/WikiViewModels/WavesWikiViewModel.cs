@@ -38,6 +38,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
         IKuroAccountService kuroAccountService,
         IHaiyuMemoryCacheService haiyuMemoryCacheService
         
+        
     )
     {
         this.Messenger.Register<SelectUserMessanger>(this, LoginMessangerMethod);
@@ -327,14 +328,12 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
         {
             return;
         }
-        KuroDataCenterWindow window = new KuroDataCenterWindow(context, CommunityWindowOption);
-        if (window.Content is FrameworkElement element)
+        this.AppContext.WindowManager.CreateOriginWindow<KuroDataCenterWindow>(new Models.Options.WindowManagerOption()
         {
-            element.RequestedTheme = Instance
-                .Host.Services.GetRequiredService<IThemeService>()
-                .CurrentTheme;
-        }
-        window.AppWindow.Show();
+             WindowConfig = CommunityWindowOption,
+             Key = context.Id,
+             Paramter = context
+        });
     }
 
     private async Task<WebSessionContext?> CreateDataCenterSessionContext()

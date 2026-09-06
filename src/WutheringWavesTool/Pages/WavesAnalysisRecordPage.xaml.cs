@@ -4,38 +4,24 @@ namespace Haiyu.Pages;
 
 public sealed partial class WavesAnalysisRecordPage : Page
 {
-    private bool _disposed;
 
+    public WindowSession WindowSession { get; }
     public WavesAnalysisRecordViewModel? ViewModel { get; private set; }
 
-    public WavesAnalysisRecordPage()
+    public WavesAnalysisRecordPage(WindowSession windowSession,WavesAnalysisRecordViewModel viewModel)
     {
         InitializeComponent();
-        this.ViewModel = Instance.Host.Services.GetRequiredService<WavesAnalysisRecordViewModel>();
+        WindowSession = windowSession;
+        this.ViewModel = viewModel;
         this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
+        SetWindow();
     }
 
-    public void SetWindow(Window window)
+    public void SetWindow()
     {
-        //TODO WindowModelBase
-        //this.ViewModel?.Initialization(window);
-        //this.titleBar.Window = window;
+        this.ViewModel?.Initialization(this.WindowSession.Context.GetWindow());
+        this.titleBar.Window = this.WindowSession.Context.GetWindow();
+        this.ViewModel.SetSessionAsync(this.WindowSession.GetParameter<CloudGameLoginSession>());
     }
 
-    public void Dispose()
-    {
-        if (_disposed)
-            return;
-        _disposed = true;
-        try
-        {
-            this.Bindings.StopTracking();
-            this.ViewModel?.Dispose();
-        }
-        finally
-        {
-            this.titleBar.Window = null;
-            this.ViewModel = null;
-        }
-    }
 }

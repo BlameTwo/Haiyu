@@ -244,6 +244,7 @@ public static class InstanceBuilderExtensions
                     .AddScoped<IPickersService, NativePickersService>()
                     .AddScoped<DialogSession>()
                     .AddScoped<WindowSession>()
+                    .AddScoped<KuroDataCenterWindow>()
                     .AddSingleton<IWindowManager, Services.WindowManager>()
                     #endregion
                     .AddKeyedSingleton<LoggerService>(

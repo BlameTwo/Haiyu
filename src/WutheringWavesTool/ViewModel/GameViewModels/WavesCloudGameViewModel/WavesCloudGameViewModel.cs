@@ -348,13 +348,7 @@ public sealed partial class WavesCloudGameViewModel : ViewModelBase
             );
             return;
         }
-        //var win = ViewFactorys.ShowAnalysisRecordV2(selectLogin);
-        //var scale = Haiyu.Controls.TitleBar.GetScaleAdjustment(win);
-        //int targetDipWidth = 1200;
-        //int targetDipHeight = 750;
-        //win.Manager.Height = targetDipHeight;
-        //win.Manager.Width = targetDipWidth;
-        //win.AppWindow.Show();
+        ViewFactorys.ShowAnalysisRecordV2(selectLogin);
     }
 
     [RelayCommand]

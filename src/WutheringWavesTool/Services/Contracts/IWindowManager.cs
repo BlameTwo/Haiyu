@@ -41,5 +41,12 @@ public interface IWindowManager
     public void CreateWindowBase<T>(WindowManagerOption managerOption, nint ownerId)
         where T : UIElement;
 
+    /// <summary>
+    /// 原始窗口创建
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="managerOption"></param>
+    public void CreateOriginWindow<T>(WindowManagerOption managerOption)
+        where T : Window;
     public WindowContext? GetWindowContext(string key);
 }

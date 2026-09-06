@@ -39,8 +39,7 @@ public sealed partial class ToolkitViewModel:ViewModelBase
     [RelayCommand]
     void ShowAutoKuroToken()
     {
-        //var window = ViewFactorys.ShowAutoKruoTokenWindow();
-        //window.AppWindow.Show();
+        ViewFactorys.ShowAutoKruoTokenWindow();
     }
 
     [RelayCommand]

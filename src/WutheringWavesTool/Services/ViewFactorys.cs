@@ -44,6 +44,30 @@ public class ViewFactorys : IViewFactorys
         IsExtendWindowTitle = true,
     };
 
+    private static readonly WindowsOption WindowsOptionAnalysisRecord = new ()
+    {
+        Width = 1200,
+        Height = 750,
+        MaxWidth = 1200,
+        MaxHeight = 750,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
+
+    private static readonly WindowsOption WindowsOptionAutoToken = new()
+    {
+        Width = 900,
+        Height = 650,
+        MaxWidth = 900,
+        MaxHeight = 650,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
+
     public ViewFactorys(IAppContext<App> appContext)
     {
         AppContext = appContext;
@@ -83,12 +107,27 @@ public class ViewFactorys : IViewFactorys
 
     public void ShowAnalysisRecordV2(CloudGameLoginSession selectLogin)
     {
-        //return this.ShowWindowBase<WavesAnalysisRecordPage>(selectLogin);
+        this.AppContext.WindowManager.CreateWindowBase<WavesAnalysisRecordPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = WindowsOptionAnalysisRecord,
+                Key = $"{selectLogin.GetId()}:CloudWaves",
+                Paramter = selectLogin,
+            },
+            WindowNative.GetWindowHandle(AppContext.WindowManager.Shell.GetWindow())
+        );
     }
 
     public void ShowAutoKruoTokenWindow()
     {
-        //return this.ShowWindowBase<AutoKuroTokenPage>(null);
+        this.AppContext.WindowManager.CreateWindow<AutoKuroTokenPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = WindowsOptionAutoToken,
+                Key = $"AutoKuroToken",
+                Paramter = null,
+            }
+        );
     }
 
     public void ShowMonitorToolWindow()
