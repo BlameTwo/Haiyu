@@ -5,7 +5,7 @@ using Waves.Core.Models.Enums;
 namespace Haiyu.Pages.Dialogs;
 
 public sealed partial class UpdateGameDialog : ContentDialog,
-            IResultDialog<UpdateGameResult>
+            IDialog
 {
     public UpdateGameDialog(
         UpdateGameViewModel viewModel,
@@ -18,11 +18,6 @@ public sealed partial class UpdateGameDialog : ContentDialog,
     }
 
     public UpdateGameViewModel ViewModel { get; }
-
-    public UpdateGameResult? GetResult()
-    {
-        return ViewModel.GameResult();
-    }
 
     public void SetData(object data)
     {

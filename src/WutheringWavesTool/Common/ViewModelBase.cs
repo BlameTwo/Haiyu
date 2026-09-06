@@ -15,12 +15,14 @@ public partial class ViewModelBase : ObservableRecipient, IDisposable
         CTS = new CancellationTokenSource();
         this.Logger = Instance.Host.Services.GetRequiredKeyedService<LoggerService>("AppLog");
         this.SystemEventMessager = Instance.Host.Services.GetRequiredService<SystemEventPublisher>();
+        this.AppContext = Instance.Host.Services.GetRequiredService<IAppContext<App>>();
     }
 
     public AppSettings AppSettings { get; private set; }
 
     public LoggerService Logger { get; }
     public SystemEventPublisher SystemEventMessager { get; }
+    public IAppContext<App> AppContext { get; }
 
     /// <summary>
     /// 闭包返回

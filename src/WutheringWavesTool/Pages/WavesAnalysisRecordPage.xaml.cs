@@ -2,7 +2,7 @@ using Haiyu.Common.Contracts;
 
 namespace Haiyu.Pages;
 
-public sealed partial class WavesAnalysisRecordPage : Page,IWindowPage
+public sealed partial class WavesAnalysisRecordPage : Page
 {
     private bool _disposed;
 
@@ -17,16 +17,9 @@ public sealed partial class WavesAnalysisRecordPage : Page,IWindowPage
 
     public void SetWindow(Window window)
     {
-        this.ViewModel?.Initialization(window);
-        this.titleBar.Window = window;
-    }
-
-    public void SetData(object value)
-    {
-        if(value is CloudGameLoginSession session)
-        {
-            this.ViewModel?.SetSessionAsync(session);
-        }
+        //TODO WindowModelBase
+        //this.ViewModel?.Initialization(window);
+        //this.titleBar.Window = window;
     }
 
     public void Dispose()

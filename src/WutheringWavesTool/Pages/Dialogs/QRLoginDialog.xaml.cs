@@ -3,7 +3,7 @@ using Haiyu.Models.Dialogs;
 
 namespace Haiyu.Pages.Dialogs
 {
-    public sealed partial class QRLoginDialog : ContentDialog, IResultDialog<QRScanResult>
+    public sealed partial class QRLoginDialog : ContentDialog, IDialog
     {
         public QRLoginDialog(
         QrLoginViewModel viewModel,
@@ -16,11 +16,6 @@ namespace Haiyu.Pages.Dialogs
     }
 
         public QrLoginViewModel? ViewModel { get; }
-
-        public QRScanResult? GetResult()
-        {
-            return ViewModel?.Result;
-        }
 
         public void SetData(object data)
         {

@@ -20,7 +20,7 @@ namespace Haiyu.Pages.Dialogs;
 
 
 public sealed partial class UpdateGameDialogV2 : ContentDialog,
-     IResultDialog<UpdateGameResult>
+     IDialog
 {
     public UpdateGameDialogV2(UpdateGameViewModelV2 viewModel)
     {

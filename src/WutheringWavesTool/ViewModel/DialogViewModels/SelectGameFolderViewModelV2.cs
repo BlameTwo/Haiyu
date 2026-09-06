@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Haiyu.Common.Contracts;
 using Microsoft.UI.Xaml.Shapes;
 
 namespace Haiyu.ViewModel.DialogViewModels;

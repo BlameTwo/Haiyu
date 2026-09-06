@@ -19,7 +19,7 @@ namespace Haiyu.Pages.Dialogs;
 
 public sealed partial class SelectGameFolderDialogV2
     : ContentDialog,
-        IResultDialog<SelectDownloadFolderResult>
+        IDialog
 {
     public SelectGameFolderDialogV2(SelectGameFolderViewModelV2 viewModel)
     {

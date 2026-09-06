@@ -14,7 +14,7 @@ public interface IDialogManager
     public void RegisterRoot(XamlRoot root);
     public Task ShowLoginDialogAsync();
     public Task<Result> GetDialogResultAsync<T, Result>(object? data)
-        where T : ContentDialog, IResultDialog<Result>;
+        where T : ContentDialog, IDialog;
     public Task ShowLocalUserManagerAsync();
     public Task ShowUpdateDialog(DisplayVersionInfo info);
     public Task<SelectDownloadFolderResult> ShowSelectGameFolderV2Async(Type type);

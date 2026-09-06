@@ -7,14 +7,9 @@ namespace Haiyu.Models.Options;
 /// </summary>
 public class WindowManagerOption
 {
-    public string Key { get; }
+    public string Key { get; init; }
 
-    public WindowRole Role { get; }
+    public object Paramter { get; init; }
 
-
-    public object Paramter { get; set; }
-
-    public WindowsOption WindowConfig { get; set; }
-
-    
+    public required WindowsOption WindowConfig { get; init; }
 }

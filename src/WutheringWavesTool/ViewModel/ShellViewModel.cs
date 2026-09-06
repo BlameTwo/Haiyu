@@ -236,7 +236,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     void CloseWindow()
     {
-        //this.AppContext.WindowManager.Shell.CloseAsync();
+        //this.AppContext.WindowManager.Shell.Close();
     }
 
     [RelayCommand]
@@ -391,8 +391,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     public void ShowDeviceInfo()
     {
-        var window = ViewFactorys.ShowAdminDevice();
-        window.Activate();
+        ViewFactorys.ShowAdminDevice();
     }
 
     internal void SetSelectItem(Type sourcePageType)

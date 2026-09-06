@@ -1,3 +1,4 @@
+using Haiyu.Common.Contracts;
 using Haiyu.Common.QR;
 using Haiyu.Models.Dialogs;
 using Microsoft.Graphics.Canvas;

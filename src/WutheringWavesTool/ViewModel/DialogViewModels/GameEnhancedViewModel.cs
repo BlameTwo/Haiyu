@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Haiyu.Common.Contracts;
 using Haiyu.ServiceHost;
 using Haiyu.ServiceHost.XBox.Commons;
 using Haiyu.Services;

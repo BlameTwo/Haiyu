@@ -1,4 +1,5 @@
 using Cacheing;
+using Haiyu.Common.Contracts;
 using Haiyu.Helpers;
 using Haiyu.Pages.Communitys;
 using Haiyu.Pages.Toolkits;
@@ -242,6 +243,7 @@ public static class InstanceBuilderExtensions
                     .AddScoped<IDialogManager, DialogManager>()
                     .AddScoped<IPickersService, NativePickersService>()
                     .AddScoped<DialogSession>()
+                    .AddScoped<WindowSession>()
                     .AddSingleton<IWindowManager, Services.WindowManager>()
                     #endregion
                     .AddKeyedSingleton<LoggerService>(

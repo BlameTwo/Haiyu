@@ -4,7 +4,7 @@ using Waves.Core.Models.CloudGame;
 
 namespace Haiyu.Pages.Dialogs
 {
-    public sealed partial class CloudSelectNodeDialog : ContentDialog,IResultDialog<LauncheNodeConfig>
+    public sealed partial class CloudSelectNodeDialog : ContentDialog, IDialog
     {
         public CloudSelectNodeDialog(
         CloudSelectNodeViewModel viewModel,

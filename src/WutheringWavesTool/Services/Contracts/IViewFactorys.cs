@@ -6,22 +6,22 @@ namespace Haiyu.Services.Contracts;
 public interface IViewFactorys
 {
     public IAppContext<App> AppContext { get; }
-    public GetGeetWindow CreateGeetWindow(GeetType type);
+    public GetGeetWindow CreateGeetWindow(nint value,GeetType type);
 
-    public WindowModelBase ShowSignWindow(GameRoilDataItem role);
-
-
+    public void ShowSignWindow(GameRoilDataItem role);
 
 
-    public WindowModelBase ShowAdminDevice();
 
-    public WindowModelBase ShowAnalysisRecordV2(CloudGameLoginSession selectLogin);
+
+    public void ShowAdminDevice();
+
+    public void ShowAnalysisRecordV2(CloudGameLoginSession selectLogin);
 
     #region Tool
 
-    public WindowModelBase ShowAutoKruoTokenWindow();
+    public void ShowAutoKruoTokenWindow();
 
-    public Window ShowMonitorToolWindow();
+    public void ShowMonitorToolWindow();
     #endregion
 
 

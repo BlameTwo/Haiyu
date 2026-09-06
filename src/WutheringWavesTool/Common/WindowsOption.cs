@@ -13,6 +13,9 @@ public sealed record WindowsOption
     public bool? IsMinimizable { get; init; }
     public bool CenterOnScreen { get; init; }
 
+    public bool IsExtendWindowTitle { get; init; }
+
+    public string Title { get; set; } = string.Empty;
     public static WindowsOption DefaultWindowsOption =>
         new()
         {
@@ -21,6 +24,7 @@ public sealed record WindowsOption
             IsResizable = false,
             IsMaximizable = false,
             CenterOnScreen = true,
+            IsExtendWindowTitle =true
         };
 
     public static WindowsOption OOBEWindowOption =>
@@ -29,7 +33,8 @@ public sealed record WindowsOption
             Width = 800,
             Height = 500,
             IsResizable = false,
-            IsMaximizable = false
+            IsMaximizable = false,
+            IsExtendWindowTitle = true
         };
 
 }

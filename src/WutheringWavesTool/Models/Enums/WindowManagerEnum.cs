@@ -6,11 +6,11 @@ namespace Haiyu.Models.Enums;
 public enum WindowRole:uint
 {
     /// <summary>
-    /// 主Shell Window
+    /// 默认窗口
     /// </summary>
-    Shell = 0,
+    Normal = 0,
     /// <summary>
-    /// 其他窗口
+    /// 模态窗口
     /// </summary>
-    Page = 1,
+    Model = 1,
 }

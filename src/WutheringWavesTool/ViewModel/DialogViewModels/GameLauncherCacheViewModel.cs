@@ -1,3 +1,4 @@
+using Haiyu.Common.Contracts;
 using Haiyu.Models.Dialogs;
 using Waves.Api.Models.Launcher;
 using Waves.Core.Common;

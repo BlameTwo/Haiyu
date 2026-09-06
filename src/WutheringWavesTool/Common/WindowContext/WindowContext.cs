@@ -34,6 +34,11 @@ public class WindowContext : IDisposable
         Key = key;
     }
 
+    public object Paramter
+    {
+        get => this.Option.Paramter;
+    }
+
     /// <summary>
     /// 消息弹出框
     /// </summary>
@@ -59,7 +64,7 @@ public class WindowContext : IDisposable
     /// <summary>
     /// 当前窗口上下文选项
     /// </summary>
-    public WindowManagerOption Option { get; }
+    public WindowManagerOption Option { get; init; }
 
     /// <summary>
     /// 最小化

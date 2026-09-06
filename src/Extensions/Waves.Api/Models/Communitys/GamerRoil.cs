@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -141,4 +142,7 @@ public class GameRoilDataItem
         {
             WeakReferenceMessenger.Default.Send<CopyStringMessager>(new(this.RoleId));
         });
+
+    [JsonIgnore]
+    public string GetSignId => $"{this.UserId}:{this.GameId}:{this.ServerId}:{this.Id}:Sign";
 }

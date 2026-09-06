@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Haiyu.Common.Contracts;
 using Waves.Core.Contracts.CloudGame;
 using Waves.Core.Models.Enums;
 using Waves.Core.Services;

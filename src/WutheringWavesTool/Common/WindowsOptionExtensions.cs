@@ -8,9 +8,10 @@ public static class WindowsOptionExtensions
         {
             return;
         }
-
+        window.Title = option.Title;
+        window.ExtendsContentIntoTitleBar = option.IsExtendWindowTitle;
         var manager = WinUIEx.WindowManager.Get(window);
-
+        
         if (option.Width.HasValue)
         {
             manager.Width = option.Width.Value;

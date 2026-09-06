@@ -5,7 +5,7 @@ namespace Haiyu.Pages.Dialogs;
 
 public sealed partial class SelectDownoadGameDialogV2
     : ContentDialog,
-        IResultDialog<SelectDownloadFolderResult>
+        IDialog
 {
     public SelectDownoadGameDialogV2(DialogSession dialogSession,IWindowManager windowManager)
     {

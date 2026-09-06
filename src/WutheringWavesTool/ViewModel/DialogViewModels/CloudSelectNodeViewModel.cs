@@ -1,3 +1,4 @@
+using Haiyu.Common.Contracts;
 using Waves.Api.Models.CloudGame;
 using Waves.Core.Contracts.CloudGame;
 

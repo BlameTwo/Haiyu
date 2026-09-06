@@ -7,7 +7,7 @@ using Waves.Settings;
 
 namespace Haiyu.Pages.Dialogs
 {
-    public sealed partial class CloseDialog : ContentDialog, IResultDialog<CloseWindowResult>
+    public sealed partial class CloseDialog : ContentDialog, IDialog
     {
         public CloseDialog(DialogSession dialogSession)
         {

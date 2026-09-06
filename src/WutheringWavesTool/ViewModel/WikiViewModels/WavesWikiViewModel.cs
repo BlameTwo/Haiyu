@@ -12,17 +12,6 @@ namespace Haiyu.ViewModel.WikiViewModels;
 
 public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
 {
-    private static readonly WindowsOption SignWindowOption = new()
-    {
-        Width = 400,
-        Height = 400,
-        MaxWidth = 400,
-        MaxHeight = 400,
-        IsResizable = false,
-        IsMaximizable = false,
-        CenterOnScreen = true,
-    };
-
     private static readonly WindowsOption CommunityWindowOption = new()
     {
         Width = 400,
@@ -239,12 +228,9 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
     [RelayCommand]
     async Task OpenGameSign()
     {
-        var win = Instance
+        Instance
             .Host.Services.GetRequiredService<IViewFactorys>()!
             .ShowSignWindow(this.SelectGamer);
-        win.ApplyWindowsOption(SignWindowOption);
-        win.ExtendsContentIntoTitleBar = true;
-        win.AppWindow.Show();
     }
 
     async partial void OnSelectGamerChanged(GameRoilDataItem value)

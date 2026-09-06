@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Haiyu.Common.Contracts;
 using Haiyu.KuroClient.Helper;
 using Waves.Core.Helpers;
 
@@ -112,7 +113,10 @@ public sealed partial class LoginGameViewModel : DialogViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Phone))
             return;
-        var view = ViewFactorys.CreateGeetWindow(GeetType.Login);
+        var view = ViewFactorys.CreateGeetWindow(
+            AppContext.WindowManager.Shell.GetWindow().GetWindowHandle(),
+            GeetType.Login
+        );
         view.AppWindowApp.Show();
     }
 

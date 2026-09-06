@@ -13,7 +13,7 @@ public interface IWindowManager
     /// <summary>
     /// 主窗口
     /// </summary>
-    public ShellWindowContext Shell { get;  }
+    public ShellWindowContext Shell { get; }
 
     public AppSettings AppSettings { get; }
 
@@ -22,7 +22,24 @@ public interface IWindowManager
     /// </summary>
     public Task CreateShellWindowAsync();
 
-    public Task CreateWindow<T>(WindowManagerOption managerOption)
-        where T : IWindowPage;
+    public bool IsWindowShow(string key);
+
+    /// <summary>
+    /// 创建普通窗口
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="managerOption"></param>
+    public void CreateWindow<T>(WindowManagerOption managerOption)
+        where T : UIElement;
+
+    /// <summary>
+    /// 创建模态窗口
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="managerOption"></param>
+    /// <param name="ownerId"></param>
+    public void CreateWindowBase<T>(WindowManagerOption managerOption, nint ownerId)
+        where T : UIElement;
+
     public WindowContext? GetWindowContext(string key);
 }

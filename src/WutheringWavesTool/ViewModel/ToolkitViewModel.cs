@@ -39,15 +39,15 @@ public sealed partial class ToolkitViewModel:ViewModelBase
     [RelayCommand]
     void ShowAutoKuroToken()
     {
-        var window = ViewFactorys.ShowAutoKruoTokenWindow();
-        window.AppWindow.Show();
+        //var window = ViewFactorys.ShowAutoKruoTokenWindow();
+        //window.AppWindow.Show();
     }
 
     [RelayCommand]
     void ShowMonitorTool()
     {
-        var window = ViewFactorys.ShowMonitorToolWindow();
-        window.Activate();
+        //var window = ViewFactorys.ShowMonitorToolWindow();
+        //window.Activate();
     }
 
     private void SendTaskMethod(object recipient, SendTaskMessager message)

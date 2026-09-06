@@ -2,14 +2,14 @@ using Haiyu.Common.Contracts;
 
 namespace Haiyu.Pages;
 
-public sealed partial class DeviceInfoPage : Page, IWindowPage
+public sealed partial class DeviceInfoPage : Page
 {
     private bool _disposed;
 
-    public DeviceInfoPage()
+    public DeviceInfoPage(DeviceInfoViewModel viewModel)
     {
         InitializeComponent();
-        this.ViewModel = Instance.GetService<DeviceInfoViewModel>();
+        this.ViewModel = viewModel;
         this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
     }
 
@@ -19,11 +19,6 @@ public sealed partial class DeviceInfoPage : Page, IWindowPage
     {
     }
 
-    public void SetWindow(Window window)
-    {
-        this.ViewModel?.Initialization(window);
-        title.Window = window;
-    }
 
     public void Dispose()
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Haiyu.Common.Contracts;
 using Haiyu.Models.Dialogs;
 using Waves.Core.Common;
 using Waves.Core.Helpers;

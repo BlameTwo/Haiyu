@@ -5,7 +5,7 @@ using Windows.Win32.Foundation;
 
 namespace Haiyu.Pages.Toolkits;
 
-public sealed partial class MonitorToolPage : Page, IWindowPage
+public sealed partial class MonitorToolPage : Page
 {
     private bool _disposed;
 
@@ -22,27 +22,28 @@ public sealed partial class MonitorToolPage : Page, IWindowPage
 
     public void SetWindow(Window window)
     {
-        if (ViewModel is null)
-            return;
-        var workArea = WindowExtension.GetWorkarea();
-        var dpi = WindowExtension.GetScaleAdjustment(window);
-        double height = 50;
-        int leftMargin = 200;
-        int rightMargin = 200;
-        double width = workArea.Value.Right - workArea.Value.Left - leftMargin - rightMargin;
-        int left = workArea.Value.Left + leftMargin;
-        int top = workArea.Value.Top+10;
-        nint rawHwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
-        HWND hwnd = new(rawHwnd);
-        WindowExtension.SetWindowTopMost(hwnd, true);
-        window.SetWindowSize(width / dpi, height / dpi);
-        window.AppWindow.Move(new Windows.Graphics.PointInt32
-        {
-            X = left,
-            Y = top
-        });
-        this.ViewModel.Window = window;
-        this.ViewModel.Window.AppWindow.Closing += CloseWindow;
+        //TODO WindowModelBase
+        //if (ViewModel is null)
+        //    return;
+        //var workArea = WindowExtension.GetWorkarea();
+        //var dpi = WindowExtension.GetScaleAdjustment(window);
+        //double height = 50;
+        //int leftMargin = 200;
+        //int rightMargin = 200;
+        //double width = workArea.Value.Right - workArea.Value.Left - leftMargin - rightMargin;
+        //int left = workArea.Value.Left + leftMargin;
+        //int top = workArea.Value.Top+10;
+        //nint rawHwnd = WinRT.Interop.WindowNative.GetWindowHandle(window);
+        //HWND hwnd = new(rawHwnd);
+        //WindowExtension.SetWindowTopMost(hwnd, true);
+        //window.SetWindowSize(width / dpi, height / dpi);
+        //window.AppWindow.Move(new Windows.Graphics.PointInt32
+        //{
+        //    X = left,
+        //    Y = top
+        //});
+        //this.ViewModel.Window = window;
+        //this.ViewModel.Window.AppWindow.Closing += CloseWindow;
     }
 
     private void CloseWindow(AppWindow sender, AppWindowClosingEventArgs args)

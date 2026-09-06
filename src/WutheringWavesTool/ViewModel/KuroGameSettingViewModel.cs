@@ -1,3 +1,4 @@
+using Haiyu.Common.Contracts;
 using Waves.Core.Models.Enums;
 using Waves.Core.Models.Options;
 

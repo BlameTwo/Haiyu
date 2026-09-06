@@ -8,29 +8,41 @@ namespace Haiyu.Services;
 
 public class ViewFactorys : IViewFactorys
 {
-    private static readonly WindowsOption GeetWindowOption =
-        new()
-        {
-            Width = 700,
-            Height = 510,
-            MaxWidth = 700,
-            MaxHeight = 510,
-            IsResizable = false,
-            IsMaximizable = false,
-            CenterOnScreen = true,
-        };
+    private static readonly WindowsOption SignWindowOption = new()
+    {
+        Width = 400,
+        Height = 400,
+        MaxWidth = 400,
+        MaxHeight = 400,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
 
-    private static readonly WindowsOption DeviceInfoWindowOption =
-        new()
-        {
-            Width = 750,
-            Height = 530,
-            MaxWidth = 750,
-            MaxHeight = 530,
-            IsResizable = false,
-            IsMaximizable = false,
-            CenterOnScreen = true,
-        };
+    private static readonly WindowsOption GeetWindowOption = new()
+    {
+        Width = 700,
+        Height = 510,
+        MaxWidth = 700,
+        MaxHeight = 510,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
+
+    private static readonly WindowsOption DeviceInfoWindowOption = new()
+    {
+        Width = 750,
+        Height = 530,
+        MaxWidth = 750,
+        MaxHeight = 530,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
 
     public ViewFactorys(IAppContext<App> appContext)
     {
@@ -39,64 +51,52 @@ public class ViewFactorys : IViewFactorys
 
     public IAppContext<App> AppContext { get; }
 
-    public GetGeetWindow CreateGeetWindow(GeetType type)
+    public GetGeetWindow CreateGeetWindow(nint value, GeetType type)
     {
-        return null;
-        //return new GetGeetWindow(
-        //    WindowNative.GetWindowHandle(AppContext.App.MainWindow),
-        //    type,
-        //    GeetWindowOption
-        //);
+        return new GetGeetWindow(value, type, GeetWindowOption);
     }
 
-    public WindowModelBase ShowSignWindow(GameRoilDataItem role) =>
-        this.ShowWindowBase<GamerSignPage>(role);
-
-    public WindowModelBase ShowWindowBase<T>(object? data)
-        where T : UIElement, IWindowPage
+    public void ShowSignWindow(GameRoilDataItem role)
     {
-        return null;
-        //var win = new WindowModelBase(WindowNative.GetWindowHandle(AppContext.App.MainWindow));
-        //var page = Instance.Host.Services!.GetRequiredService<T>();
-        //if (data != null)
-        //    page.SetData(data);
+        this.AppContext.WindowManager.CreateWindow<GamerSignPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = SignWindowOption,
+                Key = role.GetSignId,
+                Paramter = role,
+            }
+        );
+    }
+
+    public void ShowAdminDevice()
+    {
+        this.AppContext.WindowManager.CreateWindowBase<DeviceInfoPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = DeviceInfoWindowOption,
+                Key = "KuroDevice",
+                Paramter = null,
+            },
+            WindowNative.GetWindowHandle(AppContext.WindowManager.Shell.GetWindow())
+        );
+    }
+
+    public void ShowAnalysisRecordV2(CloudGameLoginSession selectLogin)
+    {
+        //return this.ShowWindowBase<WavesAnalysisRecordPage>(selectLogin);
+    }
+
+    public void ShowAutoKruoTokenWindow()
+    {
+        //return this.ShowWindowBase<AutoKuroTokenPage>(null);
+    }
+
+    public void ShowMonitorToolWindow()
+    {
+        //var win = new TransparentWindowBase();
+        //var page = Instance.Host.Services!.GetRequiredService<MonitorToolPage>();
         //page.SetWindow(win);
         //win.Content = page;
         //return win;
-    }
-
-    public WindowModelBase ShowAdminDevice()
-    {
-        return null;
-        //var win = new WindowModelBase(
-            //WindowNative.GetWindowHandle(AppContext.App.MainWindow),
-            //DeviceInfoWindowOption
-        //);
-        //var page = Instance.Host.Services!.GetRequiredService<DeviceInfoPage>();
-        //page.SetWindow(win);
-        //win.Content = page;
-        //return win;
-    }
-
-
-
-    public WindowModelBase ShowAnalysisRecordV2(CloudGameLoginSession selectLogin)
-    {
-        return this.ShowWindowBase<WavesAnalysisRecordPage>(selectLogin);
-    }
-
-    public WindowModelBase ShowAutoKruoTokenWindow()
-    {
-        return this.ShowWindowBase<AutoKuroTokenPage>(null);
-    }
-
-
-    public Window ShowMonitorToolWindow()
-    {
-        var win = new TransparentWindowBase();
-        var page = Instance.Host.Services!.GetRequiredService<MonitorToolPage>();
-        page.SetWindow(win);
-        win.Content = page;
-        return win;
     }
 }

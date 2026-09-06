@@ -103,7 +103,7 @@ public sealed class DialogManager : IDialogManager
     }
 
     public async Task<Result?> GetDialogResultAsync<T, Result>(object? data)
-        where T : ContentDialog, IResultDialog<Result>
+        where T : ContentDialog, IDialog
     {
         var t = await this.ShowDialogAsync<T>(data);
         if (t is Result r)

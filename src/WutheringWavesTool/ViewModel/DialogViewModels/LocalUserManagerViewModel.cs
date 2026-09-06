@@ -1,5 +1,7 @@
 
 
+using Haiyu.Common.Contracts;
+
 namespace Haiyu.ViewModel.DialogViewModels;
 
 public sealed partial class LocalUserManagerViewModel : DialogViewModelBase

@@ -1,3 +1,5 @@
+using Haiyu.Common.Contracts;
+
 namespace Haiyu.Common.Bases;
 
 public abstract partial class DialogViewModelBase : ViewModelBase

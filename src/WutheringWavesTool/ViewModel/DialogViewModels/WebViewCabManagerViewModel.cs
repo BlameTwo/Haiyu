@@ -1,3 +1,4 @@
+using Haiyu.Common.Contracts;
 using Haiyu.Common.KuroWebView;
 
 namespace Haiyu.ViewModel.DialogViewModels;

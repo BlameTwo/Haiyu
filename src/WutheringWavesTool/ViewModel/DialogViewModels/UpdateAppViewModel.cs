@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Haiyu.Common.Contracts;
 using Haiyu.Plugin.Common.LegacyMessageBox;
 using Haiyu.Plugin.Contracts;
 using Haiyu.Plugin.Models;

@@ -1,4 +1,6 @@
 
+using Haiyu.Common.Contracts;
+
 namespace Haiyu.ViewModel.DialogViewModels;
 
 public sealed partial class GameResourceViewModelV2 : DialogViewModelBase
