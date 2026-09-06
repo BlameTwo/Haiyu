@@ -22,7 +22,7 @@ public sealed class WindowManager : IWindowManager
             {
                 return shellC;
             }
-            throw new ArgumentException("Shell window context not found.");
+            return default;
         }
     }
 
@@ -30,6 +30,8 @@ public sealed class WindowManager : IWindowManager
 
     public async Task CreateShellWindowAsync()
     {
+        if (this.Shell != null)
+            return;
         WindowEx winEx = new WindowEx();
 
         winEx.Title = "Haiyu";

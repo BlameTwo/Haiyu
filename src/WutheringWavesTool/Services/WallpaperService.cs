@@ -122,6 +122,9 @@ public class WallpaperService : IWallpaperService
         if (ReferenceEquals(Media, media))
         {
             Media = null;
+            this.mediaCacheUrl = null;
+            this.mediaFallbackUrl = null;
+            
         }
     }
 
