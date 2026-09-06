@@ -56,7 +56,7 @@
                             </SystemBackdropElement.SystemBackdrop>
                         </SystemBackdropElement>
                         <Button
-                            Width="60"
+                            Width="65"
                             Margin="0,0,0,0"
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch"
@@ -311,7 +311,7 @@
         <Grid x:Name="panel" Grid.Row="1">
             <NavigationView
                 x:Name="navigationView"
-                OpenPaneLength="60"
+                OpenPaneLength="65"
                 PaneDisplayMode="Left"
                 SelectedItem="{x:Bind ViewModel.SelectItem, Mode=OneWay}"
                 Style="{ThemeResource MainNavigationViewStyle}">

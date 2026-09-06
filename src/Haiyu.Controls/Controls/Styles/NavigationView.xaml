@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,7 +7,7 @@
     xmlns:ui="using:CommunityToolkit.WinUI">
 
     <ResourceDictionary.ThemeDictionaries>
-        <ResourceDictionary x:Key="Default">
+        <ResourceDictionary x:Key="Light">
             <StaticResource x:Key="RailNavigationIconForegroundBrush" ResourceKey="ControlAAFillColorDefaultBrush" />
             <!--  rest  -->
             <SolidColorBrush x:Key="RailNavigationViewDefaultPaneBackground" Color="Transparent" />
@@ -15,7 +15,7 @@
 
             <StaticResource x:Key="RailNavigationViewItemForeground" ResourceKey="TextFillColorSecondaryBrush" />
             <StaticResource x:Key="RailNavigationViewItemBackground" ResourceKey="ControlFillColorTransparentBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBorderBrush" ResourceKey="ControlFillColorTransparentBrush" />
+            <StaticResource x:Key="RailNavigationViewItemBorderBrush" ResourceKey="AccentTextFillColorTertiaryBrush" />
             <!--  hover  -->
             <StaticResource x:Key="RailNavigationViewItemForegroundPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
             <StaticResource x:Key="RailNavigationViewItemBackgroundPointerOver" ResourceKey="SubtleFillColorSecondaryBrush" />
@@ -24,13 +24,13 @@
             <StaticResource x:Key="RailNavigationViewItemBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
             <!--  selected  -->
             <StaticResource x:Key="RailNavigationViewItemForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundSelected" ResourceKey="ControlSolidFillColorDefaultBrush" />
+            <SolidColorBrush x:Key="RailNavigationViewItemBackgroundSelected" Color="#FCFCFC" />
             <!--  selected hover  -->
             <StaticResource x:Key="RailNavigationViewItemForegroundSelectedPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundSelectedPointerOver" ResourceKey="ControlSolidFillColorDefaultBrush" />
+            <SolidColorBrush x:Key="RailNavigationViewItemBackgroundSelectedPointerOver" Color="#FFFFFF" />
             <!--  selected pressed  -->
             <StaticResource x:Key="RailNavigationViewItemForegroundSelectedPressed" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundSelectedPressed" ResourceKey="ControlSolidFillColorDefaultBrush" />
+            <SolidColorBrush x:Key="RailNavigationViewItemBackgroundSelectedPressed" Color="#F1F1F1" />
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
@@ -50,39 +50,39 @@
             <StaticResource x:Key="RailNavigationViewItemBackgroundPressed" ResourceKey="SubtleFillColorTertiaryBrush" />
             <!--  selected  -->
             <StaticResource x:Key="RailNavigationViewItemForegroundSelected" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundSelected" ResourceKey="ControlSolidFillColorDefaultBrush" />
+            <SolidColorBrush x:Key="RailNavigationViewItemBackgroundSelected" Color="#3B3B3B" />
             <!--  selected hover  -->
             <StaticResource x:Key="RailNavigationViewItemForegroundSelectedPointerOver" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundSelectedPointerOver" ResourceKey="ControlSolidFillColorDefaultBrush" />
+            <SolidColorBrush x:Key="RailNavigationViewItemBackgroundSelectedPointerOver" Color="#444444" />
             <!--  selected pressed  -->
             <StaticResource x:Key="RailNavigationViewItemForegroundSelectedPressed" ResourceKey="TextFillColorPrimaryBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundSelectedPressed" ResourceKey="ControlSolidFillColorDefaultBrush" />
+            <SolidColorBrush x:Key="RailNavigationViewItemBackgroundSelectedPressed" Color="#333333" />
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="HighContrast">
-            <StaticResource x:Key="RailNavigationIconForegroundBrush" ResourceKey="SystemControlForegroundBaseHighBrush" />
+            <StaticResource x:Key="RailNavigationIconForegroundBrush" ResourceKey="SystemColorWindowTextColorBrush" />
             <!--  rest  -->
-            <StaticResource x:Key="RailNavigationViewDefaultPaneBackground" ResourceKey="SystemColorWindowBrush" />
-            <StaticResource x:Key="RailNavigationViewExpandedPaneBackground" ResourceKey="SystemColorWindowBrush" />
+            <StaticResource x:Key="RailNavigationViewDefaultPaneBackground" ResourceKey="SystemColorWindowColorBrush" />
+            <StaticResource x:Key="RailNavigationViewExpandedPaneBackground" ResourceKey="SystemColorWindowColorBrush" />
 
-            <StaticResource x:Key="RailNavigationViewItemForeground" ResourceKey="SystemControlForegroundBaseHighBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackground" ResourceKey="SystemControlBackgroundBaseLowBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
+            <StaticResource x:Key="RailNavigationViewItemForeground" ResourceKey="SystemColorWindowTextColorBrush" />
+            <StaticResource x:Key="RailNavigationViewItemBackground" ResourceKey="SystemColorWindowColorBrush" />
+            <StaticResource x:Key="RailNavigationViewItemBorderBrush" ResourceKey="SystemColorWindowColorBrush" />
             <!--  hover  -->
-            <StaticResource x:Key="RailNavigationViewItemForegroundPointerOver" ResourceKey="SystemControlHighlightAltBaseHighBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundPointerOver" ResourceKey="SystemControlHighlightListLowBrush" />
+            <StaticResource x:Key="RailNavigationViewItemForegroundPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
+            <StaticResource x:Key="RailNavigationViewItemBackgroundPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
             <!--  pressed  -->
-            <StaticResource x:Key="RailNavigationViewItemForegroundPressed" ResourceKey="SystemControlHighlightAltBaseHighBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundPressed" ResourceKey="SystemControlHighlightListMediumBrush" />
+            <StaticResource x:Key="RailNavigationViewItemForegroundPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+            <StaticResource x:Key="RailNavigationViewItemBackgroundPressed" ResourceKey="SystemColorHighlightColorBrush" />
             <!--  selected  -->
-            <StaticResource x:Key="RailNavigationViewItemForegroundSelected" ResourceKey="SystemControlHighlightAltBaseHighBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundSelected" ResourceKey="SystemControlHighlightListLowBrush" />
+            <StaticResource x:Key="RailNavigationViewItemForegroundSelected" ResourceKey="SystemColorHighlightTextColorBrush" />
+            <StaticResource x:Key="RailNavigationViewItemBackgroundSelected" ResourceKey="SystemColorHighlightColorBrush" />
             <!--  selected hover  -->
-            <StaticResource x:Key="RailNavigationViewItemForegroundSelectedPointerOver" ResourceKey="SystemControlHighlightAltBaseHighBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundSelectedPointerOver" ResourceKey="SystemControlHighlightListLowBrush" />
+            <StaticResource x:Key="RailNavigationViewItemForegroundSelectedPointerOver" ResourceKey="SystemColorHighlightTextColorBrush" />
+            <StaticResource x:Key="RailNavigationViewItemBackgroundSelectedPointerOver" ResourceKey="SystemColorHighlightColorBrush" />
             <!--  selected pressed  -->
-            <StaticResource x:Key="RailNavigationViewItemForegroundSelectedPressed" ResourceKey="SystemControlHighlightAltBaseHighBrush" />
-            <StaticResource x:Key="RailNavigationViewItemBackgroundSelectedPressed" ResourceKey="SystemControlHighlightListMediumBrush" />
+            <StaticResource x:Key="RailNavigationViewItemForegroundSelectedPressed" ResourceKey="SystemColorHighlightTextColorBrush" />
+            <StaticResource x:Key="RailNavigationViewItemBackgroundSelectedPressed" ResourceKey="SystemColorHighlightColorBrush" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
@@ -718,26 +718,40 @@
                         Background="Transparent"
                         Control.IsTemplateFocusTarget="True"
                         CornerRadius="{TemplateBinding CornerRadius}">
+                        <Grid
+                            x:Name="LiftShadowHost"
+                            Margin="4,4,4,4"
+                            IsHitTestVisible="False" />
                         <Border
                             x:Name="Backplate"
                             Background="{TemplateBinding Background}"
-                            CornerRadius="{TemplateBinding CornerRadius}">
+                            CornerRadius="8">
                             <Border.BackgroundTransition>
                                 <BrushTransition Duration="0:0:0.15" />
                             </Border.BackgroundTransition>
                         </Border>
                         <Grid x:Name="PresenterContentRootGrid">
-                            <!--  Wrap SelectionIndicator in a panel so that its offset is 0,0 - this enables the offset animation.  -->
-                            <!--  TODO: There's flicking issue of the indicator, having a 0.1 Margin and setting UseLayoutRounding to False is a temp solution.  -->
                             <Border
                                 x:Name="SelectBorder"
                                 Margin="0.1,0,0,0"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                BorderBrush="{ThemeResource NavigationViewSelectionIndicatorForeground}"
-                                BorderThickness="0"
-                                CornerRadius="5"
+                                BorderBrush="{ThemeResource AccentTextFillColorTertiaryBrush}"
+                                BorderThickness="1"
+                                CornerRadius="8"
+                                Opacity="0"
                                 UseLayoutRounding="False" />
+                            <Border
+                                x:Name="FloatingSelectionMark"
+                                Width="3"
+                                Height="16"
+                                Margin="2,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Background="{ThemeResource NavigationViewSelectionIndicatorForeground}"
+                                CornerRadius="2"
+                                IsHitTestVisible="False"
+                                Opacity="0" />
                             <Grid
                                 x:Name="ContentGrid"
                                 MinHeight="{ThemeResource RailNavigationViewItemOnLeftMinHeight}"
@@ -874,10 +888,11 @@
                                         <!--  Store: Customized  -->
                                         <!--<Setter Target="ContentPresenter.Foreground" Value="{ThemeResource RailNavigationViewItemForegroundSelected}" />-->
                                         <Setter Target="Icon.(AnimatedIcon.State)" Value="NormalOn" />
-                                        <Setter Target="SelectBorder.BorderThickness" Value="2" />
+                                        <Setter Target="SelectBorder.Opacity" Value="1" />
+                                        <Setter Target="FloatingSelectionMark.Opacity" Value="1" />
                                         <Setter Target="Icon.Foreground" Value="{ThemeResource NavigationViewSelectionIndicatorForeground}" />
-                                        <Setter Target="ContentPresenter.Visibility" Value="Collapsed" />
-                                        <Setter Target="ContentPresenter.Opacity" Value="0" />
+                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource NavigationViewSelectionIndicatorForeground}" />
+                                        <Setter Target="ContentPresenter.Opacity" Value="1" />
                                         <Setter Target="UnselectedIconBox.Opacity" Value="0" />
                                         <Setter Target="SelectedIconBox.Opacity" Value="1" />
                                     </VisualState.Setters>
@@ -890,9 +905,10 @@
                                         <!--<Setter Target="ContentPresenter.Foreground" Value="{ThemeResource RailNavigationViewItemForegroundSelectedPointerOver}" />-->
                                         <Setter Target="Icon.(AnimatedIcon.State)" Value="PointerOverOn" />
                                         <Setter Target="Icon.Foreground" Value="{ThemeResource NavigationViewSelectionIndicatorForeground}" />
-                                        <Setter Target="ContentPresenter.Visibility" Value="Collapsed" />
-                                        <Setter Target="ContentPresenter.Opacity" Value="0" />
-                                        <Setter Target="SelectBorder.BorderThickness" Value="2.5" />
+                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource NavigationViewSelectionIndicatorForeground}" />
+                                        <Setter Target="ContentPresenter.Opacity" Value="1" />
+                                        <Setter Target="SelectBorder.Opacity" Value="1" />
+                                        <Setter Target="FloatingSelectionMark.Opacity" Value="1" />
                                         <Setter Target="UnselectedIconBox.Opacity" Value="0" />
                                         <Setter Target="SelectedIconBox.Opacity" Value="1" />
                                     </VisualState.Setters>
@@ -904,10 +920,11 @@
                                         <!--  Store: Customized  -->
                                         <!--<Setter Target="ContentPresenter.Foreground" Value="{ThemeResource RailNavigationViewItemForegroundSelectedPressed}" />-->
                                         <Setter Target="Icon.(AnimatedIcon.State)" Value="PressedOn" />
-                                        <Setter Target="SelectBorder.BorderThickness" Value="2" />
+                                        <Setter Target="SelectBorder.Opacity" Value="1" />
+                                        <Setter Target="FloatingSelectionMark.Opacity" Value="1" />
                                         <Setter Target="Icon.Foreground" Value="{ThemeResource NavigationViewSelectionIndicatorForeground}" />
-                                        <Setter Target="ContentPresenter.Visibility" Value="Collapsed" />
-                                        <Setter Target="ContentPresenter.Opacity" Value="0" />
+                                        <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource NavigationViewSelectionIndicatorForeground}" />
+                                        <Setter Target="ContentPresenter.Opacity" Value="1" />
                                         <Setter Target="UnselectedIconBox.Opacity" Value="0" />
                                         <Setter Target="SelectedIconBox.Opacity" Value="1" />
                                     </VisualState.Setters>
