@@ -726,6 +726,64 @@ public static class CloudGameBuilder
                 return { invoked: false };
             };
 
+            let reconnectPromise = null;
+            let lastReconnectAt = 0;
+            const reconnectStream = async (reason) => {
+                if (reconnectPromise) {
+                    return reconnectPromise;
+                }
+
+                const elapsed = Date.now() - lastReconnectAt;
+                if (elapsed < 1500) {
+                    return { invoked: false, throttled: true };
+                }
+
+                lastReconnectAt = Date.now();
+                reconnectPromise = (async () => {
+                    setMessage({{ToJavaScriptString(LanguageService.GetStringByText("云游戏连接中断，正在重新连接……"))}});
+                    try {
+                        if (typeof sdk?.reconnectServer === "function") {
+                            await sdk.reconnectServer();
+                            post("reconnect", { reason, invoked: true, method: "reconnectServer" });
+                            return { invoked: true, method: "reconnectServer" };
+                        }
+
+                        post("warning", { message: "Welink reconnectServer is unavailable", reason });
+                        return { invoked: false };
+                    } catch (error) {
+                        post("warning", {
+                            message: "Welink reconnect failed",
+                            reason,
+                            detail: error?.message || String(error)
+                        });
+                        return { invoked: false };
+                    } finally {
+                        reconnectPromise = null;
+                    }
+                })();
+                return reconnectPromise;
+            };
+
+            const recoverGameVideo = async (reason) => {
+                setMessage({{ToJavaScriptString(LanguageService.GetStringByText("游戏画面启动失败，正在恢复……"))}});
+                try {
+                    if (typeof sdk?.tryPlayGameVideo === "function") {
+                        await sdk.tryPlayGameVideo();
+                        post("video-recovery", { reason, invoked: true, method: "tryPlayGameVideo" });
+                        return true;
+                    }
+                } catch (error) {
+                    post("warning", {
+                        message: "Welink video recovery failed",
+                        reason,
+                        detail: error?.message || String(error)
+                    });
+                }
+
+                await reconnectStream(`${reason}:fallback`);
+                return false;
+            };
+
             // Host-side controls exposed to the native window.
             // layoutSurface: CSS-only fit after window resize (safe).
             // syncResolution: intentionally does NOT call setGameResolution on resize
@@ -738,6 +796,7 @@ public static class CloudGameBuilder
                 syncResolution: () => false,
                 layoutSurface: (reason) => layoutSurface(reason || "layout"),
                 requestExit,
+                reconnect: reconnectStream,
                 getLastNetworkStat: () => lastNetworkStat
             };
 
@@ -879,9 +938,16 @@ public static class CloudGameBuilder
             const getPhysicalResolution = () => {
                 const viewport = getViewportResolution();
                 const scale = Number(window.devicePixelRatio) > 0 ? Number(window.devicePixelRatio) : 1;
+                const normalized = normalizeResolution(
+                    viewport.width * scale,
+                    viewport.height * scale
+                );
                 return {
-                    width: viewport.width * scale,
-                    height: viewport.height * scale,
+                    // UE's pre-launch message binds these fields as integers. A
+                    // fractional WebView2 DIP (for example 1009.75) makes the
+                    // whole OnCloudGameLoginPreLaunch payload fail to deserialize.
+                    width: normalized.width,
+                    height: normalized.height,
                     viewportWidth: viewport.width,
                     viewportHeight: viewport.height,
                     scale
@@ -1159,8 +1225,8 @@ public static class CloudGameBuilder
                 }
             };
 
-            const sendPreLaunchUserData = (screenResolution) => {
-                if (preopenState !== 1) {
+            const sendPreLaunchUserData = (screenResolution, force = false) => {
+                if (preopenState !== 1 && !force) {
                     return false;
                 }
 
@@ -1216,6 +1282,12 @@ public static class CloudGameBuilder
                 } else {
                     sentWebPlatform = sendMessageWithKey("SetIsWebPlatform", "1");
                     sentLogin = sendUserData();
+                    // Until code 6254 arrives the allocation mode is unknown.
+                    // Send the pre-launch envelope as well; the cloud client only
+                    // consumes the message matching its current launch mode.
+                    if (preopenState === 0) {
+                        sentLogin = sendPreLaunchUserData(lastPreLaunchResolution, true) || sentLogin;
+                    }
                 }
 
                 post("keepalive", {
@@ -1263,8 +1335,12 @@ public static class CloudGameBuilder
                     case "RequestLogin":
                         sendUserData();
                         break;
+                    case "RequestLoginPreLaunch":
+                        sendPreLaunchUserData(undefined, true);
+                        break;
                     case "RequestGamePadDevice":
                         sendGamePadDeviceChangeData();
+                        setGameResolution();
                         break;
                     case "HotPatchEnterGame":
                         handleFirstVideoFrame();
@@ -1280,6 +1356,20 @@ public static class CloudGameBuilder
                 post("game-message-with-key", { key, message });
 
                 switch (key) {
+                    case "OpenWebView": {
+                        const request = parseJson(message);
+                        const url = typeof request?.url === "string" ? request.url : "";
+                        if (url) {
+                            post("open-url", {
+                                url,
+                                title: typeof request?.title === "string" ? request.title : "",
+                                source: "OpenWebView"
+                            });
+                        } else {
+                            post("warning", { message: "OpenWebView payload is missing url" });
+                        }
+                        break;
+                    }
                     case "InitPostWebView":
                         // Intentionally no setGameResolution — stream already negotiated.
                         break;
@@ -1312,9 +1402,13 @@ public static class CloudGameBuilder
                         notifyForeground("sdk-first-video-frame");
                         post("first-frame");
                         break;
+                    case 6105:
+                        reconnectStream("sdk-6105");
+                        break;
                     case 6252:
                         if (detail?.pipeState === 1) {
                             sendPreLaunchUserData();
+                            setGameResolution();
                         }
                         break;
                     case 6253: {
@@ -1336,7 +1430,21 @@ public static class CloudGameBuilder
                     case 6254:
                         if (detail?.type === "preopen" && typeof detail.info === "number") {
                             preopenState = detail.info;
+                            if (preopenState === 1) {
+                                sendPreLaunchUserData();
+                            }
                         }
+                        break;
+                    case 6089:
+                        if (detail?.state === 0) {
+                            firstFramePresented = false;
+                            overlay?.classList?.remove("hidden");
+                            setMessage({{ToJavaScriptString(LanguageService.GetStringByText("云端游戏正在重启，正在恢复连接……"))}});
+                            reconnectStream("sdk-6089");
+                        }
+                        break;
+                    case 6536:
+                        recoverGameVideo("sdk-6536");
                         break;
                 }
             };
@@ -1743,6 +1851,10 @@ public static class CloudGameBuilder
                         code,
                         detail
                     });
+                };
+
+                sdk.onOpenUrl = (url) => {
+                    post("open-url", { url: String(url || "") });
                 };
 
                 if (typeof sdk.onCursorData !== "undefined") {

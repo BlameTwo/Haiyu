@@ -416,6 +416,29 @@ public sealed partial class CloudGameingViewModel:ViewModelBase
                     Logger.WriteError($"[CloudGame][Bridge][error] {args.WebMessageAsJson}");
                     ShowSystemCursor();
                     break;
+                case "open-url":
+                {
+                    var url = root.TryGetProperty("url", out var urlElement)
+                        ? urlElement.GetString()
+                        : null;
+                    if (
+                        Uri.TryCreate(url, UriKind.Absolute, out var uri)
+                        && (uri.Scheme == Uri.UriSchemeHttps || uri.Scheme == Uri.UriSchemeHttp)
+                    )
+                    {
+                        _ = Windows.System.Launcher.LaunchUriAsync(uri);
+                        Logger.WriteInfo($"[CloudGame][Bridge] opened URL host={uri.Host}");
+                    }
+                    else
+                    {
+                        Logger.WriteWarning("[CloudGame][Bridge] ignored invalid open-url request");
+                    }
+                    break;
+                }
+                case "reconnect":
+                case "video-recovery":
+                    Logger.WriteInfo($"[CloudGame][Bridge] {type}: {TruncateForLog(args.WebMessageAsJson, 400)}");
+                    break;
                 case "pivotal":
                 case "status":
                 case "keepalive":
