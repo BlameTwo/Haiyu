@@ -43,11 +43,10 @@ public sealed partial class ToolkitViewModel:ViewModelBase
     }
 
     [RelayCommand]
-    void ShowMonitorTool()
-    {
-        //var window = ViewFactorys.ShowMonitorToolWindow();
-        //window.Activate();
-    }
+      void ShowMonitorTool()
+      {
+          ViewFactorys.ShowMonitorToolWindow();
+      }
 
     private void SendTaskMethod(object recipient, SendTaskMessager message)
     {

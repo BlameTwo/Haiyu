@@ -1,4 +1,4 @@
-namespace Haiyu.Behaviors;
+namespace Haiyu.Converter;
 
 public sealed class PointerMoveScaleBehavior : Behavior<FrameworkElement>
 {

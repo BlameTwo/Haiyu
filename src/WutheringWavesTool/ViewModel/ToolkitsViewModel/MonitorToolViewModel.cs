@@ -130,6 +130,16 @@ public sealed partial class MonitorToolViewModel : ViewModelBase
                                         Load = GetSensorValue(gpu.Load, "GPU Core", "D3D 3D"),
                                         Voltages = GetSensorValue(gpu.Voltages, "GPU Core"),
                                         Clock = GetSensorValue(gpu.Clock, "GPU Core"),
+                                        Memory =
+                                            $"{Math.Round(GetSensorValue(gpu.Memory, "GPU Memory Free") / 1024, 2)}G/{Math.Round(GetSensorValue(gpu.Memory, "GPU Memory Total") / 1024, 2)}G",
+                                        CurrentVRRAM = Math.Round(
+                                            GetSensorValue(gpu.Memory, "GPU Memory Free") / 1024,
+                                            2
+                                        ),
+                                        MaxVRRAM = Math.Round(
+                                            GetSensorValue(gpu.Memory, "GPU Memory Total") / 1024,
+                                            2
+                                        ),
                                     }
                             )
                         );
@@ -337,4 +347,13 @@ public sealed partial class MonitorDeviceItem : ObservableObject
 
     [ObservableProperty]
     public partial double Clock { get; set; }
+
+    [ObservableProperty]
+    public partial string Memory { get; set; }
+
+    [ObservableProperty]
+    public partial double MaxVRRAM { get; set; }
+
+    [ObservableProperty]
+    public partial double CurrentVRRAM { get; set; }
 }

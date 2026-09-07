@@ -1,6 +1,8 @@
 using Haiyu.Common.Contracts;
 using Haiyu.Pages.Communitys;
 using Haiyu.Pages.Toolkits;
+using Haiyu.Models.Enums;
+using Haiyu.Models.Options;
 using Waves.Api.Models.CloudGame;
 using Waves.Core.Models.CloudGame;
 
@@ -130,12 +132,22 @@ public class ViewFactorys : IViewFactorys
         );
     }
 
-    public void ShowMonitorToolWindow()
+    public void ShowMonitorToolWindow(PostionType postion = PostionType.TopCenter)
     {
-        //var win = new TransparentWindowBase();
-        //var page = Instance.Host.Services!.GetRequiredService<MonitorToolPage>();
-        //page.SetWindow(win);
-        //win.Content = page;
-        //return win;
+        AppContext.WindowManager.CreateTransparentWindow<MonitorToolPage>(
+            new PostionTransparentWindowOption
+            {
+                Key = "MonitorTool",
+                Parameter = null,
+                Postion = postion,
+                Width = 1200,
+                Height = 50,
+                LeftMargin = 50,
+                TopMargin = 5,
+                RightMargin = 50,
+                BottomMargin = 10,
+                IsTopMost = true,
+            }
+        );
     }
 }

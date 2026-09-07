@@ -3,9 +3,23 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:property="using:Haiyu.Controls.Propertys">
-    <Style x:Key="LauncherButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+    <Style
+        x:Key="LauncherButtonStyle"
+        BasedOn="{StaticResource DefaultButtonStyle}"
+        TargetType="Button">
         <Setter Property="Background" Value="{ThemeResource SystemFillColorSuccess}" />
         <Setter Property="Foreground" Value="{ThemeResource TextOnAccentFillColorPrimaryBrush}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="property:LauncherButtonShine.IsEnabled" Value="True" />
+        <Setter Property="property:LauncherButtonShine.PlayOnPointerOver" Value="True" />
+        <Setter Property="property:LauncherButtonShine.PlayWhenEnabled" Value="True" />
+    </Style>
+
+    <Style
+        x:Key="ALauncherButtonStyle"
+        BasedOn="{StaticResource AccentButtonStyle}"
+        TargetType="Button">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="CornerRadius" Value="4" />
         <Setter Property="property:LauncherButtonShine.IsEnabled" Value="True" />

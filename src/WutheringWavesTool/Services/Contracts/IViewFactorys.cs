@@ -1,3 +1,4 @@
+using Haiyu.Models.Enums;
 using Waves.Api.Models.CloudGame;
 using Waves.Core.Models.CloudGame;
 
@@ -21,7 +22,7 @@ public interface IViewFactorys
 
     public void ShowAutoKruoTokenWindow();
 
-    public void ShowMonitorToolWindow();
+    public void ShowMonitorToolWindow(PostionType postion = PostionType.TopCenter);
     #endregion
 
 

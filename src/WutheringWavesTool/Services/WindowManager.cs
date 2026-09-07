@@ -225,6 +225,109 @@ public sealed class WindowManager : IWindowManager
         }
     }
 
+    public WindowSession CreateTransparentWindow<T>(PostionTransparentWindowOption managerOption)
+        where T:UIElement
+    {
+        ArgumentNullException.ThrowIfNull(managerOption);
+        ArgumentException.ThrowIfNullOrWhiteSpace(managerOption.Key);
+
+        if (_windowContext.TryGetValue(managerOption.Key, out var existingContext))
+        {
+            existingContext.Show();
+            existingContext.GetWindow().Activate();
+            return existingContext.Service.ServiceProvider.GetRequiredService<WindowSession>();
+        }
+
+        var scope = Instance.Host.Services.CreateAsyncScope();
+        PostionTransparentWindowContext? context = null;
+        TransparentWindowBase? window = null;
+        WindowSession? session = null;
+        T? page = null;
+
+        try
+        {
+            window = new TransparentWindowBase();
+            context = new PostionTransparentWindowContext(scope, managerOption.Key)
+            {
+                Option = managerOption,
+            };
+
+            context.SetWindow(window);
+
+            if (!_windowContext.TryAdd(context.Key, context))
+            {
+                throw new InvalidOperationException($"窗口 Key 已存在：{context.Key}");
+            }
+
+            session = scope.ServiceProvider.GetRequiredService<WindowSession>();
+
+            session.Attach(window, context);
+
+            page = scope.ServiceProvider.GetRequiredService<T>();
+            window.Content = page;
+
+            context.ApplyOption();
+
+            if (page is IWindowInitializable initializable)
+            {
+                initializable.Initialize();
+            }
+
+            window.Closed += TransparentWindow_Closed;
+            window.Activate();
+
+            return session;
+
+            void TransparentWindow_Closed(object sender, WindowEventArgs args)
+            {
+                try
+                {
+                    if (page is IWindowInitializable initializable)
+                    {
+                        initializable.Dispose();
+                    }
+
+                    window.Content = null;
+                }
+                finally
+                {
+                    window.Closed -= TransparentWindow_Closed;
+                    session.Detach();
+                    _windowContext.Remove(context.Key);
+                    context.Dispose();
+                }
+            }
+        }
+        catch
+        {
+            if (context is not null)
+            {
+                _windowContext.Remove(context.Key);
+            }
+
+            try
+            {
+                if (page is IWindowInitializable initializable)
+                {
+                    initializable.Dispose();
+                }
+
+                if (window is not null)
+                {
+                    window.Content = null;
+                }
+
+                session?.Detach();
+                window?.Close();
+            }
+            finally
+            {
+                scope.Dispose();
+            }
+            throw;
+        }
+    }
+
     public void CreateWindowBase<T>(WindowManagerOption managerOption, nint ownerId)
         where T : UIElement
     {

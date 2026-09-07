@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:adb="using:ChromeCDPSharp.Common"
     xmlns:controls="using:Haiyu.Controls"
+    xmlns:converter="using:Haiyu.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helper="using:Haiyu.Helpers"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -17,6 +18,9 @@
             <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
         </i:EventTriggerBehavior>
     </i:Interaction.Behaviors>
+    <Page.Resources>
+        <converter:MonitorMemoryVisiblity x:Key="MonitorMemoryVisiblity" />
+    </Page.Resources>
     <Grid>
         <Grid.Resources>
             <Style x:Key="TokenPanelBorderStyle" TargetType="Border">
@@ -34,6 +38,12 @@
                 <Setter Property="CornerRadius" Value="5" />
             </Style>
         </Grid.Resources>
+        <Grid.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutSubItem Text="显示" />
+                <MenuFlyoutItem Text="退出" />
+            </MenuFlyout>
+        </Grid.ContextFlyout>
         <StackPanel
             Padding="10,0"
             HorizontalAlignment="Center"
@@ -69,14 +79,6 @@
                     Spacing="3">
                     <TextBlock Text="0.1% Low" />
                     <TextBlock FontWeight="SemiBold" Text="{x:Bind ViewModel.Low01PercentFPS, Mode=OneWay}" />
-                </StackPanel>
-                <StackPanel
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal"
-                    Spacing="3">
-                    <TextBlock Text="MAX Time" />
-                    <TextBlock Text="{x:Bind ViewModel.MaxFrameTime, Mode=OneWay}" />
-                    <TextBlock Text="ms" />
                 </StackPanel>
             </StackPanel>
             <ItemsControl ItemsSource="{x:Bind ViewModel.CPUS, Mode=OneWay}" Visibility="Visible">
@@ -147,9 +149,8 @@
                                 <Run Text="{x:Bind Tempate, Mode=OneWay}" />
                                 <Run Text="℃" />
                             </TextBlock>
-                            <TextBlock>
-                                <Run Text="{x:Bind Clock, Mode=OneWay}" />
-                                <Run Text="MHz" />
+                            <TextBlock Visibility="{x:Bind MaxVRRAM, Mode=OneWay, Converter={StaticResource MonitorMemoryVisiblity}}">
+                                <Run Text="{x:Bind Memory, Mode=OneWay}" />
                             </TextBlock>
                         </StackPanel>
                     </DataTemplate>

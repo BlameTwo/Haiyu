@@ -47,13 +47,23 @@
                     </StackPanel>
                 </Button>
             </cui:SettingsCard>
-            <cui:SettingsCard Description="利用ETW机制和驱动层来获取当前应用程序的FPS计数和计算机硬件信息，此功能启动时会进行请求管理员权限" Header="PC 监控">
+            <cui:SettingsCard Description="{x:Bind helper:LanguageService.GetString('Tool_MoniterDescription')}" Header="{x:Bind helper:LanguageService.GetString('Tool_MoniterHeader')}">
+                <cui:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE977;" />
+                </cui:SettingsCard.HeaderIcon>
                 <StackPanel Orientation="Horizontal">
                     <Button
                         Padding="12,8"
                         Command="{x:Bind ViewModel.ShowMonitorToolCommand}"
-                        Content="打开窗口监控"
-                        Style="{ThemeResource TitleBarButtonStyle}" />
+                        Style="{ThemeResource TitleBarButtonStyle}">
+                        <StackPanel Orientation="Horizontal" Spacing="4">
+                            <FontIcon
+                                FontFamily="Segoe Fluent Icons"
+                                FontSize="13"
+                                Glyph="&#xE8A7;" />
+                            <TextBlock FontSize="13" Text="{x:Bind helper:LanguageService.GetString('Display_Open')}" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </cui:SettingsCard>
             <Grid Margin="0,15,0,0" VerticalAlignment="Center">

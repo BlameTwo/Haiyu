@@ -24,7 +24,7 @@ public class TransparentWindowBase : Window
         AppWindow.TitleBar.ButtonInactiveBackgroundColor = Windows.UI.Color.FromArgb(0, 0, 0, 0);
         nint rawHwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
         HWND hwnd = new(rawHwnd);
-
+        AppWindow.IsShownInSwitchers = false;
         if (AppWindow.Presenter is OverlappedPresenter presenter)
         {
             presenter.IsResizable = false;

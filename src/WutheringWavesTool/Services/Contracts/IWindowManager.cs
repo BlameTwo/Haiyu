@@ -62,5 +62,8 @@ public interface IWindowManager
     public Task<TResult?> CreateOriginWindowAsync<T, TResult>(WindowManagerOption managerOption)
         where T : Window;
 
+    public WindowSession CreateTransparentWindow<T>(PostionTransparentWindowOption managerOption)
+        where T : UIElement;
+
     public WindowContext? GetWindowContext(string key);
 }

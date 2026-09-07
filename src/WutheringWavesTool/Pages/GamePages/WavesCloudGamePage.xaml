@@ -309,12 +309,14 @@
                         Margin="5,5,0,5"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        Background="{ThemeResource SystemFillColorSuccess}"
                         BorderThickness="0"
                         Command="{x:Bind ViewModel.InvokeTaskCommand}"
                         CornerRadius="4"
                         Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                        Style="{StaticResource LauncherButtonStyle}">
+                        Style="{StaticResource ALauncherButtonStyle}">
+                        <!--
+                            Background="{ThemeResource SystemFillColorSuccess}"
+                        -->
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
