@@ -246,6 +246,8 @@ public static class InstanceBuilderExtensions
                     .AddTransient<AutoKuroTokenViewModel>()
                     .AddTransient<MonitorToolPage>()
                     .AddTransient<MonitorToolViewModel>()
+                    .AddTransient<MonitorSettingPage>()
+                    .AddTransient<MonitorSettingViewModel>()
                     #endregion
                     #region WindowContext
                     .AddScoped<ITipShow, TipShow>()

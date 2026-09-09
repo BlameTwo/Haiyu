@@ -28,4 +28,7 @@ public sealed class PostionTransparentWindowOption : WindowManagerOption
     public double BottomMargin { get; init; } = 10;
 
     public bool IsTopMost { get; init; } = true;
+
+    /// <summary>是否让鼠标操作穿过透明窗口。</summary>
+    public bool IsClickThrough { get; init; }
 }

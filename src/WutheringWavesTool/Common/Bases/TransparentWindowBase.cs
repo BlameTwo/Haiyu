@@ -10,12 +10,15 @@ namespace Haiyu.Common.Bases;
 public class TransparentWindowBase : Window
 {
     private const int WsExLayered = 0x00080000;
+    private const int WsExTransparent = 0x00000020;
     private const int BorderlessStyleMask =
         0x00C00000 | 0x00040000 | 0x00020000 | 0x00010000 | 0x00080000;
     private const uint DwmWindowCornerPreference = 33;
     private const uint DwmBorderColor = 34;
     private const uint DwmDoNotRound = 1;
     private const uint DwmColorNone = 0xFFFFFFFE;
+    private readonly HWND _hwnd;
+    private bool _isClickThrough;
 
     public TransparentWindowBase()
     {
@@ -24,6 +27,7 @@ public class TransparentWindowBase : Window
         AppWindow.TitleBar.ButtonInactiveBackgroundColor = Windows.UI.Color.FromArgb(0, 0, 0, 0);
         nint rawHwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
         HWND hwnd = new(rawHwnd);
+        _hwnd = hwnd;
         AppWindow.IsShownInSwitchers = false;
         if (AppWindow.Presenter is OverlappedPresenter presenter)
         {
@@ -57,6 +61,28 @@ public class TransparentWindowBase : Window
         uint borderColor = DwmColorNone;
         _ = DwmSetWindowAttribute(rawHwnd, DwmBorderColor, ref borderColor, sizeof(uint));
         RefreshWindowFrame();
+    }
+
+    /// <summary>
+    /// 获取或设置窗口是否忽略鼠标命中，让鼠标消息传递给窗口下方的程序。
+    /// </summary>
+    public bool IsClickThrough
+    {
+        get => _isClickThrough;
+        set
+        {
+            if (_isClickThrough == value)
+                return;
+
+            int exStyle = PInvoke.GetWindowLong(_hwnd, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE);
+            int newExStyle = value
+                ? exStyle | WsExLayered | WsExTransparent
+                : exStyle & ~WsExTransparent;
+
+            PInvoke.SetWindowLong(_hwnd, WINDOW_LONG_PTR_INDEX.GWL_EXSTYLE, newExStyle);
+            _isClickThrough = value;
+            RefreshWindowFrame();
+        }
     }
 
     private void RefreshWindowFrame()

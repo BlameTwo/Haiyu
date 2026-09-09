@@ -1,8 +1,8 @@
 using Haiyu.Common.Contracts;
-using Haiyu.Pages.Communitys;
-using Haiyu.Pages.Toolkits;
 using Haiyu.Models.Enums;
 using Haiyu.Models.Options;
+using Haiyu.Pages.Communitys;
+using Haiyu.Pages.Toolkits;
 using Waves.Api.Models.CloudGame;
 using Waves.Core.Models.CloudGame;
 
@@ -33,7 +33,17 @@ public class ViewFactorys : IViewFactorys
         CenterOnScreen = true,
         IsExtendWindowTitle = true,
     };
-
+    private static readonly WindowsOption MoniterSettingWindowOption = new()
+    {
+        Width = 900,
+        Height = 500,
+        MaxWidth = 900,
+        MaxHeight = 500,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
     private static readonly WindowsOption DeviceInfoWindowOption = new()
     {
         Width = 750,
@@ -46,7 +56,7 @@ public class ViewFactorys : IViewFactorys
         IsExtendWindowTitle = true,
     };
 
-    private static readonly WindowsOption WindowsOptionAnalysisRecord = new ()
+    private static readonly WindowsOption WindowsOptionAnalysisRecord = new()
     {
         Width = 1200,
         Height = 750,
@@ -132,6 +142,18 @@ public class ViewFactorys : IViewFactorys
         );
     }
 
+    public void ShowMoniterSettingWindow()
+    {
+        this.AppContext.WindowManager.CreateWindow<MonitorSettingPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = MoniterSettingWindowOption,
+                Key = $"MoniterSetting",
+                Parameter = null,
+            }
+        );
+    }
+
     public void ShowMonitorToolWindow(PostionType postion = PostionType.TopCenter)
     {
         AppContext.WindowManager.CreateTransparentWindow<MonitorToolPage>(
@@ -147,6 +169,7 @@ public class ViewFactorys : IViewFactorys
                 RightMargin = 50,
                 BottomMargin = 10,
                 IsTopMost = true,
+                IsClickThrough = true,
             }
         );
     }

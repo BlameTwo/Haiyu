@@ -22,6 +22,7 @@ public interface IViewFactorys
 
     public void ShowAutoKruoTokenWindow();
 
+    public void ShowMoniterSettingWindow();
     public void ShowMonitorToolWindow(PostionType postion = PostionType.TopCenter);
     #endregion
 

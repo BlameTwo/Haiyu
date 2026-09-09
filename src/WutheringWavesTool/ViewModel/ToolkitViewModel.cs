@@ -5,9 +5,9 @@ using Waves.Core.Models.Tasks;
 
 namespace Haiyu.ViewModel;
 
-public sealed partial class ToolkitViewModel:ViewModelBase
+public sealed partial class ToolkitViewModel : ViewModelBase
 {
-    public ToolkitViewModel(IViewFactorys viewFactorys,ITaskManager taskManager)
+    public ToolkitViewModel(IViewFactorys viewFactorys, ITaskManager taskManager)
     {
         ViewFactorys = viewFactorys;
         TaskManager = taskManager;
@@ -18,7 +18,6 @@ public sealed partial class ToolkitViewModel:ViewModelBase
     {
         WeakReferenceMessenger.Default.Register<SendTaskMessager>(this, SendTaskMethod);
     }
-
 
     public IViewFactorys ViewFactorys { get; }
 
@@ -33,7 +32,7 @@ public sealed partial class ToolkitViewModel:ViewModelBase
     [RelayCommand]
     async Task RefreshTasks()
     {
-        this.Tasks =(await TaskManager.GetTasksAsync()).ToObservableCollection();
+        this.Tasks = (await TaskManager.GetTasksAsync()).ToObservableCollection();
     }
 
     [RelayCommand]
@@ -43,34 +42,43 @@ public sealed partial class ToolkitViewModel:ViewModelBase
     }
 
     [RelayCommand]
-      void ShowMonitorTool()
-      {
-          ViewFactorys.ShowMonitorToolWindow();
-      }
+    void ShowMonitorTool()
+    {
+        ViewFactorys.ShowMonitorToolWindow();
+    }
+
+    [RelayCommand]
+    void ShowMoniterSetting()
+    {
+        ViewFactorys.ShowMoniterSettingWindow();
+    }
 
     private void SendTaskMethod(object recipient, SendTaskMessager message)
     {
         _ = RunWhileAliveAsync(async token =>
         {
-        switch (message.type)
-        {
-            case SendTaskType.Start:
-                await TaskManager.StartTaskAsync(message.wrapper.Guid);
-                await this.RefreshTasks();
-                break;
-            case SendTaskType.Stop:
-                await TaskManager.StopTaskAsync(message.wrapper.Guid);
-                await this.RefreshTasks();
-                break;
-            case SendTaskType.Invoke:
-                await TaskManager.InvokeTaskAsync(message.wrapper.Guid, token);
-                break;
-            case SendTaskType.Launche:
-                await AppSettings.WriteAsync(message.wrapper.AutoLaunche.ToString(), message.wrapper.SettingName);
-                break;
-            default:
-                break;
-        }
+            switch (message.type)
+            {
+                case SendTaskType.Start:
+                    await TaskManager.StartTaskAsync(message.wrapper.Guid);
+                    await this.RefreshTasks();
+                    break;
+                case SendTaskType.Stop:
+                    await TaskManager.StopTaskAsync(message.wrapper.Guid);
+                    await this.RefreshTasks();
+                    break;
+                case SendTaskType.Invoke:
+                    await TaskManager.InvokeTaskAsync(message.wrapper.Guid, token);
+                    break;
+                case SendTaskType.Launche:
+                    await AppSettings.WriteAsync(
+                        message.wrapper.AutoLaunche.ToString(),
+                        message.wrapper.SettingName
+                    );
+                    break;
+                default:
+                    break;
+            }
         });
     }
 }

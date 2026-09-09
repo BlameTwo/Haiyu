@@ -102,6 +102,10 @@ public sealed class PostionTransparentWindowContext : WindowContext
 
         nint rawHwnd = WindowNative.GetWindowHandle(window);
         WindowExtension.SetWindowTopMost(new HWND(rawHwnd), option.IsTopMost);
+        if (window is TransparentWindowBase transparentWindow)
+        {
+            transparentWindow.IsClickThrough = option.IsClickThrough;
+        }
         window.SetWindowSize(width / dpi, height / dpi);
         window.AppWindow.Move(new PointInt32(left, top));
     }

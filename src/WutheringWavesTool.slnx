@@ -58,7 +58,7 @@
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
   </Folder>
-  <Folder Name="/Server/">
+  <Folder Name="/Extensions/Server/">
     <Project Path="D:/WorkSpace/Haiyu/src/Haiyu.Mcp/Haiyu.Mcp.csproj" Id="662a8373-64b3-4055-a1c0-c9b273b281b1">
       <BuildType Solution="All|*" Project="Debug" />
     </Project>
