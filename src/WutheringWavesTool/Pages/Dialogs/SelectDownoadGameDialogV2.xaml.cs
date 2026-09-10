@@ -75,7 +75,7 @@ public sealed partial class SelectDownoadGameDialogV2
 
     private async void SelectFolder_Click(object sender, RoutedEventArgs e)
     {
-        var folderPath = await Pickers.GetFolderPicker(_windowManager.Shell.GetWindow().GetWindowHandle());
+        var folderPath = await Pickers.GetFolderPicker();
         if (folderPath == null)
             return;
         if (!Directory.Exists(folderPath.Path))

@@ -8,12 +8,11 @@ public sealed partial class SelectGameFolderViewModelV2 : DialogViewModelBase
 {
     public SelectGameFolderViewModelV2(
         DialogSession dialogSession,
-        IPickersService pickersService,
         IWindowManager windowManager
     )
         : base(dialogSession)
     {
-        PickersService = pickersService;
+        PickersService = this.AppContext.WindowManager.Shell.PickersService;
         WindowManager = windowManager;
     }
 
@@ -50,8 +49,7 @@ public sealed partial class SelectGameFolderViewModelV2 : DialogViewModelBase
     async Task SelectGameProgram()
     {
         var exe = await PickersService.GetFileOpenPicker(
-            [".exe"],
-            WindowManager.Shell.GetWindow().GetWindowHandle()
+            [".exe"]
         );
         if (exe == null)
             return;

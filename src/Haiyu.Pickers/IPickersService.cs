@@ -2,9 +2,11 @@ namespace Haiyu.Pickers;
 
 public interface IPickersService
 {
-    Task<PickFileResult?> GetFileOpenPicker(IReadOnlyCollection<string> extensions,nint value);
+    public void InitWindow(nint handle);
 
-    Task<PickFileResult?> GetFileSavePicker(IReadOnlyCollection<string> extensions, string saveName, nint value);
+    Task<PickFileResult?> GetFileOpenPicker(IReadOnlyCollection<string> extensions);
 
-    Task<PickFolderResult?> GetFolderPicker(nint value);
+    Task<PickFileResult?> GetFileSavePicker(IReadOnlyCollection<string> extensions, string saveName);
+
+    Task<PickFolderResult?> GetFolderPicker();
 }

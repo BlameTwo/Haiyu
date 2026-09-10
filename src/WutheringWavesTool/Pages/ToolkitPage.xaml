@@ -48,6 +48,7 @@
                     </StackPanel>
                 </Button>
             </cui:SettingsCard>
+
             <cui:SettingsCard Description="{x:Bind helper:LanguageService.GetString('Tool_MoniterDescription')}" Header="{x:Bind helper:LanguageService.GetString('Tool_MoniterHeader')}">
                 <cui:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="Segoe Fluent Icons" Glyph="&#xE977;" />

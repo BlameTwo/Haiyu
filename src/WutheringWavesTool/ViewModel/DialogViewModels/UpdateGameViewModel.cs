@@ -11,14 +11,10 @@ namespace Haiyu.ViewModel.DialogViewModels;
 
 public sealed partial class UpdateGameViewModel : DialogViewModelBase
 {
-    public UpdateGameViewModel(
-        DialogSession dialogSession,
-        IPickersService pickersService,
-        IWindowManager windowManager
-    )
+    public UpdateGameViewModel(DialogSession dialogSession, IWindowManager windowManager)
         : base(dialogSession)
     {
-        PickersService = pickersService;
+        PickersService = this.AppContext.WindowManager.Shell.PickersService;
         _windowManager = windowManager;
     }
 
@@ -71,9 +67,7 @@ public sealed partial class UpdateGameViewModel : DialogViewModelBase
     [RelayCommand]
     async Task SelectDiffPath()
     {
-        var result = await PickersService.GetFolderPicker(
-            _windowManager.Shell.GetWindow().GetWindowHandle()
-        );
+        var result = await PickersService.GetFolderPicker();
         if (result == null)
             return;
 

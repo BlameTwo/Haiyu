@@ -12,13 +12,12 @@ public partial class WebViewCabManagerViewModel : DialogViewModelBase
 
     public WebViewCabManagerViewModel(
         DialogSession dialogSession,
-        IPickersService pickersService,
         IAppContext<App> appContext,
         IWindowManager windowManager
     )
         : base(dialogSession)
     {
-        PickersService = pickersService;
+        PickersService = this.AppContext.WindowManager.Shell.PickersService;
         AppContext = appContext;
         _windowManager = windowManager;
         Runtimes = [];
@@ -79,10 +78,7 @@ public partial class WebViewCabManagerViewModel : DialogViewModelBase
     [RelayCommand(CanExecute = nameof(CanOperate))]
     public async Task SelectCabFilesAsync()
     {
-        var cabFile = await PickersService.GetFileOpenPicker(
-            [".zip"],
-            this._windowManager.Shell.GetWindow().GetWindowHandle()
-        );
+        var cabFile = await PickersService.GetFileOpenPicker([".zip"]);
         if (cabFile is null || !File.Exists(cabFile.Path))
             return;
 

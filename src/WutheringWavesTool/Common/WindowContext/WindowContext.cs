@@ -24,6 +24,7 @@ public class WindowContext : IDisposable
     public void SetWindow(Window window)
     {
         this._window = window;
+        this.PickersService.InitWindow(window.GetWindowHandle());
     }
 
     public WindowContext(IServiceScope service, string key)

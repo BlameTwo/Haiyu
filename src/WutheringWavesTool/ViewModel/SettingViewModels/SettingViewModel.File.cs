@@ -137,8 +137,7 @@ partial class SettingViewModel
         {
             var saveDialog = await PickersService.GetFileSavePicker(
                 new List<string>() { ".lnk" },
-                "Haiyu",
-                WindowManager.Shell.GetWindow().GetWindowHandle()
+                "Haiyu"
             );
             if (saveDialog != null)
             {

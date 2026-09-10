@@ -6,27 +6,25 @@ namespace Haiyu.Pickers;
 /// Uses the desktop common dialogs supplied by Windows itself. Invoke it on the UI thread
 /// that owns the supplied window.
 /// </summary>
-public sealed class NativePickersService() : IPickersService
+public sealed class NativePickersService : IPickersService
 {
     private const int BufferLength = 32_768;
     private const int Canceled = unchecked((int)0x800704C7);
+    private nint _winHandler;
 
-    public Task<PickFileResult?> GetFileOpenPicker(
-        IReadOnlyCollection<string> extensions,
-        nint value
-    ) => ShowFileDialog(extensions, null, requireExistingFile: true, value);
+    public Task<PickFileResult?> GetFileOpenPicker(IReadOnlyCollection<string> extensions) =>
+        ShowFileDialog(extensions, null, requireExistingFile: true, _winHandler);
 
     public Task<PickFileResult?> GetFileSavePicker(
         IReadOnlyCollection<string> extensions,
-        string saveName,
-        nint value
+        string saveName
     )
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(saveName);
-        return ShowFileDialog(extensions, saveName, requireExistingFile: false, value);
+        return ShowFileDialog(extensions, saveName, requireExistingFile: false, _winHandler);
     }
 
-    public Task<PickFolderResult?> GetFolderPicker(nint value)
+    public Task<PickFolderResult?> GetFolderPicker()
     {
         var dialog = NativeMethods.CreateFileOpenDialog();
         try
@@ -37,7 +35,7 @@ public sealed class NativePickersService() : IPickersService
                 | NativeMethods.FOS_PATHMUSTEXIST;
             Marshal.ThrowExceptionForHR(NativeMethods.SetOptions(dialog, options));
 
-            var result = NativeMethods.Show(dialog, value);
+            var result = NativeMethods.Show(dialog, _winHandler);
             if (result == Canceled)
                 return Task.FromResult<PickFolderResult?>(null);
             Marshal.ThrowExceptionForHR(result);
@@ -184,6 +182,11 @@ public sealed class NativePickersService() : IPickersService
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(extension);
         return extension.StartsWith('.') ? extension : $".{extension}";
+    }
+
+    public void InitWindow(nint handle)
+    {
+        this._winHandler = handle;
     }
 }
 

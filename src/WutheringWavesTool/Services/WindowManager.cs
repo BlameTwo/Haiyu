@@ -33,7 +33,6 @@ public sealed class WindowManager : IWindowManager
         if (this.Shell != null)
             return;
         WindowEx winEx = new WindowEx();
-
         winEx.Title = "Haiyu";
         winEx.AppWindow.SetIcon(AppDomain.CurrentDomain.BaseDirectory + "Assets/appLogo.ico");
         NativeWindowHelper.ForceDisableMaximize(winEx, targetDipWidth: 1150, targetDipHeight: 650);

@@ -14,7 +14,6 @@ public sealed partial class UpdateGameViewModelV2 : DialogViewModelBase
 {
     public UpdateGameViewModelV2(
         DialogSession dialogSession,
-        IPickersService pickersService,
         IAppContext<App> app,
         IWindowManager windowManager
     )
@@ -22,7 +21,7 @@ public sealed partial class UpdateGameViewModelV2 : DialogViewModelBase
     {
         this.App = app;
         _windowManager = windowManager;
-        PickersService = pickersService;
+        PickersService = this.AppContext.WindowManager.Shell.PickersService;
     }
 
     public IGameContextV2 GameContext { get; private set; }
@@ -76,7 +75,6 @@ public sealed partial class UpdateGameViewModelV2 : DialogViewModelBase
     async Task SelectDiffPath()
     {
         var result = await PickersService.GetFolderPicker(
-            _windowManager.Shell.GetWindow().GetWindowHandle()
         );
         if (result == null)
             return;

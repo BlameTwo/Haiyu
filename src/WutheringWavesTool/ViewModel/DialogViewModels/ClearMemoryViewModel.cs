@@ -55,7 +55,7 @@ public partial class ClearMemoryViewModel : DialogViewModelBase
             IPrivilegedResult<RunResult> result =
                 await AppContext.ABIRuntimeService.Runtime!.InvokeAsync(
                     ABIRuntime.Contract.CleanMemoryContract,
-                    new CleanMemoryRequest(true, true, true, true, true, true, true, true, ""),
+                    new CleanMemoryRequest(true, true, true, true, true, true, true, true, "Haiyu"),
                     progress,
                     token.Token
                 );

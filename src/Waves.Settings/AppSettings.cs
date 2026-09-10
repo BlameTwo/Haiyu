@@ -38,8 +38,7 @@ namespace Waves.Settings;
     JsonTypeInfoContextType = typeof(AppSettingJsonContext),
     JsonTypeInfoPropertyName = nameof(AppSettingJsonContext.Default.MainWindowSetting)
 )]
-#region Windows Settings
-#endregion
+[Settings<string>(Name = "ABIRuntimePackagePath",Nullable =true)]
 public partial class AppSettings : SettingBase
 {
     public static string BassFolder =>

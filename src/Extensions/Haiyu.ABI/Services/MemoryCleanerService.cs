@@ -144,20 +144,14 @@ public class MemoryCleanerService
             );
             if (processHandle == 0)
             {
-                throw new InvalidOperationException(
-                    $"OpenProcess failed. Process: {process.ProcessName}, PID: {process.Id}, "
-                        + $"Win32Error: {Marshal.GetLastWin32Error()}"
-                );
+                continue;
             }
 
             try
             {
                 if (!NativeProcessMemory.EmptyWorkingSet(processHandle))
                 {
-                    throw new InvalidOperationException(
-                        $"EmptyWorkingSet failed. Process: {process.ProcessName}, PID: {process.Id}, "
-                            + $"Win32Error: {Marshal.GetLastWin32Error()}"
-                    );
+                    continue;
                 }
             }
             finally

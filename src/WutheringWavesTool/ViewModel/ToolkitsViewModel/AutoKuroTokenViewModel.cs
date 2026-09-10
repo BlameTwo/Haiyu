@@ -71,8 +71,7 @@ public partial class AutoKuroTokenViewModel : ViewModelBase
     public async Task SelectAdbPathAsync()
     {
         var openFile = await PickerService.GetFileOpenPicker(
-            [".exe"],
-            this.WindowManager.Shell.GetWindow().GetWindowHandle()
+            [".exe"]
         );
         if (
             openFile is null

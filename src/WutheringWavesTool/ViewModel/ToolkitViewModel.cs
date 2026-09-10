@@ -45,6 +45,12 @@ public sealed partial class ToolkitViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    async Task ImportABIRuntime()
+    {
+        var zipFile = this.AppContext.WindowManager.Shell.PickersService.GetFileOpenPicker(["*.zip"]);
+    }
+
+    [RelayCommand]
     void ShowAutoKuroToken()
     {
         ViewFactorys.ShowAutoKruoTokenWindow();
