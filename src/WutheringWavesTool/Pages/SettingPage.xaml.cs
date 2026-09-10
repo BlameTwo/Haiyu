@@ -1,3 +1,5 @@
+using Haiyu.Common.Contracts;
+
 namespace Haiyu.Pages;
 
 public sealed partial class SettingPage : Page, IPage
@@ -5,7 +7,7 @@ public sealed partial class SettingPage : Page, IPage
     public SettingPage()
     {
         this.InitializeComponent();
-        this.ViewModel = Instance.Host.Services.GetRequiredService<SettingViewModel>();
+        this.ViewModel = Instance.GetService<SettingViewModel>()!;
     }
 
     public Type PageType => typeof(SettingPage);
@@ -30,7 +32,7 @@ public sealed partial class SettingPage : Page, IPage
     {
         if (ViewModel is null)
             return;
-        await ViewModel.DialogManager.ShowMessageDialog(new ShowDialogOption()
+        await ViewModel.WindowManager.Shell.DialogManager.ShowMessageDialog(new ShowDialogOption()
         {
             Context = LanguageService.GetStringByText(
                 "Mirror酱是一个第三方应用分发平台，Haiyu通过此平台避开Github的访问问题以提供国内高速下载。\n"

@@ -1,19 +1,18 @@
+using Haiyu.Common.Contracts;
 using Haiyu.Models.Dialogs;
-using Haiyu.Services.DialogServices;
 
 namespace Haiyu.Pages.Dialogs;
 
 public sealed partial class SelectDownoadGameDialogV2
     : ContentDialog,
-        IResultDialog<SelectDownloadFolderResult>
+        IDialog
 {
-    public SelectDownoadGameDialogV2()
+    public SelectDownoadGameDialogV2(DialogSession dialogSession,IWindowManager windowManager)
     {
         InitializeComponent();
-        this.DialogManager = Instance.Host.Services.GetRequiredKeyedService<IDialogManager>(
-            nameof(MainDialogService)
-        );
-        this.Pickers = Instance.Host.Services.GetRequiredService<IPickersService>();
+        this._dialogSession = dialogSession;
+        _windowManager = windowManager;
+        this.Pickers = _windowManager.Shell.PickersService;
         this.RequestedTheme = Instance
             .Host.Services.GetRequiredService<IThemeService>()
             .CurrentTheme;
@@ -22,14 +21,13 @@ public sealed partial class SelectDownoadGameDialogV2
     SelectDownloadFolderResult downloadResult = null;
     ContentDialogResult clickBth = ContentDialogResult.None;
     public IGameContextV2 GameContext { get; private set; }
-    public IDialogManager DialogManager { get; }
+
+    private DialogSession _dialogSession;
+    private readonly IWindowManager _windowManager;
+
     public IPickersService Pickers { get; }
     public GameLauncherSource Launcher { get; private set; }
 
-    public SelectDownloadFolderResult GetResult()
-    {
-        return this.downloadResult;
-    }
 
     public void SetData(object data)
     {
@@ -47,7 +45,8 @@ public sealed partial class SelectDownoadGameDialogV2
             InstallFolder = this.folderPath.Text,
             Result = clickBth,
         };
-        this.DialogManager.CloseDialog();
+        this._dialogSession.Result = downloadResult;
+        this._dialogSession.Close(_dialogSession.Result);
     }
 
     private async void Download_Click(object sender, RoutedEventArgs e)
@@ -70,7 +69,8 @@ public sealed partial class SelectDownoadGameDialogV2
             Result = clickBth,
             Launcher = launcher,
         };
-        this.DialogManager.CloseDialog();
+        this._dialogSession.Result = downloadResult;
+        this._dialogSession.Close(_dialogSession.Result);
     }
 
     private async void SelectFolder_Click(object sender, RoutedEventArgs e)

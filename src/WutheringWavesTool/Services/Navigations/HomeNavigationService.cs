@@ -1,4 +1,6 @@
-﻿namespace Haiyu.Services.Navigations;
+using Haiyu.Common.Contracts;
+
+namespace Haiyu.Services.Navigations;
 
 public class HomeNavigationService : NavigationServiceBase
 {
@@ -18,17 +20,17 @@ public class HomeNavigationService : NavigationServiceBase
         {
             if (
                 RootFrame != null
-                && (OrginpageType.PageType != pageType || args != null && !args.Equals(Paramter))
+                && (OrginpageType.PageType != pageType || args != null && !args.Equals(Parameter))
             )
             {
-                Paramter = args;
-                return RootFrame.Navigate(pageType, Paramter, transitionInfo);
+                Parameter = args;
+                return RootFrame.Navigate(pageType, Parameter, transitionInfo);
             }
         }
         else if (RootFrame.Content == null)
         {
-            Paramter = args;
-            return RootFrame.Navigate(pageType, Paramter, new DrillInNavigationTransitionInfo());
+            Parameter = args;
+            return RootFrame.Navigate(pageType, Parameter, new DrillInNavigationTransitionInfo());
         }
         return false;
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Haiyu.Common.Contracts;
 using Waves.Core.Contracts.CloudGame;
 using Waves.Core.Models.Enums;
 using Waves.Core.Services;
@@ -19,7 +20,7 @@ public sealed partial class CloudGameSettingViewModel : DialogViewModelBase
 
     [ObservableProperty]
     public partial int SelectFps { get; set; }
-    
+
     [ObservableProperty]
     public partial QualityWrapper SelectQualitys { get; set; }
 
@@ -34,7 +35,11 @@ public sealed partial class CloudGameSettingViewModel : DialogViewModelBase
 
     public IKuroCloudGameContext CloudGameContext { get; internal set; }
 
-    public CloudGameSettingViewModel([FromKeyedServices(nameof(KuroCloudGameContext))]IKuroCloudGameContext  cloudGameContext)
+    public CloudGameSettingViewModel(
+        [FromKeyedServices(nameof(KuroCloudGameContext))] IKuroCloudGameContext cloudGameContext,
+        DialogSession dialogSession
+    )
+        : base(dialogSession)
     {
         this.CloudGameContext = cloudGameContext;
     }
@@ -90,7 +95,6 @@ public sealed partial class CloudGameSettingViewModel : DialogViewModelBase
             this.Enable = enable;
         }
 
-
         if (
             bool.TryParse(
                 await this.CloudGameContext.GameLocalConfig.GetConfigAsync(
@@ -102,8 +106,6 @@ public sealed partial class CloudGameSettingViewModel : DialogViewModelBase
         {
             this.ShowNetworkState = enable;
         }
-
-
     }
 
     async partial void OnSelectQualitysChanged(QualityWrapper? value)
@@ -156,14 +158,18 @@ public sealed partial class CloudGameSettingViewModel : DialogViewModelBase
 
     public void SeedUpdateQuality()
     {
-       
-        WeakReferenceMessenger.Default.Send<CloudQualityUpdateModel>(new()
-        {
-            Type =this.SelectQualitys==null? CloudQualityType.Clarity:this.SelectQualitys.Type,
-            Fps = this.SelectFps,
-            NetworkShow = this.ShowNetworkState,
-            QaulityEnable = this.Enable
-        });
+        WeakReferenceMessenger.Default.Send<CloudQualityUpdateModel>(
+            new()
+            {
+                Type =
+                    this.SelectQualitys == null
+                        ? CloudQualityType.Clarity
+                        : this.SelectQualitys.Type,
+                Fps = this.SelectFps,
+                NetworkShow = this.ShowNetworkState,
+                QaulityEnable = this.Enable,
+            }
+        );
     }
 }
 
@@ -175,7 +181,15 @@ public class QualityWrapper
 
     public static ObservableCollection<QualityWrapper> Create() =>
         [
-            new QualityWrapper() { Type = CloudQualityType.Smooth, DisplayName = LanguageService.GetStringByText("流畅") },
-            new QualityWrapper() { Type = CloudQualityType.Clarity, DisplayName = LanguageService.GetStringByText("原生") },
+            new QualityWrapper()
+            {
+                Type = CloudQualityType.Smooth,
+                DisplayName = LanguageService.GetStringByText("流畅"),
+            },
+            new QualityWrapper()
+            {
+                Type = CloudQualityType.Clarity,
+                DisplayName = LanguageService.GetStringByText("原生"),
+            },
         ];
 }

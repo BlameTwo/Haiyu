@@ -1,3 +1,4 @@
+using Haiyu.Common.Contracts;
 using Haiyu.Models.Dialogs;
 using Haiyu.Plugin.Models;
 using Waves.Api.Models.CloudGame;
@@ -13,16 +14,21 @@ public interface IDialogManager
     public void RegisterRoot(XamlRoot root);
     public Task ShowLoginDialogAsync();
     public Task<Result> GetDialogResultAsync<T, Result>(object? data)
-        where T : ContentDialog, IResultDialog<Result>, new()
-        where Result : new();
+        where T : ContentDialog, IDialog;
     public Task ShowLocalUserManagerAsync();
     public Task ShowUpdateDialog(DisplayVersionInfo info);
     public Task<SelectDownloadFolderResult> ShowSelectGameFolderV2Async(Type type);
     public Task<SelectDownloadFolderResult> ShowSelectDownloadFolderV2Async(Type type);
     public Task<CloseWindowResult> ShowCloseWindowResult();
     public Task<QRScanResult> GetQRLoginResultAsync();
-    public Task<UpdateGameResult> ShowUpdateGameDialogAsync(string contextName, UpdateGameType type);
-    public Task<UpdateGameResult> ShowUpdateGameDialogAsyncV2(string contextName, UpdateGameType type);
+    public Task<UpdateGameResult> ShowUpdateGameDialogAsync(
+        string contextName,
+        UpdateGameType type
+    );
+    public Task<UpdateGameResult> ShowUpdateGameDialogAsyncV2(
+        string contextName,
+        UpdateGameType type
+    );
     public Task<LauncheNodeConfig> ShowSelectGameNodeAsync(string id);
     public Task ShowWavesCloudSettingAsync(GameType ype);
 
@@ -41,6 +47,7 @@ public interface IDialogManager
     Task ShowGameSettingAsync(string contextName);
     Task ShowGameEnhancedDialogAsync();
 
-
     Task ShowGameLocalTokenAsync(string contextName);
+
+    Task ShowClearMemoryAsync();
 }

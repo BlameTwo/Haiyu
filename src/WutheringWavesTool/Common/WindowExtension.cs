@@ -1,4 +1,8 @@
-﻿namespace Haiyu.Common;
+using Windows.Win32;
+using Windows.Win32.Foundation;
+using Windows.Win32.UI.WindowsAndMessaging;
+
+namespace Haiyu.Common;
 
 public static partial class WindowExtension
 {
@@ -177,9 +181,9 @@ public static partial class WindowExtension
         return lpPoint;
     }
 
-    public static RECT? GetWorkarea()
+    public static Common.Win32.RECT? GetWorkarea()
     {
-        RECT workArea = new RECT();
+        Common.Win32.RECT workArea = new Common.Win32.RECT();
         if (SystemParametersInfo(SPI_GETWORKAREA, 0, ref workArea, 0))
         {
             return workArea;
@@ -196,6 +200,25 @@ public static partial class WindowExtension
         string lpDirectory,
         ShowCommands nShowCmd
     );
+
+    internal static void SetWindowTopMost(HWND hwnd, bool enabled)
+    {
+        HWND insertAfter = enabled
+            ? new HWND(-1) // HWND_TOPMOST
+            : new HWND(-2); // HWND_NOTOPMOST
+
+        PInvoke.SetWindowPos(
+            hwnd,
+            insertAfter,
+            0,
+            0,
+            0,
+            0,
+            SET_WINDOW_POS_FLAGS.SWP_NOMOVE |
+            SET_WINDOW_POS_FLAGS.SWP_NOSIZE |
+            SET_WINDOW_POS_FLAGS.SWP_NOACTIVATE |
+            SET_WINDOW_POS_FLAGS.SWP_SHOWWINDOW);
+    }
 
     public enum ShowCommands : int
     {
@@ -278,18 +301,16 @@ public static partial class LayerWindowHelper
 
 public static class NativeWindowHelper
 {
-    private const int WM_NCLBUTTONDBLCLK = 0x00A3; // Non-client left button double-click
-    private const int WM_SYSCOMMAND = 0x0112; // System command message
-    private const int SC_MAXIMIZE = 0xF030; // Maximize command
-    private const int WM_SIZE = 0x0005; // Resize message
-    private const int SIZE_MAXIMIZED = 2; // Maximized size
-    private const int WM_DPICHANGED = 0x02E0; // DPI change message
+    private const int WM_NCLBUTTONDBLCLK = 0x00A3; 
+    private const int WM_SYSCOMMAND = 0x0112;
+    private const int SC_MAXIMIZE = 0xF030;
+    private const int WM_SIZE = 0x0005;
+    private const int SIZE_MAXIMIZED = 2;
+    private const int WM_DPICHANGED = 0x02E0;
     private const int GWLP_WNDPROC = -4;
 
-    // Static field to hold the delegate, preventing it from being garbage-collected
     private static WndProcDelegate _currentWndProcDelegate;
 
-    // Delegate for the new window procedure
     private delegate IntPtr WndProcDelegate(IntPtr hwnd, uint msg, IntPtr wParam, IntPtr lParam);
 
     public static void ForceDisableMaximize(Window window, int? targetDipWidth = null, int? targetDipHeight = null)
@@ -306,27 +327,21 @@ public static class NativeWindowHelper
         IntPtr originalWndProc = GetWindowLongPtr(hwnd, GWLP_WNDPROC);
         if (originalWndProc == IntPtr.Zero)
         {
-            System.Diagnostics.Debug.WriteLine("Failed to retrieve the original WndProc.");
             return;
         }
 
         _currentWndProcDelegate = (wndHwnd, msg, wParam, lParam) =>
         {
-            // Suppress double-click maximize
             if (msg == WM_NCLBUTTONDBLCLK)
             {
-                System.Diagnostics.Debug.WriteLine("Double-click maximize suppressed.");
                 return IntPtr.Zero;
             }
 
-            // Suppress system maximize command (e.g., via keyboard shortcuts or title bar menu)
             if (msg == WM_SYSCOMMAND && wParam.ToInt32() == SC_MAXIMIZE)
             {
-                System.Diagnostics.Debug.WriteLine("Maximize via system command suppressed.");
                 return IntPtr.Zero;
             }
 
-            // Handle DPI change at runtime
             if (msg == WM_DPICHANGED && targetDipWidth.HasValue && targetDipHeight.HasValue)
             {
                 int newDpiX = wParam.ToInt32() & 0xFFFF;
@@ -334,11 +349,9 @@ public static class NativeWindowHelper
                 int newPixelWidth = (int)Math.Round(targetDipWidth.Value * newScale);
                 int newPixelHeight = (int)Math.Round(targetDipHeight.Value * newScale);
 
-                // Let WinUI 3 process DPI change first so it updates internal state
                 var result = CallWindowProc(originalWndProc, wndHwnd, msg, wParam, lParam);
 
-                // Then override to maintain fixed DIP size
-                var rect = Marshal.PtrToStructure<RECT>(lParam);
+                var rect = Marshal.PtrToStructure<Common.Win32.RECT>(lParam);
                 window.AppWindow.Move(new Windows.Graphics.PointInt32 { X = rect.Left, Y = rect.Top });
                 window.AppWindow.Resize(new Windows.Graphics.SizeInt32 { Width = newPixelWidth, Height = newPixelHeight });
 
@@ -347,45 +360,33 @@ public static class NativeWindowHelper
 
             try
             {
-                // Ensure parameters are valid before calling originalWndProc
                 if (wndHwnd != IntPtr.Zero && originalWndProc != IntPtr.Zero)
                 {
                     return CallWindowProc(originalWndProc, wndHwnd, msg, wParam, lParam);
                 }
                 else
                 {
-                    System.Diagnostics.Debug.WriteLine("Invalid parameters in WndProc call.");
                     return IntPtr.Zero;
                 }
             }
             catch (Exception ex)
             {
-                // Handle exceptions to avoid crashing
-                System.Diagnostics.Debug.WriteLine($"Error in WndProc: {ex.Message}");
                 return IntPtr.Zero;
             }
         };
 
         try
         {
-            // Hook the new WndProc
             IntPtr result = SetWindowLongPtr(hwnd, GWLP_WNDPROC, Marshal.GetFunctionPointerForDelegate(_currentWndProcDelegate));
-            if (result == IntPtr.Zero)
-            {
-                System.Diagnostics.Debug.WriteLine($"Failed to set new WndProc. Error: {Marshal.GetLastWin32Error()}");
-            }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Error hooking window procedure: {ex.Message}");
             return;
         }
 
-        // Prevent garbage collection of the delegate (redundant but safe)
         GC.KeepAlive(_currentWndProcDelegate);
     }
 
-    // Win32 API declarations
     [DllImport("user32.dll", SetLastError = true)]
     private static extern IntPtr CallWindowProc(IntPtr lpPrevWndFunc, IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 

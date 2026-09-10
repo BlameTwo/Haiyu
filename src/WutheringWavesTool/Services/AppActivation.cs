@@ -60,7 +60,13 @@ namespace Haiyu.Services
                     }
                     else
                     {
-                        Instance.Host.Services.GetRequiredService<IAppContext<App>>().App.MainWindow.Show();
+                        var appContext = Instance.Host.Services.GetRequiredService<IAppContext<App>>();
+                        if (appContext.WindowManager.Shell == null)
+                            return;
+                        appContext.WindowManager.Shell.TryInvoke(async() =>
+                        {
+                            appContext.WindowManager.Shell.Show();
+                        });
                     }
                 }
             }

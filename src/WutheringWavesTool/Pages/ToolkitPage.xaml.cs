@@ -1,3 +1,5 @@
+using Haiyu.Common.Contracts;
+
 namespace Haiyu.Pages;
 
 public sealed partial class ToolkitPage : Page, IPage
@@ -5,7 +7,7 @@ public sealed partial class ToolkitPage : Page, IPage
     public ToolkitPage()
     {
         InitializeComponent();
-        this.ViewModel = Instance.Host.Services.GetRequiredService<ToolkitViewModel>();
+        this.ViewModel = Instance.GetService<ToolkitViewModel>()!;
     }
 
     public Type PageType => typeof(ToolkitPage);

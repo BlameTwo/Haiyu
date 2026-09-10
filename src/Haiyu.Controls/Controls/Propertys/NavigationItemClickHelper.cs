@@ -1,4 +1,4 @@
-﻿namespace Haiyu.Controls.Propertys;
+namespace Haiyu.Controls.Propertys;
 
 public class NavigationItemClickHelper
 {
@@ -20,20 +20,20 @@ public class NavigationItemClickHelper
             new PropertyMetadata("")
         );
 
-    public static string GetParamter(DependencyObject obj)
+    public static string GetParameter(DependencyObject obj)
     {
-        return (string)obj.GetValue(ParamterProperty);
+        return (string)obj.GetValue(ParameterProperty);
     }
 
-    public static void SetParamter(DependencyObject obj, string value)
+    public static void SetParameter(DependencyObject obj, string value)
     {
-        obj.SetValue(ParamterProperty, value);
+        obj.SetValue(ParameterProperty, value);
     }
 
-    // Using a DependencyProperty as the backing store for Paramter.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty ParamterProperty =
+    // Using a DependencyProperty as the backing store for Parameter.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty ParameterProperty =
         DependencyProperty.RegisterAttached(
-            "Paramter",
+            "Parameter",
             typeof(string),
             typeof(NavigationItemClickHelper),
             new PropertyMetadata("")

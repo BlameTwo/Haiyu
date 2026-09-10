@@ -1,9 +1,10 @@
+using Haiyu.Common.WindowContext;
 using Haiyu.Pages.GamePages;
-using Haiyu.Services.DialogServices;
 using Haiyu.ViewModel.GameViewModels;
 using Haiyu.ViewModel.GameViewModels.GameContexts;
 using Waves.Api.Models.KuroClient;
 using Waves.Api.Models.KuroClient.Options;
+using Waves.Core.Contracts.Events;
 using Waves.Core.Models.Enums;
 using Waves.Core.Services;
 using Windows.ApplicationModel.DataTransfer;
@@ -15,14 +16,14 @@ public sealed partial class ShellViewModel : ViewModelBase
 {
     private bool computerShow;
     private CancellationTokenSource? _messageCts = new();
+    private IGameEventSubscription? _systemEventSubscription;
 
     public ShellViewModel(
         [FromKeyedServices(nameof(HomeNavigationService))] INavigationService homeNavigationService,
         [FromKeyedServices(nameof(HomeNavigationViewService))]
             INavigationViewService homeNavigationViewService,
-        ITipShow tipShow,
         IAppContext<App> appContext,
-        [FromKeyedServices(nameof(MainDialogService))] IDialogManager dialogManager,
+        IWindowManager windowManager,
         IViewFactorys viewFactorys,
         IWallpaperService wallpaperService,
         IKuroClient kuroClient,
@@ -33,9 +34,8 @@ public sealed partial class ShellViewModel : ViewModelBase
     {
         HomeNavigationService = homeNavigationService;
         HomeNavigationViewService = homeNavigationViewService;
-        TipShow = tipShow;
         AppContext = appContext;
-        DialogManager = dialogManager;
+        this.WindowManager = windowManager;
         ViewFactorys = viewFactorys;
         WallpaperService = wallpaperService;
         KuroClient = kuroClient;
@@ -43,22 +43,6 @@ public sealed partial class ShellViewModel : ViewModelBase
         SystemEventPublisher = systemEventPublisher;
         TaskManager = taskManager;
         RegisterMessanger();
-        SystemMenu = new NotifyIconMenu()
-        {
-            Items = new List<NotifyIconMenuItem>()
-            {
-                new()
-                {
-                    Header = LanguageService.GetStringByText("显示主界面"),
-                    Command = this.ShowWindowCommand,
-                },
-                new()
-                {
-                    Header = LanguageService.GetStringByText("退出启动器"),
-                    Command = this.ExitWindowCommand,
-                },
-            },
-        };
     }
 
     [ObservableProperty]
@@ -66,11 +50,11 @@ public sealed partial class ShellViewModel : ViewModelBase
 
     public INavigationService HomeNavigationService { get; }
     public INavigationViewService HomeNavigationViewService { get; }
-    public ITipShow TipShow { get; }
     public IAppContext<App> AppContext { get; }
-    public IDialogManager DialogManager { get; }
     public IViewFactorys ViewFactorys { get; }
     public IWallpaperService WallpaperService { get; }
+
+    public IWindowManager WindowManager { get; }
     public IKuroClient KuroClient { get; }
     public IKuroAccountService KuroAccountService { get; }
     public SystemEventPublisher SystemEventPublisher { get; }
@@ -219,7 +203,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     async Task ShowOpenLocalUser()
     {
-        await DialogManager.ShowLocalUserManagerAsync();
+        await WindowManager.Shell.DialogManager.ShowLocalUserManagerAsync();
     }
 
     [RelayCommand]
@@ -232,19 +216,39 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     void Min()
     {
-        this.AppContext.Minimise();
+        this.WindowManager.Shell.Minimize();
     }
 
     [RelayCommand]
-    void CloseWindow()
+    async Task CloseWindow()
     {
-        this.AppContext.CloseAsync();
+        var close = await AppSettings.GetCloseWindowAsync();
+        if (close == "True")
+        {
+            Environment.Exit(0);
+        }
+        else if (close == "False")
+        {
+            this.AppContext.WindowManager.Shell.Hide();
+        }
+        else
+        {
+            var result = await AppContext.WindowManager.Shell.DialogManager.ShowCloseWindowResult();
+            if (result.IsExit)
+            {
+                Environment.Exit(0);
+            }
+            else
+            {
+                this.AppContext.WindowManager.Shell.Hide();
+            }
+        }
     }
 
     [RelayCommand]
     void ShowWindow()
     {
-        this.AppContext.App.MainWindow.Show();
+        this.AppContext.WindowManager.Shell.Show();
     }
 
     [RelayCommand]
@@ -270,19 +274,19 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     async Task OpenScreenCapture()
     {
-        var result = await DialogManager.GetQRLoginResultAsync();
+        var result = await WindowManager.Shell.DialogManager.GetQRLoginResultAsync();
     }
 
     [RelayCommand]
     async Task Login()
     {
-        await DialogManager.ShowLoginDialogAsync();
+        await WindowManager.Shell.DialogManager.ShowLoginDialogAsync();
     }
 
     [RelayCommand]
     async Task LoginWebGame()
     {
-        await DialogManager.ShowWebGameDialogAsync();
+        await WindowManager.Shell.DialogManager.ShowWebGameDialogAsync();
     }
 
     private async void LoginMessangerMethod(object recipient, SelectUserMessanger message)
@@ -291,7 +295,10 @@ public sealed partial class ShellViewModel : ViewModelBase
         WavesCommunitySelectItemVisiblity = Visibility.Visible;
         await RefreshHeaderUser();
         await Task.Delay(800);
-        this.AppContext.MainTitle.UpDate();
+        if (this.WindowManager.Shell is ShellWindowContext shell)
+        {
+            shell.MainTitle.UpDate();
+        }
     }
 
     [RelayCommand]
@@ -305,7 +312,7 @@ public sealed partial class ShellViewModel : ViewModelBase
             var result = await KuroClient.GetWavesMineAsync(account, _id, this.CTS.Token);
             if (result == null)
             {
-                TipShow.ShowMessage(
+                WindowManager.Shell.TipShow.ShowMessage(
                     LanguageService.GetStringByText("检查一下你的网络"),
                     Symbol.Clear
                 );
@@ -313,14 +320,17 @@ public sealed partial class ShellViewModel : ViewModelBase
             }
             if (!result.Success)
             {
-                TipShow.ShowMessage(result.Msg, Symbol.Clear);
+                WindowManager.Shell.TipShow.ShowMessage(result.Msg, Symbol.Clear);
                 return;
             }
             HeaderUserName = result.Data.Mine.UserName;
             HeaderCover = result.Data.Mine.HeadUrl;
             GamerRoleListsVisibility = Visibility.Visible;
         }
-        this.AppContext.MainTitle.UpDate();
+        if (this.WindowManager.Shell is ShellWindowContext shell)
+        {
+            shell.MainTitle.UpDate();
+        }
     }
 
     [RelayCommand]
@@ -341,18 +351,28 @@ public sealed partial class ShellViewModel : ViewModelBase
             this.GamerRoleListsVisibility = Visibility.Visible;
             await this.RefreshHeaderUser();
         }
-        this.AppContext.MainTitle.UpDate();
+        if (this.WindowManager.Shell is ShellWindowContext shell)
+        {
+            shell.MainTitle.UpDate();
+        }
         await this.KuroAccountService.SetAutoUser();
         await RefreshHeaderUser();
         await OpenMain();
         await AppContext.UpdateAppAsync();
-        await SystemEventPublisher.SubscribeAsync(OnMessageChanged);
+        var subscription = await SystemEventPublisher.SubscribeAsync(OnMessageChanged);
+        if (IsDisposed)
+        {
+            subscription.Dispose();
+            return;
+        }
+
+        _systemEventSubscription = subscription;
         _ = Task.Run(async () => await TaskManager.InitializeAutoLaunchTasksAsync());
     }
 
     private async ValueTask OnMessageChanged(SystemMessagerModel model)
     {
-        await this.AppContext.TryInvokeAsync(async () =>
+        await this.WindowManager.Shell.TryInvokeAsync(async () =>
         {
             this.Messages.Add(model);
             if (Messages.Count > 50)
@@ -376,7 +396,7 @@ public sealed partial class ShellViewModel : ViewModelBase
         try
         {
             await Task.Delay(delay, ct);
-            await AppContext.TryInvokeAsync(async () => Messages.Remove(model));
+            await WindowManager.Shell.TryInvokeAsync(async () => Messages.Remove(model));
         }
         catch (OperationCanceledException) { }
     }
@@ -384,8 +404,7 @@ public sealed partial class ShellViewModel : ViewModelBase
     [RelayCommand]
     public void ShowDeviceInfo()
     {
-        var window = ViewFactorys.ShowAdminDevice();
-        window.Activate();
+        ViewFactorys.ShowAdminDevice();
     }
 
     internal void SetSelectItem(Type sourcePageType)
@@ -438,14 +457,34 @@ public sealed partial class ShellViewModel : ViewModelBase
         catch (Exception ex)
         {
             SystemEventMessager.Publish(
-                    new SystemMessagerModel()
-                    {
-                        Message = LanguageService.GetString("Code_KuroCoinFetchFailed")!,
-                        Delay = TimeSpan.FromSeconds(3).TotalSeconds,
-                    }
-                );
+                new SystemMessagerModel()
+                {
+                    Message = LanguageService.GetString("Code_KuroCoinFetchFailed")!,
+                    Delay = TimeSpan.FromSeconds(3).TotalSeconds,
+                }
+            );
             this.Logger.WriteError(ex.Message + ex.StackTrace);
             return;
         }
+    }
+
+    protected override void OnDisposing()
+    {
+        _systemEventSubscription?.Dispose();
+        _systemEventSubscription = null;
+
+        var messageCts = Interlocked.Exchange(ref _messageCts, null);
+        if (messageCts is not null)
+        {
+            try
+            {
+                messageCts.Cancel();
+            }
+            catch (ObjectDisposedException) { }
+
+            messageCts.Dispose();
+        }
+
+        base.OnDisposing();
     }
 }

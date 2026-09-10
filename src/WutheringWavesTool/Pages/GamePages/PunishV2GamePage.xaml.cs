@@ -1,3 +1,4 @@
+using Haiyu.Common.Contracts;
 using Haiyu.ViewModel.GameViewModels.GameContexts;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -24,7 +25,7 @@ public sealed partial class PunishV2GamePage : Page,IPage
     public PunishV2GamePage()
     {
         InitializeComponent();
-        ViewModel = Instance.Host.Services.GetRequiredService<PunishV2GameContextViewModel>();
+        ViewModel = Instance.GetService<PunishV2GameContextViewModel>()!;
     }
 
 

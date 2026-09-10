@@ -1,11 +1,13 @@
+using Haiyu.Common.Contracts;
 using Waves.Core.Models.Enums;
 
 namespace Haiyu.ViewModel.Communitys;
 
 public sealed partial class GamerSignViewModel : ViewModelBase
 {
-    public GamerSignViewModel(IKuroClient wavesClient, IKuroAccountService accountService)
+    public GamerSignViewModel(WindowSession windowSession,IKuroClient wavesClient, IKuroAccountService accountService)
     {
+        WindowSession = windowSession;
         WavesClient = wavesClient;
         AccountService = accountService;
     }
@@ -15,6 +17,7 @@ public sealed partial class GamerSignViewModel : ViewModelBase
         SignImage = null;
     }
 
+    public WindowSession WindowSession { get; }
     public IKuroClient WavesClient { get; }
     public IKuroAccountService AccountService { get; }
     public GameRoilDataItem SignRoil { get; internal set; }
@@ -49,6 +52,8 @@ public sealed partial class GamerSignViewModel : ViewModelBase
     [RelayCommand]
     async Task Loaded()
     {
+        //var roleData = AppContext.WindowManager.GetWindowContext(this.);
+        this.SignRoil = this.WindowSession.GetParameter<GameRoilDataItem>();
         UserName = this.SignRoil.RoleName;
         await RefreshSignHistoryAsync();
     }

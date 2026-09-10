@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.WinUI.Controls;
+using CommunityToolkit.WinUI.Controls;
+using Haiyu.Common.Contracts;
 using Waves.Core.Contracts.CloudGame;
 using Waves.Core.Models.Enums;
 using Waves.Core.Services;
@@ -7,11 +8,14 @@ namespace Haiyu.Pages.Dialogs;
 
 public sealed partial class CloudGameSettingDialog : ContentDialog,IDialog
 {
-    public CloudGameSettingDialog()
+    public CloudGameSettingDialog(
+        CloudGameSettingViewModel viewModel,
+        IThemeService themeService
+    )
     {
         InitializeComponent();
-        this.ViewModel = Instance.Host.Services.GetRequiredService<CloudGameSettingViewModel>();
-        this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
+        ViewModel = viewModel;
+        RequestedTheme = themeService.CurrentTheme;
     }
 
     public CloudGameSettingViewModel ViewModel { get; }

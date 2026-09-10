@@ -1,3 +1,4 @@
+using Haiyu.Models.Enums;
 using Waves.Api.Models.CloudGame;
 using Waves.Core.Models.CloudGame;
 
@@ -6,18 +7,24 @@ namespace Haiyu.Services.Contracts;
 public interface IViewFactorys
 {
     public IAppContext<App> AppContext { get; }
-    public GetGeetWindow CreateGeetWindow(GeetType type);
+    public GetGeetWindow CreateGeetWindow(nint value,GeetType type);
 
-    public WindowModelBase ShowSignWindow(GameRoilDataItem role);
+    public void ShowSignWindow(GameRoilDataItem role);
 
 
 
-    public TransparentWindow CreateTransperentWindow();
 
-    public WindowModelBase ShowAdminDevice();
+    public void ShowAdminDevice();
 
-    public WindowModelBase ShowAnalysisRecordV2(CloudGameLoginSession selectLogin);
+    public void ShowAnalysisRecordV2(CloudGameLoginSession selectLogin);
 
-    public WindowModelBase ShowAutoKruoTokenWindow();
+    #region Tool
+
+    public void ShowAutoKruoTokenWindow();
+
+    public void ShowMoniterSettingWindow();
+    public void ShowMonitorToolWindow(PostionType postion = PostionType.TopCenter);
+    #endregion
+
 
 }

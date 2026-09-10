@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Haiyu.Plugin.Services;
@@ -21,6 +22,23 @@ using Waves.Core.Models.Enums;
 using Waves.Core.Services;
 using Waves.Settings;
 
-//await KuroClientHomeFeedTest.StartTask();
+//await ABITest.CleanMemoryTest();
 
-await IoCircuitBreakerTest.StartTest(args);
+//清理单个进程
+//var process = Process.GetProcesses();
+//foreach (var item in process)
+//{
+//    if(item.ProcessName == "Haiyu")
+//    {
+//        await ABITest.CleanSingleProcessId((uint) item.Id);
+//    }
+//}
+
+//清理系统文件
+//await ABITest.CleanSystemFileTest();
+
+//合并内存页
+//await ABITest.CleanSeProfileSingleProcessTest();
+
+//刷新
+await ABITest.FlushDiskMemory();

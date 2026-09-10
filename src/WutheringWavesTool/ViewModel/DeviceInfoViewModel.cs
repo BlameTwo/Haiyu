@@ -1,6 +1,6 @@
-using Waves.Api.Models.QRLogin;
-
+using Haiyu.Common.Contracts;
 using Haiyu.Helpers;
+using Waves.Api.Models.QRLogin;
 
 namespace Haiyu.ViewModel;
 
@@ -34,8 +34,13 @@ public partial class DeviceInfoViewModel : WindowViewModelBase, IDisposable
 {
     private bool disposedValue;
 
-    public DeviceInfoViewModel(IKuroClient wavesClient, IKuroAccountService accountService)
+    public DeviceInfoViewModel(
+        WindowSession winSession,
+        IKuroClient wavesClient,
+        IKuroAccountService accountService
+    )
     {
+        WinSession = winSession;
         WavesClient = wavesClient;
         AccountService = accountService;
     }
@@ -44,8 +49,14 @@ public partial class DeviceInfoViewModel : WindowViewModelBase, IDisposable
     public partial ObservableCollection<DeviceInfoDisplayHeader> Displays { get; set; } =
         new()
         {
-            new DeviceInfoDisplayHeader(LanguageService.GetString("ViewModel_PCAuthorization"), "PC"),
-            new DeviceInfoDisplayHeader(LanguageService.GetString("ViewModel_AccountAuthorization"), "User"),
+            new DeviceInfoDisplayHeader(
+                LanguageService.GetString("ViewModel_PCAuthorization"),
+                "PC"
+            ),
+            new DeviceInfoDisplayHeader(
+                LanguageService.GetString("ViewModel_AccountAuthorization"),
+                "User"
+            ),
         };
 
     [ObservableProperty]
@@ -62,6 +73,7 @@ public partial class DeviceInfoViewModel : WindowViewModelBase, IDisposable
 
     [ObservableProperty]
     public partial Visibility GamerRoleVisibility { get; set; }
+    public WindowSession WinSession { get; }
     public IKuroClient WavesClient { get; }
     public IKuroAccountService AccountService { get; }
 
@@ -138,7 +150,10 @@ public partial class DeviceInfoViewModel : WindowViewModelBase, IDisposable
         if (SelectUserServer == null || SelectGamer == null)
             return;
         var result = await WavesClient.SendVerifyGameCode(
-            AccountService.CurrentAccount ?? throw new InvalidOperationException(LanguageService.GetStringByText("当前未选择账号。")),
+            AccountService.CurrentAccount
+                ?? throw new InvalidOperationException(
+                    LanguageService.GetStringByText("当前未选择账号。")
+                ),
             SelectGamer.Id.ToString(),
             SelectUserServer.ServerId,
             this.BindRoleId,
@@ -169,7 +184,10 @@ public partial class DeviceInfoViewModel : WindowViewModelBase, IDisposable
         )
             return;
         var result = await WavesClient.BindGamer(
-            AccountService.CurrentAccount ?? throw new InvalidOperationException(LanguageService.GetStringByText("当前未选择账号。")),
+            AccountService.CurrentAccount
+                ?? throw new InvalidOperationException(
+                    LanguageService.GetStringByText("当前未选择账号。")
+                ),
             SelectGamer.Id.ToString(),
             SelectUserServer.ServerId,
             this.BindRoleId,

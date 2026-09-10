@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="ms-appx:///Haiyu.Controls/Controls/Styles/SpiltButtonStyle.xaml" />
                 <ResourceDictionary Source="ms-appx:///Haiyu.Controls/Controls/Styles/ProgressBar.xaml" />
                 <ResourceDictionary Source="ms-appx:///Haiyu.Controls/Controls/Styles/Button.xaml" />
+                <ResourceDictionary Source="ms-appx:///Haiyu.Controls/Controls/Styles/LauncherButton.xaml" />
                 <ResourceDictionary Source="ms-appx:///Haiyu.Controls/Controls/Styles/ImageEx.xaml" />
                 <ResourceDictionary Source="ms-appx:///Haiyu.Controls/Controls/Styles/NavigationView.xaml" />
                 <ResourceDictionary Source="ms-appx:///Haiyu.Controls/Controls/Styles/LayeredProgressBar.xaml" />

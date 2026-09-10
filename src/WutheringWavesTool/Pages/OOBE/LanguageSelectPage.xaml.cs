@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Haiyu.Common.Contracts;
 using Haiyu.ViewModel.OOBEViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -21,7 +22,7 @@ namespace Haiyu.Pages.OOBE
         public LanguageSelectPage()
         {
             InitializeComponent();
-            this.ViewModel = Instance.Host.Services.GetRequiredService<LanguageSelectViewModel>();
+            this.ViewModel = Instance.GetService<LanguageSelectViewModel>()!;
         }
 
         public Type PageType => typeof(Page);

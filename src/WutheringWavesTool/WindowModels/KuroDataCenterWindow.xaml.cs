@@ -1,40 +1,42 @@
 using ABI.System;
+using Haiyu.Common.Contracts;
 using Haiyu.Common.KuroWebView;
 
 namespace Haiyu.WindowModels;
 
-public sealed partial class KuroDataCenterWindow : Window
+public sealed partial class KuroDataCenterWindow : Window, IWindowInitializable
 {
     KuroCommunityWebViewHostInitializer hostInitializer;
 
-    public KuroDataCenterWindow(WebSessionContext context, WindowsOption? windowsOption = null)
+    public KuroDataCenterWindow(WindowSession session)
     {
         InitializeComponent();
-        this.ApplyWindowsOption(windowsOption);
         this.titleBar.Window = this;
-        this.AppWindow.Closing += AppWindow_Closing;
-        Context = context;
+        Session = session;
     }
 
-    public WebSessionContext Context { get; }
+    public WebSessionContext Context { get; private set; } = null!;
+    public WindowSession Session { get; }
 
-    private void AppWindow_Closing(AppWindow sender, AppWindowClosingEventArgs args)
+    public void Dispose()
     {
-        this.AppWindow.Closing -= AppWindow_Closing;
-        try
-        {
-            webView2?.Close();
-        }
-        catch
-        {
-        }
-        if (titleBar is not null)
-            titleBar.Window = null;
-        this.Content = null;
+        this.Bindings.StopTracking();
+        webView2?.Close();
+    }
+
+    public void Initialize()
+    {
+        Context = Session.GetParameter<WebSessionContext>();
     }
 
     private async void grid_Loaded(object sender, RoutedEventArgs e)
     {
+        if(this.Content is FrameworkElement element)
+        {
+            element.RequestedTheme =  Instance
+                .Host.Services.GetRequiredService<IThemeService>()
+                .CurrentTheme;
+        }
         hostInitializer = new KuroCommunityWebViewHostInitializer();
         await hostInitializer.InitializeAsync(webView2, Context);
         this.webView2.CoreWebView2.Navigate(Context.GetPageUrl());

@@ -13,6 +13,7 @@
     xmlns:local="using:Haiyu.Pages.GamePages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:Haiyu.Controls"
+    NavigationCacheMode="Disabled"
     mc:Ignorable="d">
     <i:Interaction.Behaviors>
         <i:EventTriggerBehavior>
@@ -308,11 +309,14 @@
                         Margin="5,5,0,5"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        Background="{ThemeResource SystemFillColorSuccess}"
                         BorderThickness="0"
                         Command="{x:Bind ViewModel.InvokeTaskCommand}"
                         CornerRadius="4"
-                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}">
+                        Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                        Style="{StaticResource ALauncherButtonStyle}">
+                        <!--
+                            Background="{ThemeResource SystemFillColorSuccess}"
+                        -->
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto" />
@@ -363,15 +367,15 @@
             VerticalAlignment="Top">
             <StackPanel Orientation="Horizontal">
                 <Button
-                    Padding="5"
+                    Padding="8"
                     Command="{x:Bind ViewModel.ShowWavesAnalysisCommand}"
                     Style="{ThemeResource TitleBarButtonStyle}">
                     <StackPanel Orientation="Horizontal" Spacing="5">
                         <FontIcon
                             FontFamily="Segoe Fluent Icons"
-                            FontSize="15"
+                            FontSize="14"
                             Glyph="&#xF133;" />
-                        <TextBlock FontSize="12" Text="{x:Bind helper:LanguageService.GetString('Display_DrawAnalysis')}" />
+                        <TextBlock FontSize="14" Text="{x:Bind helper:LanguageService.GetString('Display_DrawAnalysis')}" />
                     </StackPanel>
                 </Button>
             </StackPanel>

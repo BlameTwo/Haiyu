@@ -1,3 +1,6 @@
+using Haiyu.Common.Contracts;
+using Haiyu.Models.Enums;
+using Haiyu.Models.Options;
 using Haiyu.Pages.Communitys;
 using Haiyu.Pages.Toolkits;
 using Waves.Api.Models.CloudGame;
@@ -7,29 +10,75 @@ namespace Haiyu.Services;
 
 public class ViewFactorys : IViewFactorys
 {
-    private static readonly WindowsOption GeetWindowOption =
-        new()
-        {
-            Width = 700,
-            Height = 510,
-            MaxWidth = 700,
-            MaxHeight = 510,
-            IsResizable = false,
-            IsMaximizable = false,
-            CenterOnScreen = true,
-        };
+    private static readonly WindowsOption SignWindowOption = new()
+    {
+        Width = 400,
+        Height = 400,
+        MaxWidth = 400,
+        MaxHeight = 400,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
 
-    private static readonly WindowsOption DeviceInfoWindowOption =
-        new()
-        {
-            Width = 750,
-            Height = 530,
-            MaxWidth = 750,
-            MaxHeight = 530,
-            IsResizable = false,
-            IsMaximizable = false,
-            CenterOnScreen = true,
-        };
+    private static readonly WindowsOption GeetWindowOption = new()
+    {
+        Width = 700,
+        Height = 510,
+        MaxWidth = 700,
+        MaxHeight = 510,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
+    private static readonly WindowsOption MoniterSettingWindowOption = new()
+    {
+        Width = 900,
+        Height = 500,
+        MaxWidth = 900,
+        MaxHeight = 500,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
+    private static readonly WindowsOption DeviceInfoWindowOption = new()
+    {
+        Width = 750,
+        Height = 530,
+        MaxWidth = 750,
+        MaxHeight = 530,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
+
+    private static readonly WindowsOption WindowsOptionAnalysisRecord = new()
+    {
+        Width = 1200,
+        Height = 750,
+        MaxWidth = 1200,
+        MaxHeight = 750,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
+
+    private static readonly WindowsOption WindowsOptionAutoToken = new()
+    {
+        Width = 900,
+        Height = 650,
+        MaxWidth = 900,
+        MaxHeight = 650,
+        IsResizable = false,
+        IsMaximizable = false,
+        CenterOnScreen = true,
+        IsExtendWindowTitle = true,
+    };
 
     public ViewFactorys(IAppContext<App> appContext)
     {
@@ -38,64 +87,90 @@ public class ViewFactorys : IViewFactorys
 
     public IAppContext<App> AppContext { get; }
 
-    public GetGeetWindow CreateGeetWindow(GeetType type)
+    public GetGeetWindow CreateGeetWindow(nint value, GeetType type)
     {
-        return new GetGeetWindow(
-            WindowNative.GetWindowHandle(AppContext.App.MainWindow),
-            type,
-            GeetWindowOption
+        return new GetGeetWindow(value, type, GeetWindowOption);
+    }
+
+    public void ShowSignWindow(GameRoilDataItem role)
+    {
+        this.AppContext.WindowManager.CreateWindow<GamerSignPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = SignWindowOption,
+                Key = role.GetSignId,
+                Parameter = role,
+            }
         );
     }
 
-    public WindowModelBase ShowSignWindow(GameRoilDataItem role) =>
-        this.ShowWindowBase<GamerSignPage>(role);
-
-    public WindowModelBase ShowWindowBase<T>(object? data)
-        where T : UIElement, IWindowPage
+    public void ShowAdminDevice()
     {
-        var win = new WindowModelBase(WindowNative.GetWindowHandle(AppContext.App.MainWindow));
-        var page = Instance.Host.Services!.GetRequiredService<T>();
-        if (data != null)
-            page.SetData(data);
-        page.SetWindow(win);
-        win.Content = page;
-        return win;
-    }
-
-    public WindowModelBase ShowAdminDevice()
-    {
-        var win = new WindowModelBase(
-            WindowNative.GetWindowHandle(AppContext.App.MainWindow),
-            DeviceInfoWindowOption
+        this.AppContext.WindowManager.CreateWindowBase<DeviceInfoPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = DeviceInfoWindowOption,
+                Key = "KuroDevice",
+                Parameter = null,
+            },
+            WindowNative.GetWindowHandle(AppContext.WindowManager.Shell.GetWindow())
         );
-        var page = Instance.Host.Services!.GetRequiredService<DeviceInfoPage>();
-        page.SetWindow(win);
-        win.Content = page;
-        return win;
     }
 
-
-
-    public TransparentWindow CreateTransperentWindow()
+    public void ShowAnalysisRecordV2(CloudGameLoginSession selectLogin)
     {
-        return new TransparentWindow();
+        this.AppContext.WindowManager.CreateWindowBase<WavesAnalysisRecordPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = WindowsOptionAnalysisRecord,
+                Key = $"{selectLogin.GetId()}:CloudWaves",
+                Parameter = selectLogin,
+            },
+            WindowNative.GetWindowHandle(AppContext.WindowManager.Shell.GetWindow())
+        );
     }
 
-
-
-    public Window CreateAllowTransparent()
+    public void ShowAutoKruoTokenWindow()
     {
-        return new Window();
+        this.AppContext.WindowManager.CreateWindow<AutoKuroTokenPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = WindowsOptionAutoToken,
+                Key = $"AutoKuroToken",
+                Parameter = null,
+            }
+        );
     }
 
-    public WindowModelBase ShowAnalysisRecordV2(CloudGameLoginSession selectLogin)
+    public void ShowMoniterSettingWindow()
     {
-        return this.ShowWindowBase<WavesAnalysisRecordPage>(selectLogin);
+        this.AppContext.WindowManager.CreateWindow<MonitorSettingPage>(
+            new Models.Options.WindowManagerOption()
+            {
+                WindowConfig = MoniterSettingWindowOption,
+                Key = $"MoniterSetting",
+                Parameter = null,
+            }
+        );
     }
 
-    public WindowModelBase ShowAutoKruoTokenWindow()
+    public void ShowMonitorToolWindow(PostionType postion = PostionType.TopCenter)
     {
-        return this.ShowWindowBase<AutoKuroTokenPage>(null);
+        AppContext.WindowManager.CreateTransparentWindow<MonitorToolPage>(
+            new PostionTransparentWindowOption
+            {
+                Key = "MonitorTool",
+                Parameter = null,
+                Postion = postion,
+                Width = 1200,
+                Height = 50,
+                LeftMargin = 50,
+                TopMargin = 5,
+                RightMargin = 50,
+                BottomMargin = 10,
+                IsTopMost = true,
+                IsClickThrough = true,
+            }
+        );
     }
-
 }

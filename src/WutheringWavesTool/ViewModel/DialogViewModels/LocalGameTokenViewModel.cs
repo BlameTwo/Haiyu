@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Haiyu.Common.Contracts;
 
 namespace Haiyu.ViewModel.DialogViewModels
 {
     public sealed partial class LocalGameTokenViewModel : DialogViewModelBase
     {
+        public LocalGameTokenViewModel(DialogSession dialogSession) : base(dialogSession)
+        {
+        }
+
         public IGameContextV2 GameContext { get; private set; }
 
         [ObservableProperty]

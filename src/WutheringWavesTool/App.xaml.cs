@@ -21,20 +21,21 @@ public partial class App : ClientApplication
     private const int PROCESS_PER_MONITOR_DPI_AWARE = 2;
     private AppInstance mainInstance;
 
-    public static string AppVersion => "1.3.7";
+    public static string AppVersion => "1.4.0";
 
     public AppSettings AppSettings { get; private set; }
 
     public App()
     {
         this.InitializeComponent();
+        this.DispatcherShutdownMode = DispatcherShutdownMode.OnExplicitShutdown;
         mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(
             "Haiyu_Main"
         );
         mainInstance.Activated += MainInstance_Activated;
     }
 
-    private async void MainInstance_Activated(object? sender, AppActivationArguments e) 
+    private async void MainInstance_Activated(object? sender, AppActivationArguments e)
     {
         var active = Instance.Host.Services.GetRequiredService<IAppActivation>();
         await active.ExecLaunchActivatedEventArgs(e);
@@ -62,27 +63,33 @@ public partial class App : ClientApplication
         {
             try
             {
-                Instance.Host.Services
-                    .GetRequiredKeyedService<LoggerService>("AppLog")
+                Instance
+                    .Host.Services.GetRequiredKeyedService<LoggerService>("AppLog")
                     .WriteWarning(
                         $"[UnhandledCancel] {e.Exception.GetType().Name}: {e.Exception.Message}\n{e.Exception.StackTrace}"
                     );
             }
-            catch
-            {
-            }
+            catch { }
 
             e.Handled = true;
             return;
         }
         try
         {
-            Instance.Host.Services.GetRequiredService<ITipShow>().ShowMessage(e.Message, Symbol.Clear);
-            Instance.Host.Services.GetRequiredKeyedService<LoggerService>("AppLog").WriteError(e.Message);
+            Instance
+                .Host.Services.GetRequiredKeyedService<LoggerService>("AppLog")
+                .WriteError($"{e.Exception}\n{e.Exception.StackTrace}");
+
+            var windowManager = Instance.Host.Services.GetRequiredService<IWindowManager>();
+            windowManager
+                .GetWindowContext(IWindowManager.ShellKey)
+                ?.TipShow.ShowMessage(e.Message, Symbol.Clear);
         }
         catch (Exception ex)
         {
-            Instance.Host.Services.GetRequiredKeyedService<LoggerService>("AppLog").WriteError(ex.Message);
+            Instance
+                .Host.Services.GetRequiredKeyedService<LoggerService>("AppLog")
+                .WriteError($"UnhandledException 处理失败：{ex}");
         }
         finally
         {
@@ -92,10 +99,14 @@ public partial class App : ClientApplication
 
     protected override async void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
-        var mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey("Haiyu_Main");
+        var mainInstance = Microsoft.Windows.AppLifecycle.AppInstance.FindOrRegisterForKey(
+            "Haiyu_Main"
+        );
         if (!mainInstance.IsCurrent)
         {
-            var activatedEventArgs = Microsoft.Windows.AppLifecycle.AppInstance.GetCurrent().GetActivatedEventArgs();
+            var activatedEventArgs = Microsoft
+                .Windows.AppLifecycle.AppInstance.GetCurrent()
+                .GetActivatedEventArgs();
             await mainInstance.RedirectActivationToAsync(activatedEventArgs);
             Process.GetCurrentProcess().Kill();
             return;
@@ -108,7 +119,6 @@ public partial class App : ClientApplication
         {
             await AppSettings.SetWallpaperTypeAsync("video");
         }
-        SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
         GameContextFactory.GameBassPath = AppSettings.BassFolder;
 
         Instance.Host.Services.GetKeyedService<LoggerService>("AppLog").WriteInfo("启动程序中……");

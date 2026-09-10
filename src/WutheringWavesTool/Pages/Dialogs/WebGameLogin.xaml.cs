@@ -1,12 +1,17 @@
+using Haiyu.Common.Contracts;
+
 namespace Haiyu.Pages.Dialogs;
 
 public sealed partial class WebGameLogin : ContentDialog, IDialog
 {
-    public WebGameLogin()
+    public WebGameLogin(
+        WebGameViewModel viewModel,
+        IThemeService themeService
+    )
     {
         InitializeComponent();
-        this.ViewModel = Instance.GetService<WebGameViewModel>();
-        this.RequestedTheme = Instance.Host.Services.GetRequiredService<IThemeService>().CurrentTheme;
+        ViewModel = viewModel;
+        RequestedTheme = themeService.CurrentTheme;
     }
 
     public WebGameViewModel ViewModel { get; }

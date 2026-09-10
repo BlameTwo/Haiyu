@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Haiyu.Pages.Toolkits.MonitorToolPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:adb="using:ChromeCDPSharp.Common"
+    xmlns:controls="using:Haiyu.Controls"
+    xmlns:converter="using:Haiyu.Converter"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helper="using:Haiyu.Helpers"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:local="using:Haiyu.Pages.Toolkits"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Haiyu.ViewModel.ToolkitsViewModel"
+    FontFamily="{x:Bind ViewModel.MonitorFontFamily, Mode=OneWay}"
+    FontSize="{x:Bind ViewModel.MonitorFontSize, Mode=OneWay}"
+    Foreground="{x:Bind ViewModel.MonitorForeground, Mode=OneWay}"
+    mc:Ignorable="d">
+    <i:Interaction.Behaviors>
+        <i:EventTriggerBehavior EventName="Loaded">
+            <i:InvokeCommandAction Command="{x:Bind ViewModel.LoadedCommand}" />
+        </i:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+    <Page.Resources>
+        <converter:MonitorMemoryVisiblity x:Key="MonitorMemoryVisiblity" />
+    </Page.Resources>
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="TokenPanelBorderStyle" TargetType="Border">
+                <Setter Property="Padding" Value="14" />
+
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+            <Style x:Key="TokenPanelGridStyle" TargetType="Grid">
+                <Setter Property="Padding" Value="14" />
+
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="5" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutSubItem Text="显示" />
+                <MenuFlyoutItem Text="退出" />
+            </MenuFlyout>
+        </Grid.ContextFlyout>
+        <StackPanel
+            x:Name="MonitorPanel"
+            Padding="10,0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal"
+            Spacing="{x:Bind ViewModel.MonitorItemSpacing, Mode=OneWay}">
+            <StackPanel
+                Margin="5,0"
+                Padding="12,6"
+                Background="Transparent"
+                CornerRadius="5"
+                Orientation="Horizontal"
+                Spacing="12">
+
+                <StackPanel
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="3"
+                    Visibility="{x:Bind ViewModel.CurrentFpsEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="FPS" />
+                    <TextBlock FontWeight="Bold" Text="{x:Bind ViewModel.FPS, Mode=OneWay}" />
+                </StackPanel>
+                <StackPanel
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="3"
+                    Visibility="{x:Bind ViewModel.MaxFrameTimeEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="最大帧时间" />
+                    <TextBlock FontWeight="SemiBold" Text="{x:Bind ViewModel.MaxFrameTime, Mode=OneWay}" />
+                    <TextBlock Text="ms" />
+                </StackPanel>
+                <StackPanel
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="3"
+                    Visibility="{x:Bind ViewModel.FPS1LowEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="1% Low" />
+                    <TextBlock FontWeight="SemiBold" Text="{x:Bind ViewModel.Low1PercentFPS, Mode=OneWay}" />
+                </StackPanel>
+                <StackPanel
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="3"
+                    Visibility="{x:Bind ViewModel.FPS01LowEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="0.1% Low" />
+                    <TextBlock FontWeight="SemiBold" Text="{x:Bind ViewModel.Low01PercentFPS, Mode=OneWay}" />
+                </StackPanel>
+                <StackPanel
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal"
+                    Spacing="3"
+                    Visibility="{x:Bind ViewModel.FPSMaxEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                    <TextBlock Text="最高 FPS" />
+                    <TextBlock FontWeight="SemiBold" Text="{x:Bind ViewModel.MaximumFPS, Mode=OneWay}" />
+                </StackPanel>
+            </StackPanel>
+            <ItemsControl ItemsSource="{x:Bind ViewModel.CPUS, Mode=OneWay}" Visibility="Visible">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:MonitorDeviceItem">
+                        <StackPanel
+                            Margin="5,0,0,0"
+                            Padding="5"
+                            Background="Transparent"
+                            CornerRadius="5"
+                            Orientation="Horizontal"
+                            Spacing="5">
+                            <TextBlock>
+                                <Run Text="{x:Bind IndexStr, Mode=OneWay}" />
+                            </TextBlock>
+                            <TextBlock Visibility="{x:Bind LoadEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Run Text="{x:Bind Load, Mode=OneWay}" />
+                                <Run Text="%" />
+                            </TextBlock>
+                            <TextBlock Visibility="{x:Bind TempateEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Run Text="{x:Bind Tempate, Mode=OneWay}" />
+                                <Run Text="℃" />
+                            </TextBlock>
+                            <TextBlock Visibility="{x:Bind VoltagesEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Run Text="{x:Bind Voltages, Mode=OneWay}" />
+                                <Run Text="V" />
+                            </TextBlock>
+                            <TextBlock Visibility="{x:Bind ClockEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Run Text="{x:Bind Clock, Mode=OneWay}" />
+                                <Run Text="MHz" />
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <ItemsControl
+                VerticalAlignment="Center"
+                ItemsSource="{x:Bind ViewModel.GPUS, Mode=OneWay}"
+                Visibility="Visible">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsStackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:MonitorDeviceItem">
+                        <StackPanel
+                            Margin="5,0,0,0"
+                            Padding="5"
+                            Background="Transparent"
+                            CornerRadius="5"
+                            Orientation="Horizontal"
+                            Spacing="5">
+                            <TextBlock>
+                                <Run Text="{x:Bind IndexStr, Mode=OneWay}" />
+                            </TextBlock>
+                            <TextBlock Visibility="{x:Bind LoadEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Run Text="{x:Bind Load, Mode=OneWay}" />
+                                <Run Text="%" />
+                            </TextBlock>
+                            <TextBlock Visibility="{x:Bind TempateEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Run Text="{x:Bind Tempate, Mode=OneWay}" />
+                                <Run Text="℃" />
+                            </TextBlock>
+                            <TextBlock Visibility="{x:Bind VoltagesEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Run Text="{x:Bind Voltages, Mode=OneWay}" />
+                                <Run Text="V" />
+                            </TextBlock>
+                            <TextBlock Visibility="{x:Bind ClockEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Run Text="{x:Bind Clock, Mode=OneWay}" />
+                                <Run Text="MHz" />
+                            </TextBlock>
+                            <TextBlock Visibility="{x:Bind VMemoryEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Run Text="{x:Bind Memory, Mode=OneWay}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </DataTemplate>
+
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <StackPanel
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="3"
+                Visibility="{x:Bind ViewModel.MemoryEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Text="内存" />
+                <TextBlock Text="{x:Bind ViewModel.MemoryText, Mode=OneWay}" />
+            </StackPanel>
+            <StackPanel
+                VerticalAlignment="Center"
+                Orientation="Horizontal"
+                Spacing="3"
+                Visibility="{x:Bind ViewModel.PowerEnable, Mode=OneWay, Converter={StaticResource BoolToVisibilityConverter}}">
+                <TextBlock Text="功耗" />
+                <TextBlock Text="{x:Bind ViewModel.Power, Mode=OneWay}" />
+                <TextBlock Text="W" />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Page>
+

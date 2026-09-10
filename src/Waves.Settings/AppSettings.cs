@@ -38,8 +38,7 @@ namespace Waves.Settings;
     JsonTypeInfoContextType = typeof(AppSettingJsonContext),
     JsonTypeInfoPropertyName = nameof(AppSettingJsonContext.Default.MainWindowSetting)
 )]
-#region Windows Settings
-#endregion
+[Settings<string>(Name = "ABIRuntimePackagePath",Nullable =true)]
 public partial class AppSettings : SettingBase
 {
     public static string BassFolder =>
@@ -60,6 +59,8 @@ public partial class AppSettings : SettingBase
     public static string LocalUserFolder => BassFolder + "\\LocalUser";
 
     public string ToolsPosionFilePath => BassFolder + "\\ToolsPostion.json";
+
+    public static string ABIRuntimeSavePath => BassFolder+"\\Haiyu.ABI";
 
     private static readonly string SettingsFilePath = Path.Combine(BassFolder, "System.json");
 

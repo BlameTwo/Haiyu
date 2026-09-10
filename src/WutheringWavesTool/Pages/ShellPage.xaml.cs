@@ -1,22 +1,27 @@
 using System.Collections.Specialized;
+using Haiyu.Common.WindowContext;
 using Haiyu.Pages.GamePages;
 using Microsoft.UI.Xaml.Hosting;
 
 namespace Haiyu.Pages;
 
-public sealed partial class ShellPage : Page
+public sealed partial class ShellPage : Page, IDisposable
 {
-    public ShellPage()
+    private bool _disposed;
+
+    public ShellPage(ShellViewModel viewModel)
     {
         this.InitializeComponent();
-        this.ViewModel =
-            Instance.GetService<ShellViewModel>() ?? throw new ArgumentException(LanguageService.GetStringByText("服务注册错误"));
+        this.ViewModel = viewModel;
         this.Loaded += ShellPage_Loaded;
         this.ViewModel.HomeNavigationService.Navigated += HomeNavigationService_Navigated;
         this.ViewModel.HomeNavigationService.RegisterView(this.frame);
         this.ViewModel.HomeNavigationViewService.Register(this.navigationView);
-        this.ViewModel.TipShow.Owner = this.panel;
-        this.ViewModel.AppContext.SetTitleControl(this.titlebar);
+        this.ViewModel.WindowManager.Shell.TipShow.Owner = this.panel;
+        if(this.ViewModel.WindowManager.Shell is ShellWindowContext shell) 
+        {
+            shell.MainTitle = this.titlebar;
+        }
         this.ViewModel.AppContext.WallpaperService.RegisterMediaHost(mediaControl);
     }
 
@@ -46,13 +51,7 @@ public sealed partial class ShellPage : Page
 
     private void ShellPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
     {
-        this.ViewModel.DialogManager.RegisterRoot(this.XamlRoot);
-        this.notify.RegisterWin(Instance.GetService<IAppContext<App>>().App.MainWindow);
-        this.notify.CreateTrayIcon(
-            AppDomain.CurrentDomain.BaseDirectory + "\\Assets\\appLogo.ico",
-            "Haiyu"
-        );
-
+        this.ViewModel.WindowManager.Shell.DialogManager.RegisterRoot(this.XamlRoot);
     }
 
     private void ComboBox_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -68,5 +67,21 @@ public sealed partial class ShellPage : Page
     private void OpenMessagePane(object sender, RoutedEventArgs e)
     {
         view.IsPaneOpen = !view.IsPaneOpen;
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _disposed = true;
+        Loaded -= ShellPage_Loaded;
+        ViewModel.HomeNavigationService.Navigated -= HomeNavigationService_Navigated;
+        ViewModel.HomeNavigationService.UnRegisterView();
+        ViewModel.HomeNavigationViewService.UnRegister();
+        ViewModel.AppContext.WallpaperService.UnregisterMediaHost(mediaControl);
+        Bindings.StopTracking();
     }
 }

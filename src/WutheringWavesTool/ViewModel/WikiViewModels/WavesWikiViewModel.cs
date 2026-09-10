@@ -12,17 +12,6 @@ namespace Haiyu.ViewModel.WikiViewModels;
 
 public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
 {
-    private static readonly WindowsOption SignWindowOption = new()
-    {
-        Width = 400,
-        Height = 400,
-        MaxWidth = 400,
-        MaxHeight = 400,
-        IsResizable = false,
-        IsMaximizable = false,
-        CenterOnScreen = true,
-    };
-
     private static readonly WindowsOption CommunityWindowOption = new()
     {
         Width = 400,
@@ -48,6 +37,8 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
         IKuroClient kuroClient,
         IKuroAccountService kuroAccountService,
         IHaiyuMemoryCacheService haiyuMemoryCacheService
+        
+        
     )
     {
         this.Messenger.Register<SelectUserMessanger>(this, LoginMessangerMethod);
@@ -144,7 +135,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
                     }
                     else
                     {
-                        TipShow.ShowMessage(
+                        AppContext.WindowManager.Shell.TipShow.ShowMessage(
                             LanguageService.GetStringByText(
                                 "获取卡池信息出现了不可预料的情况，请确认官方Wiki显示是否正常"
                             ),
@@ -154,7 +145,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
                 }
                 else
                 {
-                    TipShow.ShowMessage(
+                    AppContext.WindowManager.Shell.TipShow.ShowMessage(
                         LanguageService.FormatByText(
                             LanguageService.GetStringByText(
                                 "获取数据失败，请检查网络或重启应用"
@@ -238,12 +229,9 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
     [RelayCommand]
     async Task OpenGameSign()
     {
-        var win = Instance
+        Instance
             .Host.Services.GetRequiredService<IViewFactorys>()!
             .ShowSignWindow(this.SelectGamer);
-        win.ApplyWindowsOption(SignWindowOption);
-        win.ExtendsContentIntoTitleBar = true;
-        win.AppWindow.Show();
     }
 
     async partial void OnSelectGamerChanged(GameRoilDataItem value)
@@ -293,7 +281,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
                 );
                 if (result.Code != 0 || result.Result == null)
                 {
-                    TipShow.ShowMessage(
+                    AppContext.WindowManager.Shell.TipShow.ShowMessage(
                         LanguageService.FormatByText(
                             LanguageService.GetStringByText("获取数据失败，请检查网络或重启应用")
                         ),
@@ -314,7 +302,7 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
         {
             if (!IsAlive)
                 return;
-            TipShow.ShowMessage(
+            AppContext.WindowManager.Shell.TipShow.ShowMessage(
                 LanguageService.FormatByText(
                     LanguageService.GetStringByText("刷新失败:{0}"),
                     ex.Message
@@ -340,14 +328,12 @@ public partial class WavesWikiViewModel : WikiViewModelBase, IHaiyuCacheOwner
         {
             return;
         }
-        KuroDataCenterWindow window = new KuroDataCenterWindow(context, CommunityWindowOption);
-        if (window.Content is FrameworkElement element)
+        this.AppContext.WindowManager.CreateOriginWindow<KuroDataCenterWindow>(new Models.Options.WindowManagerOption()
         {
-            element.RequestedTheme = Instance
-                .Host.Services.GetRequiredService<IThemeService>()
-                .CurrentTheme;
-        }
-        window.AppWindow.Show();
+             WindowConfig = CommunityWindowOption,
+             Key = context.Id,
+             Parameter = context
+        });
     }
 
     private async Task<WebSessionContext?> CreateDataCenterSessionContext()

@@ -40,11 +40,18 @@ namespace Haiyu.Models
 
     public sealed class WebSessionContext
     {
-        private const string DataCenterUrlTemplate = "https://web-static.kurobbs.com/mcbox/index.html#/mc-role-box?accessType=1&roleId={0}&serverId={1}";
-        private const string GrowthCalculatorUrl = "https://web-static.kurobbs.com/growth-calculator/index.html#/";
+        private const string DataCenterUrlTemplate =
+            "https://web-static.kurobbs.com/mcbox/index.html#/mc-role-box?accessType=1&roleId={0}&serverId={1}";
+        private const string GrowthCalculatorUrl =
+            "https://web-static.kurobbs.com/growth-calculator/index.html#/";
         private const string CalendarUrl = "https://web-static.kurobbs.com/mccalendar/index.html#/";
-        private const string MapUrlTemplate = "https://www.kurobbs.com/mc/map/?v=4.0&state={0}&country={1}&x={2}&y={3}&zoom={4}";
-        private const string ResourceBriefingUrl = "https://web-static.kurobbs.com/resource-briefing/index.html#/home";
+        private const string MapUrlTemplate =
+            "https://www.kurobbs.com/mc/map/?v=4.0&state={0}&country={1}&x={2}&y={3}&zoom={4}";
+        private const string ResourceBriefingUrl =
+            "https://web-static.kurobbs.com/resource-briefing/index.html#/home";
+
+        [JsonIgnore]
+        public string Id { get; private set; }
 
         private WebSessionContext(
             KuroLoginSnapshot snapshot,
@@ -53,7 +60,8 @@ namespace Haiyu.Models
             string roleId,
             string serverName,
             string roleName,
-            int gameId = 3)
+            int gameId = 3
+        )
         {
             Snapshot = snapshot ?? throw new ArgumentNullException(nameof(snapshot));
             PageUrl = pageUrl;
@@ -62,6 +70,8 @@ namespace Haiyu.Models
             ServerName = serverName ?? string.Empty;
             RoleName = roleName ?? string.Empty;
             GameId = gameId;
+            this.Id =
+                $"{this.PageUrl}:{this.ServerId}:{this.RoleId}:{this.ServerName}:{this.RoleName}:{this.GameId}";
         }
 
         [JsonPropertyName("snapshot")]
@@ -143,7 +153,8 @@ namespace Haiyu.Models
             int country = 1,
             double x = 0,
             double y = 0,
-            string zoom = "0.00")
+            string zoom = "0.00"
+        )
         {
             return string.Format(MapUrlTemplate, state, country, x, y, zoom);
         }
@@ -158,7 +169,8 @@ namespace Haiyu.Models
             string serverId,
             string roleId,
             string? serverName = null,
-            string? roleName = null)
+            string? roleName = null
+        )
         {
             return new WebSessionContext(
                 snapshot,
@@ -166,7 +178,8 @@ namespace Haiyu.Models
                 serverId,
                 roleId,
                 serverName ?? string.Empty,
-                roleName ?? string.Empty);
+                roleName ?? string.Empty
+            );
         }
 
         public static WebSessionContext CreateGrowthCalculator(
@@ -174,7 +187,8 @@ namespace Haiyu.Models
             string serverId,
             string roleId,
             string? serverName = null,
-            string? roleName = null)
+            string? roleName = null
+        )
         {
             return new WebSessionContext(
                 snapshot,
@@ -182,7 +196,8 @@ namespace Haiyu.Models
                 serverId,
                 roleId,
                 serverName ?? string.Empty,
-                roleName ?? string.Empty);
+                roleName ?? string.Empty
+            );
         }
 
         public static WebSessionContext CreateResourceBriefing(
@@ -190,7 +205,8 @@ namespace Haiyu.Models
             string serverId,
             string roleId,
             string? serverName = null,
-            string? roleName = null)
+            string? roleName = null
+        )
         {
             return new WebSessionContext(
                 snapshot,
@@ -198,7 +214,8 @@ namespace Haiyu.Models
                 serverId,
                 roleId,
                 serverName ?? string.Empty,
-                roleName ?? string.Empty);
+                roleName ?? string.Empty
+            );
         }
 
         public static WebSessionContext CreateCalendar(
@@ -206,7 +223,8 @@ namespace Haiyu.Models
             string serverId,
             string roleId,
             string? serverName = null,
-            string? roleName = null)
+            string? roleName = null
+        )
         {
             return new WebSessionContext(
                 snapshot,
@@ -214,7 +232,8 @@ namespace Haiyu.Models
                 serverId,
                 roleId,
                 serverName ?? string.Empty,
-                roleName ?? string.Empty);
+                roleName ?? string.Empty
+            );
         }
 
         public static WebSessionContext CreateMap(
@@ -227,7 +246,8 @@ namespace Haiyu.Models
             int country = 1,
             double x = 0,
             double y = 0,
-            string zoom = "0.00")
+            string zoom = "0.00"
+        )
         {
             return new WebSessionContext(
                 snapshot,
@@ -235,7 +255,8 @@ namespace Haiyu.Models
                 serverId,
                 roleId,
                 serverName ?? string.Empty,
-                roleName ?? string.Empty);
+                roleName ?? string.Empty
+            );
         }
     }
 
@@ -313,7 +334,5 @@ namespace Haiyu.Models
     [JsonSerializable(typeof(long))]
     [JsonSerializable(typeof(double))]
     [JsonSerializable(typeof(bool))]
-    public partial class KuroSessionContext : JsonSerializerContext
-    {
-    }
+    public partial class KuroSessionContext : JsonSerializerContext { }
 }

@@ -1,4 +1,5 @@
-﻿using Haiyu.ViewModel.WikiViewModels;
+using Haiyu.Common.Contracts;
+using Haiyu.ViewModel.WikiViewModels;
 
 
 namespace Haiyu.Pages.GameWikis;
@@ -8,7 +9,7 @@ public sealed partial class PunishWikiPage : Page, IPage,IDisposable
     public PunishWikiPage()
     {
         InitializeComponent();
-        this.ViewModel = Instance.Host.Services.GetRequiredService<PunishWikiViewModel>();
+        this.ViewModel = Instance.GetService<PunishWikiViewModel>()!;
     }
     public PunishWikiViewModel? ViewModel { get; private set; }
     public Type PageType => typeof(PunishWikiPage);

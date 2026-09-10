@@ -1,3 +1,4 @@
+using Haiyu.Common.Contracts;
 using Waves.Core.Models.Enums;
 using Waves.Core.Models.Options;
 
@@ -5,6 +6,10 @@ namespace Haiyu.ViewModel;
 
 public sealed partial class KuroGameSettingViewModel : DialogViewModelBase
 {
+    public KuroGameSettingViewModel(DialogSession dialogSession) : base(dialogSession)
+    {
+    }
+
     public IGameContextV2 GameContext { get; private set; }
 
     public GameType GameType { get; private set; }
