@@ -242,7 +242,7 @@ public sealed partial class MonitorToolViewModel : ViewModelBase
         _monitorCancellation = CancellationTokenSource.CreateLinkedTokenSource(this.CTS.Token);
 
         bool initialized = await AppContext.ABIRuntimeService.Initialize(
-            AppDomain.CurrentDomain.BaseDirectory
+            Waves.Settings.AppSettings.ABIRuntimeSavePath
         );
         if (!initialized || AppContext.ABIRuntimeService.Runtime is null || !IsAlive)
         {

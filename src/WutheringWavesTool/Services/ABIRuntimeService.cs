@@ -24,43 +24,43 @@ public sealed class ABIRuntimeService
             if (_initialized && Runtime is not null)
                 return true;
 
-        string corePath = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory,
-            "Haiyu.ABI",
-            "Haiyu.ABI.dll"
-        );
-        try
-        {
-            if (Runtime == null || Runtime.RunFlage != 0)
+            string corePath = Path.Combine(baseDirectory,"Haiyu.ABI.dll");
+            if (!File.Exists(corePath))
             {
-                Runtime = new PrivilegedRuntime(corePath);
+                throw new Exception("资源包未安装！");
             }
-            Progress<IPrivilegedProgress<ABISystemConfigProgress>> progress = new Progress<
-                IPrivilegedProgress<ABISystemConfigProgress>
-            >(p =>
+            try
             {
-                if (p.Data is { } configProgress)
+                if (Runtime == null || Runtime.RunFlage != 0)
                 {
-                    Debug.WriteLine($"Run{configProgress.IsRuning}");
+                    Runtime = new PrivilegedRuntime(corePath);
                 }
-            });
-            var result = await this.Runtime.InvokeAsync(
-                ABIRuntime.Contract.ABISystemConfigContract,
-                new ABISystemConfigRequest() { BaseDirectory = baseDirectory },
-                progress,
-                default
-            );
-            _initialized = result.IsSuccess;
-            return _initialized;
-        }
-        catch (Exception)
-        {
-            LegacyMessageBox.ShowError(
-                "初始化后台ABI运行时失败，请确保 Haiyu.ABI.dll 存在于 Haiyu.ABI 文件夹中。",
-                "错误"
-            );
-            return false;
-        }
+                Progress<IPrivilegedProgress<ABISystemConfigProgress>> progress = new Progress<
+                    IPrivilegedProgress<ABISystemConfigProgress>
+                >(p =>
+                {
+                    if (p.Data is { } configProgress)
+                    {
+                        Debug.WriteLine($"Run{configProgress.IsRuning}");
+                    }
+                });
+                var result = await this.Runtime.InvokeAsync(
+                    ABIRuntime.Contract.ABISystemConfigContract,
+                    new ABISystemConfigRequest() { BaseDirectory = baseDirectory },
+                    progress,
+                    default
+                );
+                _initialized = result.IsSuccess;
+                return _initialized;
+            }
+            catch (Exception)
+            {
+                LegacyMessageBox.ShowError(
+                    "初始化后台ABI运行时失败，请确保 Haiyu.ABI.dll 存在于 Haiyu.ABI 文件夹中。",
+                    "错误"
+                );
+                return false;
+            }
         }
         finally
         {

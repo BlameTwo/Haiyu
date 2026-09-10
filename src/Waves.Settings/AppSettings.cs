@@ -60,6 +60,8 @@ public partial class AppSettings : SettingBase
 
     public string ToolsPosionFilePath => BassFolder + "\\ToolsPostion.json";
 
+    public static string ABIRuntimeSavePath => BassFolder+"\\Haiyu.ABI";
+
     private static readonly string SettingsFilePath = Path.Combine(BassFolder, "System.json");
 
     public static readonly string WebViewFixRuntime = Path.Combine(

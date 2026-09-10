@@ -24,10 +24,31 @@
         HorizontalScrollBarVisibility="Hidden"
         VerticalScrollBarVisibility="Hidden">
         <StackPanel Orientation="Vertical" Spacing="5">
-            <TextBlock
-                FontFamily="{ThemeResource DefaultFont}"
-                FontSize="18"
-                Text="{x:Bind helper:LanguageService.GetString('Display_Tools')}" />
+            <Grid>
+                <TextBlock
+                    FontFamily="{ThemeResource DefaultFont}"
+                    FontSize="18"
+                    Text="{x:Bind helper:LanguageService.GetString('Display_Tools')}" />
+                <Button
+                    Padding="8"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Command="{x:Bind ViewModel.ImportABIRuntimeCommand}"
+                    Style="{ThemeResource TitleBarButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Spacing="5">
+
+                        <FontIcon
+                            VerticalAlignment="Center"
+                            FontFamily="Segoe Fluent Icons"
+                            FontSize="14"
+                            Glyph="&#xE7B8;" />
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            FontSize="14"
+                            Text="导入功能扩展包" />
+                    </StackPanel>
+                </Button>
+            </Grid>
             <cui:SettingsCard Description="{x:Bind helper:LanguageService.GetString('Display_CallProtocol')}" Header="{x:Bind helper:LanguageService.GetString('Display_TokenReader')}">
                 <cui:SettingsCard.HeaderIcon>
                     <ImageIcon Source="/Assets/kuroRobot.png" />

@@ -22,7 +22,7 @@ public partial class ClearMemoryViewModel : DialogViewModelBase
     async Task InvokeClear()
     {
         bool initialized = await AppContext.ABIRuntimeService.Initialize(
-            AppDomain.CurrentDomain.BaseDirectory
+            Waves.Settings.AppSettings.ABIRuntimeSavePath
         );
         if (!initialized || AppContext.ABIRuntimeService.Runtime is null || !IsAlive)
         {
