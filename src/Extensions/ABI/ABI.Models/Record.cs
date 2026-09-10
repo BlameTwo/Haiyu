@@ -12,11 +12,20 @@ namespace ABI.Models;
 
 
 /// <summary>
-/// 清理内存请求，programNames为要清理的程序名，多个程序名用逗号分隔
+/// 清理内存请求，programNames为要排除清理的程序名，多个程序名用逗号分隔
 /// </summary>
-/// <param name="programNames"></param>
 [MemoryPackable]
-public sealed partial record CleanMemoryRequest(string programNames);
+public sealed partial record CleanMemoryRequest(
+    bool PurgeStandbyEnable,
+    bool PurgeLowPriorityStandbyEnable,
+    bool FlushModifiedEnable,
+    bool EmptyWorkingSetsEnable,
+    bool PurgeSystemFileEnable,
+    bool CombinePhysicalMemoryEnable,
+    bool FlushModifiedFileEnable,
+    bool ExecuteRegistryEnable,
+    string programNames
+);
 
 /// <summary>
 /// 清理内存进度
@@ -48,9 +57,7 @@ public sealed partial record CMonitorProgress(
 public sealed partial record FpsMonitorRequest();
 
 [MemoryPackable]
-public sealed partial record FpsMonitorProgress(
-    [property: JsonPropertyName("data")] FPSData data
-);
+public sealed partial record FpsMonitorProgress([property: JsonPropertyName("data")] FPSData data);
 
 #endregion
 /// <summary>

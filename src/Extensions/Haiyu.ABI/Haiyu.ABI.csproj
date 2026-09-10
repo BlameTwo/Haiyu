@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Waves.Settings\Waves.Settings.csproj" />
     <ProjectReference Include="..\ABI\ABI.Models\ABI.Models.csproj" />
     <ProjectReference Include="..\ABI\ABIRuntime\ABIRuntime.csproj" />
   </ItemGroup>

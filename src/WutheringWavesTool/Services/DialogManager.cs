@@ -229,4 +229,9 @@ public sealed class DialogManager : IDialogManager
     {
         await this.ShowDialogAsync<LocalGameTokenDialog>(contextName);
     }
+
+    public async Task ShowClearMemoryAsync()
+    {
+        await this.ShowDialogAsync<ClearMemoryDialog>();
+    }
 }

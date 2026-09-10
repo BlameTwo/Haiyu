@@ -48,4 +48,6 @@ public interface IDialogManager
     Task ShowGameEnhancedDialogAsync();
 
     Task ShowGameLocalTokenAsync(string contextName);
+
+    Task ShowClearMemoryAsync();
 }

@@ -54,10 +54,13 @@
                 </cui:SettingsCard.HeaderIcon>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Horizontal" Spacing="4">
-                        <Button Command="{x:Bind ViewModel.ShowMoniterSettingCommand}">
+                        <Button
+                            Padding="10,5"
+                            Command="{x:Bind ViewModel.ShowMoniterSettingCommand}"
+                            Style="{ThemeResource TitleBarButtonStyle}">
                             <Viewbox
-                                Width="25"
-                                Height="25"
+                                Width="20"
+                                Height="20"
                                 Stretch="UniformToFill">
                                 <AnimatedIcon>
                                     <AnimatedIcon.Source>
@@ -78,12 +81,29 @@
                                     FontFamily="Segoe Fluent Icons"
                                     FontSize="13"
                                     Glyph="&#xE8A7;" />
-                                <TextBlock FontSize="13" Text="{x:Bind helper:LanguageService.GetString('Display_Open')}" />
+                                <TextBlock FontSize="13" Text="{x:Bind ViewModel.MoniterInvokeStr, Mode=OneWay}" />
                             </StackPanel>
                         </Button>
                     </StackPanel>
                 </StackPanel>
             </cui:SettingsCard>
+            <cui:SettingsExpander Description="利用WindowsAPI 内核API强制整理物理内存" Header="内存清理">
+                <Button
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Padding="12,8"
+                    HorizontalAlignment="Right"
+                    Command="{x:Bind ViewModel.ShowClearMemoryToolCommand}"
+                    Style="{ThemeResource TitleBarButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <FontIcon
+                            FontFamily="Segoe Fluent Icons"
+                            FontSize="13"
+                            Glyph="&#xE8A7;" />
+                        <TextBlock FontSize="13" Text="{x:Bind helper:LanguageService.GetString('Display_Open')}" />
+                    </StackPanel>
+                </Button>
+            </cui:SettingsExpander>
             <Grid Margin="0,15,0,0" VerticalAlignment="Center">
                 <TextBlock
                     VerticalAlignment="Center"

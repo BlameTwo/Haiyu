@@ -26,6 +26,11 @@ public sealed partial class ToolkitViewModel : ViewModelBase
     [ObservableProperty]
     public partial ObservableCollection<TaskWrapper> Tasks { get; set; }
 
+    #region Moniter
+    [ObservableProperty]
+    public partial string? MoniterInvokeStr { get; set; }
+    #endregion
+
     [RelayCommand]
     Task Loaded() => RunWhileAliveAsync(_ => RefreshTasks());
 
@@ -33,6 +38,10 @@ public sealed partial class ToolkitViewModel : ViewModelBase
     async Task RefreshTasks()
     {
         this.Tasks = (await TaskManager.GetTasksAsync()).ToObservableCollection();
+        this.MoniterInvokeStr =
+            this.AppContext.WindowManager.IsWindowShow("MonitorTool") == false
+                ? LanguageService.GetString("Display_Open")
+                : LanguageService.GetString("Display_Close");
     }
 
     [RelayCommand]
@@ -44,7 +53,25 @@ public sealed partial class ToolkitViewModel : ViewModelBase
     [RelayCommand]
     void ShowMonitorTool()
     {
-        ViewFactorys.ShowMonitorToolWindow();
+        if (this.AppContext.WindowManager.IsWindowShow("MonitorTool"))
+        {
+            var window = this.AppContext.WindowManager.GetWindowContext("MonitorTool");
+            if (window == null)
+                return;
+            window.Close();
+            this.MoniterInvokeStr = LanguageService.GetString("Display_Open");
+        }
+        else
+        {
+            ViewFactorys.ShowMonitorToolWindow();
+            this.MoniterInvokeStr = LanguageService.GetString("Display_Close");
+        }
+    }
+
+    [RelayCommand]
+    async Task ShowClearMemoryTool()
+    {
+        await this.AppContext.WindowManager.Shell.DialogManager.ShowClearMemoryAsync();
     }
 
     [RelayCommand]

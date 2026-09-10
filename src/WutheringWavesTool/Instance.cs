@@ -122,16 +122,8 @@ public static class InstanceBuilderExtensions
                     .AddTransient<WavesAnalysisRecordPage>()
                     .AddTransient<WavesAnalysisRecordViewModel>()
                     .AddTransient<SettingViewModel>()
-                    .AddTransient<GameEnhancedDialog>()
-                    .AddTransient<GameEnhancedViewModel>()
-                    .AddTransient<WebViewCabManagerDialog>()
-                    .AddTransient<WavesCloudUserViewModel>()
-                    .AddTransient<WavesCloudUserDialog>()
-                    .AddTransient<WebViewCabManagerViewModel>()
                     .AddTransient<GamerSignPage>()
                     .AddTransient<GamerSignViewModel>()
-                    .AddTransient<CloudSelectNodeDialog>()
-                    .AddTransient<CloudSelectNodeViewModel>()
                     .AddTransient<DeviceInfoPage>()
                     .AddTransient<DeviceInfoViewModel>()
                     .AddTransient<HomeViewModel>()
@@ -177,6 +169,16 @@ public static class InstanceBuilderExtensions
                     .AddTransient<KuroGameSettingViewModel>()
                     .AddTransient<LocalGameTokenDialog>()
                     .AddTransient<LocalGameTokenViewModel>()
+                    .AddTransient<WebViewCabManagerDialog>()
+                    .AddTransient<WavesCloudUserViewModel>()
+                    .AddTransient<GameEnhancedDialog>()
+                    .AddTransient<GameEnhancedViewModel>()
+                    .AddTransient<WavesCloudUserDialog>()
+                    .AddTransient<WebViewCabManagerViewModel>()
+                    .AddTransient<CloudSelectNodeDialog>()
+                    .AddTransient<CloudSelectNodeViewModel>()
+                    .AddTransient<ClearMemoryDialog>()
+                    .AddTransient<ClearMemoryViewModel>()
                     #endregion
                 #endregion
                     #region More
@@ -207,7 +209,9 @@ public static class InstanceBuilderExtensions
                     .AddSingleton<IWallpaperService, WallpaperService>(
                         (s) =>
                         {
-                            var service = new WallpaperService(s.GetRequiredService<IWindowManager>());
+                            var service = new WallpaperService(
+                                s.GetRequiredService<IWindowManager>()
+                            );
                             service.RegisterHostPath(AppSettings.WrallpaperFolder);
                             return service;
                         }
